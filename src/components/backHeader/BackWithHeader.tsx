@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { SvgXml } from 'react-native-svg'
 import { TailwindFn } from 'twrnc'
-import { IconBasicsleft } from '../../icons/icons.config'
+import { IconBasicsleft } from '../../icons/icons'
 import { NavigProps } from '../../interfaces/NaviProps'
 
 interface IBackWithHeader extends NavigProps<null> {

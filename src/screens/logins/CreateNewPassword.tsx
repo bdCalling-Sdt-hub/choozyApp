@@ -1,5 +1,5 @@
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { IconCloseEye, IconOpenEye } from '../../icons/icons.config';
+import { IconCloseEye, IconOpenEye } from '../../icons/icons';
 
 import React from 'react';
 import { SvgXml } from 'react-native-svg';

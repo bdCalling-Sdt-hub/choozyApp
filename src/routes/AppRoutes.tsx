@@ -15,6 +15,7 @@ import SignUpScreen from '../screens/logins/SignUpScreen';
 import VerifyEmail from '../screens/logins/VerifyEmail';
 import VerifySuccess from '../screens/logins/VerifySuccess';
 import SplashScreen from '../screens/spalsh/SplashScreen';
+import BottomRoutes from './BottomRoutes';
 
 function HomeScreen() {
   return (
@@ -38,6 +39,11 @@ function AppRoutes() {
         <Stack.Screen name="Verify" component={VerifyEmail} />
         <Stack.Screen name="CreateNewPassword" component={CreateNewPassword} />
         <Stack.Screen name="VerifySuccess" component={VerifySuccess} />
+
+      {/*===================== Home / Bottom routes ================ */}
+
+        <Stack.Screen name="HomeRoutes" component={BottomRoutes} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

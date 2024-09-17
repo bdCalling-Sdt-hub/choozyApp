@@ -14,7 +14,7 @@ interface IButton {
 
 const IButton = ({tw,containerStyle,icon,svg,onPress} :IButton) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={.5} style={[tw`bg-[#003CFF] py-4  items-center rounded-2xl shadow-md `,containerStyle]}>
+    <TouchableOpacity onPress={onPress} activeOpacity={.5} style={[tw`bg-[#003CFF]   items-center rounded-2xl shadow-md justify-center`,containerStyle]}>
     {
         icon ? icon :  <SvgXml
         xml={svg ?svg: `<svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">

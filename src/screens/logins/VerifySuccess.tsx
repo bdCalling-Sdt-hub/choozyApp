@@ -2,13 +2,13 @@ import { Text, View } from 'react-native'
 
 import React from 'react'
 import { SvgXml } from 'react-native-svg'
-import { IconRightTik } from '../../icons/icons.config'
+import { IconRightTik } from '../../icons/icons'
 import { NavigProps } from '../../interfaces/NaviProps'
 import tw from '../../lib/tailwind'
 
 const VerifySuccess = ({navigation} : NavigProps<null>) => {
     setTimeout(()=>{
-        // navigation?.navigate('')
+        navigation?.navigate('HomeRoutes')
     },500)
   return (
     <View style={tw`flex-1 bg-base justify-center items-center`}>

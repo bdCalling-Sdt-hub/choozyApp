@@ -1,38 +1,48 @@
-import { ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
-import { Checkbox, TextField } from 'react-native-ui-lib';
-import { IconCloseEye, IconFillEmail, IconFillPassword, IconOpenEye } from '../../icons/icons.config';
+import {
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  IconCloseEye,
+  IconFillEmail,
+  IconFillPassword,
+  IconOpenEye,
+} from '../../icons/icons';
 
 import { Formik } from 'formik';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { SvgXml } from 'react-native-svg';
+import { Checkbox } from 'react-native-ui-lib';
 import IwtButton from '../../components/buttons/IwtButton';
 import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
+import InputText from '../../components/inputs/InputText';
 import { NavigProps } from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 interface ISingInForm {
- email : string
-  password : string
-  
+  email: string;
+  password: string;
 }
 
-const LoginScreen = ({navigation} : NavigProps<null>) => {
+const LoginScreen = ({navigation}: NavigProps<null>) => {
+  const [check, setCheck] = React.useState(false);
+  const [showPass, setShowPass] = React.useState(false);
 
-  const [check,setCheck] = React.useState(false)
-  const [showPass,setShowPass] = React.useState(false)
-
-
-
-  const onSubmitHandler = (data : ISingInForm) => {
-   console.log(data);
-  }
-
+  const onSubmitHandler = (data: ISingInForm) => {
+    console.log(data);
+    navigation?.navigate('HomeRoutes');
+  };
 
   return (
     <View style={tw`bg-base h-full`}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={tw`gap-1 pb-12`} keyboardShouldPersistTaps="always">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={tw`gap-1 pb-12`}
+        keyboardShouldPersistTaps="always">
         <View style={tw`flex-1 justify-center items-center mt-[5%] py-4`}>
           {/*=============== app logo ============= */}
           <FastImage
@@ -51,117 +61,122 @@ const LoginScreen = ({navigation} : NavigProps<null>) => {
             Log In with your data that you entered during your registration
           </Text>
         </View>
-          {/*================= inputs fields email or password  ================= */}
-      
+        {/*================= inputs fields email or password  ================= */}
+
         <Formik
-     initialValues={{ email: '' , password : "" }}
-     onSubmit={(ve)=>{
-      console.log(ve);
-     }}
-     validate={values => {
-      const errors: { email?: string; password?: string } = {};
-      if(!values.email){
-        errors.email = "Required";
-      }
-      // check or validity of email
-      if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)){
-        errors.email = "Invalid email address";
-      }
-      // check or validity of password 6 digit 
-      if(values.password.length < 6){
-        errors.password = "Password must be at least 6 characters";
-      }
-      if(!values.password){
-        errors.password = "Required";
-      }
-       return errors;
-     }}
-   >
-     {({ handleChange, handleBlur, handleSubmit, values ,touched,errors }) => (
-      <>
-  <View style={tw`px-[4%] mt-12 gap-4`}>
-         {/*======================= email ======================== */}
-         <View
-            style={tw`w-full rounded-2xl h-14  px-4 bg-white flex-row items-center gap-3 border border-[#D1D1D1]`}>
-            <SvgXml
-              xml={IconFillEmail}
-            />
-  
-            <TextField
-               value={values.email}
-               onChangeText={handleChange('email')}
-               onBlur={handleBlur('email')}
-               containerStyle={tw`flex-1`}
-               fieldStyle={tw`pb-4 `}
-               floatingPlaceholder
-               placeholder="Email"
-               />
-          </View>
-     
-            {errors.email && touched.email && <Text style={tw`text-red-500` }>
-              {errors.email}</Text>}
-        
-          {/*================== password =================== */}
-          <View
-            style={tw`w-full rounded-2xl h-14 px-4 bg-white flex-row items-center gap-3 border border-[#D1D1D1]`}>
-            <SvgXml
-              xml={IconFillPassword}
+          initialValues={{email: '', password: ''}}
+          onSubmit={onSubmitHandler}
+          validate={values => {
+            const errors: {email?: string; password?: string} = {};
+            if (!values.email) {
+              errors.email = 'Required';
+            }
+            // check or validity of email
+            if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+            ) {
+              errors.email = 'Invalid email address';
+            }
+            // check or validity of password 6 digit
+            if (values.password.length < 6) {
+              errors.password = 'Password must be at least 6 characters';
+            }
+            if (!values.password) {
+              errors.password = 'Required';
+            }
+            return errors;
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            touched,
+            errors,
+          }) => (
+            <>
+              <View style={tw`px-[4%] mt-12 gap-4`}>
+                {/*======================= email ======================== */}
+                <InputText
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  placeholder="Email"
+                  floatingPlaceholder
+                  svgFirstIcon={IconFillEmail}
                 />
-            <TextField
-                value={values.password}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                containerStyle={tw`flex-1`}
-                fieldStyle={tw`pb-4 `}
-                
-                placeholder="Enter Your Password"
-                floatingPlaceholder
-                secureTextEntry={!showPass}
+
+                {errors.email && touched.email && (
+                  <Text style={tw`text-red-500`}>{errors.email}</Text>
+                )}
+
+                {/*================== password =================== */}
+                <InputText
+                  onPress={() => setShowPass(!showPass)}
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  placeholder="Enter Your Password"
+                  floatingPlaceholder
+                  secureTextEntry={!showPass}
+                  svgFirstIcon={IconFillPassword}
+                  svgSecondIcon={showPass ? IconCloseEye : IconOpenEye}
                 />
-            <TouchableOpacity onPress={() => setShowPass(!showPass)}>
-            <SvgXml 
-        
-              xml={showPass ?IconCloseEye : IconOpenEye}
-/>
-            </TouchableOpacity>
-          </View>
-        
-            {errors.password && touched.password && <Text style={tw`text-red-500` }>
-              {errors.password}
-              </Text>}
-       
-       </View>
-         {/* check box the Keep me logged In */}
-         <View style={tw`px-[4%] `}>
-       <TouchableOpacity style={tw` my-5 flex-row items-center `} onPress={()=>{
-         setCheck(!check)
-       }}>
 
-       <Checkbox color='#4964C6' size={25} style={tw`border-2 border-[#E8E8EA]`} value={check} onValueChange={(value) => setCheck(value)} />
-       <Text style={tw`ml-2  font-NunitoSansBold text-color-Black800`}>Keep me logged in</Text>
-       </TouchableOpacity>
-        <TButton onPress={handleSubmit} tw={tw} title='Log in' containerStyle={tw`w-full mb-5 mt-3 bg-primary text-[16px] `} titleStyle={tw`text-white font-NunitoSansSemiBold`} />
-        </View>
+                {errors.password && touched.password && (
+                  <Text style={tw`text-red-500`}>{errors.password}</Text>
+                )}
+              </View>
+              {/* check box the Keep me logged In */}
+              <View style={tw`px-[4%] `}>
+                <TouchableOpacity
+                  style={tw` my-5 flex-row items-center `}
+                  onPress={() => {
+                    setCheck(!check);
+                  }}>
+                  <Checkbox
+                    color="#4964C6"
+                    size={25}
+                    style={tw`border-2 border-[#E8E8EA]`}
+                    value={check}
+                    onValueChange={value => setCheck(value)}
+                  />
+                  <Text
+                    style={tw`ml-2  font-NunitoSansBold text-color-Black800`}>
+                    Keep me logged in
+                  </Text>
+                </TouchableOpacity>
+                <TButton
+                  onPress={handleSubmit}
+                  tw={tw}
+                  title="Log in"
+                  containerStyle={tw`w-full mb-5 mt-3 bg-primary text-[16px] `}
+                  titleStyle={tw`text-white font-NunitoSansSemiBold`}
+                />
+              </View>
+            </>
+          )}
+        </Formik>
 
-     </>
-     )}
-   </Formik>
-    
-           
-  
-     
-      
-       {/*================ all buttons =================== */}
-       <View style={tw`px-[4%] gap-6`}>
- 
+        {/*================ all buttons =================== */}
+        <View style={tw`px-[4%] gap-6`}>
+          <Or tw={tw} />
 
-        <Or tw={tw} />
-
-        <IwtButton tw={tw} containerStyle={tw`w-full bg-[#1877F2]`} title='Continue with Facebook' svg={`<svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <IwtButton
+            tw={tw}
+            containerStyle={tw`w-full bg-[#1877F2]`}
+            title="Continue with Facebook"
+            svg={`<svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M9.67109 11.4688L10.2031 8H6.875V5.75C6.875 4.80102 7.34 3.875 8.83063 3.875H10.3438V0.921875C10.3438 0.921875 8.97055 0.6875 7.65758 0.6875C4.91656 0.6875 3.125 2.34875 3.125 5.35625V8H0.078125V11.4688H3.125V19.8542C4.36744 20.0486 5.63256 20.0486 6.875 19.8542V11.4688H9.67109Z" fill="white"/>
         </svg>
-        `} />
-        <IwtButton tw={tw} containerStyle={tw`w-full bg-[#FFFFFF]`} title='Continue with  Google' titleStyle={tw`text-color-Black800 font-NunitoSansBold`}  svg={`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        `}
+          />
+          <IwtButton
+            tw={tw}
+            containerStyle={tw`w-full bg-[#FFFFFF]`}
+            title="Continue with  Google"
+            titleStyle={tw`text-color-Black800 font-NunitoSansBold`}
+            svg={`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_703_91295)">
 <path d="M23.7682 12.2763C23.7682 11.4605 23.7021 10.6404 23.561 9.83789H12.2422V14.4589H18.7239C18.455 15.9492 17.5907 17.2676 16.3252 18.1054V21.1037H20.1922C22.463 19.0137 23.7682 15.9272 23.7682 12.2763Z" fill="#4285F4"/>
 <path d="M12.2391 24.0008C15.4756 24.0008 18.205 22.9382 20.1936 21.1039L16.3266 18.1055C15.2507 18.8375 13.8618 19.252 12.2435 19.252C9.11291 19.252 6.45849 17.1399 5.50607 14.3003H1.51562V17.3912C3.55274 21.4434 7.70192 24.0008 12.2391 24.0008Z" fill="#34A853"/>
@@ -175,18 +190,27 @@ const LoginScreen = ({navigation} : NavigProps<null>) => {
 </defs>
 </svg>
 
-        `} />
-
-       </View>
+        `}
+          />
+        </View>
         {/* Sing up and  Forgot password? */}
-        <View style={tw`items-center gap-2 mt-6` }>
-         <TouchableOpacity onPress={() => navigation?.navigate('Forget')}>
-         <Text style={tw`text-primary font-NunitoSansBold`}>Forgot password?</Text>
-         </TouchableOpacity>
-        <TouchableOpacity style={tw`flex-row items-center`}>
-          <Text style={tw`text-color-Black800 font-NunitoSansLight`}>Don’t have an account?</Text>
-          <Text onPress={() => navigation?.navigate('SignUp')} style={tw`text-primary font-NunitoSansLight`}> Sign Up</Text>
-        </TouchableOpacity>
+        <View style={tw`items-center gap-2 mt-6`}>
+          <TouchableOpacity onPress={() => navigation?.navigate('Forget')}>
+            <Text style={tw`text-primary font-NunitoSansBold`}>
+              Forgot password?
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={tw`flex-row items-center`}>
+            <Text style={tw`text-color-Black800 font-NunitoSansLight`}>
+              Don’t have an account?
+            </Text>
+            <Text
+              onPress={() => navigation?.navigate('SignUp')}
+              style={tw`text-primary font-NunitoSansLight`}>
+              {' '}
+              Sign Up
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <StatusBar barStyle="dark-content" backgroundColor={'#f6f6f6'} />
