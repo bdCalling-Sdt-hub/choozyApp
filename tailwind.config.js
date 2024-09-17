@@ -45,8 +45,8 @@ module.exports = {
         secondary: '#454545',
         base: '#f6f6f6',
         color : {
-          "454545": '#454545',
-         
+          "Black800": '#454545',
+           "Black950" : "#262626"
         },
         success: {
           dark: '#28a745',
