@@ -10,7 +10,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        // poppins fonts 
+        // poppins fonts
         PoppinsBlack: 'PoppinsBlack',
         PoppinsBlackItalic: 'PoppinsBlackItalic',
         PoppinsBold: 'PoppinsBold',
@@ -30,7 +30,7 @@ module.exports = {
         PoppinsThin: 'PoppinsThin',
         PoppinsThinItalic: 'PoppinsThinItalic',
         // You can replace 'YourCustomFont' with your desired font
-        // Nunito fonts 
+        // Nunito fonts
         NunitoSansBlack: 'NunitoSansBlack',
         NunitoSansBold: 'NunitoSansBold',
         NunitoSansExtraBold: 'NunitoSansExtraBold',
@@ -44,9 +44,12 @@ module.exports = {
         primary: '#4964C6',
         secondary: '#454545',
         base: '#f6f6f6',
-        color : {
-          "Black800": '#454545',
-           "Black950" : "#262626"
+        color: {
+          Black500: '#5D5D5D',
+          Black800: '#454545',
+          Black900: '#333333',
+          Black950: '#262626',
+          Black1000: '#1D1929',
         },
         success: {
           dark: '#28a745',

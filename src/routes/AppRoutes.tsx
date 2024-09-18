@@ -4,18 +4,20 @@ import * as React from 'react';
 
 import { Text, View } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useDeviceContext } from 'twrnc';
-import tw from '../lib/tailwind';
+import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
+import BottomRoutes from './BottomRoutes';
 import CreateNewPassword from '../screens/logins/CreateNewPassword';
 import ForgetPassword from '../screens/logins/ForgetPassword';
 import LoginScreen from '../screens/logins/LoginScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import NotificationScreen from '../screens/notificaiton/NotificationScreen';
 import SignUpScreen from '../screens/logins/SignUpScreen';
+import SplashScreen from '../screens/spalsh/SplashScreen';
 import VerifyEmail from '../screens/logins/VerifyEmail';
 import VerifySuccess from '../screens/logins/VerifySuccess';
-import SplashScreen from '../screens/spalsh/SplashScreen';
-import BottomRoutes from './BottomRoutes';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import tw from '../lib/tailwind';
+import { useDeviceContext } from 'twrnc';
 
 function HomeScreen() {
   return (
@@ -43,6 +45,10 @@ function AppRoutes() {
       {/*===================== Home / Bottom routes ================ */}
 
         <Stack.Screen name="HomeRoutes" component={BottomRoutes} />
+
+        {/*=============== messages/contact routes ==================*/}
+        <Stack.Screen name="AllGroups" component={AllGroupsScreen} />
+        <Stack.Screen name="Notification" component={NotificationScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>

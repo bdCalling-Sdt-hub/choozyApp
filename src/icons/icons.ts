@@ -136,11 +136,6 @@ export const IconSearch = `<svg width="21" height="21" viewBox="0 0 21 21" fill=
 </svg>
 `
 
-
-export const IconBell = `<svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 10.5H13M1.5 10.5V5.5C1.5 2.73858 3.73858 0.5 6.5 0.5C9.26142 0.5 11.5 2.73858 11.5 5.5V10.5M4.5 12V12.5C4.5 13.6046 5.39543 14.5 6.5 14.5C7.60457 14.5 8.5 13.6046 8.5 12.5V12" stroke="#454545"/>
-</svg>
-`
 export const IconBellWithDot = `<svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.83203 15.5H19.1654M3.83203 15.5V8.83329C3.83203 5.15139 6.8168 2.16663 10.4987 2.16663C14.1806 2.16663 17.1654 5.15139 17.1654 8.83329V15.5M7.83203 17.5V18.1666C7.83203 19.6394 9.02594 20.8333 10.4987 20.8333C11.9715 20.8333 13.1654 19.6394 13.1654 18.1666V17.5" stroke="#454545"/>
 <rect x="13.5" y="1.5" width="8" height="8" rx="4" fill="#E29400" stroke="white" stroke-width="2"/>
@@ -157,4 +152,31 @@ export const IconVThreeDots = `<svg width="3" height="13" viewBox="0 0 3 13" fil
 `
 
 
+export const IconClose = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1L17 17M1 17L17 1" stroke="#1D1929"/>
+</svg>
+` 
+
+
+export const IconMenu = `<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15 1.5H0V0.5H15V1.5ZM15 5.5H0V4.5H15V5.5ZM15 9.5H0V8.5H15V9.5ZM15 13.5H0V12.5H15V13.5Z" fill="#454545"/>
+</svg>
+`
+
+
+
+export const IconBell = `<svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.332031 13.9998H17.6654M2.33203 13.9998V7.33317C2.33203 3.65127 5.3168 0.666504 8.9987 0.666504C12.6806 0.666504 15.6654 3.65127 15.6654 7.33317V13.9998M6.33203 15.9998V16.6665C6.33203 18.1393 7.52594 19.3332 8.9987 19.3332C10.4715 19.3332 11.6654 18.1393 11.6654 16.6665V15.9998" stroke="#454545"/>
+</svg>
+` 
+
+
+export const IconPuls =  `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.9987 0.333252V17.6666M0.332031 8.99992H17.6654" stroke="white" stroke-width="2"/>
+</svg>
+`
+
+
+// export const Icon = 
+// export const Icon = 
 // export const Icon = 
