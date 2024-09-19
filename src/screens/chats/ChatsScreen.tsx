@@ -158,7 +158,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
             data={MessagesData.slice(5, 25)}
             renderItem={({item}) => (
               <>
-                <MessageCard onPress={() => navigation?.navigate("Message")} item={item} />
+                <MessageCard onPress={() => navigation?.navigate("SingleMessage")} item={item} />
               </>
             )}
           />
@@ -195,7 +195,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
               renderItem={({item}) => (
                 <>
                   {/* user card here */}
-                  <UserCard onPress={() => navigation?.navigate("Message")} item={item} />
+                  <UserCard onPress={() => navigation?.navigate("GroupMessage")} item={item} />
                 </>
               )}
             />
@@ -212,7 +212,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           <View style={tw`pb-20`}>
             {groupMessageData.slice(0, 10).map(item => (
               <MessageCard
-              onPress={() => navigation?.navigate("Message")}
+              onPress={() => navigation?.navigate("GroupMessage")}
                 key={item.id}
                 titleContainerStyle={tw`gap-1`}
                 joinBtn
@@ -367,7 +367,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           <TButton
             onPress={() => {
               setCreateGroupModal(false);
-              navigation?.navigate('Message');
+              navigation?.navigate('GroupMessage');
             }}
             title="Create"
             

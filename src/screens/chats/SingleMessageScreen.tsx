@@ -196,26 +196,3 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
 };
 
 export default SingleMessageScreen;
-// <View style={tw`flex-row items-center justify-between`}>
-//   <View>
-//     <View style={tw`flex-row items-center gap-3`}>
-//       <Text
-//         style={tw`text-color-Black1000 font-NunitoSansExtraBold`}>
-//         {messageData.group.name}
-//       </Text>
-//       <FastImage
-//         style={tw`w-8 h-8 rounded-xl`}
-//         source={{
-//           uri: messageData?.group?.groupIcon,
-//         }}
-//       />
-//     </View>
-//     <Text>{messageData?.group?.members}</Text>
-//   </View>
-//   <TouchableOpacity
-//     activeOpacity={0.5}
-//     onPress={() => {}}
-//     style={tw`px-4 items-center justify-center`}>
-//     <SvgXml xml={IconVThreeDotsMd} />
-//   </TouchableOpacity>
-// </View>
