@@ -1,19 +1,19 @@
 import {
-  ScrollView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
+    ScrollView,
+    StatusBar,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import {
-  IconCloseEye,
-  IconEmail,
-  IconFacebook,
-  IconGoogle,
-  IconLocation,
-  IconOpenEye,
-  IconPassword,
-  IconUser,
+    IconCloseEye,
+    IconEmail,
+    IconFacebook,
+    IconGoogle,
+    IconLocation,
+    IconOpenEye,
+    IconPassword,
+    IconUser,
 } from '../../icons/icons';
 
 import { Formik } from 'formik';
@@ -185,7 +185,7 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
                 </TouchableOpacity>
                 <TButton
                   onPress={handleSubmit}
-                  tw={tw}
+                  
                   title="Log in"
                   containerStyle={tw`w-full mb-5 mt-3 bg-primary text-[16px] `}
                   titleStyle={tw`text-white font-NunitoSansSemiBold`}
@@ -197,16 +197,16 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
 
         {/*================ all buttons =================== */}
         <View style={tw`px-[4%] gap-6`}>
-          <Or tw={tw} />
+          <Or  />
 
           <IwtButton
-            tw={tw}
+            
             containerStyle={tw`w-full bg-[#1877F2]`}
             title="Continue with Facebook"
             svg={IconFacebook}
           />
           <IwtButton
-            tw={tw}
+            
             containerStyle={tw`w-full bg-[#FFFFFF]`}
             title="Continue with  Google"
             titleStyle={tw`text-color-Black800 font-NunitoSansBold`}

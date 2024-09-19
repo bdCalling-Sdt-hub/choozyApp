@@ -12,6 +12,7 @@ interface IButton {
     onPress ?: () => void
 }
 
+
 const TButton = ({tw,containerStyle,title,titleStyle,isLoading,onPress} :IButton) => {
   return (
     <TouchableOpacity onPress={onPress} disabled={isLoading} activeOpacity={.5} style={[tw`bg-[#003CFF] py-4 px-3 flex-row justify-center gap-3 rounded-2xl shadow-md w-36`,containerStyle]}>

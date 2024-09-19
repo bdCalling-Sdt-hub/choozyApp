@@ -148,7 +148,7 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
                 </TouchableOpacity>
                 <TButton
                   onPress={handleSubmit}
-                  tw={tw}
+                  
                   title="Log in"
                   containerStyle={tw`w-full mb-5 mt-3 bg-primary text-[16px] `}
                   titleStyle={tw`text-white font-NunitoSansSemiBold`}
@@ -160,10 +160,10 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
 
         {/*================ all buttons =================== */}
         <View style={tw`px-[4%] gap-6`}>
-          <Or tw={tw} />
+          <Or  />
 
           <IwtButton
-            tw={tw}
+            
             containerStyle={tw`w-full bg-[#1877F2]`}
             title="Continue with Facebook"
             svg={`<svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,7 +172,7 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
         `}
           />
           <IwtButton
-            tw={tw}
+            
             containerStyle={tw`w-full bg-[#FFFFFF]`}
             title="Continue with  Google"
             titleStyle={tw`text-color-Black800 font-NunitoSansBold`}

@@ -88,7 +88,7 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
         <TButton
           onPress={() => navigation?.navigate('VerifySuccess')}
           isLoading={false}
-          tw={tw}
+          
           title="Submit"
           containerStyle={tw`my-10 w-full bg-primary`}
         />

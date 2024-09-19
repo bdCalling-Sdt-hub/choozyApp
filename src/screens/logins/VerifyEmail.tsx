@@ -63,7 +63,7 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
 
   return (
     <View style={tw`bg-base flex-1`}>
-    <BackWithHeader tw={tw} navigation={navigation}  title='OTP Verification'/>
+    <BackWithHeader  navigation={navigation}  title='OTP Verification'/>
       <ScrollView
         contentContainerStyle={tw`px-[4%] gap-3`}
         keyboardShouldPersistTaps="always">
@@ -115,7 +115,7 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
         <TButton
           onPress={() => navigation?.navigate('CreateNewPassword')}
           isLoading={false}
-          tw={tw}
+          
           title="Submit"
           containerStyle={tw`my-10 w-full bg-primary`}
         />

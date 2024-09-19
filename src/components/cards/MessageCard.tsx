@@ -1,8 +1,8 @@
 import { Text, TouchableOpacity, View } from 'react-native'
 
-import FastImage from 'react-native-fast-image'
-import React from 'react'
 import moment from 'moment-timezone'
+import React from 'react'
+import FastImage from 'react-native-fast-image'
 import tw from '../../lib/tailwind'
 
 interface MessageCardProps{
@@ -37,6 +37,7 @@ const MessageCard = ({item,onPress,joinBtn,subTitleStyle,titleStyle,containerSty
     style={tw`w-12 h-12 aspect-square rounded-2xl overflow-hidden`}>
     <FastImage
       source={{uri: item.image}}
+      resizeMode={FastImage.resizeMode.contain}
       style={tw`w-full h-full`}
     />
   </View>

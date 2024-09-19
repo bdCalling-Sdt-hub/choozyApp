@@ -1,0 +1,122 @@
+{
+  "group": {
+    "name": "ZenG",
+    "members": "99+ Members",
+    "groupIcon": "https://random.imagecdn.app/500/150"
+  },
+  "messages": [
+    {
+      "sender": "You",
+      "timestamp": "Thursday 11:41am",
+      "message": "Would 3 PM work for you?",
+      "isCurrentUser": true
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:42am",
+      "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "You",
+      "timestamp": "Thursday 11:42am",
+      "message": "You\nThursday 11:41am\nWould 3 PM work for you?",
+      "isCurrentUser": true
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:42am",
+      "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:42am",
+      "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "You",
+      "timestamp": "Thursday 11:41am",
+      "message": "Would 3 PM work for you?",
+      "isCurrentUser": true
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:42am",
+      "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "You",
+      "timestamp": "Thursday 11:42am",
+      "message": "You\nThursday 11:41am\nWould 3 PM work for you?",
+      "isCurrentUser": true
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:42am",
+      "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:42am",
+      "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "You",
+      "timestamp": "Thursday 11:45am",
+      "message": "I’m thinking of a short, layered cut. Something easy to maintain.",
+      "isCurrentUser": true
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:46am",
+      "message": "That sounds great! We can definitely do that. Any specific preferences for styling?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "You",
+      "timestamp": "Thursday 11:47am",
+      "message": "Just a bit of texture, nothing too fancy.",
+      "isCurrentUser": true
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 11:48am",
+      "message": "Got it! Looking forward to seeing you at 3 PM.",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "John Doe",
+      "timestamp": "Thursday 12:00pm",
+      "message": "Hey Karla, is there any availability for a quick trim around 4 PM?",
+      "avatar": "https://randomuser.me/api/portraits/men/45.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "Karla Blair",
+      "timestamp": "Thursday 12:01pm",
+      "message": "Sure, I can fit you in at 4:15 PM. Does that work?",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+      "isCurrentUser": false
+    },
+    {
+      "sender": "John Doe",
+      "timestamp": "Thursday 12:02pm",
+      "message": "Perfect! Thanks, Karla.",
+      "avatar": "https://randomuser.me/api/portraits/men/45.jpg",
+      "isCurrentUser": false
+    }
+  ]
+}

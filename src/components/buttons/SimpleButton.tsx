@@ -12,6 +12,7 @@ interface SimpleButtonProps{
     containerStyle ?: any
 }
 
+
 const SimpleButton = ({containerStyle,onPress,svgIcon,title,titleStyle} : SimpleButtonProps) => {
   return (
     <TouchableOpacity

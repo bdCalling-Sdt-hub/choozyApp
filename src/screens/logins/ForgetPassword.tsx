@@ -11,7 +11,7 @@ import tw from '../../lib/tailwind'
 const ForgetPassword = ({navigation} : NavigProps<null>) => {
   return (
     <View style={tw`bg-base flex-1`}>
-        <BackWithHeader navigation={navigation} tw={tw} title='Forget Password' />
+        <BackWithHeader navigation={navigation}  title='Forget Password' />
         <ScrollView contentContainerStyle={tw`px-[4%] gap-3 `} keyboardShouldPersistTaps="always">
         <View>
         <Text style={tw`text-[14px] text-color-Black800 font-NunitoSansBold`}>
@@ -32,7 +32,7 @@ const ForgetPassword = ({navigation} : NavigProps<null>) => {
         
         </ScrollView>
       <View style={tw`px-[4%]`}>
-      <TButton onPress={() => navigation?.navigate('Verify')} isLoading={false} tw={tw} title="Submit" containerStyle={tw`my-10 w-full bg-primary`} />
+      <TButton onPress={() => navigation?.navigate('Verify')} isLoading={false}  title="Submit" containerStyle={tw`my-10 w-full bg-primary`} />
       </View>
     </View>
   )

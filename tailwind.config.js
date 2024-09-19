@@ -42,9 +42,11 @@ module.exports = {
       },
       colors: {
         primary: '#4964C6',
+        primary500 : "#5E7FD3",
         secondary: '#454545',
         base: '#f6f6f6',
         color: {
+          Black400: '#888888',
           Black500: '#5D5D5D',
           Black800: '#454545',
           Black900: '#333333',
