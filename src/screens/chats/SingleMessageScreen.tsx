@@ -12,16 +12,20 @@ import moment from 'moment-timezone';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import { SvgXml } from 'react-native-svg';
+import { Switch } from 'react-native-ui-lib';
 import personalMessageData from '../../assets/database/personalMessage.json';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
 import InputText from '../../components/inputs/InputText';
+import ActionModal from '../../components/modals/ActionModal';
 import { NavigProps } from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 // import messageData from '../../assets/database/message.json';
 
 const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
+  const [actionModalOpen,setActionModalOpen] = React.useState(false)
+  const [makeMute,setMakeMute] = React.useState(false)
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*============= header =============== */}
@@ -37,7 +41,9 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
               <TouchableOpacity style={tw`px-3`} activeOpacity={0.5}>
                 <SvgXml xml={IconCallBlue} />
               </TouchableOpacity>
-              <TouchableOpacity style={tw`px-3`} activeOpacity={0.5}>
+              <TouchableOpacity onPress={()=>{
+                setActionModalOpen(!actionModalOpen)
+              }} style={tw`px-3`} activeOpacity={0.5}>
                 <SvgXml xml={IconVThreeDots} />
               </TouchableOpacity>
             </View>
@@ -126,7 +132,7 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
                       {/* Avatar */}
                       <FastImage
                         source={{
-                          uri: 'https://randomuser.me/api/portraits/lego/5.jpg',
+                          uri: item.avatar,
                         }}
                         style={tw`w-8 h-8 rounded-full mr-3`}
                       />
@@ -191,6 +197,23 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
           onPress={() => {}}
         />
       </View>
+
+      <ActionModal containerStyle={tw`top-[6%] right-[2%]`} visible={actionModalOpen} setVisible={setActionModalOpen} actionData={[
+         {
+           title: 'Mute Notification',
+          //  onPress: () => {},
+          enableBoth : true,
+           customComponent : <Switch offColor={"#E8E8EA"} onColor={"#4964C6"} value={makeMute} onValueChange={(value)=>setMakeMute(value)} />
+         },
+         {
+           title: 'Leave',
+           titleStyle : tw`text-red-500`,
+           onPress: () => {},
+         },
+       
+       
+     ]} />
+
     </View>
   );
 };

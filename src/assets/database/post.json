@@ -1,0 +1,148 @@
+{
+    "posts": [
+      {
+        "id": 1,
+        "user": {
+          "name": "Robert Fox",
+          "status": "Following",
+          "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
+        },
+        "content": {
+          "text": "We spent a great time on my holiday, it was amazing!",
+          "image": "https://random.imagecdn.app/800/800",
+          "likes": 5486,
+          "liked_by": [
+            {
+              "name": "Jenny Wilson"
+            },
+            {
+              "count": 159
+            }
+          ],
+          "views": 5486,
+          "comments": 50,
+          "created_at": "Dec 4, 2024 21:42"
+        }
+      },
+      {
+        "id": 2,
+        "user": {
+          "name": "Richardo Mathew",
+          "status": "Following",
+          "avatar": "https://randomuser.me/api/portraits/men/2.jpg"
+        },
+        "content": {
+          "text": "I know today might be tough, but remember, it's okay to have off days. You're strong and loved, and tomorrow is a new chance to start fresh.",
+          "likes": 1040,
+          "liked_by": [
+            {
+              "name": "Sarah Connor"
+            },
+            {
+              "count": 40
+            }
+          ],
+          "views": 3200,
+          "comments": 5,
+          "created_at": "Dec 4, 2024 21:45"
+        }
+      },
+      {
+        "id": 3,
+        "user": {
+          "name": "Jennifer Evans",
+          "status": "Following",
+          "avatar": "https://randomuser.me/api/portraits/women/1.jpg"
+        },
+        "content": {
+          "text": "Throwback to our adventure in the mountains. Such a refreshing trip!",
+          "image": "https://random.imagecdn.app/900/900",
+          "likes": 2342,
+          "liked_by": [
+            {
+              "name": "Michael Johnson"
+            },
+            {
+              "count": 87
+            }
+          ],
+          "views": 3900,
+          "comments": 25,
+          "created_at": "Nov 28, 2024 15:10"
+        }
+      },
+      {
+        "id": 4,
+        "user": {
+          "name": "David Parker",
+          "status": "Following",
+          "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
+        },
+        "content": {
+          "text": "Just finished my first marathon! Feeling proud of myself and grateful for the support of my friends.",
+          "image": "https://random.imagecdn.app/1000/1000",
+          "likes": 1780,
+          "liked_by": [
+            {
+              "name": "Emily Davis"
+            },
+            {
+              "count": 100
+            }
+          ],
+          "views": 2200,
+          "comments": 12,
+          "created_at": "Dec 3, 2024 08:20"
+        }
+      },
+      {
+        "id": 5,
+        "user": {
+          "name": "Sophia Bailey",
+          "status": "Following",
+          "avatar": "https://randomuser.me/api/portraits/women/2.jpg"
+        },
+        "content": {
+          "text": "A peaceful evening by the lake. Nothing beats the quiet serenity of nature.",
+          "image": "https://random.imagecdn.app/1200/1200",
+          "likes": 4520,
+          "liked_by": [
+            {
+              "name": "John Snow"
+            },
+            {
+              "count": 340
+            }
+          ],
+          "views": 5800,
+          "comments": 35,
+          "created_at": "Nov 30, 2024 19:00"
+        }
+      },
+      {
+        "id": 6,
+        "user": {
+          "name": "Liam Johnson",
+          "status": "Following",
+          "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
+        },
+        "content": {
+          "text": "Learning how to bake! Here's my first attempt at sourdough bread. It’s not perfect, but I’m proud of it!",
+          "image": "https://random.imagecdn.app/1300/1300",
+          "likes": 920,
+          "liked_by": [
+            {
+              "name": "Olivia Miller"
+            },
+            {
+              "count": 75
+            }
+          ],
+          "views": 1400,
+          "comments": 8,
+          "created_at": "Dec 2, 2024 10:15"
+        }
+      }
+    ]
+  }
+  

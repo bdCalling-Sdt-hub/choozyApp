@@ -40,14 +40,21 @@ module.exports = {
         NunitoSansRegular: 'NunitoSansRegular',
         NunitoSansSemiBold: 'NunitoSansSemiBold',
       },
+      
       colors: {
+        text14 : "14px",
+        text16 : "16px",
         primary: '#4964C6',
+        primary600: '#4964C6',
         primary500 : "#5E7FD3",
+        Primary900 : "#323D76",
         secondary: '#454545',
         base: '#f6f6f6',
+        Danger600 : "#DC3545",
         color: {
           Black400: '#888888',
           Black500: '#5D5D5D',
+          Black600: '#5D5D5D',
           Black800: '#454545',
           Black900: '#333333',
           Black950: '#262626',

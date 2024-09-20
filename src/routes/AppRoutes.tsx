@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDeviceContext } from 'twrnc';
 import tw from '../lib/tailwind';
 import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
+import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
 import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
 import NotificationScreen from '../screens/notificaiton/NotificationScreen';
@@ -47,6 +48,7 @@ function AppRoutes() {
         <Stack.Screen name="Notification" component={NotificationScreen} />
         <Stack.Screen name="SingleMessage" component={SingleMessageScreen} />
         <Stack.Screen name="GroupMessage" component={GroupMessageScreen} />
+        <Stack.Screen name="GroupMembers" component={GroupMembers} />
 
       </Stack.Navigator>
     </NavigationContainer>
