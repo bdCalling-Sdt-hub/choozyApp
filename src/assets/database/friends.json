@@ -1,0 +1,75 @@
+[
+    {
+      "name": "Jane Cooper",
+      "followers": "27.5k people following",
+      "avatar": "https://randomuser.me/api/portraits/women/1.jpg",
+      "action": "Follow"
+    },
+    {
+      "name": "Cody Fisher",
+      "followers": "10.3k people following",
+      "avatar": "https://randomuser.me/api/portraits/men/1.jpg",
+      "action": "Following"
+    },
+    {
+      "name": "Ronald Richards",
+      "followers": "15.2k people following",
+      "avatar": "https://randomuser.me/api/portraits/men/2.jpg",
+      "action": "Follow"
+    },
+    {
+      "name": "Eleanor Pena",
+      "followers": "22.1k people following",
+      "avatar": "https://randomuser.me/api/portraits/women/2.jpg",
+      "action": "Following"
+    },
+    {
+      "name": "Guy Hawkins",
+      "followers": "8.7k people following",
+      "avatar": "https://randomuser.me/api/portraits/men/3.jpg",
+      "action": "Follow"
+    },
+    {
+      "name": "Savannah Nguyen",
+      "followers": "14.6k people following",
+      "avatar": "https://randomuser.me/api/portraits/women/3.jpg",
+      "action": "Following"
+    },
+    {
+      "name": "Kathryn Murphy",
+      "followers": "30.8k people following",
+      "avatar": "https://randomuser.me/api/portraits/women/4.jpg",
+      "action": "Follow"
+    },
+    {
+      "name": "Jacob Jones",
+      "followers": "19.4k people following",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg",
+      "action": "Following"
+    },
+    {
+      "name": "Deborah Knight",
+      "followers": "24k people following",
+      "avatar": "https://randomuser.me/api/portraits/women/5.jpg",
+      "action": "Follow"
+    },
+    {
+      "name": "Walter James",
+      "followers": "17.2k people following",
+      "avatar": "https://randomuser.me/api/portraits/men/5.jpg",
+      "action": "Following"
+    },
+    {
+      "name": "Dorothy Bowers",
+      "followers": "11.5k people following",
+      "avatar": "https://randomuser.me/api/portraits/women/6.jpg",
+      "action": "Follow"
+    },
+    {
+      "name": "George Cox",
+      "followers": "9.9k people following",
+      "avatar": "https://randomuser.me/api/portraits/men/6.jpg",
+      "action": "Following"
+    }
+  ]
+  

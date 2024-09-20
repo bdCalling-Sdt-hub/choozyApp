@@ -1,0 +1,114 @@
+{
+    "chatHeader": {
+      "name": "Karla Blair",
+      "location": "15 Rue des Étoiles 75001",
+      "avatar": "https://randomuser.me/api/portraits/women/68.jpg"
+    },
+    "messages": [
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T10:15:00",
+        "message": "Would 3 PM work for you?",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T10:17:00",
+        "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      },
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T10:20:00",
+        "message": "You\nMonday, September 18, 2024, 10:15am\nWould 3 PM work for you?",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T10:21:00",
+        "message": "3 PM works perfectly. What kind of haircut are you looking for today?",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      },
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T10:30:00",
+        "message": "I’m thinking of a short, layered cut. Something easy to maintain.",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T10:35:00",
+        "message": "That sounds great! We can definitely do that. Any specific preferences for styling?",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      },
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T10:40:00",
+        "message": "Just a bit of texture, nothing too fancy.",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T10:45:00",
+        "message": "Got it! Looking forward to seeing you at 3 PM.",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      },
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T11:00:00",
+        "message": "Perfect, see you then!",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T11:02:00",
+        "message": "Looking forward to it! 😊",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      },
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T11:10:00",
+        "message": "By the way, can you also trim the ends for a healthier look?",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T11:12:00",
+        "message": "Of course! That won’t be a problem at all.",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T11:12:00",
+         "image" : "https://random.imagecdn.app/800/500",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      },
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T11:20:00",
+        "message": "Great! Thanks for accommodating me today on such short notice.",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "You",
+        "timestamp": "2024-09-18T11:20:00",
+        "image" : "https://random.imagecdn.app/700/400",
+        "isCurrentUser": true
+      },
+      {
+        "sender": "Karla Blair",
+        "timestamp": "2024-09-18T11:22:00",
+        "message": "Anytime! 😊 I always make space for my best clients.",
+        "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+        "isCurrentUser": false
+      }
+    ]
+  }
+  

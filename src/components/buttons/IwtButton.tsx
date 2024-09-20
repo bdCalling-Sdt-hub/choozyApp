@@ -2,10 +2,9 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 import React from 'react'
 import { SvgXml } from 'react-native-svg'
-import { TailwindFn } from 'twrnc'
+import tw from '../../lib/tailwind'
 
 interface IButton {
-    tw  : TailwindFn,
     containerStyle ?: {},
     titleStyle ?: {},
     icon ?: React.ReactNode,
@@ -14,7 +13,10 @@ interface IButton {
     onPress ?: () => void
 }
 
-const IwtButton = ({tw,containerStyle,icon,svg,title,titleStyle,onPress} :IButton) => {
+
+
+
+const IwtButton = ({containerStyle,icon,svg,title,titleStyle,onPress} :IButton) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={.5} style={[tw`bg-[#003CFF] py-4 px-3 flex-row justify-center gap-3 rounded-2xl shadow-md w-36`,containerStyle]}>
     {
