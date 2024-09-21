@@ -1,10 +1,10 @@
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import {
-    IconBell,
-    IconBellWithDot,
-    IconClose,
-    IconSearch,
-    IconVThreeDots,
+  IconBell,
+  IconBellWithDot,
+  IconClose,
+  IconSearch,
+  IconVThreeDots,
 } from '../../icons/icons';
 
 import React from 'react';
@@ -25,10 +25,11 @@ interface ILogoWithHeader extends NavigProps<null> {
     offProduct ?: boolean;
     offPeople ?: boolean;
   };
-  offMenu ?: boolean
+  offMenu ?: boolean,
+  onFinish  ?: () => void
 }
 
-const LogoWithHeader = ({navigation, onPressMenu,searchOffItem,offMenu}: ILogoWithHeader) => {
+const LogoWithHeader = ({navigation, onPressMenu,searchOffItem,offMenu,onFinish}: ILogoWithHeader) => {
   const [searchVisible, setSearchVisible] = React.useState(false);
 
   return (
@@ -73,12 +74,14 @@ const LogoWithHeader = ({navigation, onPressMenu,searchOffItem,offMenu}: ILogoWi
             <SvgXml xml={IconClose} />
           </TouchableOpacity>
           <InputText
-            containerStyle={tw`w-full border-4 border-[#B3C5FF]`}
+            containerStyle={tw`w-full border-2 border-transparent bg-color-Black50 `}
             placeholder="Search"
             onChangeText={text => {}}
+            focusSTyle={tw`border-[#B3C5FF] border-2`}
             returnKeyType="done" // you can set returnKeyType like 'done', 'go', etc.
-            onSubmitEditing={e => {
-              console.log(e.nativeEvent.text);
+            onSubmitEditing={() => {
+              onFinish && onFinish()
+              setSearchVisible(!searchVisible);
             }}
             svgFirstIcon={IconSearch}
           />

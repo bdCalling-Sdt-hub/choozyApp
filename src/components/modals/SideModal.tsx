@@ -1,17 +1,37 @@
-import { Text, View } from 'react-native'
+import {Dialog, PanningProvider} from 'react-native-ui-lib';
 
-import React from 'react'
+import React from 'react';
+import {View} from 'react-native';
+import tw from '../../lib/tailwind';
 
-interface SideModalProps{
-    onPress ?: () => void
+interface SideModalProps {
+  visible?: boolean;
+  setVisible?: React.Dispatch<React.SetStateAction<boolean>>;
+  layerContainerStyle?: any;
+  containerStyle?: any;
+  children?: React.ReactNode;
 }
 
-const SideModal = () => {
+const SideModal = ({
+  children,
+  containerStyle,
+  layerContainerStyle,
+  setVisible,
+  visible,
+}: SideModalProps) => {
   return (
-    <View>
-      <Text>SideModal</Text>
-    </View>
-  )
-}
+    <Dialog
+      width={'100%'}
+      visible={visible || false}
+      bottom={true}
+      onDismiss={() => setVisible && setVisible(false)}
+      panDirection={PanningProvider.Directions.DOWN}>
+      <View style={[tw`bg-white rounded-t-2xl`, containerStyle]}>
+        <View style={tw`h-1 bg-gray-300 my-2 w-20 rounded-full self-center`} />
+        {children}
+      </View>
+    </Dialog>
+  );
+};
 
-export default SideModal
+export default SideModal;

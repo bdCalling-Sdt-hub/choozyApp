@@ -8,6 +8,7 @@ import tw from '../../lib/tailwind';
 interface BackButtonProps {
   onPress?: () => void;
   titleStyle?: any;
+  title ?: any,
   containerStyle?: any;
   ComponentBtn?: React.ReactNode;
 }
@@ -17,6 +18,7 @@ const BackWithComponent = ({
   containerStyle,
   titleStyle,
   ComponentBtn,
+  title
 }: BackButtonProps) => {
   return (
     <View
@@ -34,7 +36,10 @@ const BackWithComponent = ({
             tw`text-color-Black900 font-NunitoSansBold text-[16px]`,
             titleStyle,
           ]}>
-          Back
+            {
+              title ?title : "Back"
+            }
+          
         </Text>
       </TouchableOpacity>
       {ComponentBtn && ComponentBtn}

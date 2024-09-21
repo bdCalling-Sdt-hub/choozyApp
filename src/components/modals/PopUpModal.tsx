@@ -1,7 +1,14 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import {
+  Dimensions,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-import { Modal } from 'react-native-ui-lib';
+import {Modal} from 'react-native-ui-lib';
+import tw from '../../lib/tailwind';
 
 // import LottieView from 'lottie-react-native';
 
@@ -16,10 +23,16 @@ export interface PopUpModalRef {
 // Define the component's props type
 interface PopUpModalProps {
   title?: string;
+  titleStyle?: any;
   icon?: JSX.Element;
   lottify?: string;
+  iconComponent?: JSX.Element;
+  onPress?: () => void;
+  svgIcon?: any;
   content?: string;
-  buttonColor?: string;
+  contentStyle?: any;
+  buttonStyle?: any;
+  buttonTextStyle?: any;
   buttonText?: string;
   fullWidth?: boolean;
   fullHeight?: boolean;
@@ -56,8 +69,8 @@ const PopUpModal = forwardRef<PopUpModalRef, PopUpModalProps>(
           onPress={() => {
             setVisible(false);
           }}
-          style={styles.modalContainer}>
-          <View style={styles.modalContent}>
+          style={tw`flex-1 justify-center items-center`}>
+          <View style={tw`bg-white w-[92%] p-8 rounded-3xl gap-6`}>
             {modalContent?.icon && <View>{modalContent?.icon}</View>}
             {/* {modalContent?.lottify && (
               <View>
@@ -72,81 +85,57 @@ const PopUpModal = forwardRef<PopUpModalRef, PopUpModalProps>(
                 />
               </View>
             )} */}
+            {modalContent?.iconComponent && (
+              <View style={tw`justify-center items-center`}>
+                {modalContent?.iconComponent}
+              </View>
+            )}
+            {modalContent?.svgIcon && (
+              <View style={tw`justify-center items-center`}>
+                {modalContent?.svgIcon}
+              </View>
+            )}
             {modalContent?.title && (
-              <Text style={styles.modalTitle}>{modalContent.title}</Text>
+              <Text
+                style={[
+                  tw`text-center text-color-Black900 text-[24px] font-bold`,
+                  modalContent.titleStyle,
+                ]}>
+                {modalContent.title}
+              </Text>
             )}
             {modalContent?.content && (
-              <Text style={styles.modalText}>{modalContent.content}</Text>
-            )}
-            {/* <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                onPress={() => setVisible(false)}
+              <Text
                 style={[
-                  styles.button,
-                  { backgroundColor: modalContent?.buttonColor  },
-                ]}
-              >
-                <Text style={styles.buttonText}>
+                  tw`text-center font-normal text-[16px] text-[#34303E]`,
+                  modalContent.contentStyle,
+                ]}>
+                {modalContent.content}
+              </Text>
+            )}
+            <View
+              style={[
+                tw`bg-green-600 justify-center items-center p-3 rounded-xl`,
+                modalContent?.buttonStyle,
+              ]}>
+              <TouchableOpacity
+                style={tw`w-full justify-center items-center`}
+                activeOpacity={0.5}
+                onPress={modalContent?.onPress}>
+                <Text
+                  style={[
+                    tw`text-white font-bold`,
+                    modalContent?.buttonTextStyle,
+                  ]}>
                   {modalContent?.buttonText || 'Okay'}
                 </Text>
               </TouchableOpacity>
-            </View> */}
+            </View>
           </View>
         </Pressable>
       </Modal>
     );
   },
 );
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-
-    justifyContent: 'center', // Center vertically
-    alignItems: 'center', // Center horizontally
-    backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent background
-  },
-  modalContent: {
-    minHeight: height * 0.15,
-    width: width * 0.8, // Width is 80% of the screen width
-    padding: 20,
-    gap: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center', // Center content horizontally
-  },
-  modalTitle: {
-    fontSize: 18,
-
-    textAlign: 'center',
-    color: 'gray',
-    // marginTop: 10,
-  },
-  modalText: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20,
-    // marginTop: 20,
-  },
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 100,
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: 'white',
-
-    textAlign: 'center',
-    fontSize: 15,
-    fontWeight: '400',
-  },
-});
 
 export default PopUpModal;

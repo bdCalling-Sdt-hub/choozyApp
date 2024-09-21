@@ -3,8 +3,8 @@ const plugin = require('tailwindcss/plugin');
 module.exports = {
   theme: {
     screens: {
-      sm: '380px',
-      md: '520px',
+      sm: '300px',
+      md: '400px',
       lg: '880px',
       tablet: '1024px',
     },
@@ -40,18 +40,23 @@ module.exports = {
         NunitoSansRegular: 'NunitoSansRegular',
         NunitoSansSemiBold: 'NunitoSansSemiBold',
       },
-      
+
       colors: {
-        text14 : "14px",
-        text16 : "16px",
+        text14: '14px',
+        text16: '16px',
         primary: '#4964C6',
+        primary50: '#F2F5FC',
         primary600: '#4964C6',
-        primary500 : "#5E7FD3",
-        Primary900 : "#323D76",
+        primary500: '#5E7FD3',
+        Primary900: '#323D76',
         secondary: '#454545',
+        success600: '#28A745',
+        Warning500: '#FFC107',
         base: '#f6f6f6',
-        Danger600 : "#DC3545",
+        danger600: '#DC3545',
+        danger50: '#FEF2F2',
         color: {
+          Black50: '#F6F6F6',
           Black400: '#888888',
           Black500: '#5D5D5D',
           Black600: '#5D5D5D',

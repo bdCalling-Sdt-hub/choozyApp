@@ -1,0 +1,170 @@
+[
+    {
+      "name": "John Doe",
+      "callType": "missed",
+      "callMethod": "audio",
+      "date": "September 20",
+      "time": "2:30 PM",
+      "image": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    {
+      "name": "Emily Johnson",
+      "callType": "incoming",
+      "callMethod": "video",
+      "times": 3,
+      "date": "September 19",
+      "time": "4:15 PM",
+      "image": "https://randomuser.me/api/portraits/women/2.jpg"
+    },
+    {
+      "name": "Michael Smith",
+      "callType": "outgoing",
+      "callMethod": "audio",
+      "date": "September 18",
+      "time": "9:45 AM",
+      "image": "https://randomuser.me/api/portraits/men/3.jpg"
+    },
+    {
+      "name": "Sarah Williams",
+      "callType": "missed",
+      "callMethod": "video",
+      "date": "September 17",
+      "time": "11:00 AM",
+      "image": "https://randomuser.me/api/portraits/women/4.jpg"
+    },
+    {
+      "name": "David Brown",
+      "callType": "incoming",
+      "callMethod": "audio",
+      "times": 1,
+      "date": "September 16",
+      "time": "3:30 PM",
+      "image": "https://randomuser.me/api/portraits/men/5.jpg"
+    },
+    {
+      "name": "Olivia Davis",
+      "callType": "outgoing",
+      "callMethod": "video",
+      "date": "September 15",
+      "time": "8:10 AM",
+      "image": "https://randomuser.me/api/portraits/women/6.jpg"
+    },
+    {
+      "name": "James Garcia",
+      "callType": "missed",
+      "callMethod": "audio",
+      "date": "September 14",
+      "time": "6:45 PM",
+      "image": "https://randomuser.me/api/portraits/men/7.jpg"
+    },
+    {
+      "name": "Sophia Martinez",
+      "callType": "incoming",
+      "callMethod": "video",
+      "times": 2,
+      "date": "September 13",
+      "time": "12:25 PM",
+      "image": "https://randomuser.me/api/portraits/women/8.jpg"
+    },
+    {
+      "name": "Henry Miller",
+      "callType": "outgoing",
+      "callMethod": "audio",
+      "date": "September 12",
+      "time": "5:55 PM",
+      "image": "https://randomuser.me/api/portraits/men/9.jpg"
+    },
+    {
+      "name": "Ava Anderson",
+      "callType": "missed",
+      "callMethod": "video",
+      "date": "September 11",
+      "time": "10:20 AM",
+      "image": "https://randomuser.me/api/portraits/women/10.jpg"
+    },
+    {
+      "name": "Lucas Wilson",
+      "callType": "incoming",
+      "callMethod": "audio",
+      "times": 1,
+      "date": "September 10",
+      "time": "4:40 PM",
+      "image": "https://randomuser.me/api/portraits/men/11.jpg"
+    },
+    {
+      "name": "Mia Robinson",
+      "callType": "outgoing",
+      "callMethod": "video",
+      "date": "September 9",
+      "time": "1:15 PM",
+      "image": "https://randomuser.me/api/portraits/women/12.jpg"
+    },
+    {
+      "name": "William Johnson",
+      "callType": "missed",
+      "callMethod": "audio",
+      "date": "September 8",
+      "time": "7:50 PM",
+      "image": "https://randomuser.me/api/portraits/men/13.jpg"
+    },
+    {
+      "name": "Isabella Walker",
+      "callType": "incoming",
+      "callMethod": "video",
+      "times": 2,
+      "date": "September 7",
+      "time": "2:05 PM",
+      "image": "https://randomuser.me/api/portraits/women/14.jpg"
+    },
+    {
+      "name": "Benjamin Lee",
+      "callType": "outgoing",
+      "callMethod": "audio",
+      "date": "September 6",
+      "time": "11:00 AM",
+      "image": "https://randomuser.me/api/portraits/men/15.jpg"
+    },
+    {
+      "name": "Charlotte Young",
+      "callType": "missed",
+      "callMethod": "video",
+      "date": "September 5",
+      "time": "9:30 AM",
+      "image": "https://randomuser.me/api/portraits/women/16.jpg"
+    },
+    {
+      "name": "Noah Harris",
+      "callType": "incoming",
+      "callMethod": "audio",
+      "times": 1,
+      "date": "September 4",
+      "time": "6:20 PM",
+      "image": "https://randomuser.me/api/portraits/men/17.jpg"
+    },
+    {
+      "name": "Amelia Martin",
+      "callType": "outgoing",
+      "callMethod": "video",
+      "date": "September 3",
+      "time": "12:45 PM",
+      "image": "https://randomuser.me/api/portraits/women/18.jpg"
+    },
+    {
+      "name": "Ethan Clark",
+      "callType": "missed",
+      "callMethod": "audio",
+      "date": "September 2",
+      "time": "4:10 PM",
+      "image": "https://randomuser.me/api/portraits/men/19.jpg"
+    },
+    {
+      "name": "Grace King",
+      "callType": "incoming",
+      "callMethod": "video",
+      "times": 3,
+      "date": "September 1",
+      "time": "8:35 AM",
+      "image": "https://randomuser.me/api/portraits/women/20.jpg"
+    }
+  ]
+  

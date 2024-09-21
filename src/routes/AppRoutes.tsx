@@ -2,22 +2,27 @@
 
 import * as React from 'react';
 
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useDeviceContext } from 'twrnc';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {useDeviceContext} from 'twrnc';
 import tw from '../lib/tailwind';
 import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
 import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
 import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
 import NotificationScreen from '../screens/notificaiton/NotificationScreen';
+import SearchScreen from '../screens/search/SearchScreen';
+import LoveStoreScreen from '../screens/store/LoveStoreScreen';
+import TransactionsHistory from '../screens/wallet/TransactionsHistory';
+import WalletScreen from '../screens/wallet/WalletScreen';
 import BottomRoutes from './BottomRoutes';
+import CustomDrawer from './DrawerRoutes';
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
     </View>
   );
@@ -28,8 +33,9 @@ function AppRoutes() {
   useDeviceContext(tw);
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         {/*=================== logins part ======================= */}
+        {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
         {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
         {/* 
         <Stack.Screen name="Login" component={LoginScreen} />
@@ -39,7 +45,7 @@ function AppRoutes() {
         <Stack.Screen name="CreateNewPassword" component={CreateNewPassword} />
         <Stack.Screen name="VerifySuccess" component={VerifySuccess} /> */}
 
-      {/*===================== Home / Bottom routes ================ */}
+        {/*===================== Home / Bottom routes ================ */}
 
         <Stack.Screen name="HomeRoutes" component={BottomRoutes} />
 
@@ -49,7 +55,14 @@ function AppRoutes() {
         <Stack.Screen name="SingleMessage" component={SingleMessageScreen} />
         <Stack.Screen name="GroupMessage" component={GroupMessageScreen} />
         <Stack.Screen name="GroupMembers" component={GroupMembers} />
-
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="Wallet" component={WalletScreen} />
+        <Stack.Screen
+          name="TransactionHistory"
+          component={TransactionsHistory}
+        />
+        <Stack.Screen name="LoveStore" component={LoveStoreScreen} />
+        <Stack.Screen name="DrawerRoutes" component={CustomDrawer} />
       </Stack.Navigator>
     </NavigationContainer>
   );
