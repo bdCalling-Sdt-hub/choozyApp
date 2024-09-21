@@ -15,6 +15,14 @@ const StatusScreen = ({navigation} : NavigProps<null>) => {
       <View style={tw`bg-white shadow-md`}>
         <LogoWithHeader
           offMenu
+          searchOffItem={{
+            offPeople : true,
+            offPost : true,
+            offProduct : true
+          }}
+          onFinish={() => {
+            navigation?.navigate("Search")
+          }}
          navigation={navigation}
         />
       </View>

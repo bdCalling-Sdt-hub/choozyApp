@@ -1,41 +1,44 @@
-import React, { Suspense } from 'react';
+import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   StatusBar,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import ActionModal from '../../components/modals/ActionModal';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 // import Contacts from './components/Contacts';
 
 // import GroupsSection from './components/GroupsSection';
 
-// lazy load 
-const Contacts = React.lazy(() => import('./components/Contacts'))
-const GroupsSection = React.lazy(() => import('./components/GroupsSection'))
-
+// lazy load
+const Contacts = React.lazy(() => import('./components/Contacts'));
+const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
-  const [actionModalOpen,setActionModalOpen] = React.useState(false)
+  const [actionModalOpen, setActionModalOpen] = React.useState(false);
 
   // console.log(JSON.stringify(MessagesData, null, 2));
   const [options, setOptions] = React.useState<'contacts' | 'groups'>(
     'contacts',
   );
 
-
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <LogoWithHeader searchOffItem={{
-        offPost : true , offProduct : true
-      }} onPressMenu={()=> setActionModalOpen(!actionModalOpen)} navigation={navigation}  />
+      <LogoWithHeader
+        searchOffItem={{
+          offPost: true,
+          offProduct: true,
+        }}
+        onPressMenu={() => setActionModalOpen(!actionModalOpen)}
+        navigation={navigation}
+      />
 
       {/*================= options here =================== */}
       <View style={tw`flex-row items-center gap-1 px-[4%] py-2`}>
@@ -74,42 +77,61 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
       {/*================= messages list/card here =================== */}
       {options == 'contacts' ? (
         <>
-        <Suspense fallback={<View style={tw`flex-1`}><ActivityIndicator color="#4964C6" /></View>}>
-         <Contacts navigation={navigation} />
-        </Suspense>
+          <Suspense
+            fallback={
+              <View style={tw`flex-1`}>
+                <ActivityIndicator color="#4964C6" />
+              </View>
+            }>
+            <Contacts navigation={navigation} />
+          </Suspense>
         </>
       ) : (
-        <Suspense fallback={<View style={tw`flex-1`}><ActivityIndicator color="#4964C6" /></View>}>
-            <GroupsSection navigation={navigation} />
+        <Suspense
+          fallback={
+            <View style={tw`flex-1`}>
+              <ActivityIndicator color="#4964C6" />
+            </View>
+          }>
+          <GroupsSection navigation={navigation} />
         </Suspense>
       )}
 
-      <ActionModal visible={actionModalOpen} setVisible={setActionModalOpen} actionData={[
-         
+      <ActionModal
+        visible={actionModalOpen}
+        setVisible={setActionModalOpen}
+        actionData={[
           {
             title: 'My Wallet',
-            onPress: () => {},
+            onPress: () => {
+              navigation?.navigate('Wallet');
+            },
           },
           {
             title: 'My Status',
-            onPress: () => {},
+            onPress: () => {
+              navigation?.navigate('DrawerRoutes');
+            },
           },
           {
             title: 'My Wall',
-            onPress: () => {},
+            onPress: () => {
+              navigation?.navigate('DrawerRoutes');
+            },
           },
           {
             title: 'My Stores',
-            onPress: () => {},
+            onPress: () => {
+              navigation?.navigate('DrawerRoutes');
+            },
           },
           {
             title: 'Favs',
             onPress: () => {},
           },
-        
-      ]} />
+        ]}
+      />
 
-     
       <StatusBar barStyle="dark-content" backgroundColor="white" />
     </View>
   );

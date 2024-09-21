@@ -1,71 +1,82 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
-import { IconCallBlue, IconSearch, IconVideo } from '../../icons/icons'
+import { FlatList, Text, View } from 'react-native';
+import {
+  IconCallBlue,
+  IconIncomingDownArrow,
+  IconIncomingUpArrow,
+  IconSearch,
+  IconVideo,
+} from '../../icons/icons';
 
-import React from 'react'
-import { SvgXml } from 'react-native-svg'
-import friends from '../../assets/database/friends.json'
-import MessageCard from '../../components/cards/MessageCard'
-import InputText from '../../components/inputs/InputText'
-import { NavigProps } from '../../interfaces/NaviProps'
-import tw from '../../lib/tailwind'
+import React from 'react';
+import FastImage from 'react-native-fast-image';
+import { SvgXml } from 'react-native-svg';
+import call from '../../assets/database/call.json';
+import InputText from '../../components/inputs/InputText';
+import { NavigProps } from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
 
-const CallsScreen = ({navigation} : NavigProps<null>) => {
-  
+const CallsScreen = ({navigation}: NavigProps<null>) => {
   return (
     <View style={tw`flex-1 bg-base`}>
       {/*================== header part ================= */}
-    <View style={tw`bg-white px-[4%] py-2`}>
-      <View style={tw` gap-3  flex-row justify-center items-center`}>
-        <Text style={tw`text-2xl text-Primary900 font-NunitoSansExtraBold`}>Calls</Text>
-        <View style={tw` h-14 flex-1 ` }>
-            <InputText
-              placeholder="Search.."
-              svgSecondIcon={IconSearch}
-            />
-            </View>
-            
+      <View style={tw`bg-white px-[4%] py-2`}>
+        <View style={tw` gap-3  flex-row justify-center items-center`}>
+          <Text style={tw`text-2xl text-Primary900 font-NunitoSansExtraBold`}>
+            Calls
+          </Text>
+          <View style={tw` h-14 flex-1 `}>
+            <InputText placeholder="Search.." svgSecondIcon={IconSearch} />
+          </View>
+        </View>
       </View>
-    
-    </View>
 
-    <FlatList
+      <FlatList
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`pb-6 bg-white gap-2 px-[2%]`}
-        data={friends.slice(0, 30)}
+        contentContainerStyle={tw`pb-6 bg-white gap-5 px-[4%] py-3`}
+        data={call}
         renderItem={({item, index}) => (
           <>
-            <MessageCard
-            disabled
-            //   onPress={() => navigation?.navigate('Message')}
-              offPartThree
-              titleContainerStyle={tw`gap-1`}
-              joinBtn
-              subTitleStyle={tw`text-color-Black500`}
-              titleStyle={tw`text-[#1D1929] text-[14px]`}
-              item={{
-                image: item.avatar,
-                name: item.name,
-                lastMessage : "1 month ago"  
-              }}
-              Component={
-              
-                 <View style={tw`flex-row-reverse`}>
-                  <TouchableOpacity  style={tw`px-3`} activeOpacity={0.5}>
-                    <SvgXml height={23} width={23} xml={IconVideo} fill={"#4964C6"} />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={tw`px-3`}  activeOpacity={0.5}>
-                    <SvgXml height={18} width={18} xml={IconCallBlue} fill={"#4964C6"} />
-                  </TouchableOpacity>
-        
+            <View>
+              <View style={tw`flex-row justify-between items-center`}>
+                <View style={tw`flex-row items-center gap-3`}>
+                  <FastImage
+                    source={{uri: item.image}}
+                    style={tw`w-12 h-12 rounded-2xl`}
+                    resizeMode={FastImage.resizeMode.contain}
+                  />
+                  <View style={tw`gap-1`}>
+                    <Text
+                      style={tw`text-text16 font-NunitoSansBold ${item.callType === "incoming" ? "text-red-500" : "text-color-Black600"}`}>
+                      {item.name} 
+                    </Text>
+                    <View style={tw`flex-row items-center gap-1`}>
+                      <SvgXml
+                        height={8}
+                        width={8}
+                        xml={item.callType === "incoming" ? IconIncomingDownArrow : IconIncomingUpArrow}
+                      />
+                      <Text
+                        style={tw`text-color-Black600 font-NunitoSansRegular text-xs`}>
+                        {item.date} , {item.time}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              }
-            />
+                <View style={tw`px-4`}>
+                  <SvgXml
+                    // fill={"#4964C6"}
+                    xml={item.callMethod === 'audio' ? IconCallBlue : IconVideo}
+                    width={item.callMethod === 'audio' ? 20 : 23}
+                    height={item.callMethod === 'audio' ? 20 : 23}
+                  />
+                </View>
+              </View>
+            </View>
           </>
         )}
       />
-  
     </View>
-  )
-}
+  );
+};
 
-export default CallsScreen
+export default CallsScreen;
