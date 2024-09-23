@@ -1,0 +1,195 @@
+[
+  {
+    "id": 1,
+    "productCode": "WA129847",
+    "name": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+    "category": "men's clothing",
+    "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+    "price": 109.95,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
+  },
+
+  {
+    "id": 5,
+    "productCode": "WA987654",
+    "name": "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+    "category": "jewelery",
+    "description": "From our Legends Collection, the Naga was inspired by the mythical water dragon that protects the ocean's pearl.",
+    "price": 695,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg"
+  },
+  {
+    "id": 6,
+    "productCode": "WA369258",
+    "name": "Solid Gold Petite Micropave ",
+    "category": "jewelery",
+    "description": "Satisfaction Guaranteed. Return or exchange any order within 30 days.",
+    "price": 168,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg"
+  },
+  {
+    "id": 7,
+    "productCode": "WA478965",
+    "name": "White Gold Plated Princess",
+    "category": "jewelery",
+    "description": "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her.",
+    "price": 9.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg"
+  },
+
+  {
+    "id": 9,
+    "productCode": "WA125489",
+    "name": "WD 2TB Elements Portable External Hard Drive - USB 3.0 ",
+    "category": "electronics",
+    "description": "USB 3.0 and USB 2.0 Compatibility Fast data transfers Improve PC Performance High Capacity.",
+    "price": 64,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg"
+  },
+  {
+    "id": 10,
+    "productCode": "WA587412",
+    "name": "SanDisk SSD PLUS 1TB Internal SSD - SATA III 6 Gb/s",
+    "category": "electronics",
+    "description": "Easy upgrade for faster boot up, shutdown, application load and response.",
+    "price": 109,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg"
+  },
+
+  {
+    "id": 13,
+    "productCode": "WA745612",
+    "name": "Acer SB220Q bi 21.5 inches Full HD (1920 x 1080) IPS Ultra-Thin",
+    "category": "electronics",
+    "description": "21. 5 inches Full HD (1920 x 1080) widescreen IPS display.",
+    "price": 599,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg"
+  },
+  {
+    "id": 14,
+    "productCode": "WA695812",
+    "name": "Samsung 49-Inch CHG90 144Hz Curved Gaming Monitor",
+    "category": "electronics",
+    "description": "49 INCH SUPER ULTRAWIDE 32:9 CURVED GAMING MONITOR.",
+    "price": 999.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg"
+  },
+  {
+    "id": 15,
+    "productCode": "WA158796",
+    "name": "BIYLACLESEN Women's 3-in-1 Snowboard Jacket Winter Coats",
+    "category": "women's clothing",
+    "description": "Note:The Jackets is US standard size.",
+    "price": 56.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg"
+  },
+  {
+    "id": 16,
+    "productCode": "WA259476",
+    "name": "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket",
+    "category": "women's clothing",
+    "description": "100% POLYURETHANE (shell) 100% POLYESTER (lining) 75% POLYESTER.",
+    "price": 29.95,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg"
+  },
+  {
+    "id": 17,
+    "productCode": "WA198547",
+    "name": "Rain Jacket Women Windbreaker Striped Climbing Raincoats",
+    "category": "women's clothing",
+    "description": "Lightweight perfect for trip or casual wear.",
+    "price": 39.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg"
+  },
+  {
+    "id": 18,
+    "productCode": "WA286451",
+    "name": "MBJ Women's Solid Short Sleeve Boat Neck V ",
+    "category": "women's clothing",
+    "description": "95% RAYON 5% SPANDEX.",
+    "price": 9.85,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg"
+  },
+  {
+    "id": 19,
+    "productCode": "WA976321",
+    "name": "Opna Women's Short Sleeve Moisture",
+    "category": "women's clothing",
+    "description": "100% Polyester.",
+    "price": 7.95,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg"
+  },
+  {
+    "id": 20,
+    "productCode": "WA653214",
+    "name": "DANVOUY Womens T Shirt Casual Cotton Short",
+    "category": "women's clothing",
+    "description": "95%Cotton,5%Spandex.",
+    "price": 12.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg"
+  },
+  {
+    "id": 21,
+    "productCode": "WA874621",
+    "name": "Toshiba Canvio Basics 1TB Portable External Hard Drive USB 3.0",
+    "category": "electronics",
+    "description": "The perfect external storage solution for your digital files. Store and access files securely.",
+    "price": 49.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg"
+  },
+  {
+    "id": 22,
+    "productCode": "WA238957",
+    "name": "SanDisk SSD PLUS 1TB Internal SSD - SATA III 6 Gb/s",
+    "category": "electronics",
+    "description": "Easy upgrade for faster boot-up, shutdown, application load and response.",
+    "price": 109.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg"
+  },
+  {
+    "id": 23,
+    "productCode": "WA349127",
+    "name": "WD 4TB Gaming Drive Works with Playstation 4 Portable External Hard Drive",
+    "category": "electronics",
+    "description": "Expand your PS4 gaming experience, Play anywhere.",
+    "price": 114.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/61mtL65D4cL._AC_SX679_.jpg"
+  },
+  {
+    "id": 24,
+    "productCode": "WA923741",
+    "name": "Acer Aspire 5 Slim Laptop",
+    "category": "electronics",
+    "description": "15.6 inches Full HD IPS Display, AMD Ryzen 3 3200U, Vega 3 Graphics, 4GB DDR4, 128GB SSD.",
+    "price": 364.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg"
+  },
+  {
+    "id": 25,
+    "productCode": "WA548172",
+    "name": "Samsung 49-Inch CHG90 144Hz Curved Gaming Monitor",
+    "category": "electronics",
+    "description": "49 INCH SUPER ULTRAWIDE 32:9 CURVED GAMING MONITOR with dual 27 inch screen side by side.",
+    "price": 999.99,
+    "currency": "$",
+    "image_url": "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg"
+  }
+]

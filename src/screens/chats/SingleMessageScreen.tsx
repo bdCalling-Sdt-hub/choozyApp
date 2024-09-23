@@ -1,4 +1,4 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
   IconAttachment,
   IconCallBlue,
@@ -11,21 +11,21 @@ import {
 import moment from 'moment-timezone';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { SvgXml } from 'react-native-svg';
-import { Switch } from 'react-native-ui-lib';
+import {SvgXml} from 'react-native-svg';
+import {Switch} from 'react-native-ui-lib';
 import personalMessageData from '../../assets/database/personalMessage.json';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
 import InputText from '../../components/inputs/InputText';
 import ActionModal from '../../components/modals/ActionModal';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 // import messageData from '../../assets/database/message.json';
 
 const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
-  const [actionModalOpen,setActionModalOpen] = React.useState(false)
-  const [makeMute,setMakeMute] = React.useState(false)
+  const [actionModalOpen, setActionModalOpen] = React.useState(false);
+  const [makeMute, setMakeMute] = React.useState(false);
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*============= header =============== */}
@@ -41,9 +41,12 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
               <TouchableOpacity style={tw`px-3`} activeOpacity={0.5}>
                 <SvgXml xml={IconCallBlue} />
               </TouchableOpacity>
-              <TouchableOpacity onPress={()=>{
-                setActionModalOpen(!actionModalOpen)
-              }} style={tw`px-3`} activeOpacity={0.5}>
+              <TouchableOpacity
+                onPress={() => {
+                  setActionModalOpen(!actionModalOpen);
+                }}
+                style={tw`px-3`}
+                activeOpacity={0.5}>
                 <SvgXml xml={IconVThreeDots} />
               </TouchableOpacity>
             </View>
@@ -106,7 +109,7 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`bg-primary500  p-3 rounded-lg  self-end rounded-tr-none`}>
                           <Text
-                            style={tw`text-white text-[16px] font-NunitoSansRegular`}>
+                            style={tw`text-white text-lg font-NunitoSansRegular`}>
                             {item.message}
                           </Text>
                         </View>
@@ -152,22 +155,22 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
                           <View
                             style={tw`bg-gray-100 p-3 rounded-lg  rounded-tl-none`}>
                             <Text
-                              style={tw`text-color-Black1000 text-[16px] font-NunitoSansRegular`}>
+                              style={tw`text-color-Black1000 text-lg font-NunitoSansRegular`}>
                               {item.message}
                             </Text>
                           </View>
                         )}
                         {item.image && (
-                        <View style={tw`items-start `}>
-                          <FastImage
-                            source={{
-                              uri: item.image,
-                            }}
-                            style={tw`h-32 w-60 rounded-xl`}
-                            resizeMode={FastImage.resizeMode.cover}
-                          />
-                        </View>
-                      )}
+                          <View style={tw`items-start `}>
+                            <FastImage
+                              source={{
+                                uri: item.image,
+                              }}
+                              style={tw`h-32 w-60 rounded-xl`}
+                              resizeMode={FastImage.resizeMode.cover}
+                            />
+                          </View>
+                        )}
                       </View>
                     </View>
                   </>
@@ -198,22 +201,32 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
         />
       </View>
 
-      <ActionModal containerStyle={tw`top-[6%] right-[2%]`} visible={actionModalOpen} setVisible={setActionModalOpen} actionData={[
-         {
-           title: 'Mute Notification',
-          //  onPress: () => {},
-          enableBoth : true,
-           customComponent : <Switch offColor={"#E8E8EA"} onColor={"#4964C6"} value={makeMute} onValueChange={(value)=>setMakeMute(value)} />
-         },
-         {
-           title: 'Leave',
-           titleStyle : tw`text-red-500`,
-           onPress: () => {},
-         },
-       
-       
-     ]} />
+      <ActionModal
+        containerStyle={tw`top-[6%] right-[2%]`}
+        visible={actionModalOpen}
+        setVisible={setActionModalOpen}
+        actionData={[
+          {
+            title: 'Mute Notification',
+            //  onPress: () => {},
+            enableBoth: true,
+            customComponent: (
+              <Switch
+                offColor={'#E8E8EA'}
+                onColor={'#4964C6'}
+                value={makeMute}
+                onValueChange={value => setMakeMute(value)}
+              />
+            ),
+          },
+          {
+            title: 'Leave',
+            titleStyle: tw`text-red-500`,
 
+            onPress: () => {},
+          },
+        ]}
+      />
     </View>
   );
 };

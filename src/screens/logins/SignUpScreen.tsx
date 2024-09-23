@@ -1,30 +1,30 @@
 import {
-    ScrollView,
-    StatusBar,
-    Text,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {
-    IconCloseEye,
-    IconEmail,
-    IconFacebook,
-    IconGoogle,
-    IconLocation,
-    IconOpenEye,
-    IconPassword,
-    IconUser,
+  IconCloseEye,
+  IconEmail,
+  IconFacebook,
+  IconGoogle,
+  IconLocation,
+  IconOpenEye,
+  IconPassword,
+  IconUser,
 } from '../../icons/icons';
 
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { Checkbox } from 'react-native-ui-lib';
+import {Checkbox} from 'react-native-ui-lib';
 import IwtButton from '../../components/buttons/IwtButton';
 import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 interface ISingUpForm {
@@ -185,9 +185,8 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
                 </TouchableOpacity>
                 <TButton
                   onPress={handleSubmit}
-                  
                   title="Log in"
-                  containerStyle={tw`w-full mb-5 mt-3 bg-primary text-[16px] `}
+                  containerStyle={tw`w-full mb-5 mt-3 bg-primary text-lg `}
                   titleStyle={tw`text-white font-NunitoSansSemiBold`}
                 />
               </View>
@@ -197,16 +196,14 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
 
         {/*================ all buttons =================== */}
         <View style={tw`px-[4%] gap-6`}>
-          <Or  />
+          <Or />
 
           <IwtButton
-            
             containerStyle={tw`w-full bg-[#1877F2]`}
             title="Continue with Facebook"
             svg={IconFacebook}
           />
           <IwtButton
-            
             containerStyle={tw`w-full bg-[#FFFFFF]`}
             title="Continue with  Google"
             titleStyle={tw`text-color-Black800 font-NunitoSansBold`}

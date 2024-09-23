@@ -5,9 +5,11 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import postData from '../../../assets/database/post.json';
+import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 
-const Post = () => {
+interface PostProps extends NavigProps<null> {}
+const Post = ({navigation}: PostProps) => {
   return (
     <>
       {postData?.posts.map((item, index) => (

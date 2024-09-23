@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 import moment from 'moment-timezone';
 import React from 'react';
@@ -7,11 +7,11 @@ import tw from '../../lib/tailwind';
 
 interface MessageCardProps {
   item: {
-    image ?: string;
-    name ?: string;
-    lastMessage ?: string;
-    unreadCount ?: number;
-    time ?: string;
+    image?: string;
+    name?: string;
+    lastMessage?: string;
+    unreadCount?: number;
+    time?: string;
   };
   onPress?: () => void;
   joinBtn?: boolean;
@@ -22,11 +22,11 @@ interface MessageCardProps {
   subTitleStyle?: any;
   containerStyle?: any;
   titleContainerStyle?: any;
-  Component ?: React.ReactNode;
-  disabled ?: boolean
+  Component?: React.ReactNode;
+  disabled?: boolean;
 }
 
-// three part are divided 1= is image part 2= is name and title part 3= is icons and options part 
+// three part are divided 1= is image part 2= is name and title part 3= is icons and options part
 const MessageCard = ({
   item,
   onPress,
@@ -39,11 +39,11 @@ const MessageCard = ({
   offPartTow,
   offPartThree,
   Component,
-  disabled
+  disabled,
 }: MessageCardProps) => {
   return (
     <TouchableOpacity
-    disabled={disabled}
+      disabled={disabled}
       onPress={onPress}
       activeOpacity={0.5}
       style={[tw`flex-row items-center  gap-3 px-[4%] py-2`, containerStyle]}>
@@ -62,7 +62,7 @@ const MessageCard = ({
             <Text
               numberOfLines={1}
               style={[
-                tw`text-[#1D1929] font-NunitoSansBold text-[16px]`,
+                tw`text-[#1D1929] font-NunitoSansBold text-lg`,
                 titleStyle,
               ]}>
               {item.name}
@@ -113,7 +113,6 @@ const MessageCard = ({
               </Text>
             </>
           )}
-   
         </View>
       )}
     </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
   IconAttachment,
   IconCamera,
@@ -9,26 +9,25 @@ import {
 import moment from 'moment-timezone';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { SvgXml } from 'react-native-svg';
-import { Switch } from 'react-native-ui-lib';
+import {SvgXml} from 'react-native-svg';
+import {Switch} from 'react-native-ui-lib';
 import messageData from '../../assets/database/message.json';
 import personalMessageData from '../../assets/database/personalMessage.json';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
 import InputText from '../../components/inputs/InputText';
 import ActionModal from '../../components/modals/ActionModal';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
-  const [actionModalOpen,setActionModalOpen] = React.useState(false)
-  const [makeMute,setMakeMute] = React.useState(false)
+  const [actionModalOpen, setActionModalOpen] = React.useState(false);
+  const [makeMute, setMakeMute] = React.useState(false);
 
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*============= header =============== */}
       <View>
-
         <BackWithComponent
           onPress={() => navigation?.goBack()}
           containerStyle={tw` justify-between items-start`}
@@ -50,12 +49,8 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                 <Text>{messageData?.group?.members}</Text>
               </View>
               <TouchableOpacity
-              
                 activeOpacity={0.5}
-                onPress={() => 
-                 setActionModalOpen(!actionModalOpen)
-
-                }
+                onPress={() => setActionModalOpen(!actionModalOpen)}
                 style={tw`px-4 h-8 items-center justify-center`}>
                 <SvgXml xml={IconVThreeDotsMd} />
               </TouchableOpacity>
@@ -96,7 +91,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`bg-primary500  p-3 rounded-lg  self-end rounded-tr-none`}>
                           <Text
-                            style={tw`text-white text-[16px] font-NunitoSansRegular`}>
+                            style={tw`text-white text-lg font-NunitoSansRegular`}>
                             {item.message}
                           </Text>
                         </View>
@@ -122,7 +117,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                       {/* Avatar */}
                       <FastImage
                         source={{
-                          uri:  item.avatar,
+                          uri: item.avatar,
                         }}
                         style={tw`w-8 h-8 rounded-full mr-3`}
                       />
@@ -142,7 +137,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                           <View
                             style={tw`bg-gray-100 p-3 rounded-lg  rounded-tl-none`}>
                             <Text
-                              style={tw`text-color-Black1000 text-[16px] font-NunitoSansRegular`}>
+                              style={tw`text-color-Black1000 text-lg font-NunitoSansRegular`}>
                               {item.message}
                             </Text>
                           </View>
@@ -187,30 +182,40 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
           onPress={() => {}}
         />
       </View>
-      <ActionModal containerStyle={tw``} visible={actionModalOpen} setVisible={setActionModalOpen} actionData={[
-         {
-           title: 'Members',
-           onPress: () => {
-             setActionModalOpen(false)
-            navigation?.navigate("GroupMembers")
-           },
-         },
-         {
-           title: 'Mute Notification',
-          //  onPress: () => {},
-          enableBoth : true,
-           customComponent : <Switch offColor={"#E8E8EA"} onColor={"#4964C6"} value={makeMute} onValueChange={(value)=>setMakeMute(value)} />
-         },
-         {
-           title: 'Leave',
-           titleStyle : tw`text-red-500`,
-           onPress: () => {
-            navigation?.goBack()
-           },
-         },
-       
-       
-     ]} />
+      <ActionModal
+        containerStyle={tw``}
+        visible={actionModalOpen}
+        setVisible={setActionModalOpen}
+        actionData={[
+          {
+            title: 'Members',
+            onPress: () => {
+              setActionModalOpen(false);
+              navigation?.navigate('GroupMembers');
+            },
+          },
+          {
+            title: 'Mute Notification',
+            //  onPress: () => {},
+            enableBoth: true,
+            customComponent: (
+              <Switch
+                offColor={'#E8E8EA'}
+                onColor={'#4964C6'}
+                value={makeMute}
+                onValueChange={value => setMakeMute(value)}
+              />
+            ),
+          },
+          {
+            title: 'Leave',
+            titleStyle: tw`text-red-500`,
+            onPress: () => {
+              navigation?.goBack();
+            },
+          },
+        ]}
+      />
     </View>
   );
 };
