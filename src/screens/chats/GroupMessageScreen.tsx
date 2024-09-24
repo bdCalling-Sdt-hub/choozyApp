@@ -2,6 +2,7 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
   IconAttachment,
   IconCamera,
+  IconClose,
   IconSend,
   IconVThreeDotsMd,
 } from '../../icons/icons';
@@ -11,8 +12,8 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import {Switch} from 'react-native-ui-lib';
+import personalMessageData from '../../assets/database/groupMessage.json';
 import messageData from '../../assets/database/message.json';
-import personalMessageData from '../../assets/database/personalMessage.json';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
 import InputText from '../../components/inputs/InputText';
@@ -23,6 +24,7 @@ import tw from '../../lib/tailwind';
 const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
   const [makeMute, setMakeMute] = React.useState(false);
+  const [joinRequest, setJoinRequest] = React.useState(true);
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -62,16 +64,36 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
       </View>
       {/*================= messages ================== */}
       {/*============= floating accept join for group ========= */}
-      <View style={tw`absolute top-15 w-full px-3 z-30`}>
-        <View style={tw`bg-white w-full p-4`}>
-          <FastImage
-            style={tw`w-14 h-14 rounded-2xl`}
-            source={{
-              uri: 'https://randomuser.me/api/portraits/men/19.jpg',
-            }}
-          />
+      {joinRequest && (
+        <View style={tw`absolute top-15 w-full px-3 z-30 `}>
+          <View
+            style={tw`bg-white w-full p-4 shadow-lg flex-row justify-between rounded-2xl items-center gap-3`}>
+            <View style={tw`flex-row gap-3 items-center`}>
+              <FastImage
+                style={tw`w-12 h-12 rounded-2xl`}
+                source={{
+                  uri: 'https://randomuser.me/api/portraits/men/19.jpg',
+                }}
+              />
+              <Text
+                style={tw`text-text14 font-NunitoSansBold text-color-Black1000`}>
+                Ethan Clark
+              </Text>
+            </View>
+            <View style={tw`flex-row gap-6 items-center `}>
+              <TouchableOpacity onPress={() => setJoinRequest(false)}>
+                <Text style={tw`text-text14 font-NunitoSansBold text-primary`}>
+                  Accept
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setJoinRequest(false)}>
+                <SvgXml xml={IconClose} />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
+      )}
+
       <FlatList
         showsVerticalScrollIndicator={false}
         inverted

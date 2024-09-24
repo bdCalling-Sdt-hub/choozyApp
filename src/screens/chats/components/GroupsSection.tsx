@@ -21,13 +21,12 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false} style={tw`flex-1`}>
-        <View style={tw` mt-6 relative`}>
+        <View style={tw` mt-2 relative`}>
           {/*======================== search input  ==========================*/}
           <View style={tw`px-[4%]`}>
             <InputText
               placeholder="Search for group"
               svgSecondIcon={IconSearch}
-              floatingPlaceholder
             />
           </View>
           {/*============================= view group =======================  */}

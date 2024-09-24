@@ -90,24 +90,10 @@
       "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
       "isCurrentUser": false
     },
-
-    {
-      "sender": "Karla Blair",
-      "timestamp": "2024-09-18T11:20:00",
-      "offer": true,
-      "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
-      "isCurrentUser": false
-    },
     {
       "sender": "You",
       "timestamp": "2024-09-18T11:20:00",
       "message": "By the way, can you also trim the ends for a healthier look?",
-      "isCurrentUser": true
-    },
-    {
-      "sender": "You",
-      "timestamp": "2024-09-18T11:22:00",
-      "offer": true,
       "isCurrentUser": true
     }
   ]

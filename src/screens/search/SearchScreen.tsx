@@ -52,7 +52,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
           /> */}
       </View>
       {/* ====================== filters icons ==================== */}
-      <View style={tw`flex-row items-center gap-3 px-[4%] `}>
+      <View style={tw`flex-row items-center gap-3 px-[4%] pb-2`}>
         <SimpleButton
           onPress={() => {
             setOption('All');
@@ -128,7 +128,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
               renderItem={({item, index}) => (
                 <ProductCard
                   onPress={() => {
-                    navigation?.navigate('MyProductDetails', {item: item});
+                    navigation?.navigate('ProductDetails', {item: item});
                   }}
                   key={index}
                   item={item}
@@ -146,7 +146,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
                   key={index}
                   item={item}
                   onPress={() => {
-                    navigation?.navigate('MyProductDetails', {item: item});
+                    navigation?.navigate('ProductDetails', {item: item});
                   }}
                 />
               ))}
@@ -159,7 +159,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
               <React.Fragment key={index}>
                 <MessageCard
                   disabled
-                  //   onPress={() => navigation?.navigate('Message')}
+                  onPress={() => navigation?.navigate('Message')}
                   offPartThree
                   titleContainerStyle={tw`gap-1`}
                   joinBtn

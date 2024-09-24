@@ -92,17 +92,19 @@ const ProfileEdit = ({navigation}: NavigProps<null>) => {
           </View>
         </View>
 
-        <View style={tw`px-[4%] mt-2 items-end`}>
-          <Text
-            onPress={() => navigation?.navigate('UpdatePassword')}
-            style={tw`text-primary600 font-NunitoSansBold text-sm `}>
+        <TouchableOpacity
+          onPress={() => navigation?.navigate('UpdatePassword')}
+          style={tw`px-[4%] mt-2 self-end`}>
+          <Text style={tw`text-primary600 font-NunitoSansBold text-sm `}>
             Update Password
           </Text>
-        </View>
+        </TouchableOpacity>
         <View style={tw`px-[4%] my-8`}>
           <TButton
             title="Save Changes"
-            onPress={() => {}}
+            onPress={() => {
+              navigation?.goBack();
+            }}
             containerStyle={tw`my-3 w-full bg-primary`}
           />
         </View>

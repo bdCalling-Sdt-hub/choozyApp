@@ -28,11 +28,11 @@ const TransactionCard = ({item}: TransactionCardProps) => {
       </View>
       <View style={tw`flex-row justify-between items-center flex-1`}>
         <View>
-          <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
+          <Text style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
             Ritu Hasan
           </Text>
           <Text
-            style={tw`text-color-Black600 font-NunitoSansRegular text-[12px]`}>
+            style={tw`text-color-Black600 font-NunitoSansRegular text-[10px]`}>
             Oct 14, 10:24AM
           </Text>
         </View>
@@ -44,13 +44,13 @@ const TransactionCard = ({item}: TransactionCardProps) => {
               xml={IconFillLove}
               style={tw`w-6 h-6`}
             />
-            <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
+            <Text style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
               {item?.transactionType === 'credit' ? '- 12.50' : '+ 12.50'}
             </Text>
           </View>
         ) : (
           <View>
-            <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
+            <Text style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
               {item?.transactionType === 'credit' ? '- $12.50' : '+ $12.50'}
             </Text>
           </View>

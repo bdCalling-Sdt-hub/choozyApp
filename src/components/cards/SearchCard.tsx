@@ -20,6 +20,11 @@ const SearchCard = ({
   const Card = ({item}: any) => {
     return (
       <TouchableOpacity
+        onPress={() => {
+          if (item.type === 'user') {
+            // navigation?.navigate('SingleMessage');
+          }
+        }}
         activeOpacity={0.5}
         style={tw`flex-row items-center gap-3 py-2`}>
         <FastImage

@@ -6,172 +6,186 @@ import {
   IIConMasterCard,
   IIConVisaCard,
 } from '../../icons/IIcons';
-import {IconClose, IconFillLove} from '../../icons/icons';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import IwtButton from '../../components/buttons/IwtButton';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
 import SideModal from '../../components/modals/SideModal';
+import {IconRightArrow} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
-const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
+const Checkout = ({navigation}: NavigProps<null>) => {
   const [close, setClose] = React.useState(false);
+  const [shippingModal, setShippingModal] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
+
   const popUpModalRef = React.useRef<PopUpModalRef>(null);
-  const [coin, setCoin] = React.useState('');
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
+        title="Checkout"
         onPress={() => navigation?.goBack()}
+        titleStyle={tw`text-lg text-black font-NunitoSansRegular`}
         containerStyle={tw`justify-between`}
         ComponentBtn={
-          <View>
-            <FastImage
-              source={{uri: 'https://randomuser.me/api/portraits/men/19.jpg'}}
-              style={tw`w-8 h-8 rounded-xl`}
-            />
-          </View>
+          <TouchableOpacity onPress={() => navigation?.goBack()}>
+            <Text style={tw`text-base text-red-600 font-NunitoSansBold`}>
+              Cancle
+            </Text>
+          </TouchableOpacity>
         }
       />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="always">
-        {!close && (
-          <View
-            style={tw`mx-[4%] my-8 bg-danger50 p-4 rounded-2xl flex-row justify-between items-center`}>
-            <Text style={tw`text-color-Black900 font-NunitoSansBold text-sm`}>
-              Shop with exchange love!
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setClose(!close);
-              }}
-              activeOpacity={0.5}>
-              <SvgXml height={15} width={15} xml={IconClose} />
-            </TouchableOpacity>
-          </View>
-        )}
 
-        <View style={tw`mx-[4%] my-5`}>
-          <View style={tw`gap-2`}>
-            <View style={tw`flex-row items-center gap-3`}>
-              <Text
-                style={tw`text-[24px] font-NunitoSansExtraBold text-color-Black1000 `}>
-                Buy love's
-              </Text>
-              <SvgXml
-                style={{
-                  transform: [
-                    {
-                      rotate: '5deg',
-                    },
-                  ],
-                }}
-                height={36}
-                width={36}
-                xml={IconFillLove}
-              />
-            </View>
-            <View style={tw`gap-5 mt-3`}>
-              <View style={tw`h-14`}>
+      <View style={tw`px-[4%] flex-row items-center gap-3`}>
+        <FastImage
+          style={tw`w-28 h-28 rounded-2xl`}
+          resizeMode={FastImage.resizeMode.contain}
+          source={{
+            uri: 'https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg',
+          }}
+        />
+        <View>
+          <Text
+            style={tw`text-base text-color-Black1000 font-NunitoSansRegular`}>
+            Ninja ZX-1
+          </Text>
+          <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+            €398.99
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={tw`px-[4%] py-12 gap-3 border-b border-b-color-Black200 border-dashed `}>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
+            Subtotal
+          </Text>
+          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
+            €398.99
+          </Text>
+        </View>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
+            Shipping
+          </Text>
+          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
+            €7.00
+          </Text>
+        </View>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
+            Discount
+          </Text>
+          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
+            €0.00
+          </Text>
+        </View>
+        <View style={tw`flex-row justify-between items-center`}>
+          <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
+            Total
+          </Text>
+          <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+            €398.99
+          </Text>
+        </View>
+      </View>
+
+      <View style={tw`flex-1 justify-end px-[4%] my-4`}>
+        <View
+          style={tw`flex-row items-center justify-between pt-2 gap-3  my-3`}>
+          <IwtButton
+            svg={IconRightArrow}
+            onPress={() => {
+              // setPurchaseModal(false);
+              // navigation?.navigate('Checkout');
+              setShippingModal(!shippingModal);
+            }}
+            title="Next"
+            titleStyle={tw`font-NunitoSansBold`}
+            containerStyle={tw`w-full justify-center items-center bg-primary shadow-none flex-row-reverse`}
+          />
+        </View>
+      </View>
+      {/*===================== Shipping modal ======================== */}
+      <SideModal
+        scrollable
+        visible={shippingModal}
+        setVisible={setShippingModal}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}>
+          <View style={tw` bg-white p-4 `}>
+            <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
+              Shipping Address
+            </Text>
+
+            <View style={tw`mt-4 gap-6`}>
+              <View style={tw`h-14 `}>
                 <InputText
-                  placeholder="Enter Amount"
-                  keyboardType="decimal-pad"
+                  containerStyle={tw` bg-white `}
+                  placeholder="Country"
                   floatingPlaceholder
-                  onChangeText={(text: string) => setCoin(text)}
+                />
+              </View>
+              <View style={tw`h-14 `}>
+                <InputText
+                  containerStyle={tw` bg-white `}
+                  placeholder="State"
+                  floatingPlaceholder
+                  keyboardType="decimal-pad"
+                />
+              </View>
+              <View style={tw`h-14 `}>
+                <InputText
+                  containerStyle={tw` bg-white `}
+                  placeholder="City"
+                  floatingPlaceholder
+                  keyboardType="ascii-capable"
+                />
+              </View>
+              <View style={tw`h-14 `}>
+                <InputText
+                  containerStyle={tw` bg-white `}
+                  placeholder="ZIP Code"
+                  floatingPlaceholder
+                />
+              </View>
+              <View style={tw`h-14 `}>
+                <InputText
+                  containerStyle={tw` bg-white `}
+                  placeholder="Address"
+                  floatingPlaceholder
                 />
               </View>
             </View>
-            <View
-              style={tw`px-[4%] py-12 gap-3 border-b border-b-color-Black200 border-dashed `}>
-              <View style={tw`flex-row justify-between items-center`}>
-                <Text
-                  style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-                  Total Coin
-                </Text>
-                <Text
-                  style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-                  {coin || 0}
-                </Text>
-              </View>
-              <View style={tw`flex-row justify-between items-center`}>
-                <Text
-                  style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-                  Coin Prize
-                </Text>
-                <Text
-                  style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-                  €1.2
-                </Text>
-              </View>
-
-              <View style={tw`flex-row justify-between items-center`}>
-                <Text
-                  style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-                  Total ({coin} * 1.2)
-                </Text>
-                <Text
-                  style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-                  €{parseInt(coin * 1.2).toFixed(2)}
-                </Text>
-              </View>
-            </View>
 
             <View
-              style={tw`flex-row items-center justify-between pt-2 gap-3 px-2 my-3`}>
-              <TButton
+              style={tw`flex-row items-center justify-between pt-2 gap-3  my-3`}>
+              <IwtButton
+                svg={IconRightArrow}
                 onPress={() => {
+                  // setPurchaseModal(false);
+                  // navigation?.navigate('Checkout');
+                  setShippingModal(!shippingModal);
                   setPaymentModal(!paymentModal);
                 }}
-                title="Continue"
-                containerStyle={tw`w-full justify-center items-center bg-primary shadow-none`}
+                title="Next"
+                titleStyle={tw`font-NunitoSansBold`}
+                containerStyle={tw`w-full justify-center items-center bg-primary shadow-none flex-row-reverse`}
               />
             </View>
           </View>
-        </View>
-      </ScrollView>
-      {/* <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`pb-6`}
-        data={[...Array(10)]}
-        renderItem={({item}) => (
-          <View
-            style={tw`mx-[4%] my-3 p-4 rounded-2xl flex-row justify-between items-center border border-dashed border-gray-300`}>
-            <View style={tw`flex-row items-center gap-3`}>
-              <SvgXml
-                style={{
-                  transform: [
-                    {
-                      rotate: '5deg',
-                    },
-                  ],
-                }}
-                height={36}
-                width={36}
-                xml={IconFillLove}
-              />
-              <View>
-                <Text>Only for $10.00</Text>
-                <Text>10</Text>
-              </View>
-            </View>
-            <TButton
-              onPress={() => {
-                setPaymentModal(!paymentModal);
-              }}
-              title="Get"
-              containerStyle={tw`p-2 bg-primary w-16 rounded-xl`}
-            />
-          </View>
-        )}
-      /> */}
+        </ScrollView>
+      </SideModal>
       {/*===================== payment modal ======================== */}
       <SideModal scrollable visible={paymentModal} setVisible={setPaymentModal}>
         <ScrollView
@@ -247,8 +261,8 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                 popUpModalRef?.current?.open({
                   iconComponent: (
                     <FastImage
-                      style={tw`w-full h-40 rounded-2xl`}
-                      source={require('../../assets/images/logo/extra/circus.png')}
+                      style={tw`w-full h-28 rounded-2xl`}
+                      source={require('../../assets/images/logo/extra/birthday.png')}
                       resizeMode={FastImage.resizeMode.contain}
                     />
                   ),
@@ -260,7 +274,6 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                   onPress: () => {
                     popUpModalRef?.current?.close();
                     setPaymentModal(false);
-                    navigation?.navigate('Wallet');
                   },
                 });
               }}
@@ -279,4 +292,4 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
   );
 };
 
-export default LoveStoreScreen;
+export default Checkout;

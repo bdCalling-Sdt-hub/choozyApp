@@ -32,6 +32,7 @@ const BackWithComponent = ({
         `}
         />
         <Text
+          numberOfLines={1}
           style={[
             tw`text-color-Black900 font-NunitoSansBold text-lg`,
             titleStyle,

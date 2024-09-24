@@ -32,6 +32,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
       <LogoWithHeader
+        offSearch
         searchOffItem={{
           offPost: true,
           offProduct: true,

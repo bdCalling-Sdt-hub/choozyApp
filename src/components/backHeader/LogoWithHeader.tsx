@@ -25,6 +25,7 @@ interface ILogoWithHeader extends NavigProps<null> {
     offProduct?: boolean;
     offPeople?: boolean;
   };
+  offSearch?: boolean;
   offMenu?: boolean;
   onFinish?: () => void;
 }
@@ -35,6 +36,7 @@ const LogoWithHeader = ({
   searchOffItem,
   offMenu,
   onFinish,
+  offSearch,
 }: ILogoWithHeader) => {
   const [searchVisible, setSearchVisible] = React.useState(false);
 
@@ -52,11 +54,13 @@ const LogoWithHeader = ({
         </Text>
       </View>
       <View style={tw`flex-row gap-3`}>
-        <IButton
-          onPress={() => setSearchVisible(!searchVisible)}
-          svg={IconSearch}
-          containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
-        />
+        {!offSearch && (
+          <IButton
+            onPress={() => setSearchVisible(!searchVisible)}
+            svg={IconSearch}
+            containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
+          />
+        )}
         <IButton
           onPress={() => navigation?.navigate('Notification')}
           svg={IconBellWithDot}

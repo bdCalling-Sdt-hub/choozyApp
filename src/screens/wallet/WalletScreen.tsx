@@ -140,7 +140,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         visible={showTransferModal}
         setVisible={setShowTransferModal}
         layerContainerStyle={tw`justify-center items-center h-full `}
-        containerStyle={tw`w-[92%] h-[54%] rounded-3xl p-8 justify-center`}>
+        containerStyle={tw`w-[92%]  rounded-3xl p-8 justify-center`}>
         <View style={tw`gap-2`}>
           <View style={tw`flex-row items-center gap-3`}>
             <Text
@@ -261,7 +261,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                 buttonStyle: tw`w-full justify-center items-center font-NunitoSansBold shadow-none`,
               });
             }}
-            title="Create"
+            title="Send"
             containerStyle={tw`w-20 justify-center items-center bg-primary shadow-none`}
           />
           <TButton
@@ -299,7 +299,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                 setShowRequestSelectModal(!showRequestSelectModal);
                 setShowRequestModal(!showRequestModal);
               }}
-              title="Continue"
+              title="Request"
               containerStyle={tw`w-24 justify-center items-center bg-primary shadow-none`}
             />
             <TButton
@@ -373,7 +373,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                 buttonStyle: tw`w-full justify-center bg-Warning500 items-center font-NunitoSansBold shadow-none`,
               });
             }}
-            title="Create"
+            title="Send"
             containerStyle={tw`w-20 justify-center items-center bg-primary shadow-none`}
           />
           <TButton

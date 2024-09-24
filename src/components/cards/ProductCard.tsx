@@ -33,11 +33,11 @@ const ProductCard = ({
       onPress={onPress}
       activeOpacity={0.9}
       style={[
-        tw`bg-white p-4 shadow-md shadow-slate-800 rounded-xl gap-2`,
+        tw`bg-white p-3 shadow-md shadow-slate-800 rounded-xl gap-2`,
         containerStyle,
       ]}>
       <FastImage
-        style={tw`w-[150.5px] h-[163px] rounded-xl`}
+        style={tw`w-full h-40 rounded-xl`}
         resizeMode={FastImage.resizeMode.contain}
         source={{
           uri: item.images![0],

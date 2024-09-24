@@ -10,6 +10,7 @@ import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
 import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
 import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
+import Checkout from '../screens/Checkout/Checkout';
 import PassChanSuccess from '../screens/logins/PassChanSuccess';
 import NotificationScreen from '../screens/notificaiton/NotificationScreen';
 import OrdersHistory from '../screens/Orders History/OrdersHistory';
@@ -34,7 +35,7 @@ function AppRoutes() {
   useDeviceContext(tw);
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{headerShown: false, animation: 'ios'}}>
         {/*=================== logins part ======================= */}
         {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
         {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
@@ -78,6 +79,7 @@ function AppRoutes() {
         <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
         <Stack.Screen name="PassChanSuccess" component={PassChanSuccess} />
         <Stack.Screen name="OrderHistory" component={OrdersHistory} />
+        <Stack.Screen name="Checkout" component={Checkout} />
       </Stack.Navigator>
     </NavigationContainer>
   );

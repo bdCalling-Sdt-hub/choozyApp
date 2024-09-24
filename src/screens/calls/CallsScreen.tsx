@@ -1,4 +1,4 @@
-import {FlatList, Text, View} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
   IconCallBlue,
   IconIncomingDownArrow,
@@ -70,14 +70,14 @@ const CallsScreen = ({navigation}: NavigProps<null>) => {
                     </View>
                   </View>
                 </View>
-                <View style={tw`px-4`}>
+                <TouchableOpacity style={tw`px-4`}>
                   <SvgXml
                     // fill={"#4964C6"}
                     xml={item.callMethod === 'audio' ? IconCallBlue : IconVideo}
                     width={item.callMethod === 'audio' ? 20 : 23}
                     height={item.callMethod === 'audio' ? 20 : 23}
                   />
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
           </>

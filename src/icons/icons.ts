@@ -357,7 +357,18 @@ export const IconFillCamera = `<svg width="15" height="13" viewBox="0 0 15 13" f
 <path fill-rule="evenodd" clip-rule="evenodd" d="M0 11.5C0 12.3284 0.671574 13 1.5 13L13.5 13C14.3284 13 15 12.3284 15 11.5L15 3.5C15 2.67158 14.3284 2 13.5 2H1.5C0.671574 2 0 2.67157 0 3.5V11.5ZM9.5 5C8.11929 5 7 6.11929 7 7.5C7 8.88071 8.11929 10 9.5 10C10.8807 10 12 8.88071 12 7.5C12 6.11929 10.8807 5 9.5 5Z" fill="#5D5D5D"/>
 </svg>
 `;
-// export const Icon =
+export const IconSendNormal = `<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.3346 1.1665L0.667969 9.1665L7.33464 13.1665M19.3346 1.1665L11.3346 19.8332L7.33464 13.1665M19.3346 1.1665L7.33464 13.1665" stroke="white" stroke-linecap="square" stroke-linejoin="round"/>
+</svg>
+`;
+export const IconRightArrow = `<svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.66797 9.5L5.66797 5.5L1.66797 1.5" stroke="white" stroke-width="1.2" stroke-linecap="square"/>
+</svg>
+`;
+export const IconCalender = `<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.5 0.5V5.5M11.5 0.5V5.5M5 9H10M1.5 3H13.5C14.0523 3 14.5 3.44772 14.5 4V14C14.5 14.5523 14.0523 15 13.5 15H1.5C0.947716 15 0.5 14.5523 0.5 14V4C0.5 3.44772 0.947715 3 1.5 3Z" stroke="#5D5D5D"/>
+</svg>
+`;
 // export const Icon =
 // export const Icon =
 // export const Icon =
