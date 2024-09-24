@@ -34,8 +34,8 @@ const PeopleScreen = ({navigation}: NavigProps<null>) => {
         renderItem={({item, index}) => (
           <>
             <MessageCard
-              disabled
-              //   onPress={() => navigation?.navigate('Message')}
+              // disabled
+              onPress={() => navigation?.navigate('OtherWall')}
               offPartThree
               titleContainerStyle={tw`gap-1`}
               joinBtn

@@ -28,13 +28,19 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
 
       <FlatList
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
         contentContainerStyle={tw`gap-2 mt-3 pb-6`}
         data={postData.posts}
         renderItem={({item}) => {
           return (
             <>
               {/*================= Post Card ============ */}
-              <PostCard item={item} />
+              <PostCard
+                onPress={() => {
+                  navigation?.navigate('OtherWall');
+                }}
+                item={item}
+              />
             </>
           );
         }}

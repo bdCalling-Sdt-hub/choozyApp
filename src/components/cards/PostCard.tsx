@@ -1,10 +1,12 @@
-import {Text, TouchableOpacity, View} from 'react-native';
-import {IconComment, IconFillLove} from '../../icons/icons';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {IconComment, IconFillLove, IconSend} from '../../icons/icons';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
+import IButton from '../buttons/IButton';
+import InputText from '../inputs/InputText';
 import SideModal from '../modals/SideModal';
 
 interface PostCardProps {
@@ -101,7 +103,102 @@ const PostCard = ({item, onPress}: PostCardProps) => {
         <Text style={tw`text-gray-400 text-xs`}>{item.content.created_at}</Text>
       </View>
 
-      <SideModal visible={isComment} setVisible={setIsComment} />
+      <SideModal
+        visible={isComment}
+        setVisible={setIsComment}
+        containerStyle={tw``}>
+        <View style={tw`px-4`}>
+          <Text style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
+            Comments
+          </Text>
+        </View>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}
+          keyboardDismissMode="interactive">
+          <View style={tw`px-4`}>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+            <Text>No Comments</Text>
+          </View>
+        </ScrollView>
+        <View style={tw`p-4 flex-row items-center`}>
+          <FastImage
+            style={tw`w-12 h-12 rounded-2xl`}
+            source={{uri: item.user.avatar}}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+          <View style={tw`h-14 flex-1`}>
+            <InputText
+              placeholder="Add a comment....."
+              containerStyle={tw`h-14 border-0`}
+            />
+          </View>
+          <IButton
+            svg={IconSend}
+            containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
+            onPress={() => {}}
+          />
+        </View>
+      </SideModal>
     </View>
   );
 };
