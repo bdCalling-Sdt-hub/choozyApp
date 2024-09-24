@@ -71,7 +71,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
           {/*========================== balance part ====================== */}
           <View style={tw``}>
             <View style={tw`flex-row gap-1 items-center`}>
-              <Text style={tw`text-white text-[14px] font-NunitoSansBold `}>
+              <Text style={tw`text-white text-sm font-NunitoSansBold `}>
                 Available Balance
               </Text>
               <SvgXml
@@ -122,8 +122,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                   onPress={() => {
                     navigation?.navigate('TransactionHistory');
                   }}>
-                  <Text
-                    style={tw`text-primary font-NunitoSansBold text-[14px]`}>
+                  <Text style={tw`text-primary font-NunitoSansBold text-sm`}>
                     View all
                   </Text>
                 </TouchableOpacity>

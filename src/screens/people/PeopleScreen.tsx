@@ -40,7 +40,7 @@ const PeopleScreen = ({navigation}: NavigProps<null>) => {
               titleContainerStyle={tw`gap-1`}
               joinBtn
               subTitleStyle={tw`text-color-Black500`}
-              titleStyle={tw`text-[#1D1929] text-[14px]`}
+              titleStyle={tw`text-[#1D1929] text-sm`}
               item={{
                 image: item.avatar,
                 name: item.name,

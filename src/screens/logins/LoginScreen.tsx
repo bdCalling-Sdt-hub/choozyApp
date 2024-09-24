@@ -57,7 +57,7 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
             Log In.
           </Text>
 
-          <Text style={tw`text-[14px] text-[#454545] font-NunitoSansRegular`}>
+          <Text style={tw`text-sm text-[#454545] font-NunitoSansRegular`}>
             Log In with your data that you entered during your registration
           </Text>
         </View>

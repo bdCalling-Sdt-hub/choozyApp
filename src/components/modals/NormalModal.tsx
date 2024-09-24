@@ -11,6 +11,7 @@ interface NormalModalProps {
   containerStyle?: any;
   children?: React.ReactNode;
   animationType?: 'none' | 'slide' | 'fade';
+  scrollable?: boolean;
 }
 
 const NormalModal = ({
@@ -19,6 +20,7 @@ const NormalModal = ({
   containerStyle,
   children,
   layerContainerStyle,
+  scrollable,
   animationType,
 }: NormalModalProps) => {
   return (
@@ -31,12 +33,16 @@ const NormalModal = ({
       onBackgroundPress={() => setVisible && setVisible(!visible)}>
       <View style={layerContainerStyle}>
         <Pressable disabled style={[tw`bg-white w-full p-4`, containerStyle]}>
-          <ScrollView
-            nestedScrollEnabled
-            keyboardShouldPersistTaps="always"
-            showsVerticalScrollIndicator={false}>
-            {children}
-          </ScrollView>
+          {scrollable ? (
+            <ScrollView
+              nestedScrollEnabled
+              keyboardShouldPersistTaps="always"
+              showsVerticalScrollIndicator={false}>
+              {children}
+            </ScrollView>
+          ) : (
+            children
+          )}
         </Pressable>
       </View>
     </Modal>

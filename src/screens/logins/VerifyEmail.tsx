@@ -71,8 +71,7 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
             We just sent a verification code to alima012@gmail.com
           </Text>
           <View style={tw`gap-2 pt-8`}>
-            <Text
-              style={tw`text-[14px] text-color-Black950 font-NunitoSansBold`}>
+            <Text style={tw`text-sm text-color-Black950 font-NunitoSansBold`}>
               Enter the code
             </Text>
             <View style={tw`flex-row gap-3 my-2`}>

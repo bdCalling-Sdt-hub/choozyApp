@@ -57,12 +57,12 @@ const MessageCard = ({
         </View>
       )}
       {!offPartTow && (
-        <View style={[tw`flex-1  `, titleContainerStyle]}>
+        <View style={[tw`flex-1  gap-[2px]`, titleContainerStyle]}>
           {item.name && (
             <Text
               numberOfLines={1}
               style={[
-                tw`text-[#1D1929] font-NunitoSansBold text-lg`,
+                tw`text-[#1D1929] font-NunitoSansBold text-sm`,
                 titleStyle,
               ]}>
               {item.name}
@@ -89,8 +89,7 @@ const MessageCard = ({
               activeOpacity={0.5}
               style={tw`items-center gap-2 `}>
               {/* unread message = 0 so dot show  */}
-              <Text
-                style={tw`text-color-Black950 font-NunitoSansBold text-[14px]`}>
+              <Text style={tw`text-color-Black950 font-NunitoSansBold text-sm`}>
                 {/* date format like this 8:10 AM/PM  */}
                 Join
               </Text>
@@ -100,14 +99,13 @@ const MessageCard = ({
               {item.unreadCount !== 0 && (
                 <View
                   style={tw`w-4 h-4 rounded-full bg-red-500 items-center justify-center`}>
-                  <Text style={tw`text-white font-NunitoSansBold text-xs`}>
+                  <Text style={tw`text-white font-NunitoSansBold text-[10px]`}>
                     {item.unreadCount}
                   </Text>
                 </View>
               )}
 
-              <Text
-                style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[14px]`}>
+              <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`}>
                 {/* date format like this 8:10 AM/PM  */}
                 {moment(item.time).format('LT')}
               </Text>

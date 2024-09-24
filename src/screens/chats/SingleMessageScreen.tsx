@@ -75,7 +75,7 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
                   {personalMessageData?.chatHeader?.name}
                 </Text>
                 <Text
-                  style={tw`text-color-Black500 font-NunitoSansSemiBold text-[14px]`}>
+                  style={tw`text-color-Black500 font-NunitoSansSemiBold text-sm`}>
                   location: {personalMessageData?.chatHeader?.location}
                 </Text>
               </View>
@@ -96,7 +96,7 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
                       <View
                         style={tw`flex-row justify-between items-center my-1`}>
                         <Text
-                          style={tw`text-color-Black1000 font-NunitoSansBold text-[14px] `}>
+                          style={tw`text-color-Black1000 font-NunitoSansBold text-sm `}>
                           {item.sender}
                         </Text>
                         <Text
@@ -109,7 +109,7 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`bg-primary500  p-3 rounded-lg  self-end rounded-tr-none`}>
                           <Text
-                            style={tw`text-white text-lg font-NunitoSansRegular`}>
+                            style={tw`text-white text-base font-NunitoSansRegular`}>
                             {item.message}
                           </Text>
                         </View>
@@ -143,7 +143,7 @@ const SingleMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`flex-row justify-between items-center my-1`}>
                           <Text
-                            style={tw`text-color-Black1000 font-NunitoSansBold text-[14px] `}>
+                            style={tw`text-color-Black1000 font-NunitoSansBold text-sm `}>
                             {item.sender}
                           </Text>
                           <Text

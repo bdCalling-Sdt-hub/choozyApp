@@ -1,7 +1,7 @@
+import {KeyboardAvoidingView, Platform, Pressable, View} from 'react-native';
 import {Dialog, PanningProvider} from 'react-native-ui-lib';
 
 import React from 'react';
-import {View} from 'react-native';
 import tw from '../../lib/tailwind';
 
 interface SideModalProps {
@@ -10,27 +10,40 @@ interface SideModalProps {
   layerContainerStyle?: any;
   containerStyle?: any;
   children?: React.ReactNode;
+  scrollable?: boolean;
 }
 
 const SideModal = ({
   children,
   containerStyle,
-  layerContainerStyle,
   setVisible,
   visible,
 }: SideModalProps) => {
   return (
-    <Dialog
-      width={'100%'}
-      visible={visible || false}
-      bottom={true}
-      onDismiss={() => setVisible && setVisible(false)}
-      panDirection={PanningProvider.Directions.DOWN}>
-      <View style={[tw`bg-white rounded-t-2xl`, containerStyle]}>
-        <View style={tw`h-1 bg-gray-300 my-2 w-20 rounded-full self-center`} />
-        {children}
-      </View>
-    </Dialog>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0} // Adjust if necessary
+      style={{flex: 1}}>
+      <Dialog
+        width={'100%'}
+        useSafeArea
+        visible={visible || false}
+        bottom={true}
+        onDismiss={() => setVisible && setVisible(false)}
+        panDirection={PanningProvider.Directions.DOWN}
+        containerStyle={tw`pt-2 pb-4 mt-2 bg-white rounded-t-2xl`}
+        renderPannableHeader={() => (
+          <View style={tw`h-5`}>
+            <View style={tw`bg-gray-300 h-1 w-20 rounded-full self-center`} />
+          </View>
+        )}>
+        <Pressable
+          disabled
+          style={[tw`max-h-[96%] md:max-h-[97%]`, containerStyle]}>
+          {children}
+        </Pressable>
+      </Dialog>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -39,7 +39,7 @@ const SearchCard = ({
         {item.type === 'product' ? (
           <View>
             <Text
-              style={tw`text-color-Black500 font-NunitoSansSemiBold text-[14px]`}>
+              style={tw`text-color-Black500 font-NunitoSansSemiBold text-sm`}>
               {item.title})
             </Text>
             <Text
@@ -61,7 +61,7 @@ const SearchCard = ({
         ) : (
           <View>
             <Text
-              style={tw`text-color-Black500 font-NunitoSansSemiBold text-[14px]`}>
+              style={tw`text-color-Black500 font-NunitoSansSemiBold text-sm`}>
               {item.name}
             </Text>
             <Text

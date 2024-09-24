@@ -177,7 +177,7 @@ const MyWall = ({navigation}: NavigProps<null>) => {
             <Text
               style={tw` ${
                 options == 'post' ? 'text-primary' : 'text-[#34303E]'
-              } font-NunitoSansBold text-[14px]`}>
+              } font-NunitoSansBold text-sm`}>
               Post
             </Text>
           </TouchableOpacity>
@@ -193,7 +193,7 @@ const MyWall = ({navigation}: NavigProps<null>) => {
             <Text
               style={tw` ${
                 options == 'store' ? 'text-primary' : 'text-[#34303E]'
-              } font-NunitoSansBold text-[14px]`}>
+              } font-NunitoSansBold text-sm`}>
               Store
             </Text>
           </TouchableOpacity>
@@ -298,7 +298,9 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         </View>
       </NormalModal>
 
+      {/*=================== Product add ===================== */}
       <NormalModal
+        scrollable
         visible={showAddProductModal}
         animationType="fade"
         layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
@@ -370,6 +372,7 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         </View>
       </NormalModal>
       <NormalModal
+        scrollable
         visible={showCategoryModal}
         animationType="fade"
         layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}

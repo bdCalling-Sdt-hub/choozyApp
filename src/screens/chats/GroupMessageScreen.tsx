@@ -36,7 +36,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
               <View>
                 <View style={tw`flex-row items-center gap-3`}>
                   <Text
-                    style={tw`text-color-Black1000 font-NunitoSansExtraBold`}>
+                    style={tw`text-color-Black1000 text-base font-NunitoSansExtraBold`}>
                     {messageData.group.name}
                   </Text>
                   <FastImage
@@ -46,7 +46,9 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                     }}
                   />
                 </View>
-                <Text>{messageData?.group?.members}</Text>
+                <Text style={tw`text-color-Black400 text-sm`}>
+                  {messageData?.group?.members}
+                </Text>
               </View>
               <TouchableOpacity
                 activeOpacity={0.5}
@@ -59,7 +61,17 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
         />
       </View>
       {/*================= messages ================== */}
-
+      {/*============= floating accept join for group ========= */}
+      <View style={tw`absolute top-15 w-full px-3 z-30`}>
+        <View style={tw`bg-white w-full p-4`}>
+          <FastImage
+            style={tw`w-14 h-14 rounded-2xl`}
+            source={{
+              uri: 'https://randomuser.me/api/portraits/men/19.jpg',
+            }}
+          />
+        </View>
+      </View>
       <FlatList
         showsVerticalScrollIndicator={false}
         inverted
@@ -78,7 +90,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                       <View
                         style={tw`flex-row justify-between items-center my-1`}>
                         <Text
-                          style={tw`text-color-Black1000 font-NunitoSansBold text-[14px] `}>
+                          style={tw`text-color-Black1000 font-NunitoSansBold text-sm `}>
                           {item.sender}
                         </Text>
                         <Text
@@ -91,7 +103,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`bg-primary500  p-3 rounded-lg  self-end rounded-tr-none`}>
                           <Text
-                            style={tw`text-white text-lg font-NunitoSansRegular`}>
+                            style={tw`text-white text-base font-NunitoSansRegular`}>
                             {item.message}
                           </Text>
                         </View>
@@ -125,7 +137,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`flex-row justify-between items-center my-1`}>
                           <Text
-                            style={tw`text-color-Black1000 font-NunitoSansBold text-[14px] `}>
+                            style={tw`text-color-Black1000 font-NunitoSansBold text-sm `}>
                             {item.sender}
                           </Text>
                           <Text

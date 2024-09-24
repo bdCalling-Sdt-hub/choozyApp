@@ -1,4 +1,4 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
   IconBell,
   IconBellWithDot,
@@ -9,9 +9,9 @@ import {
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { SvgXml } from 'react-native-svg';
+import {SvgXml} from 'react-native-svg';
 import searchResults from '../../assets/database/search.json';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import IButton from '../buttons/IButton';
 import SearchCard from '../cards/SearchCard';
@@ -20,16 +20,22 @@ import NormalModal from '../modals/NormalModal';
 
 interface ILogoWithHeader extends NavigProps<null> {
   onPressMenu?: () => void;
-  searchOffItem ?: {
-    offPost ?: boolean;
-    offProduct ?: boolean;
-    offPeople ?: boolean;
+  searchOffItem?: {
+    offPost?: boolean;
+    offProduct?: boolean;
+    offPeople?: boolean;
   };
-  offMenu ?: boolean,
-  onFinish  ?: () => void
+  offMenu?: boolean;
+  onFinish?: () => void;
 }
 
-const LogoWithHeader = ({navigation, onPressMenu,searchOffItem,offMenu,onFinish}: ILogoWithHeader) => {
+const LogoWithHeader = ({
+  navigation,
+  onPressMenu,
+  searchOffItem,
+  offMenu,
+  onFinish,
+}: ILogoWithHeader) => {
   const [searchVisible, setSearchVisible] = React.useState(false);
 
   return (
@@ -56,13 +62,13 @@ const LogoWithHeader = ({navigation, onPressMenu,searchOffItem,offMenu,onFinish}
           svg={IconBellWithDot}
           containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
         />
-        {
-            !offMenu &&  <IButton
+        {!offMenu && (
+          <IButton
             onPress={onPressMenu}
             svg={IconVThreeDots}
             containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
           />
-        }
+        )}
       </View>
       <NormalModal
         containerStyle={tw`w-full`}
@@ -80,7 +86,7 @@ const LogoWithHeader = ({navigation, onPressMenu,searchOffItem,offMenu,onFinish}
             focusSTyle={tw`border-[#B3C5FF] border-2`}
             returnKeyType="done" // you can set returnKeyType like 'done', 'go', etc.
             onSubmitEditing={() => {
-              onFinish && onFinish()
+              onFinish && onFinish();
               setSearchVisible(!searchVisible);
             }}
             svgFirstIcon={IconSearch}
@@ -109,7 +115,12 @@ const LogoWithHeader = ({navigation, onPressMenu,searchOffItem,offMenu,onFinish}
           data={searchResults}
           renderItem={({item}) => (
             <>
-              <SearchCard item={item} offPost={searchOffItem?.offPost} offProduct={searchOffItem?.offProduct} offPeople={searchOffItem?.offPeople} />
+              <SearchCard
+                item={item}
+                offPost={searchOffItem?.offPost}
+                offProduct={searchOffItem?.offProduct}
+                offPeople={searchOffItem?.offPeople}
+              />
             </>
           )}
         />

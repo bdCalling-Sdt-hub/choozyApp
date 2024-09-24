@@ -53,7 +53,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           <Text
             style={tw` ${
               options == 'contacts' ? 'text-primary' : 'text-[#34303E]'
-            } font-NunitoSansBold text-lg`}>
+            } font-NunitoSansBold text-sm`}>
             Contacts
           </Text>
         </TouchableOpacity>
@@ -68,7 +68,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           <Text
             style={tw` ${
               options == 'groups' ? 'text-primary' : 'text-[#34303E]'
-            } font-NunitoSansBold text-lg`}>
+            } font-NunitoSansBold text-sm`}>
             Groups
           </Text>
         </TouchableOpacity>

@@ -6,6 +6,7 @@ import tw from '../../lib/tailwind';
 
 export interface IProductCarProps {
   onPress?: () => void;
+  containerStyle?: any;
   showStatus?: boolean;
   status?: 'Delivered' | 'Pending' | 'Cancelled';
   item: {
@@ -20,12 +21,21 @@ export interface IProductCarProps {
   };
 }
 
-const ProductCard = ({item, onPress, status, showStatus}: IProductCarProps) => {
+const ProductCard = ({
+  item,
+  onPress,
+  status,
+  showStatus,
+  containerStyle,
+}: IProductCarProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.9}
-      style={tw`bg-white p-4 shadow-md shadow-slate-800 rounded-xl gap-2`}>
+      style={[
+        tw`bg-white p-4 shadow-md shadow-slate-800 rounded-xl gap-2`,
+        containerStyle,
+      ]}>
       <FastImage
         style={tw`w-[150.5px] h-[163px] rounded-xl`}
         resizeMode={FastImage.resizeMode.contain}
@@ -35,17 +45,17 @@ const ProductCard = ({item, onPress, status, showStatus}: IProductCarProps) => {
       />
       <View style={tw` flex-row justify-between gap-2`}>
         <Text
-          style={tw`text-center font-NunitoSansBold text-[14px] text-color-Black900`}>
+          style={tw`text-center font-NunitoSansBold text-sm text-color-Black900`}>
           € {item.price}
         </Text>
         <Text
-          style={tw`text-center text-[#615E69] font-NunitoSansRegular text-[14px]`}>
+          style={tw`text-center text-[#615E69] font-NunitoSansRegular text-sm`}>
           {item.productCode}
         </Text>
       </View>
       <Text
         numberOfLines={2}
-        style={tw`text-center text-color-Black900 font-NunitoSansBold text-[14px] w-36`}>
+        style={tw`text-center text-color-Black900 font-NunitoSansBold text-sm w-36`}>
         {item.name}
       </Text>
 
