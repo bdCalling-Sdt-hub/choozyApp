@@ -106,7 +106,7 @@ const PostCard = ({item, onPress}: PostCardProps) => {
       <SideModal
         visible={isComment}
         setVisible={setIsComment}
-        containerStyle={tw``}>
+        containerStyle={tw`h-[95%]`}>
         <View style={tw`px-4`}>
           <Text style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
             Comments
@@ -117,67 +117,175 @@ const PostCard = ({item, onPress}: PostCardProps) => {
           showsVerticalScrollIndicator={false}
           keyboardDismissMode="interactive">
           <View style={tw`px-4`}>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
-            <Text>No Comments</Text>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
+          </View>
+          <View style={tw`px-4`}>
+            <Text>Dynamic Comment</Text>
           </View>
         </ScrollView>
         <View style={tw`p-4 flex-row items-center`}>
