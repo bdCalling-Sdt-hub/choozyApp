@@ -274,6 +274,7 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                   onPress: () => {
                     popUpModalRef?.current?.close();
                     setPaymentModal(false);
+                    navigation?.goBack();
                   },
                 });
               }}

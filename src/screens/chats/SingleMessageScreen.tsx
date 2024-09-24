@@ -59,7 +59,7 @@ const SingleMessageScreen = ({
         />
       </View>
       {/*================= messages ================== */}
-      {route?.params?.proposal && (
+      {route?.params?.proposal && proposal && (
         <View style={tw`absolute top-15 w-full px-3 z-30 `}>
           <View
             style={tw`bg-white w-full p-4 shadow-lg flex-row justify-between rounded-2xl items-center gap-3`}>

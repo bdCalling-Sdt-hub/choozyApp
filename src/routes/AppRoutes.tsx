@@ -25,6 +25,9 @@ import TermsAndCondition from '../screens/settings/TermsAndCondition';
 import UpdatePassword from '../screens/settings/UpdatePassword';
 import CreateShop from '../screens/store/CreateShop';
 import LoveStoreScreen from '../screens/store/LoveStoreScreen';
+import OtherWallPost from '../screens/wall/components/OtherWallPost';
+import OtherWallStore from '../screens/wall/components/OtherWallStore';
+import OtherWall from '../screens/wall/OtherWall';
 import TransactionsHistory from '../screens/wallet/TransactionsHistory';
 import WalletScreen from '../screens/wallet/WalletScreen';
 import BottomRoutes from './BottomRoutes';
@@ -80,6 +83,9 @@ function AppRoutes() {
         <Stack.Screen name="PassChanSuccess" component={PassChanSuccess} />
         <Stack.Screen name="OrderHistory" component={OrdersHistory} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="OtherWall" component={OtherWall} />
+        <Stack.Screen name="OtherWallStore" component={OtherWallStore} />
+        <Stack.Screen name="OtherWallPost" component={OtherWallPost} />
       </Stack.Navigator>
     </NavigationContainer>
   );
