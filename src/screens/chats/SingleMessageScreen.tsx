@@ -317,6 +317,7 @@ const SingleMessageScreen = ({
           {
             title: 'Mute Notification',
             //  onPress: () => {},
+
             enableBoth: true,
             customComponent: (
               <Switch

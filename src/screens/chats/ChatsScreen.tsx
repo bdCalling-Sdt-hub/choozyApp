@@ -111,13 +111,13 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           {
             title: 'My Status',
             onPress: () => {
-              navigation?.navigate('DrawerRoutes');
+              navigation?.navigate('MyWall');
             },
           },
           {
             title: 'My Wall',
             onPress: () => {
-              navigation?.navigate('DrawerRoutes');
+              navigation?.navigate('MyWall');
             },
           },
           {

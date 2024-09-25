@@ -29,7 +29,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
-        contentContainerStyle={tw`gap-2 mt-3 pb-6`}
+        contentContainerStyle={tw`gap-2 mt-3 pb-6 tablet:mx-[30%]`}
         data={postData.posts}
         renderItem={({item}) => {
           return (

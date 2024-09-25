@@ -1,5 +1,6 @@
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
+  IconBasicsleft,
   IconImage,
   IconLock,
   IconMenu,
@@ -110,15 +111,16 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%]`}>
-          <View style={tw`flex-row items-center justify-between gap-8 my-5`}>
+          <View
+            style={tw`flex-row items-center justify-between tablet:justify-start gap-8  my-5`}>
             <FastImage
-              style={tw`w-16 h-16 rounded-3xl`}
+              style={tw`w-16 h-16  rounded-3xl`}
               source={{
                 uri: 'https://randomuser.me/api/portraits/men/19.jpg',
               }}
               resizeMode={FastImage.resizeMode.contain}
             />
-            <View style={tw`flex-1 flex-row justify-between`}>
+            <View style={tw`flex-1  flex-row justify-between tablet:max-w-72 `}>
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
@@ -200,7 +202,9 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         </View>
 
         {options == 'post' ? (
-          <Post navigation={navigation} />
+          <View style={tw`tablet:mx-[30%]`}>
+            <Post navigation={navigation} />
+          </View>
         ) : (
           <Store navigation={navigation} />
         )}
@@ -329,6 +333,7 @@ const MyWall = ({navigation}: NavigProps<null>) => {
             <InputText
               placeholder="Set product prize"
               placeholderTextColor={'#A5A3A9'}
+              keyboardType="decimal-pad"
               floatingPlaceholder
               style={tw`font-NunitoSansRegular `}
             />
@@ -379,9 +384,15 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         containerStyle={tw` rounded-2xl p-5 my-3`}
         setVisible={setShowCategoryModal}>
         <View style={tw` border-dashed py-2`}>
-          <Text style={tw`text-color-Black800 font-NunitoSansBold text-base `}>
-            Select Category
-          </Text>
+          <TouchableOpacity
+            style={tw`flex-row items-center gap-3`}
+            onPress={() => setShowCategoryModal(false)}>
+            <SvgXml width={12} height={12} xml={IconBasicsleft} />
+            <Text
+              style={tw`text-color-Black800 font-NunitoSansBold text-base `}>
+              Select Category
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={tw`py-4 gap-4`}>
           {categoryData.map((item, index) => (

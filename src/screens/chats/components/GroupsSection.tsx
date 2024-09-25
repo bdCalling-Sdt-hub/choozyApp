@@ -71,6 +71,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
               key={item.id}
               titleContainerStyle={tw`gap-1`}
               joinBtn
+              joinPress={() => navigation?.navigate('GroupMessage')}
               subTitleStyle={tw`text-color-Black500`}
               titleStyle={tw`text-[#1D1929]`}
               item={{
@@ -93,6 +94,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
         />
       </View>
       <NormalModal
+        animationType="fade"
         containerStyle={tw`w-[90%] h-[75%] rounded-3xl p-5`}
         layerContainerStyle={tw`w-full h-full justify-center items-center`}
         setVisible={setCreateGroupModal}

@@ -33,11 +33,11 @@ const ProductCard = ({
       onPress={onPress}
       activeOpacity={0.9}
       style={[
-        tw`bg-white p-3 shadow-md shadow-slate-800 rounded-xl gap-2`,
+        tw`bg-white w-[48%] tablet:w-[25%]  p-2 md:p-4 tablet:p-5 shadow-md shadow-slate-800 rounded-xl gap-2`,
         containerStyle,
       ]}>
       <FastImage
-        style={tw`w-full h-40 rounded-xl`}
+        style={tw`w-full  h-32 rounded-xl`}
         resizeMode={FastImage.resizeMode.contain}
         source={{
           uri: item.images![0],
@@ -49,13 +49,13 @@ const ProductCard = ({
           € {item.price}
         </Text>
         <Text
-          style={tw`text-center text-[#615E69] font-NunitoSansRegular text-sm`}>
+          style={tw`text-center text-[#615E69] font-NunitoSansRegular text-xs`}>
           {item.productCode}
         </Text>
       </View>
       <Text
         numberOfLines={2}
-        style={tw`text-center text-color-Black900 font-NunitoSansBold text-sm w-36`}>
+        style={tw`text-center text-color-Black900 font-NunitoSansBold text-sm flex-1`}>
         {item.name}
       </Text>
 

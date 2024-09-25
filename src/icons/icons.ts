@@ -139,6 +139,10 @@ export const IconClose = `<svg width="18" height="18" viewBox="0 0 18 18" fill="
 <path d="M1 1L17 17M1 17L17 1" stroke="#1D1929"/>
 </svg>
 `;
+export const IconCloseRed = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1L17 17M1 17L17 1" stroke="red"/>
+</svg>
+`;
 
 export const IconMenu = `<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M15 1.5H0V0.5H15V1.5ZM15 5.5H0V4.5H15V5.5ZM15 9.5H0V8.5H15V9.5ZM15 13.5H0V12.5H15V13.5Z" fill="#454545"/>
@@ -369,6 +373,42 @@ export const IconCalender = `<svg width="15" height="16" viewBox="0 0 15 16" fil
 <path d="M3.5 0.5V5.5M11.5 0.5V5.5M5 9H10M1.5 3H13.5C14.0523 3 14.5 3.44772 14.5 4V14C14.5 14.5523 14.0523 15 13.5 15H1.5C0.947716 15 0.5 14.5523 0.5 14V4C0.5 3.44772 0.947715 3 1.5 3Z" stroke="#5D5D5D"/>
 </svg>
 `;
+export const IconClockBlue = `<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 7.5C0 3.35786 3.35786 0 7.5 0C11.6421 0 15 3.35786 15 7.5C15 11.6421 11.6421 15 7.5 15C3.35786 15 0 11.6421 0 7.5ZM7 7.49991V3H8V7.29289L10.8536 10.1464L10.1464 10.8536L7.14645 7.85355C7.04882 7.75592 7 7.62787 7 7.49991Z" fill="#4964C6"/>
+</svg>
+`;
+export const IconCopyBoardBlue = `<svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10 0H3V1H0V13.5C0 14.3284 0.671573 15 1.5 15H11.5C12.3284 15 13 14.3284 13 13.5V1H10V0ZM9 1H4V2.5C4 2.77614 4.22386 3 4.5 3H8.5C8.77614 3 9 2.77614 9 2.5V1Z" fill="#4964C6"/>
+</svg>
+`;
+export const IconQuestionBlue = `<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 7.5C0 3.35786 3.35786 0 7.5 0C11.6421 0 15 3.35786 15 7.5C15 11.6421 11.6421 15 7.5 15C3.35786 15 0 11.6421 0 7.5ZM5.5 6C5.5 4.89543 6.39543 4 7.5 4H8.1C9.14934 4 10 4.85066 10 5.9V6C10 7.10457 9.10457 8 8 8V9H7V7H8C8.55228 7 9 6.55228 9 6V5.9C9 5.40294 8.59706 5 8.1 5H7.5C6.94772 5 6.5 5.44772 6.5 6H5.5ZM7 11V10H8V11H7Z" fill="#4964C6"/>
+</svg>
+`;
+export const IconSupportedBlue = `<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.5 6C1.97535 6 1.48846 6.16161 1.08637 6.43776C1.5934 3.3532 4.27189 1 7.5 1C10.7281 1 13.4066 3.3532 13.9136 6.43777C13.5115 6.16161 13.0246 6 12.5 6C11.6716 6 11 6.67157 11 7.5V11.5C11 12.1333 11.3925 12.6749 11.9475 12.895C11.7741 13.5318 11.1917 14 10.5 14H8V15H10.5C11.7242 15 12.7429 14.12 12.9581 12.9581C14.12 12.7429 15 11.7242 15 10.5V7.5C15 3.35786 11.6421 0 7.5 0C3.35786 0 0 3.35786 0 7.5V10.5C0 11.8807 1.11929 13 2.5 13C3.32843 13 4 12.3284 4 11.5V7.5C4 6.67157 3.32843 6 2.5 6Z" fill="#4964C6"/>
+</svg>
+`;
+export const IconSettingBlue = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.78125 12.75L4.53125 10.75C4.39583 10.6979 4.26823 10.6354 4.14844 10.5625C4.02865 10.4896 3.91146 10.4115 3.79688 10.3281L1.9375 11.1094L0.21875 8.14062L1.82812 6.92188C1.81771 6.84896 1.8125 6.77865 1.8125 6.71094V6.28906C1.8125 6.22135 1.81771 6.15104 1.82812 6.07812L0.21875 4.85938L1.9375 1.89062L3.79688 2.67188C3.91146 2.58854 4.03125 2.51042 4.15625 2.4375C4.28125 2.36458 4.40625 2.30208 4.53125 2.25L4.78125 0.25H8.21875L8.46875 2.25C8.60417 2.30208 8.73177 2.36458 8.85156 2.4375C8.97135 2.51042 9.08854 2.58854 9.20312 2.67188L11.0625 1.89062L12.7812 4.85938L11.1719 6.07812C11.1823 6.15104 11.1875 6.22135 11.1875 6.28906V6.71094C11.1875 6.77865 11.1771 6.84896 11.1562 6.92188L12.7656 8.14062L11.0469 11.1094L9.20312 10.3281C9.08854 10.4115 8.96875 10.4896 8.84375 10.5625C8.71875 10.6354 8.59375 10.6979 8.46875 10.75L8.21875 12.75H4.78125ZM6.53125 8.6875C7.13542 8.6875 7.65104 8.47396 8.07812 8.04688C8.50521 7.61979 8.71875 7.10417 8.71875 6.5C8.71875 5.89583 8.50521 5.38021 8.07812 4.95312C7.65104 4.52604 7.13542 4.3125 6.53125 4.3125C5.91667 4.3125 5.39844 4.52604 4.97656 4.95312C4.55469 5.38021 4.34375 5.89583 4.34375 6.5C4.34375 7.10417 4.55469 7.61979 4.97656 8.04688C5.39844 8.47396 5.91667 8.6875 6.53125 8.6875Z" fill="#4964C6"/>
+</svg>
+
+
+`;
+export const IconExit = `<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.5 6.5L9.5 9.75M12.5 6.5L9.5 3.5M12.5 6.5L3 6.5M7 12.5L0.5 12.5L0.500001 0.5L7 0.5" stroke="#DC3545"/>
+</svg>
+`;
+// export const Icon =
+// export const Icon =
+// export const Icon =
+// export const Icon =
+// export const Icon =
+// export const Icon =
+// export const Icon =
+// export const Icon =
+// export const Icon =
+// export const Icon =
 // export const Icon =
 // export const Icon =
 // export const Icon =
