@@ -12,15 +12,15 @@ import {
   IconOpenEye,
 } from '../../icons/icons';
 
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { Checkbox } from 'react-native-ui-lib';
+import {Checkbox} from 'react-native-ui-lib';
 import IwtButton from '../../components/buttons/IwtButton';
 import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 interface ISingInForm {
@@ -57,7 +57,7 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
             Log In.
           </Text>
 
-          <Text style={tw`text-[14px] text-[#454545] font-NunitoSansRegular`}>
+          <Text style={tw`text-sm text-[#454545] font-NunitoSansRegular`}>
             Log In with your data that you entered during your registration
           </Text>
         </View>
@@ -148,9 +148,8 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
                 </TouchableOpacity>
                 <TButton
                   onPress={handleSubmit}
-                  
                   title="Log in"
-                  containerStyle={tw`w-full mb-5 mt-3 bg-primary text-[16px] `}
+                  containerStyle={tw`w-full mb-5 mt-3 bg-primary text-lg `}
                   titleStyle={tw`text-white font-NunitoSansSemiBold`}
                 />
               </View>
@@ -160,10 +159,9 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
 
         {/*================ all buttons =================== */}
         <View style={tw`px-[4%] gap-6`}>
-          <Or  />
+          <Or />
 
           <IwtButton
-            
             containerStyle={tw`w-full bg-[#1877F2]`}
             title="Continue with Facebook"
             svg={`<svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,7 +170,6 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
         `}
           />
           <IwtButton
-            
             containerStyle={tw`w-full bg-[#FFFFFF]`}
             title="Continue with  Google"
             titleStyle={tw`text-color-Black800 font-NunitoSansBold`}

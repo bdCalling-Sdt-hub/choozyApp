@@ -32,6 +32,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
       <LogoWithHeader
+        offSearch
         searchOffItem={{
           offPost: true,
           offProduct: true,
@@ -53,7 +54,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           <Text
             style={tw` ${
               options == 'contacts' ? 'text-primary' : 'text-[#34303E]'
-            } font-NunitoSansBold text-[16px]`}>
+            } font-NunitoSansBold text-sm`}>
             Contacts
           </Text>
         </TouchableOpacity>
@@ -68,7 +69,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           <Text
             style={tw` ${
               options == 'groups' ? 'text-primary' : 'text-[#34303E]'
-            } font-NunitoSansBold text-[16px]`}>
+            } font-NunitoSansBold text-sm`}>
             Groups
           </Text>
         </TouchableOpacity>
@@ -122,13 +123,13 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           {
             title: 'My Stores',
             onPress: () => {
-              navigation?.navigate('DrawerRoutes');
+              navigation?.navigate('CreateShop');
             },
           },
-          {
-            title: 'Favs',
-            onPress: () => {},
-          },
+          // {
+          //   title: 'Favs',
+          //   onPress: () => {},
+          // },
         ]}
       />
 

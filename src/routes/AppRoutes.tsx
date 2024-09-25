@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 
-import {Text, View} from 'react-native';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useDeviceContext} from 'twrnc';
@@ -12,33 +10,40 @@ import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
 import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
 import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
+import Checkout from '../screens/Checkout/Checkout';
+import PassChanSuccess from '../screens/logins/PassChanSuccess';
 import NotificationScreen from '../screens/notificaiton/NotificationScreen';
+import OrdersHistory from '../screens/Orders History/OrdersHistory';
+import MyProductDetailsScreen from '../screens/product/MyProductDetailsScreen';
+import ProductDetailsScreen from '../screens/product/ProductDetailsScreen';
 import SearchScreen from '../screens/search/SearchScreen';
+import FAQ from '../screens/settings/FAQ';
+import ProfileEdit from '../screens/settings/ProfileEdit';
+import Settings from '../screens/settings/Settings';
+import Support from '../screens/settings/Support';
+import TermsAndCondition from '../screens/settings/TermsAndCondition';
+import UpdatePassword from '../screens/settings/UpdatePassword';
+import CreateShop from '../screens/store/CreateShop';
 import LoveStoreScreen from '../screens/store/LoveStoreScreen';
+import OtherWallPost from '../screens/wall/components/OtherWallPost';
+import OtherWallStore from '../screens/wall/components/OtherWallStore';
+import OtherWall from '../screens/wall/OtherWall';
 import TransactionsHistory from '../screens/wallet/TransactionsHistory';
 import WalletScreen from '../screens/wallet/WalletScreen';
 import BottomRoutes from './BottomRoutes';
 import CustomDrawer from './DrawerRoutes';
-
-function HomeScreen() {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
 
 const Stack = createNativeStackNavigator();
 function AppRoutes() {
   useDeviceContext(tw);
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator screenOptions={{headerShown: false, animation: 'ios'}}>
         {/*=================== logins part ======================= */}
         {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
         {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
-        {/* 
-        <Stack.Screen name="Login" component={LoginScreen} />
+
+        {/* <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="Forget" component={ForgetPassword} />
         <Stack.Screen name="Verify" component={VerifyEmail} />
@@ -63,6 +68,24 @@ function AppRoutes() {
         />
         <Stack.Screen name="LoveStore" component={LoveStoreScreen} />
         <Stack.Screen name="DrawerRoutes" component={CustomDrawer} />
+        <Stack.Screen
+          name="MyProductDetails"
+          component={MyProductDetailsScreen}
+        />
+        <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+        <Stack.Screen name="CreateShop" component={CreateShop} />
+        <Stack.Screen name="TermsAndCondition" component={TermsAndCondition} />
+        <Stack.Screen name="FAQ" component={FAQ} />
+        <Stack.Screen name="Support" component={Support} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+        <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
+        <Stack.Screen name="PassChanSuccess" component={PassChanSuccess} />
+        <Stack.Screen name="OrderHistory" component={OrdersHistory} />
+        <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="OtherWall" component={OtherWall} />
+        <Stack.Screen name="OtherWallStore" component={OtherWallStore} />
+        <Stack.Screen name="OtherWallPost" component={OtherWallPost} />
       </Stack.Navigator>
     </NavigationContainer>
   );

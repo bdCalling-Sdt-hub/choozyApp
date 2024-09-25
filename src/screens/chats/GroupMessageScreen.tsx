@@ -1,7 +1,8 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
   IconAttachment,
   IconCamera,
+  IconClose,
   IconSend,
   IconVThreeDotsMd,
 } from '../../icons/icons';
@@ -9,26 +10,26 @@ import {
 import moment from 'moment-timezone';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { SvgXml } from 'react-native-svg';
-import { Switch } from 'react-native-ui-lib';
+import {SvgXml} from 'react-native-svg';
+import {Switch} from 'react-native-ui-lib';
+import personalMessageData from '../../assets/database/groupMessage.json';
 import messageData from '../../assets/database/message.json';
-import personalMessageData from '../../assets/database/personalMessage.json';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
 import InputText from '../../components/inputs/InputText';
 import ActionModal from '../../components/modals/ActionModal';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
-  const [actionModalOpen,setActionModalOpen] = React.useState(false)
-  const [makeMute,setMakeMute] = React.useState(false)
+  const [actionModalOpen, setActionModalOpen] = React.useState(false);
+  const [makeMute, setMakeMute] = React.useState(false);
+  const [joinRequest, setJoinRequest] = React.useState(true);
 
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*============= header =============== */}
       <View>
-
         <BackWithComponent
           onPress={() => navigation?.goBack()}
           containerStyle={tw` justify-between items-start`}
@@ -37,7 +38,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
               <View>
                 <View style={tw`flex-row items-center gap-3`}>
                   <Text
-                    style={tw`text-color-Black1000 font-NunitoSansExtraBold`}>
+                    style={tw`text-color-Black1000 text-base font-NunitoSansExtraBold`}>
                     {messageData.group.name}
                   </Text>
                   <FastImage
@@ -47,15 +48,13 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                     }}
                   />
                 </View>
-                <Text>{messageData?.group?.members}</Text>
+                <Text style={tw`text-color-Black400 text-sm`}>
+                  {messageData?.group?.members}
+                </Text>
               </View>
               <TouchableOpacity
-              
                 activeOpacity={0.5}
-                onPress={() => 
-                 setActionModalOpen(!actionModalOpen)
-
-                }
+                onPress={() => setActionModalOpen(!actionModalOpen)}
                 style={tw`px-4 h-8 items-center justify-center`}>
                 <SvgXml xml={IconVThreeDotsMd} />
               </TouchableOpacity>
@@ -64,6 +63,36 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
         />
       </View>
       {/*================= messages ================== */}
+      {/*============= floating accept join for group ========= */}
+      {joinRequest && (
+        <View style={tw`absolute top-15 w-full px-3 z-30 `}>
+          <View
+            style={tw`bg-white w-full p-4 shadow-lg flex-row justify-between rounded-2xl items-center gap-3`}>
+            <View style={tw`flex-row gap-3 items-center`}>
+              <FastImage
+                style={tw`w-12 h-12 rounded-2xl`}
+                source={{
+                  uri: 'https://randomuser.me/api/portraits/men/19.jpg',
+                }}
+              />
+              <Text
+                style={tw`text-text14 font-NunitoSansBold text-color-Black1000`}>
+                Ethan Clark
+              </Text>
+            </View>
+            <View style={tw`flex-row gap-6 items-center `}>
+              <TouchableOpacity onPress={() => setJoinRequest(false)}>
+                <Text style={tw`text-text14 font-NunitoSansBold text-primary`}>
+                  Accept
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setJoinRequest(false)}>
+                <SvgXml xml={IconClose} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
 
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -83,7 +112,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                       <View
                         style={tw`flex-row justify-between items-center my-1`}>
                         <Text
-                          style={tw`text-color-Black1000 font-NunitoSansBold text-[14px] `}>
+                          style={tw`text-color-Black1000 font-NunitoSansBold text-sm `}>
                           {item.sender}
                         </Text>
                         <Text
@@ -96,7 +125,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`bg-primary500  p-3 rounded-lg  self-end rounded-tr-none`}>
                           <Text
-                            style={tw`text-white text-[16px] font-NunitoSansRegular`}>
+                            style={tw`text-white text-base font-NunitoSansRegular`}>
                             {item.message}
                           </Text>
                         </View>
@@ -122,7 +151,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                       {/* Avatar */}
                       <FastImage
                         source={{
-                          uri:  item.avatar,
+                          uri: item.avatar,
                         }}
                         style={tw`w-8 h-8 rounded-full mr-3`}
                       />
@@ -130,7 +159,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                         <View
                           style={tw`flex-row justify-between items-center my-1`}>
                           <Text
-                            style={tw`text-color-Black1000 font-NunitoSansBold text-[14px] `}>
+                            style={tw`text-color-Black1000 font-NunitoSansBold text-sm `}>
                             {item.sender}
                           </Text>
                           <Text
@@ -142,7 +171,7 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
                           <View
                             style={tw`bg-gray-100 p-3 rounded-lg  rounded-tl-none`}>
                             <Text
-                              style={tw`text-color-Black1000 text-[16px] font-NunitoSansRegular`}>
+                              style={tw`text-color-Black1000 text-lg font-NunitoSansRegular`}>
                               {item.message}
                             </Text>
                           </View>
@@ -187,30 +216,40 @@ const GroupMessageScreen = ({navigation}: NavigProps<null>) => {
           onPress={() => {}}
         />
       </View>
-      <ActionModal containerStyle={tw``} visible={actionModalOpen} setVisible={setActionModalOpen} actionData={[
-         {
-           title: 'Members',
-           onPress: () => {
-             setActionModalOpen(false)
-            navigation?.navigate("GroupMembers")
-           },
-         },
-         {
-           title: 'Mute Notification',
-          //  onPress: () => {},
-          enableBoth : true,
-           customComponent : <Switch offColor={"#E8E8EA"} onColor={"#4964C6"} value={makeMute} onValueChange={(value)=>setMakeMute(value)} />
-         },
-         {
-           title: 'Leave',
-           titleStyle : tw`text-red-500`,
-           onPress: () => {
-            navigation?.goBack()
-           },
-         },
-       
-       
-     ]} />
+      <ActionModal
+        containerStyle={tw``}
+        visible={actionModalOpen}
+        setVisible={setActionModalOpen}
+        actionData={[
+          {
+            title: 'Members',
+            onPress: () => {
+              setActionModalOpen(false);
+              navigation?.navigate('GroupMembers');
+            },
+          },
+          {
+            title: 'Mute Notification',
+            //  onPress: () => {},
+            enableBoth: true,
+            customComponent: (
+              <Switch
+                offColor={'#E8E8EA'}
+                onColor={'#4964C6'}
+                value={makeMute}
+                onValueChange={value => setMakeMute(value)}
+              />
+            ),
+          },
+          {
+            title: 'Leave',
+            titleStyle: tw`text-red-500`,
+            onPress: () => {
+              navigation?.goBack();
+            },
+          },
+        ]}
+      />
     </View>
   );
 };

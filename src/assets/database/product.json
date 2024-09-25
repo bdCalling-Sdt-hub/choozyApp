@@ -1,0 +1,67 @@
+[
+  {
+    "id": 25,
+    "productCode": "WA548172",
+    "name": "Samsung 49-Inch CHG90 144Hz Curved Gaming Monitor",
+    "category": "electronics",
+    "description": "49 INCH SUPER ULTRAWIDE 32:9 CURVED GAMING MONITOR with dual 27 inch screen side by side.",
+    "price": 999.99,
+    "currency": "$",
+    "images": [
+      "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
+      "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg"
+    ]
+  },
+  {
+    "id": 26,
+    "productCode": "WA295741",
+    "name": "Logitech G-Series Gaming Mouse",
+    "category": "electronics",
+    "description": "LIGHTSPEED Wireless Gaming Mouse featuring HERO 25K Sensor, 25,600 DPI, RGB, Ultra-Lightweight.",
+    "price": 79.99,
+    "currency": "$",
+    "images": [
+      "https://fakestoreapi.com/img/61mtL65D4cL._AC_SX679_.jpg",
+      "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg"
+    ]
+  },
+  {
+    "id": 27,
+    "productCode": "WA821573",
+    "name": "SteelSeries Arctis 7 - Lossless Wireless Gaming Headset",
+    "category": "electronics",
+    "description": "Lossless 2.4 GHz wireless audio designed for low latency gaming. Best mic in gaming.",
+    "price": 169.99,
+    "currency": "$",
+    "images": [
+      "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg",
+      "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg"
+    ]
+  },
+  {
+    "id": 28,
+    "productCode": "WA182974",
+    "name": "Razer Blade 15 Gaming Laptop",
+    "category": "electronics",
+    "description": "NVIDIA GeForce RTX 3070, Intel Core i7, 16GB RAM, 1TB SSD, 15.6” QHD 165Hz Display.",
+    "price": 2299.99,
+    "currency": "$",
+    "images": [
+      "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg",
+      "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg"
+    ]
+  },
+  {
+    "id": 29,
+    "productCode": "WA694321",
+    "name": "BenQ EX3501R 35-Inch Ultra-Wide Curved Monitor",
+    "category": "electronics",
+    "description": "35 inch curved ultra-wide screen, perfect for high performance gaming and office use.",
+    "price": 549.99,
+    "currency": "$",
+    "images": [
+      "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
+      "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg"
+    ]
+  }
+]

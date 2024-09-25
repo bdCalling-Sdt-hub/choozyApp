@@ -1,11 +1,11 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { IconCloseEye, IconOpenEye } from '../../icons/icons';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {IconCloseEye, IconOpenEye} from '../../icons/icons';
 
 import React from 'react';
-import { SvgXml } from 'react-native-svg';
-import { TextField } from 'react-native-ui-lib';
+import {SvgXml} from 'react-native-svg';
+import {TextField} from 'react-native-ui-lib';
 import TButton from '../../components/buttons/TButton';
-import { NavigProps } from '../../interfaces/NaviProps';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const CreateNewPassword = ({navigation}: NavigProps<null>) => {
@@ -28,7 +28,7 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
         contentContainerStyle={tw`px-[4%] gap-5 `}
         keyboardShouldPersistTaps="always">
         <View style={tw`gap-2 `}>
-          <Text style={tw`text-[14px] text-color-Black950 font-NunitoSansBold`}>
+          <Text style={tw`text-sm text-color-Black950 font-NunitoSansBold`}>
             New Password
           </Text>
           <View
@@ -55,7 +55,7 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
           </View>
         </View>
         <View style={tw`gap-2 `}>
-          <Text style={tw`text-[14px] text-color-Black950 font-NunitoSansBold`}>
+          <Text style={tw`text-sm text-color-Black950 font-NunitoSansBold`}>
             Confirm Password
           </Text>
           <View
@@ -88,7 +88,6 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
         <TButton
           onPress={() => navigation?.navigate('VerifySuccess')}
           isLoading={false}
-          
           title="Submit"
           containerStyle={tw`my-10 w-full bg-primary`}
         />

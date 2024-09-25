@@ -28,6 +28,7 @@
     "react-native-screens": "^3.34.0",
     "react-native-svg": "^15.6.0",
     "react-native-svg-transformer": "^1.5.0",
+    "react-native-ui-datepicker": "^2.0.4",
     "react-native-ui-lib": "^7.30.0",
     "twrnc": "^4.5.1"
   },

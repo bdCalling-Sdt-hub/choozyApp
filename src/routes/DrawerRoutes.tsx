@@ -18,7 +18,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <View style={tw`px-6 py-8 gap-10`}>
-        <TouchableOpacity style={tw`flex-row gap-3 items-center`}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('Wallet');
+          }}
+          style={tw`flex-row gap-3 items-center`}>
           <IButton
             svg={IconCard}
             containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
@@ -27,7 +31,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             My Wallet
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`flex-row gap-3 items-center`}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('OrderHistory');
+          }}
+          style={tw`flex-row gap-3 items-center`}>
           <IButton
             svg={IconCard}
             containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
@@ -36,7 +44,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             History
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`flex-row gap-3 items-center`}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('TermsAndCondition');
+          }}
+          style={tw`flex-row gap-3 items-center`}>
           <IButton
             svg={IconCard}
             containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
@@ -45,7 +57,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             Terms & Conditions
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`flex-row gap-3 items-center`}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('FAQ');
+          }}
+          style={tw`flex-row gap-3 items-center`}>
           <IButton
             svg={IconCard}
             containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
@@ -54,7 +70,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             FAQ
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`flex-row gap-3 items-center`}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('Support');
+          }}
+          style={tw`flex-row gap-3 items-center`}>
           <IButton
             svg={IconCard}
             containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
@@ -63,7 +83,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             Support
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`flex-row gap-3 items-center`}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('Settings');
+          }}
+          style={tw`flex-row gap-3 items-center`}>
           <IButton
             svg={IconCard}
             containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
@@ -86,7 +110,7 @@ export default function CustomDrawer() {
         drawerPosition: 'right', // Drawer comes from the right
         drawerType: 'slide',
         headerShown: false,
-        drawerStyle: tw`w-[66%] md:w-[60%] tablet:w-[22%] `,
+        drawerStyle: tw`w-[66%] md:w-[65%] tablet:w-[22%] `,
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen

@@ -2,12 +2,12 @@ import {Text, View} from 'react-native';
 
 import React from 'react';
 
-const TermsAndConditions = () => {
+const PurchaseScreen = () => {
   return (
     <View>
-      <Text>TermsAndConditions</Text>
+      <Text>PurchaseScreen</Text>
     </View>
   );
 };
 
-export default TermsAndConditions;
+export default PurchaseScreen;

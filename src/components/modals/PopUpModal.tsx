@@ -26,7 +26,16 @@ interface PopUpModalProps {
   titleStyle?: any;
   icon?: JSX.Element;
   lottify?: string;
+  containerStyle?: any;
   iconComponent?: JSX.Element;
+  multipleBTNStyle?: any;
+  multipleButton?: Array<{
+    onPress?: () => void;
+    text?: string;
+    buttonText?: string;
+    buttonTextStyle?: any;
+    buttonStyle?: any;
+  }>;
   onPress?: () => void;
   svgIcon?: any;
   content?: string;
@@ -70,7 +79,11 @@ const PopUpModal = forwardRef<PopUpModalRef, PopUpModalProps>(
             setVisible(false);
           }}
           style={tw`flex-1 justify-center items-center`}>
-          <View style={tw`bg-white w-[92%] p-8 rounded-3xl gap-6`}>
+          <View
+            style={[
+              tw`bg-white w-[92%] p-8 rounded-3xl gap-6`,
+              modalContent?.containerStyle,
+            ]}>
             {modalContent?.icon && <View>{modalContent?.icon}</View>}
             {/* {modalContent?.lottify && (
               <View>
@@ -107,30 +120,57 @@ const PopUpModal = forwardRef<PopUpModalRef, PopUpModalProps>(
             {modalContent?.content && (
               <Text
                 style={[
-                  tw`text-center font-normal text-[16px] text-[#34303E]`,
+                  tw`text-center font-normal text-lg text-[#34303E]`,
                   modalContent.contentStyle,
                 ]}>
                 {modalContent.content}
               </Text>
             )}
-            <View
-              style={[
-                tw`bg-green-600 justify-center items-center p-3 rounded-xl`,
-                modalContent?.buttonStyle,
-              ]}>
-              <TouchableOpacity
-                style={tw`w-full justify-center items-center`}
-                activeOpacity={0.5}
-                onPress={modalContent?.onPress}>
-                <Text
-                  style={[
-                    tw`text-white font-bold`,
-                    modalContent?.buttonTextStyle,
-                  ]}>
-                  {modalContent?.buttonText || 'Okay'}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {!modalContent?.multipleButton && (
+              <View
+                style={[
+                  tw`bg-green-600 justify-center items-center p-3 rounded-xl`,
+                  modalContent?.buttonStyle,
+                ]}>
+                <TouchableOpacity
+                  style={tw`w-full justify-center items-center`}
+                  activeOpacity={0.5}
+                  onPress={modalContent?.onPress}>
+                  <Text
+                    style={[
+                      tw`text-white font-bold`,
+                      modalContent?.buttonTextStyle,
+                    ]}>
+                    {modalContent?.buttonText || 'Okay'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {modalContent?.multipleButton && (
+              <View style={[tw`flex-row gap-3`, modalContent.multipleBTNStyle]}>
+                {modalContent?.multipleButton.map((item, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      tw` bg-green-600 justify-center items-center p-3 rounded-xl`,
+                      item?.buttonStyle,
+                    ]}>
+                    <TouchableOpacity
+                      style={tw`w-full justify-center items-center`}
+                      activeOpacity={0.5}
+                      onPress={item?.onPress}>
+                      <Text
+                        style={[
+                          tw`text-white font-bold`,
+                          item?.buttonTextStyle,
+                        ]}>
+                        {item?.buttonText || 'Okay'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
         </Pressable>
       </Modal>
