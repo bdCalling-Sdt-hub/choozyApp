@@ -127,7 +127,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           />
           <Text
             style={tw`text-color-Black800 font-NunitoSansBold text-xs md:text-sm`}>
-            Sing Out
+            Log Out
           </Text>
         </TouchableOpacity>
       </View>
