@@ -15,6 +15,7 @@ interface MessageCardProps {
   };
   onPress?: () => void;
   joinBtn?: boolean;
+  joinPress?: () => void;
   offPartOne?: boolean;
   offPartTow?: boolean;
   offPartThree?: boolean;
@@ -31,6 +32,7 @@ const MessageCard = ({
   item,
   onPress,
   joinBtn,
+  joinPress,
   subTitleStyle,
   titleStyle,
   containerStyle,
@@ -86,6 +88,7 @@ const MessageCard = ({
         <View style={tw`items-center gap-2`}>
           {joinBtn ? (
             <TouchableOpacity
+              onPress={joinPress}
               activeOpacity={0.5}
               style={tw`items-center gap-2 `}>
               {/* unread message = 0 so dot show  */}

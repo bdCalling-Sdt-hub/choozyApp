@@ -1,14 +1,12 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, View} from 'react-native';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import CreatedHeaderWithITB from '../../components/backHeader/CreatedHeaderWithITB';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import NormalModal from '../../components/modals/NormalModal';
-import {IconVThreeDots} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
@@ -21,16 +19,16 @@ const CreateShop = ({navigation}: NavigProps<null>) => {
         onPress={() => navigation?.goBack()}
         title="My Shop"
         containerStyle={tw`justify-between items-center bg-white`}
-        ComponentBtn={
-          <TouchableOpacity
-            onPress={() => {
-              // setActionModalOpen(!actionModalOpen);
-            }}
-            activeOpacity={0.5}
-            style={tw`px-4 py-2`}>
-            <SvgXml xml={IconVThreeDots} />
-          </TouchableOpacity>
-        }
+        // ComponentBtn={
+        //   <TouchableOpacity
+        //     onPress={() => {
+        //       // setActionModalOpen(!actionModalOpen);
+        //     }}
+        //     activeOpacity={0.5}
+        //     style={tw`px-4 py-2`}>
+        //     <SvgXml xml={IconVThreeDots} />
+        //   </TouchableOpacity>
+        // }
       />
 
       <View style={tw`justify-center items-center flex-1 gap-2`}>
@@ -74,7 +72,7 @@ const CreateShop = ({navigation}: NavigProps<null>) => {
             containerStyle={tw`w-full my-3 bg-primary600`}
             onPress={() => {
               setShowCreateShopModal(false);
-              navigation?.navigate('DrawerRoutes', {
+              navigation?.navigate('MyWall', {
                 storeName,
               });
             }}

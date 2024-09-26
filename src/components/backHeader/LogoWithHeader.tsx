@@ -75,6 +75,7 @@ const LogoWithHeader = ({
         )}
       </View>
       <NormalModal
+        animationType="fade"
         containerStyle={tw`w-full`}
         setVisible={setSearchVisible}
         visible={searchVisible}>

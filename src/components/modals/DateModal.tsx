@@ -13,6 +13,7 @@ const DateModal = ({setVisible, visible, selectedDate}: DateModalProps) => {
   const [selectDate, setSelectDate] = React.useState(new Date());
   return (
     <NormalModal
+      animationType="fade"
       visible={visible}
       setVisible={setVisible}
       layerContainerStyle={tw`justify-center items-center flex-1 px-[4%] `}

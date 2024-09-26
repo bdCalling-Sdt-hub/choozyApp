@@ -1,5 +1,6 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
+  IconBasicsleft,
   IconImage,
   IconLock,
   IconMenu,
@@ -15,6 +16,7 @@ import {DrawerActions} from '@react-navigation/native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {TextInput} from 'react-native-gesture-handler';
+import {Asset} from 'react-native-image-picker';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import CreatedHeaderWithITB from '../../components/backHeader/CreatedHeaderWithITB';
@@ -26,6 +28,7 @@ import InputText from '../../components/inputs/InputText';
 import NormalModal from '../../components/modals/NormalModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useImagePicker} from '../../utils/utils';
 
 const Post = React.lazy(() => import('./components/Post'));
 const Store = React.lazy(() => import('./components/Store'));
@@ -87,6 +90,29 @@ const MyWall = ({navigation}: NavigProps<null>) => {
   const [showCategoryModal, setShowCategoryModal] = React.useState(false);
   const [selectCategory, setSelectCategory] = React.useState('Vehicle');
 
+  const [images, setImages] = React.useState<Array<Asset>>();
+
+  const [post, setPost] = React.useState('');
+
+  const handleImage = async (need: 'post' | 'store') => {
+    if (need === 'post') {
+      const image = await useImagePicker({
+        option: 'library',
+      });
+      // check image lenth maximum 4
+      // console.log(image);
+      setImages(image);
+    }
+    if (need === 'store') {
+      const image = await useImagePicker({
+        option: 'library',
+        selectionLimit: 4,
+      });
+      // check image lenth maximum 4
+      setImages(image);
+    }
+  };
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -110,15 +136,16 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%]`}>
-          <View style={tw`flex-row items-center justify-between gap-8 my-5`}>
+          <View
+            style={tw`flex-row items-center justify-between tablet:justify-start gap-8  my-5`}>
             <FastImage
-              style={tw`w-16 h-16 rounded-3xl`}
+              style={tw`w-16 h-16  rounded-3xl`}
               source={{
                 uri: 'https://randomuser.me/api/portraits/men/19.jpg',
               }}
               resizeMode={FastImage.resizeMode.contain}
             />
-            <View style={tw`flex-1 flex-row justify-between`}>
+            <View style={tw`flex-1  flex-row justify-between tablet:max-w-72 `}>
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
@@ -200,7 +227,9 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         </View>
 
         {options == 'post' ? (
-          <Post navigation={navigation} />
+          <View style={tw`tablet:mx-[30%]`}>
+            <Post navigation={navigation} />
+          </View>
         ) : (
           <Store navigation={navigation} />
         )}
@@ -218,6 +247,7 @@ const MyWall = ({navigation}: NavigProps<null>) => {
 
       <NormalModal
         visible={showAddPostModal}
+        scrollable
         animationType="fade"
         layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
         containerStyle={tw` rounded-2xl p-5`}
@@ -256,10 +286,23 @@ const MyWall = ({navigation}: NavigProps<null>) => {
             Add to your post
           </Text>
           <View style={tw`flex-row items-center gap-4`}>
-            <SimpleButton
-              svgIcon={IconImage}
-              containerStyle={tw`w-12 rounded-xl h-12 items-center justify-center border-0 bg-color-Black50`}
-            />
+            <TouchableOpacity onPress={() => handleImage('post')}>
+              {images?.length > 0 ? (
+                <FastImage
+                  style={tw`w-12 rounded-xl h-12 `}
+                  resizeMode={FastImage.resizeMode.cover}
+                  source={{
+                    uri: images![0]?.uri,
+                  }}
+                />
+              ) : (
+                <SimpleButton
+                  onPress={() => handleImage('post')}
+                  svgIcon={IconImage}
+                  containerStyle={tw`w-12 rounded-xl h-12 items-center justify-center border-0 bg-color-Black50`}
+                />
+              )}
+            </TouchableOpacity>
             <View style={tw`gap-2`}>
               <Text
                 style={tw`text-color-Black800 font-NunitoSansBold text-base`}>
@@ -317,9 +360,29 @@ const MyWall = ({navigation}: NavigProps<null>) => {
             Select product images
           </Text>
           <View style={tw`flex-row items-center gap-4`}>
-            <SimpleButton
-              svgIcon={IconImage}
-              containerStyle={tw`w-12 rounded-xl h-12 items-center justify-center border-0 bg-color-Black50`}
+            <FlatList
+              contentContainerStyle={tw`gap-2`}
+              ListHeaderComponent={() => (
+                <SimpleButton
+                  onPress={() => handleImage('post')}
+                  svgIcon={IconImage}
+                  containerStyle={tw`w-12 rounded-xl h-12 items-center justify-center border-0 bg-color-Black50`}
+                />
+              )}
+              data={images}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item}) => (
+                <View>
+                  <FastImage
+                    style={tw`w-14 h-12 rounded-xl `}
+                    resizeMode={FastImage.resizeMode.cover}
+                    source={{
+                      uri: item.uri,
+                    }}
+                  />
+                </View>
+              )}
             />
           </View>
         </View>
@@ -329,6 +392,7 @@ const MyWall = ({navigation}: NavigProps<null>) => {
             <InputText
               placeholder="Set product prize"
               placeholderTextColor={'#A5A3A9'}
+              keyboardType="decimal-pad"
               floatingPlaceholder
               style={tw`font-NunitoSansRegular `}
             />
@@ -379,9 +443,15 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         containerStyle={tw` rounded-2xl p-5 my-3`}
         setVisible={setShowCategoryModal}>
         <View style={tw` border-dashed py-2`}>
-          <Text style={tw`text-color-Black800 font-NunitoSansBold text-base `}>
-            Select Category
-          </Text>
+          <TouchableOpacity
+            style={tw`flex-row items-center gap-3`}
+            onPress={() => setShowCategoryModal(false)}>
+            <SvgXml width={12} height={12} xml={IconBasicsleft} />
+            <Text
+              style={tw`text-color-Black800 font-NunitoSansBold text-base `}>
+              Select Category
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={tw`py-4 gap-4`}>
           {categoryData.map((item, index) => (

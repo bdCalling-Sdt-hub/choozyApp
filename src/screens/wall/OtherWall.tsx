@@ -77,7 +77,7 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
-        title="My Wall"
+        title="Back"
         containerStyle={tw`justify-between`}
         ComponentBtn={
           <TButton
@@ -100,15 +100,16 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%]`}>
-          <View style={tw`flex-row items-center justify-between gap-8 my-5`}>
+          <View
+            style={tw`flex-row items-center justify-between tablet:justify-start gap-8  my-5`}>
             <FastImage
-              style={tw`w-16 h-16 rounded-3xl`}
+              style={tw`w-16 h-16  rounded-3xl`}
               source={{
                 uri: 'https://randomuser.me/api/portraits/men/19.jpg',
               }}
               resizeMode={FastImage.resizeMode.contain}
             />
-            <View style={tw`flex-1 flex-row justify-between`}>
+            <View style={tw`flex-1  flex-row justify-between tablet:max-w-72 `}>
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
@@ -205,7 +206,9 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
         </View>
 
         {options == 'post' ? (
-          <OtherWallPost navigation={navigation} />
+          <View style={tw`tablet:mx-[30%]`}>
+            <OtherWallPost navigation={navigation} />
+          </View>
         ) : (
           <OtherWallStore navigation={navigation} />
         )}

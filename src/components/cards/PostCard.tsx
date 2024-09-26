@@ -8,6 +8,7 @@ import tw from '../../lib/tailwind';
 import IButton from '../buttons/IButton';
 import InputText from '../inputs/InputText';
 import SideModal from '../modals/SideModal';
+import CommentCard from './CommentCard';
 
 interface PostCardProps {
   item: any;
@@ -19,6 +20,8 @@ interface PostCardProps {
 const PostCard = ({item, onPress}: PostCardProps) => {
   const [love, setLove] = React.useState(false);
   const [isComment, setIsComment] = React.useState(false);
+  const [comment, setComment] = React.useState('');
+  const [open, setOpen] = React.useState(false);
   return (
     <View style={tw` p-4 bg-white`}>
       <TouchableOpacity
@@ -33,8 +36,7 @@ const PostCard = ({item, onPress}: PostCardProps) => {
           }}
         />
         <View style={tw`gap-[2px]`}>
-          <Text
-            style={tw`text-text14 font-NunitoSansBold text-color-Black1000`}>
+          <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
             {item.user.name}
           </Text>
           <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
@@ -44,7 +46,7 @@ const PostCard = ({item, onPress}: PostCardProps) => {
       </TouchableOpacity>
       {item.content.text && (
         <View style={tw`py-3`}>
-          <Text style={tw`text-color-Black1000 font-NunitoSansBold`}>
+          <Text style={tw`text-sm text-color-Black900 font-NunitoSansBold`}>
             {item.content.text}
           </Text>
         </View>
@@ -52,7 +54,8 @@ const PostCard = ({item, onPress}: PostCardProps) => {
 
       {item.content.image && (
         <FastImage
-          style={tw`w-full h-52 rounded-2xl my-1`}
+          style={tw`w-full h-52 tablet:h-60 rounded-2xl my-1`}
+          resizeMode={FastImage.resizeMode.cover}
           source={{
             uri: item.content.image,
           }}
@@ -116,176 +119,8 @@ const PostCard = ({item, onPress}: PostCardProps) => {
           keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}
           keyboardDismissMode="interactive">
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
-          </View>
-          <View style={tw`px-4`}>
-            <Text>Dynamic Comment</Text>
+          <View style={tw`px-4 pt-4`}>
+            <CommentCard item={item} />
           </View>
         </ScrollView>
         <View style={tw`p-4 flex-row items-center`}>
@@ -303,7 +138,9 @@ const PostCard = ({item, onPress}: PostCardProps) => {
           <IButton
             svg={IconSend}
             containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
-            onPress={() => {}}
+            onPress={() => {
+              setOpen(!open);
+            }}
           />
         </View>
       </SideModal>
