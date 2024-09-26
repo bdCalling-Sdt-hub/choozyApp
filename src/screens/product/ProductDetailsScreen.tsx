@@ -380,6 +380,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
       </NormalModal>
       {/*==================== Proposal send modal =================== */}
       <NormalModal
+        animationType="fade"
         visible={proposalModal}
         setVisible={setProposalModal}
         layerContainerStyle={tw`justify-center items-center h-full `}
@@ -438,6 +439,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
       </NormalModal>
       {/*======================== purchase modal ========================== */}
       <NormalModal
+        animationType="fade"
         visible={purchaseModal}
         setVisible={setPurchaseModal}
         layerContainerStyle={tw`justify-center items-center h-full `}

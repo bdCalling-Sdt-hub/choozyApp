@@ -30,14 +30,8 @@ function BottomRoutes() {
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: tw`h-16 bg-white shadow-none border border-white`,
-        tabBarItemStyle: {
-          marginVertical: 10,
-        },
-        tabBarLabelStyle: {
-          fontFamily: 'NunitoSansBold',
-          fontSize: 14,
-          textTransform: 'capitalize',
-        },
+        tabBarItemStyle: tw`my-[10px] tablet:my-5 flex-col`,
+        tabBarLabelStyle: tw``,
         tabBarButton: props => <TouchableOpacity {...props} />,
         tabBarIcon: ({focused}) => {
           let icon: any;

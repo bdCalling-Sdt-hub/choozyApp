@@ -2,6 +2,7 @@ import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
+import {Asset} from 'react-native-image-picker';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import TButton from '../../components/buttons/TButton';
@@ -9,8 +10,18 @@ import InputText from '../../components/inputs/InputText';
 import {IconFillCamera} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useImagePicker} from '../../utils/utils';
 
 const ProfileEdit = ({navigation}: NavigProps<null>) => {
+  const [image, setImage] = React.useState<Asset>();
+
+  const handleImage = async () => {
+    const image = await useImagePicker({
+      option: 'library',
+    });
+    setImage(image![0]);
+  };
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -35,12 +46,15 @@ const ProfileEdit = ({navigation}: NavigProps<null>) => {
         <View style={tw`mt-9`}>
           <View style={tw`p-4  gap-3`}>
             <TouchableOpacity
+              onPress={handleImage}
               style={tw`w-16 justify-center items-center self-center`}>
               <FastImage
                 style={tw`w-16 h-16 rounded-2xl`}
-                resizeMode={FastImage.resizeMode.contain}
+                resizeMode={FastImage.resizeMode.cover}
                 source={{
-                  uri: 'https://randomuser.me/api/portraits/men/19.jpg',
+                  uri: image
+                    ? image.uri
+                    : 'https://randomuser.me/api/portraits/men/19.jpg',
                 }}
               />
               <View

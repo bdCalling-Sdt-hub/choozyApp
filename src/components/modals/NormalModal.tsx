@@ -31,8 +31,14 @@ const NormalModal = ({
       overlayBackgroundColor={'rgba(0, 0, 0, 0.2)'}
       visible={visible}
       onBackgroundPress={() => setVisible && setVisible(!visible)}>
-      <View style={layerContainerStyle}>
-        <Pressable disabled style={[tw`bg-white w-full p-4`, containerStyle]}>
+      <View style={[tw``, layerContainerStyle]}>
+        <Pressable
+          disabled
+          style={[
+            tw`bg-white w-full p-4 `,
+            containerStyle,
+            tw`tablet:w-[35%]`,
+          ]}>
           {scrollable ? (
             <ScrollView
               nestedScrollEnabled

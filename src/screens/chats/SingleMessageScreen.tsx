@@ -317,6 +317,7 @@ const SingleMessageScreen = ({
           {
             title: 'Mute Notification',
             //  onPress: () => {},
+
             enableBoth: true,
             customComponent: (
               <Switch
@@ -331,7 +332,9 @@ const SingleMessageScreen = ({
             title: 'Leave',
             titleStyle: tw`text-red-500`,
 
-            onPress: () => {},
+            onPress: () => {
+              navigation?.goBack();
+            },
           },
         ]}
       />

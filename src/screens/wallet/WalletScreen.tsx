@@ -49,7 +49,8 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
       />
       <ScrollView>
         {/*========================== wallet part ====================== */}
-        <View style={tw`mx-[4%] my-4 bg-[#6461FC] h-64 rounded-2xl p-4 gap-8 `}>
+        <View
+          style={tw`mx-[4%] my-4 self-center w-[95%] tablet:w-[40%] bg-[#6461FC] h-64 rounded-2xl p-4 gap-8 `}>
           {/*========================== profile part ====================== */}
           <View style={tw`flex-row items-center gap-3`}>
             <FastImage
@@ -70,7 +71,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
           </View>
           {/*========================== balance part ====================== */}
           <View style={tw``}>
-            <View style={tw`flex-row gap-1 items-center`}>
+            <View style={tw`flex-row  gap-1  items-center`}>
               <Text style={tw`text-white text-sm font-NunitoSansBold `}>
                 Available Balance
               </Text>
@@ -137,6 +138,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
 
       {/*==================== transfer modals ========================= */}
       <NormalModal
+        animationType="fade"
         visible={showTransferModal}
         setVisible={setShowTransferModal}
         layerContainerStyle={tw`justify-center items-center h-full `}
@@ -162,7 +164,11 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
           </Text>
           <View style={tw`gap-5 my-3`}>
             <View style={tw`h-14`}>
-              <InputText placeholder="Enter Amount" floatingPlaceholder />
+              <InputText
+                keyboardType="decimal-pad"
+                placeholder="Enter Amount"
+                floatingPlaceholder
+              />
             </View>
             <View style={tw`h-14`}>
               <InputText
@@ -200,6 +206,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         </View>
       </NormalModal>
       <NormalModal
+        animationType="fade"
         visible={showTransferSelectModal}
         setVisible={setShowTransferSelectModal}
         layerContainerStyle={tw`justify-center items-center h-full `}
@@ -277,6 +284,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
       </NormalModal>
       {/*==================== Request modals ========================= */}
       <NormalModal
+        animationType="fade"
         visible={showRequestModal}
         setVisible={setShowRequestModal}
         layerContainerStyle={tw`justify-center items-center h-full `}
@@ -288,7 +296,11 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
           </Text>
           <View style={tw`gap-5 mt-3`}>
             <View style={tw`h-14`}>
-              <InputText placeholder="Enter Amount" floatingPlaceholder />
+              <InputText
+                placeholder="Enter Amount"
+                keyboardType="decimal-pad"
+                floatingPlaceholder
+              />
             </View>
           </View>
 
@@ -314,6 +326,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         </View>
       </NormalModal>
       <NormalModal
+        animationType="fade"
         visible={showRequestSelectModal}
         setVisible={setShowRequestSelectModal}
         layerContainerStyle={tw`justify-center items-center h-full `}
