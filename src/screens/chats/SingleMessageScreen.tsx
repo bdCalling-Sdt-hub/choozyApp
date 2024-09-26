@@ -332,7 +332,9 @@ const SingleMessageScreen = ({
             title: 'Leave',
             titleStyle: tw`text-red-500`,
 
-            onPress: () => {},
+            onPress: () => {
+              navigation?.goBack();
+            },
           },
         ]}
       />

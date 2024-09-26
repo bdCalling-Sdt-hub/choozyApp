@@ -101,7 +101,7 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
             Didn’t receive the code?
           </Text>
           <Text
-            onPress={() => navigation?.navigate('Login')}
+            onPress={() => navigation?.replace('Login')}
             style={tw`text-primary font-NunitoSansExtraBold`}>
             {' '}
             Send again
@@ -110,7 +110,7 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
       </ScrollView>
       <View style={tw`px-[4%]`}>
         <TButton
-          onPress={() => navigation?.navigate('CreateNewPassword')}
+          onPress={() => navigation?.replace('CreateNewPassword')}
           isLoading={false}
           title="Submit"
           containerStyle={tw`my-10 w-full bg-primary`}

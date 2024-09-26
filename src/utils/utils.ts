@@ -1,6 +1,7 @@
 // devices screen size
 
 import {Dimensions, PixelRatio} from 'react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // import { MMKVLoader } from 'react-native-mmkv-storage';
 // import { imageUrl } from '../redux/api/baseApi';
@@ -53,3 +54,43 @@ export const isMobile = () => {
 // export const removeStorageRole = () => {
 //   lStorage.removeItem('role');
 // };
+
+export const useImagePicker = async ({
+  option,
+  selectionLimit,
+}: {
+  option: 'camera' | 'library';
+  selectionLimit?: number;
+}) => {
+  try {
+    if (option === 'camera') {
+      const result = await launchCamera({
+        mediaType: 'photo',
+        maxWidth: 500,
+        maxHeight: 500,
+        quality: 0.5,
+        includeBase64: true,
+      });
+
+      if (!result.didCancel) {
+        return result.assets;
+      }
+    }
+    if (option === 'library') {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        maxWidth: 500,
+        maxHeight: 500,
+        quality: 0.5,
+        includeBase64: true,
+        selectionLimit: selectionLimit ? selectionLimit : 1, // Set to 0 for unlimited image selection
+      });
+
+      if (!result.didCancel) {
+        return result.assets;
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

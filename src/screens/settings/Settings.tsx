@@ -1,5 +1,5 @@
 import {Text, TouchableOpacity, View} from 'react-native';
-import {IconFillCamera, IconWrite} from '../../icons/icons';
+import {IconWrite} from '../../icons/icons';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -38,10 +38,10 @@ const Settings = ({navigation}: NavigProps<null>) => {
                 uri: 'https://randomuser.me/api/portraits/men/19.jpg',
               }}
             />
-            <View
+            {/* <View
               style={tw`absolute -left-1 -bottom-1  bg-white rounded-2xl p-2`}>
               <SvgXml xml={IconFillCamera} />
-            </View>
+            </View> */}
           </TouchableOpacity>
           <View
             style={tw`gap-6 border-b border-b-color-Black200 pb-10 border-dashed`}>

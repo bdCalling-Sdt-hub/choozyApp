@@ -105,24 +105,29 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           {
             title: 'My Wallet',
             onPress: () => {
+              setActionModalOpen(false);
               navigation?.navigate('Wallet');
             },
           },
           {
             title: 'My Status',
             onPress: () => {
+              setActionModalOpen(false);
               navigation?.navigate('MyWall');
             },
           },
-          {
-            title: 'My Wall',
-            onPress: () => {
-              navigation?.navigate('MyWall');
-            },
-          },
+          // {
+          //   title: 'My Wall',
+
+          //   onPress: () => {
+          //     setActionModalOpen(false);
+          //     navigation?.navigate('MyWall');
+          //   },
+          // },
           {
             title: 'My Stores',
             onPress: () => {
+              setActionModalOpen(false);
               navigation?.navigate('CreateShop');
             },
           },

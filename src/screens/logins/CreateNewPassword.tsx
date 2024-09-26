@@ -86,7 +86,7 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
       </ScrollView>
       <View style={tw`px-[4%]`}>
         <TButton
-          onPress={() => navigation?.navigate('VerifySuccess')}
+          onPress={() => navigation?.replace('VerifySuccess')}
           isLoading={false}
           title="Submit"
           containerStyle={tw`my-10 w-full bg-primary`}
