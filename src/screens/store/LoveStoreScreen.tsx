@@ -94,7 +94,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
                   style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-                  Total Coin
+                  Total Love
                 </Text>
                 <Text
                   style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
@@ -104,7 +104,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
                   style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-                  Coin Prize
+                  Love Prize
                 </Text>
                 <Text
                   style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
