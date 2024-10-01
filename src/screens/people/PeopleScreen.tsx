@@ -10,7 +10,7 @@ import tw from '../../lib/tailwind';
 
 const PeopleScreen = ({navigation}: NavigProps<null>) => {
   return (
-    <View style={tw`flex-1 bg-base`}>
+    <View style={tw`flex-1 bg-base `}>
       {/*================== header part ================= */}
       <View style={tw`bg-white px-[4%] py-2`}>
         <View style={tw` gap-3  flex-row justify-center items-center`}>
