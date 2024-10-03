@@ -5227,6 +5227,11 @@ react-native-lightbox-v2@^0.9.0:
   resolved "https://registry.npmjs.org/react-native-lightbox-v2/-/react-native-lightbox-v2-0.9.2.tgz"
   integrity sha512-+8LwINeSWvPP69YAyWhiJQyaw4Gtu8X4EMvT3PEN615NrOeDaz8jOcIw73pzYJst3z4Z0vxvFB73iH16wCPXtw==
 
+react-native-mmkv-storage@^0.10.3:
+  version "0.10.3"
+  resolved "https://registry.npmjs.org/react-native-mmkv-storage/-/react-native-mmkv-storage-0.10.3.tgz"
+  integrity sha512-z6SB6cVFRMVzB8renQKkb1SL3s9U3zR9kE4Q6mwE7rqlnYelt3RIlmKDIFvYABbdkbhEiL9JMthMfWLPvGROcw==
+
 react-native-parsed-text@^0.0.22:
   version "0.0.22"
   resolved "https://registry.npmjs.org/react-native-parsed-text/-/react-native-parsed-text-0.0.22.tgz"
