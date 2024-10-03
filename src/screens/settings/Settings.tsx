@@ -1,11 +1,11 @@
 import {Text, TouchableOpacity, View} from 'react-native';
-import {IconWrite} from '../../icons/icons';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import InputText from '../../components/inputs/InputText';
+import {IconWrite} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
@@ -43,6 +43,11 @@ const Settings = ({navigation}: NavigProps<null>) => {
               <SvgXml xml={IconFillCamera} />
             </View> */}
           </TouchableOpacity>
+          <View style={tw`flex-row gap-2`}>
+            <Text>Private</Text>
+            <Text>Public</Text>
+            <Text>Contacts Only</Text>
+          </View>
           <View
             style={tw`gap-6 border-b border-b-color-Black200 pb-10 border-dashed`}>
             <View style={tw`justify-center items-center `}>
