@@ -3,17 +3,17 @@
 import {Dimensions, PixelRatio} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-// import { MMKVLoader } from 'react-native-mmkv-storage';
-// import { imageUrl } from '../redux/api/baseApi';
+import {MMKVLoader} from 'react-native-mmkv-storage';
+import {imageUrl} from '../redux/api/baseApi';
 
-// export const lStorage = new MMKVLoader().initialize();
+export const lStorage = new MMKVLoader().initialize();
 
-// export const makeImage = (url: string) => {
-//   return  url.startsWith('https') ? url : imageUrl + url
-// }
-// export const makeImageUrl = (url: string) => {
-//   return imageUrl + url
-// }
+export const makeImage = (url: string) => {
+  return url.startsWith('https') ? url : imageUrl + url;
+};
+export const makeImageUrl = (url: string) => {
+  return imageUrl + url;
+};
 
 export const {width, height} = Dimensions.get('screen');
 //  three size like sm md or tablet
@@ -31,29 +31,29 @@ export const isMobile = () => {
   return width < 768;
 };
 
-// export const setStorageToken = (token: string) => {
-//   lStorage.setString('token', token);
-// };
+export const setStorageToken = (token: string) => {
+  lStorage.setString('token', token);
+};
 
-// export const getStorageToken = () => {
-//   return lStorage.getString('token');
-// };
+export const getStorageToken = () => {
+  return lStorage.getString('token');
+};
 
-// export const removeStorageToken = () => {
-//   lStorage.removeItem('token');
-// };
+export const removeStorageToken = () => {
+  lStorage.removeItem('token');
+};
 
-// export const setStorageRole = (role: string) => {
-//   lStorage.setString('role', role);
-// };
+export const setStorageRole = (role: string) => {
+  lStorage.setString('role', role);
+};
 
-// export const getStorageRole = () => {
-//   return lStorage.getString('role');
-// };
+export const getStorageRole = () => {
+  return lStorage.getString('role');
+};
 
-// export const removeStorageRole = () => {
-//   lStorage.removeItem('role');
-// };
+export const removeStorageRole = () => {
+  lStorage.removeItem('role');
+};
 
 export const useImagePicker = async ({
   option,

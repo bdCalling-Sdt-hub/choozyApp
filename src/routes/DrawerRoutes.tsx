@@ -17,11 +17,9 @@ import {
   IconSupportedBlue,
 } from '../icons/icons';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {useDeviceContext} from 'twrnc';
 import IButton from '../components/buttons/IButton';
 import tw from '../lib/tailwind';
-import AppRoutes from './AppRoutes';
+import Routes from './Routes';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   return (
@@ -138,25 +136,22 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 const Drawer = createDrawerNavigator();
 
 export default function CustomDrawer() {
-  useDeviceContext(tw);
   return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        screenOptions={{
-          drawerPosition: 'right', // Drawer comes from the right
-          drawerType: 'slide',
-          headerShown: false,
-          drawerStyle: tw`w-[66%] md:w-[65%] tablet:w-[22%] h-full`,
+    <Drawer.Navigator
+      screenOptions={{
+        drawerPosition: 'right', // Drawer comes from the right
+        drawerType: 'slide',
+        headerShown: false,
+        drawerStyle: tw`w-[66%] md:w-[65%] tablet:w-[22%] h-full`,
+      }}
+      drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {display: 'none'}, // Hides the drawer item for the screen
         }}
-        drawerContent={props => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen
-          options={{
-            drawerItemStyle: {display: 'none'}, // Hides the drawer item for the screen
-          }}
-          name="App"
-          component={AppRoutes}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
+        name="App"
+        component={Routes}
+      />
+    </Drawer.Navigator>
   );
 }

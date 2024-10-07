@@ -4,6 +4,6 @@
 
 import {AppRegistry} from 'react-native';
 import {name as appName} from './app.json';
-import CustomDrawer from './src/routes/DrawerRoutes';
+import AppRoutes from './src/routes/AppRoutes';
 
-AppRegistry.registerComponent(appName, () => CustomDrawer);
+AppRegistry.registerComponent(appName, () => AppRoutes);

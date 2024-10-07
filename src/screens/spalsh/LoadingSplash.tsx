@@ -1,19 +1,24 @@
-import React, {SetStateAction} from 'react';
-import {StatusBar, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
+import React from 'react';
 import FastImage from 'react-native-fast-image';
+import {useSelector} from 'react-redux';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
-interface SplashProps extends NavigProps<null> {
-  setIsSplash: React.Dispatch<SetStateAction<boolean>>;
-  isSplash?: boolean;
-}
+const LoadingSplash = ({navigation}: NavigProps<null>) => {
+  const {token} = useSelector((state: any) => state?.token);
 
-const SplashScreen = ({navigation, setIsSplash}: SplashProps) => {
+  // console.log(token);
+
   setTimeout(() => {
-    setIsSplash(false);
-  }, 1000);
+    if (token) {
+      navigation?.replace('HomeRoutes');
+    } else {
+      navigation?.replace('Login');
+    }
+  }, 500);
+
   return (
     <View style={tw`flex-1 w-full bg-primary justify-center items-center`}>
       <FastImage
@@ -26,4 +31,6 @@ const SplashScreen = ({navigation, setIsSplash}: SplashProps) => {
   );
 };
 
-export default SplashScreen;
+export default LoadingSplash;
+
+const styles = StyleSheet.create({});
