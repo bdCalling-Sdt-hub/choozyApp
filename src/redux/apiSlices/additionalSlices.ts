@@ -1,75 +1,84 @@
-import { api } from "../api/baseApi";
-import { ITermsAndPolicies } from "../interface/additional";
-import { IDonationsStatus } from "../interface/donation";
-import { IFAQs } from "../interface/faq";
+import {api} from '../api/baseApi';
 
-export const additionalSlices = api.injectEndpoints({
-    endpoints: (builder) => ({
-        getAboutSic: builder.query<ITermsAndPolicies,unknown>({
-            query: ({id,page,limit}) => ({
-                url: `/about-sic`,
-              
-            }),
-            providesTags : ["additional"]
-        }),
-        getFAQ: builder.query<IFAQs,unknown>({
-            query: ({id,page,limit}) => ({
-                url: `/faqs`,
-              
-            }),
-            providesTags : ["additional"]
-        }),
-        getTermsAndConditions: builder.query<ITermsAndPolicies,unknown>({
-            query: ({id,page,limit}) => ({
-                url: `/terms-and-conditions`,
-              
-            }),
-            providesTags : ["additional",]
-        }),
-        getPrivacyPolicy: builder.query<ITermsAndPolicies,unknown>({
-            query: ({id,page,limit}) => ({
-                url: `/privacy-policy`,
-              
-            }),
-            providesTags : ["additional",]
-        }),
-        getSicGuideLines: builder.query<ITermsAndPolicies,unknown>({
-            query: ({id,page,limit}) => ({
-                url: `/sic-guidelines`,
-              
-            }),
-            providesTags : ["additional",]
-        }),
-        getDonation: builder.query<IDonationsStatus,unknown>({
-            query: ({id,page,limit}) => ({
-                url: `/donations`,
-              
-            }),
-            providesTags : ["additional",]
-        }),
-        sendFeedBack: builder.mutation({
-            query: (data) => ({
-                url: `/feedbacks`,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-              method: 'POST',
-              body: data,
-            }),
-            invalidatesTags : ["additional"]
-          }),
-   
+const additionalSlice = api.injectEndpoints({
+  endpoints: builder => ({
+    getUserProfile: builder.query({
+      query: token => ({
+        url: `/userProfile`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      providesTags: ['user'],
     }),
-})
+    loginUser: builder.mutation({
+      query: data => ({
+        url: `/login`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['user'],
+    }),
+    logOutUser: builder.mutation({
+      query: () => ({
+        url: `/logout`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['user'],
+    }),
+    createUser: builder.mutation({
+      query: data => ({
+        url: `/register`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['user'],
+    }),
+    verifyUser: builder.mutation({
+      query: data => ({
+        url: `/verifyOtp`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    userUpdate: builder.mutation({
+      query: data => ({
+        url: `/profile`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['user'],
+    }),
+    forgotPassword: builder.mutation({
+      query: data => ({
+        url: `/forgotPassword`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: data => ({
+        url: `/resetPassword`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['user'],
+    }),
+    updatePassword: builder.mutation({
+      query: data => ({
+        url: `/updatePassword`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['user'],
+    }),
+  }),
+});
 
-
-export const { 
-    useGetAboutSicQuery,
-    useGetFAQQuery,
-    useGetTermsAndConditionsQuery,
-    useGetPrivacyPolicyQuery,
-    useGetSicGuideLinesQuery,
-    useGetDonationQuery,
-    useSendFeedBackMutation
-    
- } = additionalSlices;
+export const {
+  useGetUserProfileQuery,
+  useCreateUserMutation,
+  useLoginUserMutation,
+  useVerifyUserMutation,
+  useUserUpdateMutation,
+} = additionalSlice;

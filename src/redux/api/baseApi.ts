@@ -4,13 +4,14 @@ import {getStorageToken, removeStorageToken} from '../../utils/utils';
 import {clearToken} from '../apiSlices/tokenSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://192.168.10.202:5000/api/v1',
+  baseUrl: 'http://192.168.11.160:7000/api/',
   timeout: 10000,
   prepareHeaders: async (headers, {getState}) => {
     const token = getStorageToken();
     // console.log(token);
     if (token) {
       // console.log(token);
+      headers.set('Accept', 'application/json');
       headers.set('authorization', `Bearer ${token}`);
       // headers.getSetCookie()
     }
@@ -48,14 +49,14 @@ export const api = createApi({
   tagTypes: [
     'user',
     'message',
-    'chat',
+    'group',
     'news_feed',
     'facedown',
     'friend',
-    'additional',
-    'book',
+    'shop',
+    'product',
     'payment',
   ],
 });
 
-export const imageUrl = 'http://192.168.10.202:5000/';
+export const imageUrl = 'http://192.168.11.160:7000';

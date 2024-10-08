@@ -15,7 +15,7 @@ import {SvgXml} from 'react-native-svg';
 import tw from '../lib/tailwind';
 import CallsScreen from '../screens/calls/CallsScreen';
 import ChatsScreen from '../screens/chats/ChatsScreen';
-import PeopleScreen from '../screens/people/PeopleScreen';
+import ContactScreen from '../screens/contacts/ContactScreen';
 import StatusScreen from '../screens/status/StatusScreen';
 
 const Tab = createBottomTabNavigator();
@@ -46,6 +46,9 @@ function BottomRoutes() {
             case 'People':
               icon = focused ? IconFillUserPlus : IconUserPlus;
               break;
+            case 'Contacts':
+              icon = focused ? IconFillUserPlus : IconUserPlus;
+              break;
             case 'Calls':
               icon = focused ? IconFillCall : IconCall;
               break;
@@ -71,7 +74,8 @@ function BottomRoutes() {
       })}>
       <Tab.Screen name="Chats" component={ChatsScreen} />
       <Tab.Screen name="Status" component={StatusScreen} />
-      <Tab.Screen name="People" component={PeopleScreen} />
+      {/* <Tab.Screen name="People" component={PeopleScreen} /> */}
+      <Tab.Screen name="Contacts" component={ContactScreen} />
       <Tab.Screen name="Calls" component={CallsScreen} />
     </Tab.Navigator>
   );
