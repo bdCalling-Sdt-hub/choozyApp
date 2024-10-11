@@ -1,8 +1,9 @@
 import {api} from '../api/baseApi';
+import {IGroupList} from '../interface/group';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
-    getGroups: builder.query({
+    getGroups: builder.query<IGroupList, any>({
       query: id => ({
         url: `/groups`,
       }),
@@ -52,9 +53,9 @@ const authSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['group'],
     }),
-    deleteMessage: builder.mutation({
+    deleteGroupMessage: builder.mutation({
       query: id => ({
-        url: `/deleteMessage/${id}`,
+        url: `/group-messages/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['message'],
@@ -69,5 +70,5 @@ export const {
   useGetGroupMembersQuery,
   useGetGroupsQuery,
   useUpdateGroupMutation,
-  useDeleteMessageMutation,
+  useDeleteGroupMessageMutation,
 } = authSlice;

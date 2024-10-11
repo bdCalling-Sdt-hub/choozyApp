@@ -1,4 +1,5 @@
 import {api} from '../api/baseApi';
+import {INewpaperList} from '../interface/newpaper';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
@@ -14,7 +15,7 @@ const authSlice = api.injectEndpoints({
       }),
       providesTags: ['news_feed'],
     }),
-    getAllNewFeet: builder.query({
+    getAllNewFeet: builder.query<INewpaperList, any>({
       query: () => ({
         url: `/newsfeeds`,
       }),
@@ -28,7 +29,7 @@ const authSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['news_feed'],
     }),
-    lineUnlike: builder.mutation({
+    likeUnlike: builder.mutation({
       query: data => ({
         url: `/like-newsfeed`,
         method: 'POST',
@@ -74,4 +75,8 @@ export const {
   useGetAllNewFeetQuery,
   useGetUserNewFeetQuery,
   useUpdateNewsFeetMutation,
+  useLikeUnlikeMutation,
+  useCommentMutation,
+  useCommentViewQuery,
+  useDeleteCommentMutation,
 } = authSlice;

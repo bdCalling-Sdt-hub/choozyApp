@@ -4,12 +4,15 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {ExpandableSection} from 'react-native-ui-lib';
 import tw from '../../lib/tailwind';
+import {IComment} from '../../redux/interface/newpaper';
 
 interface CommentCardProps {
-  item: any;
+  item: IComment;
+  setReply: any;
 }
-const CommentCard = ({item}: CommentCardProps) => {
+const CommentCard = ({item, setReply}: CommentCardProps) => {
   const [isReply, setIsReply] = React.useState(false);
+
   return (
     <ExpandableSection
       expanded={isReply}
@@ -18,14 +21,14 @@ const CommentCard = ({item}: CommentCardProps) => {
           <View style={tw`flex-row gap-4 `}>
             <FastImage
               style={tw`w-12 h-12 rounded-2xl`}
-              source={{uri: item.user.avatar}}
-              resizeMode={FastImage.resizeMode.contain}
+              source={{uri: item?.image}}
+              resizeMode={FastImage.resizeMode.cover}
             />
             <View>
               <View style={tw`flex-row gap-2 items-center`}>
                 <Text
                   style={tw`text-sm font-PoppinsRegular text-color-Black1000`}>
-                  {item.user.name}
+                  {item?.full_name}
                 </Text>
                 <Text
                   style={tw`text-xs text-color-Black400 font-NunitoSansRegular`}>
@@ -35,10 +38,11 @@ const CommentCard = ({item}: CommentCardProps) => {
 
               <Text
                 style={tw`text-color-Black1000 text-base font-NunitoSansRegular`}>
-                Expectation in reality.
+                {item?.comment}
               </Text>
               <TouchableOpacity
                 onPress={() => {
+                  setReply(item);
                   setIsReply(!isReply);
                 }}>
                 <Text
@@ -50,34 +54,36 @@ const CommentCard = ({item}: CommentCardProps) => {
           </View>
         </View>
       }>
-      <View style={tw`items-end my-4`}>
-        <View style={tw`flex-row gap-4 w-[85%]`}>
-          <FastImage
-            style={tw`w-10 h-10 rounded-2xl`}
-            source={{uri: item.user.avatar}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          <View>
-            <View style={tw`flex-row gap-2 items-center`}>
+      {item?.replies?.map((item, index) => (
+        <View key={index} style={tw`items-end my-4`}>
+          <View style={tw`flex-row gap-4 w-[85%]`}>
+            <FastImage
+              style={tw`w-10 h-10 rounded-2xl`}
+              source={{uri: item?.image}}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+            <View>
+              <View style={tw`flex-row gap-2 items-center`}>
+                <Text
+                  style={tw`text-sm font-PoppinsRegular text-color-Black1000`}>
+                  {item?.full_name}
+                </Text>
+                <Text
+                  style={tw`text-xs text-color-Black400 font-NunitoSansRegular`}>
+                  4w
+                </Text>
+              </View>
+
               <Text
-                style={tw`text-sm font-PoppinsRegular text-color-Black1000`}>
-                {item.user.name}
-              </Text>
-              <Text
-                style={tw`text-xs text-color-Black400 font-NunitoSansRegular`}>
-                4w
+                style={tw`text-color-Black1000 text-base font-NunitoSansRegular`}>
+                {item?.comment}
               </Text>
             </View>
-
-            <Text
-              style={tw`text-color-Black1000 text-base font-NunitoSansRegular`}>
-              Thank you so much.
-            </Text>
           </View>
         </View>
-      </View>
+      ))}
     </ExpandableSection>
   );
 };
 
-export default CommentCard;
+export default React.memo(CommentCard);

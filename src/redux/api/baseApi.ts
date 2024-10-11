@@ -27,6 +27,7 @@ const baseQueryWithRath: typeof baseQuery = async (args, api, extraOptions) => {
 
   let result = await baseQuery(args, api, extraOptions);
 
+  console.log(result?.error);
   if (result?.error?.status === 401) {
     // Handle token refresh logic here if needed
     // For now, we'll log out the user
@@ -58,4 +59,4 @@ export const api = createApi({
   ],
 });
 
-export const imageUrl = 'http://192.168.11.160:7000';
+export const imageUrl = 'http://192.168.11.160:7000/';

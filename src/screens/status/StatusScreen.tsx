@@ -1,7 +1,6 @@
 import {FlatList, View} from 'react-native';
 
 import React from 'react';
-import postData from '../../assets/database/post.json';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import PostCard from '../../components/cards/PostCard';
 import {NavigProps} from '../../interfaces/NaviProps';
@@ -11,7 +10,7 @@ import {useGetAllNewFeetQuery} from '../../redux/apiSlices/newsFeetSlices';
 const StatusScreen = ({navigation}: NavigProps<null>) => {
   const {data: statusData} = useGetAllNewFeetQuery({});
   const [isComment, setIsComment] = React.useState(false);
-  console.log(statusData);
+  // console.log(statusData);
   return (
     <View style={tw`flex-1 bg-base`}>
       <View style={tw`bg-white shadow-md`}>
@@ -33,18 +32,15 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
         contentContainerStyle={tw`gap-2 mt-3 pb-6 tablet:mx-[30%]`}
-        data={postData.posts}
+        data={statusData?.data?.newsfeeds}
         renderItem={({item}) => {
           return (
-            <>
-              {/*================= Post Card ============ */}
-              <PostCard
-                onPress={() => {
-                  navigation?.navigate('OtherWall');
-                }}
-                item={item}
-              />
-            </>
+            <PostCard
+              onPress={() => {
+                navigation?.navigate('OtherWall', {item: item});
+              }}
+              item={item}
+            />
           );
         }}
       />

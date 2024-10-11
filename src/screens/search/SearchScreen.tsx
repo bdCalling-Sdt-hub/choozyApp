@@ -4,7 +4,6 @@ import {IconBell, IconClose, IconSearch} from '../../icons/icons';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import friends from '../../assets/database/friends.json';
-import postData from '../../assets/database/post.json';
 import productData from '../../assets/database/product.json';
 import IButton from '../../components/buttons/IButton';
 import SimpleButton from '../../components/buttons/SimpleButton';
@@ -14,9 +13,11 @@ import ProductCard from '../../components/cards/ProductCard';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetAllNewFeetQuery} from '../../redux/apiSlices/newsFeetSlices';
 
 const SearchScreen = ({navigation}: NavigProps<null>) => {
   const [option, setOption] = React.useState('All');
+  const {data: statusData} = useGetAllNewFeetQuery({});
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -109,7 +110,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
         showsVerticalScrollIndicator={false}>
         {(option === 'All' || option === 'Posts') && (
           <View style={tw`flex-1 pb-7`}>
-            {postData?.posts.slice(0, 2).map((item, index) => (
+            {statusData?.data?.newsfeeds.slice(0, 2).map((item, index) => (
               <React.Fragment key={index}>
                 {/*================= Post Card ============ */}
                 <PostCard item={item} />

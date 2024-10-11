@@ -29,9 +29,11 @@ import NormalModal from '../../components/modals/NormalModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useImagePicker} from '../../utils/utils';
+import Post from './components/Post';
+import Store from './components/Store';
 
-const Post = React.lazy(() => import('./components/Post'));
-const Store = React.lazy(() => import('./components/Store'));
+// const Post = React.lazy(() => import('./components/Post'));
+// const Store = React.lazy(() => import('./components/Store'));
 
 const categoryData = [
   {

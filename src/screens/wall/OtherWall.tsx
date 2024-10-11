@@ -17,9 +17,6 @@ import tw from '../../lib/tailwind';
 import OtherWallPost from './components/OtherWallPost';
 import OtherWallStore from './components/OtherWallStore';
 
-const Post = React.lazy(() => import('./components/Post'));
-const Store = React.lazy(() => import('./components/Store'));
-
 const categoryData = [
   {
     id: 1,
