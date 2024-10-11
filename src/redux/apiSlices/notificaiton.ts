@@ -1,8 +1,9 @@
 import {api} from '../api/baseApi';
+import {INotificationList} from '../interface/notificaiton';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
-    getNotifications: builder.query({
+    getNotifications: builder.query<INotificationList, any>({
       query: () => ({
         url: `/notifications`,
       }),
@@ -16,7 +17,7 @@ const authSlice = api.injectEndpoints({
       invalidatesTags: ['product'],
     }),
     readAllNotification: builder.mutation({
-      query: id => ({
+      query: () => ({
         url: `/notifications/read-all`,
         method: 'POST',
       }),

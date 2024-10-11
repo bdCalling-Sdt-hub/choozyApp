@@ -38,6 +38,13 @@ const authSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['group'],
     }),
+    messageRead: builder.mutation({
+      query: id => ({
+        url: `/group-messages/2/read/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ['message'],
+    }),
     deleteMember: builder.mutation({
       query: ({groupId, memberId}) => ({
         url: `/groups/${groupId}/members/${memberId}`,

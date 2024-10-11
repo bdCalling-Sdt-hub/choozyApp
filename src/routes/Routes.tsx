@@ -26,6 +26,7 @@ import Settings from '../screens/settings/Settings';
 import Support from '../screens/settings/Support';
 import TermsAndCondition from '../screens/settings/TermsAndCondition';
 import UpdatePassword from '../screens/settings/UpdatePassword';
+import LoadingSplash from '../screens/spalsh/LoadingSplash';
 import CreateShop from '../screens/store/CreateShop';
 import LoveStoreScreen from '../screens/store/LoveStoreScreen';
 import OtherWallPost from '../screens/wall/components/OtherWallPost';
@@ -42,7 +43,7 @@ function Routes() {
     <Stack.Navigator screenOptions={{headerShown: false, animation: 'ios'}}>
       {/*=================== logins part ======================= */}
       {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
-      {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
+      <Stack.Screen name="Loading" component={LoadingSplash} />
 
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />

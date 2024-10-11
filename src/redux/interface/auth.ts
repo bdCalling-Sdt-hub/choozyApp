@@ -11,7 +11,7 @@ export interface IUser extends IFechtStatus {
     id: number;
     full_name: string;
     user_name: string;
-    privacy: 'public';
+    privacy: string;
     email: string;
     image: string;
     friends_count: number;

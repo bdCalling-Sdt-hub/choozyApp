@@ -11,6 +11,7 @@ import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetMassagesQuery} from '../../redux/apiSlices/message';
 
 // import Contacts from './components/Contacts';
 
@@ -22,6 +23,11 @@ const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
+
+  const {data: messagesData} = useGetMassagesQuery({});
+  // const {data: Groups} = useGetGroupsQuery({});
+  // console.log(Groups);
+  console.log(messagesData);
 
   // console.log(JSON.stringify(MessagesData, null, 2));
   const [options, setOptions] = React.useState<'contacts' | 'groups'>(

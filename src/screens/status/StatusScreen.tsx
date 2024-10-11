@@ -6,9 +6,12 @@ import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import PostCard from '../../components/cards/PostCard';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetAllNewFeetQuery} from '../../redux/apiSlices/newsFeetSlices';
 
 const StatusScreen = ({navigation}: NavigProps<null>) => {
+  const {data: statusData} = useGetAllNewFeetQuery({});
   const [isComment, setIsComment] = React.useState(false);
+  console.log(statusData);
   return (
     <View style={tw`flex-1 bg-base`}>
       <View style={tw`bg-white shadow-md`}>

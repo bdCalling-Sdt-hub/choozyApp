@@ -12,6 +12,7 @@ import {
   IconOpenEye,
 } from '../../icons/icons';
 
+import axios from 'axios';
 import {Formik} from 'formik';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -22,6 +23,9 @@ import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useLoginUserMutation} from '../../redux/apiSlices/authSlice';
+import {setToken} from '../../redux/apiSlices/tokenSlice';
+import {lStorage} from '../../utils/utils';
 
 interface ISingInForm {
   email: string;
@@ -31,12 +35,39 @@ interface ISingInForm {
 const LoginScreen = ({navigation}: NavigProps<null>) => {
   const [check, setCheck] = React.useState(false);
   const [showPass, setShowPass] = React.useState(false);
+  const [rememberItems, setRememberItems] = React.useState({
+    check: lStorage.getBool('check') || false,
+    email: lStorage.getString('email') || '',
+    password: lStorage.getString('password') || '',
+  });
+  const [loginUser] = useLoginUserMutation({});
+  const onSubmitHandler = async (data: ISingInForm) => {
+    const fromData = new FormData();
+    fromData.append('email', data.email);
+    fromData.append('password', data.password);
+    console.log(fromData);
+    try {
+      const res = await axios.post(
+        'http://192.168.11.160:7000/api/login',
+        fromData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      // console.log(res?.data);
+      if (res.data?.token) {
+        lStorage.setString('token', res.data?.token);
+        setToken(res.data?.token);
+        navigation?.replace('Loading');
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
-  const onSubmitHandler = (data: ISingInForm) => {
-    console.log(data);
-    navigation?.navigate('HomeRoutes');
+    // navigation?.navigate('HomeRoutes');
   };
-
   return (
     <View style={tw`bg-base h-full`}>
       <ScrollView
@@ -64,7 +95,10 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
         {/*================= inputs fields email or password  ================= */}
 
         <Formik
-          initialValues={{email: '', password: ''}}
+          initialValues={{
+            email: rememberItems.email || '',
+            password: rememberItems.password || '',
+          }}
           onSubmit={onSubmitHandler}
           validate={values => {
             const errors: {email?: string; password?: string} = {};
@@ -133,12 +167,33 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
                   style={tw` my-5 flex-row items-center `}
                   onPress={() => {
                     setCheck(!check);
+                    if (!rememberItems.check) {
+                      setRememberItems({
+                        check: true,
+                        email: values.email,
+                        password: values.password,
+                      });
+                      lStorage.setBool('check', true);
+                      lStorage.setString('email', values.email);
+                      lStorage.setString('password', values.password);
+                    }
+
+                    if (rememberItems.check) {
+                      lStorage.removeItem('email');
+                      lStorage.removeItem('password');
+                      lStorage.removeItem('check');
+                      setRememberItems({
+                        check: false,
+                        email: '',
+                        password: '',
+                      });
+                    }
                   }}>
                   <Checkbox
                     color="#4964C6"
                     size={25}
                     style={tw`border-2 border-[#E8E8EA]`}
-                    value={check}
+                    value={rememberItems.check}
                     onValueChange={value => setCheck(value)}
                   />
                   <Text

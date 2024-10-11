@@ -5,10 +5,8 @@ import React from 'react';
 import groupMessageData from '../../../assets/database/groups.json';
 import MessagesData from '../../../assets/database/messages.json';
 import IwtButton from '../../../components/buttons/IwtButton';
-import SimpleButton from '../../../components/buttons/SimpleButton';
 import TButton from '../../../components/buttons/TButton';
 import MessageCard from '../../../components/cards/MessageCard';
-import UserCard from '../../../components/cards/UserCard';
 import UserSelectionCard from '../../../components/cards/UserSelectionCard';
 import InputText from '../../../components/inputs/InputText';
 import NormalModal from '../../../components/modals/NormalModal';
@@ -29,42 +27,9 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
               svgSecondIcon={IconSearch}
             />
           </View>
-          {/*============================= view group =======================  */}
-          <View style={tw`flex-row justify-between items-center my-4 px-[4%]`}>
-            <Text style={tw`text-color-Black1000 font-NunitoSansBold text-lg`}>
-              Your Groups
-            </Text>
-            <SimpleButton
-              onPress={() => navigation?.navigate('AllGroups')}
-              title="View All"
-            />
-          </View>
-          {/*=========================== user cards ===================== */}
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={tw`px-[2%]`}
-            data={MessagesData.slice(20, 40)}
-            renderItem={({item}) => (
-              <>
-                {/* user card here */}
-                <UserCard
-                  onPress={() => navigation?.navigate('GroupMessage')}
-                  item={item}
-                />
-              </>
-            )}
-          />
         </View>
 
-        {/*======================= others groups ========================= */}
-
-        <View style={tw`px-[4%] my-2`}>
-          <Text style={tw`text-color-Black1000 font-NunitoSansBold text-lg`}>
-            Other groups
-          </Text>
-        </View>
-        <View style={tw`pb-20`}>
+        <View style={tw`pb-20 pt-2`}>
           {groupMessageData.slice(0, 10).map(item => (
             <MessageCard
               onPress={() => navigation?.navigate('GroupMessage')}
@@ -155,3 +120,45 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
 };
 
 export default GroupsSection;
+
+{
+  /*============================= view group =======================  */
+}
+{
+  /* <View style={tw`flex-row justify-between items-center my-4 px-[4%]`}>
+            <Text style={tw`text-color-Black1000 font-NunitoSansBold text-lg`}>
+              Your Groups
+            </Text>
+            <SimpleButton
+              onPress={() => navigation?.navigate('AllGroups')}
+              title="View All"
+            />
+          </View> */
+}
+{
+  /*=========================== user cards ===================== */
+}
+// <FlatList
+//   horizontal
+//   showsHorizontalScrollIndicator={false}
+//   contentContainerStyle={tw`px-[2%]`}
+//   data={MessagesData.slice(20, 40)}
+//   renderItem={({item}) => (
+//     <>
+//       {/* user card here */}
+//       <UserCard
+//         onPress={() => navigation?.navigate('GroupMessage')}
+//         item={item}
+//       />
+//     </>
+//   )}
+// />
+{
+  /*======================= others groups ========================= */
+}
+
+// <View style={tw`px-[4%] my-2`}>
+//   <Text style={tw`text-color-Black1000 font-NunitoSansBold text-lg`}>
+//     Other groups
+//   </Text>
+// </View>

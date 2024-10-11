@@ -20,6 +20,7 @@ const authSlice = api.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+
       invalidatesTags: ['user'],
     }),
     logOutUser: builder.mutation({

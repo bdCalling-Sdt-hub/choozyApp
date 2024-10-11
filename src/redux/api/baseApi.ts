@@ -11,7 +11,7 @@ const baseQuery = fetchBaseQuery({
     // console.log(token);
     if (token) {
       // console.log(token);
-      headers.set('Accept', 'application/json');
+
       headers.set('authorization', `Bearer ${token}`);
       // headers.getSetCookie()
     }
@@ -26,7 +26,6 @@ const baseQueryWithRath: typeof baseQuery = async (args, api, extraOptions) => {
   // }
 
   let result = await baseQuery(args, api, extraOptions);
-  // console.log(result);
 
   if (result?.error?.status === 401) {
     // Handle token refresh logic here if needed
