@@ -1,4 +1,3 @@
-import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   StatusBar,
@@ -6,14 +5,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import React, {Suspense} from 'react';
 
-import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import ActionModal from '../../components/modals/ActionModal';
+import Contacts from './components/Contacts';
+import GroupsSection from './components/GroupsSection';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetMassagesQuery} from '../../redux/apiSlices/message';
-import Contacts from './components/Contacts';
-import GroupsSection from './components/GroupsSection';
 
 // import Contacts from './components/Contacts';
 
@@ -32,6 +32,10 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   const [options, setOptions] = React.useState<'contacts' | 'groups'>(
     'contacts',
   );
+
+
+  
+
 
   return (
     <View style={tw`flex-1 bg-white`}>

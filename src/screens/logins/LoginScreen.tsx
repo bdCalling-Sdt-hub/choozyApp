@@ -17,6 +17,7 @@ import {Formik} from 'formik';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {Checkbox} from 'react-native-ui-lib';
+import {useDispatch} from 'react-redux';
 import IwtButton from '../../components/buttons/IwtButton';
 import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
@@ -33,6 +34,7 @@ interface ISingInForm {
 }
 
 const LoginScreen = ({navigation}: NavigProps<null>) => {
+  const dispatch = useDispatch();
   const [check, setCheck] = React.useState(false);
   const [showPass, setShowPass] = React.useState(false);
   const [rememberItems, setRememberItems] = React.useState({
@@ -56,10 +58,10 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
           },
         },
       );
-      // console.log(res?.data);
+      console.log(res?.data);
       if (res.data?.token) {
         lStorage.setString('token', res.data?.token);
-        setToken(res.data?.token);
+        dispatch(setToken(res.data?.token));
         navigation?.replace('Loading');
       }
     } catch (error) {

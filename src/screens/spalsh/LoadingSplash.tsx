@@ -7,8 +7,8 @@ import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const LoadingSplash = ({navigation}: NavigProps<null>) => {
-  const token = useSelector((state: any) => state?.token);
-
+  const {token} = useSelector((state: any) => state?.token);
+  console.log(token);
   setTimeout(() => {
     if (token) {
       navigation?.replace('HomeRoutes');
