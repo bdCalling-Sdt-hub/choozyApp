@@ -1,3 +1,4 @@
+import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   StatusBar,
@@ -5,22 +6,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {Suspense} from 'react';
 
-import ActionModal from '../../components/modals/ActionModal';
-import Contacts from './components/Contacts';
-import GroupsSection from './components/GroupsSection';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetMassagesQuery} from '../../redux/apiSlices/message';
+import Chats from './components/Chats';
+import GroupsSection from './components/GroupsSection';
 
-// import Contacts from './components/Contacts';
+// import Chats from './components/Chats';
 
 // import GroupsSection from './components/GroupsSection';
 
 // lazy load
-// const Contacts = React.lazy(() => import('./components/Contacts'));
+// const Chats = React.lazy(() => import('./components/Chats'));
 // const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
@@ -29,13 +29,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   const {data: messagesData} = useGetMassagesQuery({});
 
   // console.log(JSON.stringify(MessagesData, null, 2));
-  const [options, setOptions] = React.useState<'contacts' | 'groups'>(
-    'contacts',
-  );
-
-
-  
-
+  const [options, setOptions] = React.useState<'Chats' | 'groups'>('Chats');
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -54,17 +48,17 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
       <View style={tw`flex-row items-center gap-1 px-[4%] py-2`}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => setOptions('contacts')}
+          onPress={() => setOptions('Chats')}
           style={tw`h-11 px-3 ${
-            options == 'contacts'
+            options == 'Chats'
               ? 'border-b-[3px] border-b-primary'
               : 'border-b-[3px] border-b-white'
           }  justify-center items-center`}>
           <Text
             style={tw` ${
-              options == 'contacts' ? 'text-primary' : 'text-[#34303E]'
+              options == 'Chats' ? 'text-primary' : 'text-[#34303E]'
             } font-NunitoSansBold text-sm`}>
-            Contacts
+            Chats
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -85,7 +79,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
       </View>
 
       {/*================= messages list/card here =================== */}
-      {options == 'contacts' ? (
+      {options == 'Chats' ? (
         <>
           <Suspense
             fallback={
@@ -93,7 +87,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
                 <ActivityIndicator color="#4964C6" />
               </View>
             }>
-            <Contacts navigation={navigation} />
+            <Chats navigation={navigation} />
           </Suspense>
         </>
       ) : (

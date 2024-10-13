@@ -20,7 +20,6 @@ import {
 import {useDispatch} from 'react-redux';
 import IButton from '../components/buttons/IButton';
 import tw from '../lib/tailwind';
-import {clearToken} from '../redux/apiSlices/tokenSlice';
 import {removeStorageToken} from '../utils/utils';
 import Routes from './Routes';
 
@@ -122,7 +121,6 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress={() => {
             props.navigation.closeDrawer();
             removeStorageToken();
-            dispatch(clearToken());
             props.navigation.navigate('Login');
           }}
           style={tw` flex-row gap-3 items-center`}>

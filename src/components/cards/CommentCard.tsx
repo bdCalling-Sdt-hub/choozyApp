@@ -32,7 +32,7 @@ const CommentCard = ({item, setReply}: CommentCardProps) => {
                 </Text>
                 <Text
                   style={tw`text-xs text-color-Black400 font-NunitoSansRegular`}>
-                  4w
+                  {item?.created_at}
                 </Text>
               </View>
 
@@ -70,7 +70,7 @@ const CommentCard = ({item, setReply}: CommentCardProps) => {
                 </Text>
                 <Text
                   style={tw`text-xs text-color-Black400 font-NunitoSansRegular`}>
-                  4w
+                  {item?.created_at}
                 </Text>
               </View>
 

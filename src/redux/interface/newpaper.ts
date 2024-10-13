@@ -22,7 +22,7 @@ export interface IComment {
   user_name: string;
   image: string;
   comment: string;
-  created_at: Date;
+  created_at: string;
   reply_count: number;
   replies: Array<IComment>;
 }

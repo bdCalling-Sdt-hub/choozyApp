@@ -11,8 +11,8 @@ import {
   IconFillPassword,
   IconOpenEye,
 } from '../../icons/icons';
+import {lStorage, setStorageToken} from '../../utils/utils';
 
-import axios from 'axios';
 import {Formik} from 'formik';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -25,8 +25,6 @@ import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useLoginUserMutation} from '../../redux/apiSlices/authSlice';
-import {setToken} from '../../redux/apiSlices/tokenSlice';
-import {lStorage} from '../../utils/utils';
 
 interface ISingInForm {
   email: string;
@@ -44,31 +42,13 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
   });
   const [loginUser] = useLoginUserMutation({});
   const onSubmitHandler = async (data: ISingInForm) => {
-    const fromData = new FormData();
-    fromData.append('email', data.email);
-    fromData.append('password', data.password);
-    console.log(fromData);
-    try {
-      const res = await axios.post(
-        'http://192.168.11.160:7000/api/login',
-        fromData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
-      console.log(res?.data);
-      if (res.data?.token) {
-        lStorage.setString('token', res.data?.token);
-        dispatch(setToken(res.data?.token));
-        navigation?.replace('Loading');
-      }
-    } catch (error) {
-      console.log(error);
+    console.log(data);
+    const res = await loginUser(data);
+    console.log(res);
+    if (res.data?.token) {
+      setStorageToken(res.data?.token);
+      navigation?.replace('Loading');
     }
-
-    // navigation?.navigate('HomeRoutes');
   };
   return (
     <View style={tw`bg-base h-full`}>

@@ -1,5 +1,5 @@
 export const IconBasicsleft = `<svg width="16" height="25" viewBox="0 0 16 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M13.5984 22.9001L2.39844 12.5001L13.5984 2.1001" stroke="#4F4F4F" stroke-width="2" stroke-linecap="square"/>
+<path d="M13.5984 22.9001L2.39844 12.5001L13.5984 2.1001" stroke="#4F4F4F" stroke-width="2" />
 </svg>
 `;
 
@@ -48,8 +48,8 @@ export const IconGoogle = `<svg width="24" height="24" viewBox="0 0 24 24" fill=
 `;
 
 export const IconUser = `<svg width="11" height="16" viewBox="0 0 11 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 3.99804C8.5 5.65396 7.157 6.99609 5.5 6.99609C3.843 6.99609 2.5 5.65396 2.5 3.99804C2.5 2.34212 3.843 1 5.5 1C7.157 1 8.5 2.34212 8.5 3.99804Z" stroke="#454545" stroke-linecap="square"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 14.9909H0.5C0.5 14.2808 0.5 13.6053 0.5 12.9936C0.5 11.3368 1.84315 9.99414 3.5 9.99414H7.5C9.15685 9.99414 10.5 11.3368 10.5 12.9936C10.5 13.6053 10.5 14.2808 10.5 14.9909Z" stroke="#454545" stroke-linecap="square"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 3.99804C8.5 5.65396 7.157 6.99609 5.5 6.99609C3.843 6.99609 2.5 5.65396 2.5 3.99804C2.5 2.34212 3.843 1 5.5 1C7.157 1 8.5 2.34212 8.5 3.99804Z" stroke="#454545" />
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 14.9909H0.5C0.5 14.2808 0.5 13.6053 0.5 12.9936C0.5 11.3368 1.84315 9.99414 3.5 9.99414H7.5C9.15685 9.99414 10.5 11.3368 10.5 12.9936C10.5 13.6053 10.5 14.2808 10.5 14.9909Z" stroke="#454545" />
 </svg>
 `;
 
@@ -59,8 +59,8 @@ export const IconEmail = `<svg width="15" height="14" viewBox="0 0 15 14" fill="
 `;
 
 export const IconLocation = `<svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 8.99478C7.604 8.99478 8.5 8.09934 8.5 6.99606C8.5 5.89278 7.604 4.99738 6.5 4.99738C5.396 4.99738 4.5 5.89278 4.5 6.99606C4.5 8.09934 5.396 8.99478 6.5 8.99478Z" stroke="#454545" stroke-linecap="square"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12.5 6.99606C12.5 11.9928 7.5 14.9909 6.5 14.9909C5.5 14.9909 0.5 11.9928 0.5 6.99606C0.5 3.68522 3.187 1 6.5 1C9.813 1 12.5 3.68522 12.5 6.99606Z" stroke="#454545" stroke-linecap="square"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 8.99478C7.604 8.99478 8.5 8.09934 8.5 6.99606C8.5 5.89278 7.604 4.99738 6.5 4.99738C5.396 4.99738 4.5 5.89278 4.5 6.99606C4.5 8.09934 5.396 8.99478 6.5 8.99478Z" stroke="#454545" />
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.5 6.99606C12.5 11.9928 7.5 14.9909 6.5 14.9909C5.5 14.9909 0.5 11.9928 0.5 6.99606C0.5 3.68522 3.187 1 6.5 1C9.813 1 12.5 3.68522 12.5 6.99606Z" stroke="#454545" />
 </svg>
 `;
 
@@ -75,7 +75,7 @@ export const IconRightTik = `<svg width="43" height="31" viewBox="0 0 43 31" fil
 `;
 
 export const IconMessage = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M7.45964 15.3239L10.1263 19.3212L12.793 15.3239H18.1263C18.8636 15.3239 19.4596 14.7282 19.4596 13.9914V1.99921C19.4596 1.26236 18.8636 0.666748 18.1263 0.666748H2.1263C1.38897 0.666748 0.792969 1.26236 0.792969 1.99921V13.9914C0.792969 14.7282 1.38897 15.3239 2.1263 15.3239H7.45964Z" stroke="#5D5D5D" stroke-linecap="square" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.45964 15.3239L10.1263 19.3212L12.793 15.3239H18.1263C18.8636 15.3239 19.4596 14.7282 19.4596 13.9914V1.99921C19.4596 1.26236 18.8636 0.666748 18.1263 0.666748H2.1263C1.38897 0.666748 0.792969 1.26236 0.792969 1.99921V13.9914C0.792969 14.7282 1.38897 15.3239 2.1263 15.3239H7.45964Z" stroke="#5D5D5D"  />
 </svg>
 `;
 
@@ -84,7 +84,7 @@ export const IconFillMessage = `<svg width="21" height="20" viewBox="0 0 21 20" 
 </svg>
 `;
 export const IconNote = `<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.3763 4.66675H16.3763M2.3763 0.666748H18.3763C19.1127 0.666748 19.7096 1.2637 19.7096 2.00008V13.4478C19.7096 13.8014 19.5692 14.1406 19.3191 14.3906L14.7668 18.9429C14.5168 19.1929 14.1776 19.3334 13.824 19.3334H2.3763C1.63992 19.3334 1.04297 18.7365 1.04297 18.0001V2.00008C1.04297 1.2637 1.63992 0.666748 2.3763 0.666748ZM14.3763 19.3334V14.0001H19.7096L14.3763 19.3334Z" stroke="#5D5D5D" stroke-linejoin="round"/>
+<path d="M4.3763 4.66675H16.3763M2.3763 0.666748H18.3763C19.1127 0.666748 19.7096 1.2637 19.7096 2.00008V13.4478C19.7096 13.8014 19.5692 14.1406 19.3191 14.3906L14.7668 18.9429C14.5168 19.1929 14.1776 19.3334 13.824 19.3334H2.3763C1.63992 19.3334 1.04297 18.7365 1.04297 18.0001V2.00008C1.04297 1.2637 1.63992 0.666748 2.3763 0.666748ZM14.3763 19.3334V14.0001H19.7096L14.3763 19.3334Z" stroke="#5D5D5D" />
 </svg>
 `;
 
@@ -180,9 +180,9 @@ export const IconSend = `<svg width="20" height="20" viewBox="0 0 20 20" fill="n
 </svg>
 `;
 
-export const IconVideo = `<svg width="21" height="13" viewBox="0 0 21 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.2874 0.5H2.85882C1.91204 0.5 1.14453 1.26751 1.14453 2.21429V10.7857C1.14453 11.7325 1.91204 12.5 2.85882 12.5H12.2874C13.2342 12.5 14.0017 11.7325 14.0017 10.7857V2.21429C14.0017 1.26751 13.2342 0.5 12.2874 0.5Z" stroke="#4964C6" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M20 2.21423L14 6.49995L20 10.7857V2.21423Z" stroke="#4964C6" stroke-linecap="round" stroke-linejoin="round"/>
+export const IconVideo = `<svg width="15" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.2874 0.5H2.85882C1.91204 0.5 1.14453 1.26751 1.14453 2.21429V10.7857C1.14453 11.7325 1.91204 12.5 2.85882 12.5H12.2874C13.2342 12.5 14.0017 11.7325 14.0017 10.7857V2.21429C14.0017 1.26751 13.2342 0.5 12.2874 0.5Z" stroke="#4964C6"  />
+<path d="M20 2.21423L14 6.49995L20 10.7857V2.21423Z" stroke="#4964C6"  />
 </svg>
 `;
 
@@ -352,7 +352,7 @@ export const IconDeleted = `<svg width="24" height="24" viewBox="0 0 24 24" fill
 </svg>
 `;
 export const IconDownArrow = `<svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 1L4 4L7 1" stroke="#5D5D5D" stroke-linecap="square"/>
+<path d="M1 1L4 4L7 1" stroke="#5D5D5D" />
 </svg>
 `;
 export const IconFillCamera = `<svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -362,11 +362,11 @@ export const IconFillCamera = `<svg width="15" height="13" viewBox="0 0 15 13" f
 </svg>
 `;
 export const IconSendNormal = `<svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M19.3346 1.1665L0.667969 9.1665L7.33464 13.1665M19.3346 1.1665L11.3346 19.8332L7.33464 13.1665M19.3346 1.1665L7.33464 13.1665" stroke="white" stroke-linecap="square" stroke-linejoin="round"/>
+<path d="M19.3346 1.1665L0.667969 9.1665L7.33464 13.1665M19.3346 1.1665L11.3346 19.8332L7.33464 13.1665M19.3346 1.1665L7.33464 13.1665" stroke="white"  />
 </svg>
 `;
 export const IconRightArrow = `<svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.66797 9.5L5.66797 5.5L1.66797 1.5" stroke="white" stroke-width="1.2" stroke-linecap="square"/>
+<path d="M1.66797 9.5L5.66797 5.5L1.66797 1.5" stroke="white" stroke-width="1.2" />
 </svg>
 `;
 export const IconCalender = `<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -399,7 +399,10 @@ export const IconExit = `<svg width="14" height="13" viewBox="0 0 14 13" fill="n
 <path d="M12.5 6.5L9.5 9.75M12.5 6.5L9.5 3.5M12.5 6.5L3 6.5M7 12.5L0.5 12.5L0.500001 0.5L7 0.5" stroke="#DC3545"/>
 </svg>
 `;
-// export const Icon =
+export const IconMessageBlueUL = `<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.7111 13.5697L11.5063 13.5021L11.3165 13.6046C10.2602 14.1755 8.74191 14.4908 7.5 14.4908C3.63399 14.4908 0.5 11.359 0.5 7.49548C0.5 3.63201 3.63399 0.5 7.5 0.5C11.366 0.5 14.5 3.63201 14.5 7.49548C14.5 8.80017 14.2296 10.2394 13.6139 11.312L13.5022 11.5066L13.5734 11.7194L14.5 14.4908L11.7111 13.5697Z" stroke="#4964C6" />
+</svg>
+`;
 // export const Icon =
 // export const Icon =
 // export const Icon =

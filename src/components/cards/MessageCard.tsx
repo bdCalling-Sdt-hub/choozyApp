@@ -25,6 +25,7 @@ interface MessageCardProps {
   titleContainerStyle?: any;
   Component?: React.ReactNode;
   disabled?: boolean;
+  ImagePressable?: boolean;
 }
 
 // three part are divided 1= is image part 2= is name and title part 3= is icons and options part
@@ -42,21 +43,24 @@ const MessageCard = ({
   offPartThree,
   Component,
   disabled,
+  ImagePressable,
 }: MessageCardProps) => {
   return (
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
-      activeOpacity={0.5}
+      activeOpacity={0.8}
       style={[tw`flex-row items-center  gap-3 px-[4%] py-2`, containerStyle]}>
       {!offPartOne && (
-        <View style={tw`w-12 h-12 aspect-square rounded-2xl overflow-hidden`}>
+        <TouchableOpacity
+          disabled={!ImagePressable}
+          style={tw`w-12 h-12 aspect-square rounded-2xl overflow-hidden`}>
           <FastImage
             source={{uri: item.image}}
-            resizeMode={FastImage.resizeMode.contain}
+            resizeMode={FastImage.resizeMode.cover}
             style={tw`w-full h-full`}
           />
-        </View>
+        </TouchableOpacity>
       )}
       {!offPartTow && (
         <View style={[tw`flex-1  gap-[2px]`, titleContainerStyle]}>

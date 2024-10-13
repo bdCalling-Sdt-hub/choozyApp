@@ -98,7 +98,7 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
         showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%]`}>
           <View
-            style={tw`flex-row items-center justify-between tablet:justify-start gap-8  my-5`}>
+            style={tw`flex-row items-center  tablet:justify-start gap-8  my-5`}>
             <FastImage
               style={tw`w-16 h-16  rounded-3xl`}
               source={{
@@ -106,7 +106,8 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
               }}
               resizeMode={FastImage.resizeMode.contain}
             />
-            <View style={tw`flex-1  flex-row justify-between tablet:max-w-72 `}>
+            <View
+              style={tw`flex-1 max-w-[50%]  flex-row justify-between tablet:max-w-72 `}>
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
@@ -120,21 +121,21 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  18.7k
+                  79
                 </Text>
                 <Text
                   style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Followers
+                  Products
                 </Text>
               </View>
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  79
+                  100
                 </Text>
                 <Text
                   style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Following
+                  Contacts
                 </Text>
               </View>
             </View>

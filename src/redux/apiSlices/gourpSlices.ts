@@ -9,8 +9,8 @@ const authSlice = api.injectEndpoints({
       }),
       providesTags: ['group'],
     }),
-    getGroupMembers: builder.query({
-      query: id => ({
+    getGroupMembers: builder.query<any, string>({
+      query: (id: string) => ({
         url: `/groups/${id}/members`,
       }),
       providesTags: ['group'],

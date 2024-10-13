@@ -1,14 +1,16 @@
+import {IFriends, IFriendsRequests} from '../interface/Friends';
+
 import {api} from '../api/baseApi';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
-    userFriendRequests: builder.query({
+    userFriendRequests: builder.query<IFriendsRequests, unknown>({
       query: () => ({
         url: `/user-friend-requests`,
       }),
       providesTags: ['friend'],
     }),
-    userFriend: builder.query({
+    userFriend: builder.query<IFriends, unknown>({
       query: () => ({
         url: `/user-friends`,
       }),

@@ -8,6 +8,7 @@ import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
 import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
 import Checkout from '../screens/Checkout/Checkout';
+import RequestContacts from '../screens/contacts/RequestContacts';
 import CreateNewPassword from '../screens/logins/CreateNewPassword';
 import ForgetPassword from '../screens/logins/ForgetPassword';
 import LoginScreen from '../screens/logins/LoginScreen';
@@ -40,7 +41,9 @@ import BottomRoutes from './BottomRoutes';
 const Stack = createNativeStackNavigator();
 function Routes() {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false, animation: 'ios'}}>
+    <Stack.Navigator
+      initialRouteName="Loading"
+      screenOptions={{headerShown: false, animation: 'ios'}}>
       {/*=================== logins part ======================= */}
       {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
       <Stack.Screen name="Loading" component={LoadingSplash} />
@@ -85,6 +88,7 @@ function Routes() {
       <Stack.Screen name="OtherWall" component={OtherWall} />
       <Stack.Screen name="OtherWallStore" component={OtherWallStore} />
       <Stack.Screen name="OtherWallPost" component={OtherWallPost} />
+      <Stack.Screen name="RequestContacts" component={RequestContacts} />
     </Stack.Navigator>
   );
 }

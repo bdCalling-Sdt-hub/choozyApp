@@ -3,14 +3,13 @@ import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 
 import {getStorageToken} from '../../utils/utils';
 
+// Type for the args that will be passed to axios (base query arguments)
 interface BaseQueryArgs extends AxiosRequestConfig {
   url: string;
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   body?: any;
   headers?: Record<string, string>;
 }
-
-// Type for the args that will be passed to axios (base query arguments)
 
 const baseQueryWithRath: BaseQueryFn<BaseQueryArgs, unknown, unknown> = async (
   args,
@@ -32,7 +31,6 @@ const baseQueryWithRath: BaseQueryFn<BaseQueryArgs, unknown, unknown> = async (
       },
     });
 
-    console.log(result);
     // Check if response data is a string and malformed
     if (typeof result?.data === 'string') {
       if (!result.data.endsWith('}')) {
@@ -43,16 +41,6 @@ const baseQueryWithRath: BaseQueryFn<BaseQueryArgs, unknown, unknown> = async (
 
     return {data: result.data};
   } catch (error: any) {
-    if (error.response?.data) {
-      if (typeof error.response?.data === 'string') {
-        if (!error.response?.data.endsWith('}')) {
-          const withCurly = (error.response.data += '}');
-          return {error: JSON.parse(withCurly)};
-        }
-      } else {
-        return {error: error.response?.data};
-      }
-    }
     return {
       error: {
         status: error.response?.status || 500,

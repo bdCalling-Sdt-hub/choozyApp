@@ -8,7 +8,7 @@ import {IconSearch} from '../../../icons/icons';
 import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 
-const Contacts = ({navigation}: NavigProps<null>) => {
+const Chats = ({navigation}: NavigProps<null>) => {
   return (
     <>
       <FlatList
@@ -39,4 +39,4 @@ const Contacts = ({navigation}: NavigProps<null>) => {
   );
 };
 
-export default Contacts;
+export default Chats;
