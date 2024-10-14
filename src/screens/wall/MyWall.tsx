@@ -17,6 +17,7 @@ import {
   IconPublic,
   IconStore,
   IconStoreBlue,
+  IconUser,
 } from '../../icons/icons';
 import {
   useGetOtherUserProfileQuery,
@@ -210,10 +211,21 @@ const MyWall = ({navigation}: NavigProps<null>) => {
               </View>
             </View>
           </View>
-          <View style={tw`gap-2`}>
-            <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
-              {wallData?.data?.full_name}
-            </Text>
+          <View style={tw`gap-2 justify-center`}>
+            <View style={tw`flex-row  gap-1 items-center`}>
+              <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
+                {wallData?.data?.full_name}
+              </Text>
+              <View style={tw` px-2 rounded-full`}>
+                {wallData?.data?.privacy === 'public' ? (
+                  <SvgXml xml={IconPublic} width={10} />
+                ) : wallData?.data?.privacy === 'private' ? (
+                  <SvgXml xml={IconLock} width={10} />
+                ) : (
+                  <SvgXml xml={IconUser} width={10} />
+                )}
+              </View>
+            </View>
             <Text
               style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
               {wallData?.data?.bio}
