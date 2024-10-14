@@ -21,13 +21,13 @@ import SideModal from '../../components/modals/SideModal';
 import {IconSend} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetUserProfileQuery} from '../../redux/apiSlices/authSlice';
 import {INewpaper} from '../../redux/interface/newpaper';
 
 const StatusScreen = ({navigation}: NavigProps<null>) => {
   const {
     data: statusData,
     isLoading: newsLoading,
-    isFetching: NewsFetchSuccess,
     refetch: newsReFetch,
   } = useGetAllNewFeetQuery({});
   const [isComment, setIsComment] = React.useState<{
@@ -39,12 +39,12 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
   const [reply, setReply] = React.useState(null);
   const [comment, setComment] = React.useState('');
   const [createComment] = useCommentMutation();
-
+  const {data: userProfile} = useGetUserProfileQuery({});
   // console.log(statusData);
 
   const handleComment = useCallback(() => {
     const data = {
-      newsfeed_id: isComment?.item?.id,
+      newsfeed_id: isComment?.item?.newsfeed_id,
       comments: comment,
     };
 
@@ -65,7 +65,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
     setIsComment({
       ...isComment,
       item: statusData?.data?.newsfeeds?.find(
-        item => item.id === isComment.item?.id,
+        item => item.newsfeed_id === isComment.item?.newsfeed_id,
       ),
     });
   }, [statusData]);
@@ -137,7 +137,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
         <View style={tw`p-4 flex-row items-center `}>
           <FastImage
             style={tw`w-12 h-12 rounded-2xl`}
-            source={{uri: isComment?.item?.user?.image}}
+            source={{uri: userProfile?.data?.image}}
             resizeMode={FastImage.resizeMode.cover}
           />
           <View style={tw`h-14 flex-1 flex-row justify-center`}>

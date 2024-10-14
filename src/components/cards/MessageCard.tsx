@@ -55,11 +55,20 @@ const MessageCard = ({
         <TouchableOpacity
           disabled={!ImagePressable}
           style={tw`w-12 h-12 aspect-square rounded-2xl overflow-hidden`}>
-          <FastImage
-            source={{uri: item.image}}
-            resizeMode={FastImage.resizeMode.cover}
-            style={tw`w-full h-full`}
-          />
+          {item.image ? (
+            <FastImage
+              source={{uri: item.image}}
+              resizeMode={FastImage.resizeMode.cover}
+              style={tw`w-full h-full`}
+            />
+          ) : (
+            <View
+              style={tw`w-full h-full bg-primary rounded-2xl justify-center items-center`}>
+              <Text style={tw`text-white font-NunitoSansBold text-lg shadow`}>
+                {item.name?.slice(0, 1).toUpperCase()}
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
       )}
       {!offPartTow && (

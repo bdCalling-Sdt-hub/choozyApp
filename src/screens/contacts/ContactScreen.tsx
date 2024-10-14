@@ -13,13 +13,24 @@ import {
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import MessageCard from '../../components/cards/MessageCard';
+import NoFoundCard from '../../components/cards/NoFoundCard';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const ContactScreen = ({navigation}: NavigProps<null>) => {
-  const {data: contacts} = useUserFriendQuery({});
-  const {data: allContactRequest} = useUserFriendRequestsQuery({});
+  const {
+    data: contacts,
+    isLoading: contactsLoading,
+    refetch: contactsRefetch,
+  } = useUserFriendQuery({});
+  const {
+    data: allContactRequest,
+    isLoading: allContactRequestLoading,
+    refetch: allContactRequestRefetch,
+  } = useUserFriendRequestsQuery({});
+
+  // console.log(allContactRequest?.friend_requests?.data);
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -33,33 +44,41 @@ const ContactScreen = ({navigation}: NavigProps<null>) => {
             <InputText placeholder="Search.." svgSecondIcon={IconSearch} />
           </View>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation?.navigate('RequestContacts');
-          }}
-          style={tw`gap-1 flex-row items-center self-end mt-1`}>
-          <Text
-            style={tw`text-color-Black600 font-NunitoSansMedium  text-xs py-2 `}>
-            Requested
-          </Text>
-          <View style={tw`bg-primary px-1.2 py-0.3 rounded-full`}>
-            <Text style={tw`text-white font-NunitoSansBold text-[10px]`}>
-              {allContactRequest?.total_requests}
+        {allContactRequest && allContactRequest?.total_requests > 0 && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation?.navigate('RequestContacts');
+            }}
+            style={tw`gap-1 flex-row items-center self-end mt-1`}>
+            <Text
+              style={tw`text-color-Black600 font-NunitoSansMedium  text-xs py-2 `}>
+              Requested
             </Text>
-          </View>
-          <SvgXml
-            height={10}
-            xml={`<svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 14L8 7.5L1 1" stroke="#1D1929" stroke-linecap="square"/>
-</svg>
-`}
-          />
-        </TouchableOpacity>
+            <View style={tw`bg-primary px-1.2 py-0.3 rounded-full`}>
+              <Text style={tw`text-white font-NunitoSansBold text-[10px]`}>
+                {allContactRequest?.total_requests}
+              </Text>
+            </View>
+            <SvgXml
+              height={10}
+              xml={`<svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1 14L8 7.5L1 1" stroke="#1D1929" stroke-linecap="square"/>
+  </svg>
+  `}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <FlatList
+        refreshing={contactsLoading || allContactRequestLoading}
+        onRefresh={() => {
+          contactsRefetch();
+          allContactRequestRefetch();
+        }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw`pb-6 bg-white gap-2 px-[2%]`}
-        data={contacts?.friend_requests?.data}
+        data={contacts?.friends?.data}
+        ListEmptyComponent={() => <NoFoundCard title="No Contacts" />}
         renderItem={({item, index}) => (
           <>
             <MessageCard

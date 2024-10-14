@@ -1,14 +1,15 @@
 import {api} from '../api/baseApi';
+import {IUserProfile} from '../interface/auth';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
-    getUserProfile: builder.query({
+    getUserProfile: builder.query<IUserProfile, any>({
       query: token => ({
         url: `/userProfile`,
       }),
       providesTags: ['user'],
     }),
-    getAnotherUserProfile: builder.query({
+    getOtherUserProfile: builder.query<IUserProfile, any>({
       query: id => ({
         url: `/anotherUserProfile/${id}`,
       }),
@@ -84,6 +85,7 @@ const authSlice = api.injectEndpoints({
 export const {
   useCreateUserMutation,
   useForgotPasswordMutation,
+  useGetOtherUserProfileQuery,
   useGetUserProfileQuery,
   useLogOutUserMutation,
   useResendOtpMutation,

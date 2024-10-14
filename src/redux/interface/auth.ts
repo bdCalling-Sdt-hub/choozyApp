@@ -1,4 +1,5 @@
 import {IFechtStatus} from './Fechting';
+import {INewpaper} from './newpaper';
 
 export interface ILogin {
   status: number;
@@ -19,5 +20,23 @@ export interface IUser extends IFechtStatus {
     formattedProducts: [];
     created_at: Date;
     updated_at: Date;
+  };
+}
+
+export interface IUserProfile {
+  data: {
+    id: 3;
+    full_name: string;
+    user_name: string;
+    bio: string;
+    privacy: string;
+    email: string;
+    image: string;
+    friends_count: 2;
+    news_feeds: Array<INewpaper>;
+    shop: string;
+    formattedProducts: [];
+    created_at: string;
+    updated_at: string;
   };
 }

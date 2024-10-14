@@ -16,21 +16,21 @@ const authSlice = api.injectEndpoints({
       }),
       providesTags: ['friend'],
     }),
-    sendFriendRequest: builder.mutation({
+    sendFriendRequest: builder.mutation<any, any>({
       query: id => ({
         url: `/friend-request/${id}`,
         method: 'POST',
       }),
       invalidatesTags: ['friend'],
     }),
-    sendFriendAccept: builder.mutation({
+    acceptRequest: builder.mutation<any, any>({
       query: id => ({
         url: `/accept-request/${id}`,
         method: 'POST',
       }),
       invalidatesTags: ['friend'],
     }),
-    cancelRequest: builder.mutation({
+    cancelRequest: builder.mutation<any, any>({
       query: id => ({
         url: `/cancel-request/${id}`,
         method: 'DELETE',
@@ -49,7 +49,7 @@ const authSlice = api.injectEndpoints({
 
 export const {
   useCancelRequestMutation,
-  useSendFriendAcceptMutation,
+  useAcceptRequestMutation,
   useSendFriendRequestMutation,
   useUserFriendQuery,
   useUserFriendRequestsQuery,

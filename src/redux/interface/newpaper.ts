@@ -1,5 +1,5 @@
 export interface INewpaper {
-  id: number;
+  newsfeed_id: number;
   user: {
     id: number;
     full_name: string;

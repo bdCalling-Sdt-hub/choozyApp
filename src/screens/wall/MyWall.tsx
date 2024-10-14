@@ -1,4 +1,11 @@
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   IconBasicsleft,
   IconImage,
@@ -11,6 +18,11 @@ import {
   IconStore,
   IconStoreBlue,
 } from '../../icons/icons';
+import {
+  useGetOtherUserProfileQuery,
+  useGetUserProfileQuery,
+} from '../../redux/apiSlices/authSlice';
+import {PrimaryColor, useImagePicker} from '../../utils/utils';
 
 import {DrawerActions} from '@react-navigation/native';
 import React from 'react';
@@ -28,7 +40,6 @@ import InputText from '../../components/inputs/InputText';
 import NormalModal from '../../components/modals/NormalModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import {useImagePicker} from '../../utils/utils';
 import Post from './components/Post';
 import Store from './components/Store';
 
@@ -84,6 +95,12 @@ const categoryData = [
 
 const MyWall = ({navigation}: NavigProps<null>) => {
   // console.log(route);
+  const {
+    data: wallData,
+    isLoading: wallLoading,
+    refetch: wallRefetch,
+  } = useGetUserProfileQuery({});
+  const {data: otherWallData} = useGetOtherUserProfileQuery({});
   const [options, setOptions] = React.useState('post');
   const [isPublic, setIsPublic] = React.useState(true);
 
@@ -95,6 +112,7 @@ const MyWall = ({navigation}: NavigProps<null>) => {
   const [images, setImages] = React.useState<Array<Asset>>();
 
   const [post, setPost] = React.useState('');
+  console.log(wallData?.data.news_feeds.length);
 
   const handleImage = async (need: 'post' | 'store') => {
     if (need === 'post') {
@@ -134,8 +152,16 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         }}
       />
       <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={wallLoading}
+            onRefresh={wallRefetch}
+            colors={[PrimaryColor]}
+          />
+        }
         contentContainerStyle={tw`pb-6`}
         nestedScrollEnabled
+        keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%]`}>
           <View
@@ -143,36 +169,39 @@ const MyWall = ({navigation}: NavigProps<null>) => {
             <FastImage
               style={tw`w-16 h-16  rounded-3xl`}
               source={{
-                uri: 'https://randomuser.me/api/portraits/men/19.jpg',
+                uri: wallData?.data?.image,
               }}
-              resizeMode={FastImage.resizeMode.contain}
+              resizeMode={FastImage.resizeMode.cover}
             />
             <View
-              style={tw`flex-1 max-w-[50%]  flex-row justify-between tablet:max-w-72 `}>
+              style={tw`flex-1 max-w-[50%]  flex-row justify-around tablet:max-w-72 `}>
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  236
+                  {wallData?.data?.news_feeds?.length}
                 </Text>
                 <Text
                   style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
                   Posts
                 </Text>
               </View>
+              {wallData?.data?.formattedProducts?.length > 0 && (
+                <View style={tw`justify-center items-center`}>
+                  <Text
+                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                    {wallData?.data?.formattedProducts?.length}
+                  </Text>
+                  <Text
+                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                    Products
+                  </Text>
+                </View>
+              )}
+
               <View style={tw`justify-center items-center`}>
                 <Text
                   style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  79
-                </Text>
-                <Text
-                  style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Products
-                </Text>
-              </View>
-              <View style={tw`justify-center items-center`}>
-                <Text
-                  style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  100
+                  {wallData?.data?.friends_count}
                 </Text>
                 <Text
                   style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
@@ -183,51 +212,67 @@ const MyWall = ({navigation}: NavigProps<null>) => {
           </View>
           <View style={tw`gap-2`}>
             <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
-              Sam
+              {wallData?.data?.full_name}
             </Text>
             <Text
               style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
-              Cut from geometric cotton lace mimicking decorative fretwork, this
-              blouse reveals hints of skin offsetting its long-sleeve silhouette
+              {wallData?.data?.bio}
             </Text>
           </View>
         </View>
 
         {/*================= options here =================== */}
-        <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => setOptions('post')}
-            style={tw`h-11 px-2 flex-row gap-2  ${
-              options == 'post'
-                ? 'border-b-[3px] border-b-primary'
-                : 'border-b-[3px] border-b-white'
-            }  justify-center items-center`}>
-            <SvgXml xml={options == 'post' ? IconPostBlue : IconPost} />
-            <Text
-              style={tw` ${
-                options == 'post' ? 'text-primary' : 'text-[#34303E]'
-              } font-NunitoSansBold text-sm`}>
-              Post
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => setOptions('store')}
-            style={tw`h-11 px-2 gap-2 ${
-              options == 'store'
-                ? 'border-b-[3px] border-b-primary'
-                : 'border-b-[3px] border-b-white'
-            }  justify-center items-center flex-row `}>
-            <SvgXml xml={options == 'store' ? IconStoreBlue : IconStore} />
-            <Text
-              style={tw` ${
-                options == 'store' ? 'text-primary' : 'text-[#34303E]'
-              } font-NunitoSansBold text-sm`}>
-              Store
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {wallData?.data?.shop ? (
+          <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setOptions('post')}
+              style={tw`h-11 px-2 flex-row gap-2  ${
+                options == 'post'
+                  ? 'border-b-[3px] border-b-primary'
+                  : 'border-b-[3px] border-b-white'
+              }  justify-center items-center`}>
+              <SvgXml xml={options == 'post' ? IconPostBlue : IconPost} />
+              <Text
+                style={tw` ${
+                  options == 'post' ? 'text-primary' : 'text-[#34303E]'
+                } font-NunitoSansBold text-sm`}>
+                Post
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setOptions('store')}
+              style={tw`h-11 px-2 gap-2 ${
+                options == 'store'
+                  ? 'border-b-[3px] border-b-primary'
+                  : 'border-b-[3px] border-b-white'
+              }  justify-center items-center flex-row `}>
+              <SvgXml xml={options == 'store' ? IconStoreBlue : IconStore} />
+              <Text
+                style={tw` ${
+                  options == 'store' ? 'text-primary' : 'text-[#34303E]'
+                } font-NunitoSansBold text-sm`}>
+                Store
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={tw`px-[4%] my-4`}>
+            <TouchableOpacity
+              disabled
+              onPress={() => setOptions('post')}
+              style={tw`h-11 px-2 flex-row gap-2 border-b-2 border-primary w-[25%]  justify-center items-center`}>
+              <SvgXml xml={options == 'post' ? IconPostBlue : IconPost} />
+              <Text
+                style={tw` ${
+                  options == 'post' ? 'text-primary' : 'text-[#34303E]'
+                } font-NunitoSansBold text-sm`}>
+                Post
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {options == 'post' ? (
           <View style={tw`tablet:mx-[30%]`}>

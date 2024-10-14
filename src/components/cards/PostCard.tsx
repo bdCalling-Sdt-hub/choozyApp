@@ -15,10 +15,11 @@ interface PostCardProps {
   svgIcon?: any;
   title?: string;
   setComment?: React.Dispatch<React.SetStateAction<any>>;
+  likeOppress?: () => void;
 }
 
-const PostCard = ({item, onPress, setComment}: PostCardProps) => {
-  const [love, setLove] = React.useState(false);
+const PostCard = ({item, onPress, setComment, likeOppress}: PostCardProps) => {
+  const [love, setLove] = React.useState(item?.auth_user_liked);
   const [like] = useLikeUnlikeMutation();
 
   // console.log('recall');
@@ -33,15 +34,15 @@ const PostCard = ({item, onPress, setComment}: PostCardProps) => {
           style={tw`w-12 h-12 rounded-2xl`}
           resizeMode={FastImage.resizeMode.cover}
           source={{
-            uri: item.user.image,
+            uri: item?.user?.image,
           }}
         />
         <View style={tw`gap-[2px]`}>
           <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
-            {item.user.full_name}
+            {item?.user?.full_name}
           </Text>
           <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
-            {item.user.user_name}
+            {item?.user?.user_name}
           </Text>
         </View>
       </TouchableOpacity>
@@ -79,16 +80,17 @@ const PostCard = ({item, onPress, setComment}: PostCardProps) => {
         {/* Icons Row */}
         <View style={tw`flex-row items-center gap-4 `}>
           <TouchableOpacity
-            onPress={() => {
-              like({
-                user_id: 2,
-                newsfeed_id: item?.id,
+            onPress={async () => {
+              const res = await like({
+                newsfeed_id: item.newsfeed_id || item.id,
               });
+              // console.log('like', res);
               setLove(!love);
+              likeOppress && likeOppress();
             }}>
             <SvgXml
               xml={
-                item?.auth_user_liked
+                love
                   ? IconFillLove
                   : `<svg width="20" height="20" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.53553 6.53553L7.5 12.5L13.4645 6.53553C14.1275 5.87249 14.5 4.97322 14.5 4.03553C14.5 2.08291 12.9171 0.5 10.9645 0.5C10.0268 0.5 9.12751 0.872492 8.46447 1.53553L7.5 2.5L6.53553 1.53553C5.87249 0.872493 4.97322 0.5 4.03553 0.5C2.08291 0.5 0.5 2.08291 0.5 4.03553C0.5 4.97322 0.872491 5.87249 1.53553 6.53553Z" stroke="#D2D1D4" stroke-linejoin="round"/>

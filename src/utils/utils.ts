@@ -8,6 +8,8 @@ import {imageUrl} from '../redux/api/baseApi';
 
 export const lStorage = new MMKVLoader().initialize();
 
+export const PrimaryColor = '#4964C6';
+
 export const makeImage = (url: string) => {
   return url.startsWith('https') ? url : imageUrl + url;
 };
@@ -94,3 +96,14 @@ export const useImagePicker = async ({
     console.log(error);
   }
 };
+
+function getRandomHashColor() {
+  let letters = '0123456789ABCDEF';
+  let color = '#';
+
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+
+  return color;
+}

@@ -2,9 +2,10 @@ import {IPagination} from './pagination';
 
 export interface IFriend {
   id: number;
-  full_name: string;
+  user_id: number;
   user_name: string;
-  is_accepted: string;
+  full_name: string;
+  is_accepted: number;
   image: string;
 }
 
