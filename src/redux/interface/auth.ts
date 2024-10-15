@@ -34,9 +34,25 @@ export interface IUserProfile {
     image: string;
     friends_count: 2;
     news_feeds: Array<INewpaper>;
-    shop: string;
+    shop: {
+      shop_name: string;
+    };
     formattedProducts: [];
     created_at: string;
     updated_at: string;
+  };
+}
+
+export interface IProfile {
+  status: true;
+  message: string;
+  data: {
+    id: string;
+    full_name: string;
+    user_name: string;
+    email: string;
+    bio: string;
+    location: string;
+    image: string;
   };
 }

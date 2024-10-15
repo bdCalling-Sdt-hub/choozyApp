@@ -1,8 +1,15 @@
+import {IProfile, IUserProfile} from '../interface/auth';
+
 import {api} from '../api/baseApi';
-import {IUserProfile} from '../interface/auth';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
+    getProfile: builder.query<IProfile, any>({
+      query: token => ({
+        url: `/getProfile`,
+      }),
+      providesTags: ['user'],
+    }),
     getUserProfile: builder.query<IUserProfile, any>({
       query: token => ({
         url: `/userProfile`,
@@ -93,4 +100,5 @@ export const {
   useResetPasswordMutation,
   useUserUpdateMutation,
   useVerifyUserMutation,
+  useGetProfileQuery,
 } = authSlice;

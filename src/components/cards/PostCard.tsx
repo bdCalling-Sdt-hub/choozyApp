@@ -1,5 +1,5 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {IconComment, IconFillLove} from '../../icons/icons';
+import {IconComment, IconFillLove, IconVThreeDots} from '../../icons/icons';
 import {height, width} from '../../utils/utils';
 
 import React from 'react';
@@ -8,6 +8,7 @@ import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
 import {useLikeUnlikeMutation} from '../../redux/apiSlices/newsFeetSlices';
 import {INewpaper} from '../../redux/interface/newpaper';
+import IButton from '../buttons/IButton';
 
 interface PostCardProps {
   item: INewpaper;
@@ -16,9 +17,16 @@ interface PostCardProps {
   title?: string;
   setComment?: React.Dispatch<React.SetStateAction<any>>;
   likeOppress?: () => void;
+  actionOptions?: () => void;
 }
 
-const PostCard = ({item, onPress, setComment, likeOppress}: PostCardProps) => {
+const PostCard = ({
+  item,
+  onPress,
+  setComment,
+  likeOppress,
+  actionOptions,
+}: PostCardProps) => {
   const [love, setLove] = React.useState(item?.auth_user_liked);
   const [like] = useLikeUnlikeMutation();
 
@@ -26,26 +34,35 @@ const PostCard = ({item, onPress, setComment, likeOppress}: PostCardProps) => {
 
   return (
     <View style={tw` p-4 bg-white`}>
-      <TouchableOpacity
-        onPress={onPress}
-        activeOpacity={0.5}
-        style={tw`flex-row gap-2 items-center self-start`}>
-        <FastImage
-          style={tw`w-12 h-12 rounded-2xl`}
-          resizeMode={FastImage.resizeMode.cover}
-          source={{
-            uri: item?.user?.image,
-          }}
-        />
-        <View style={tw`gap-[2px]`}>
-          <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
-            {item?.user?.full_name}
-          </Text>
-          <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
-            {item?.user?.user_name}
-          </Text>
-        </View>
-      </TouchableOpacity>
+      <View style={tw`flex-row justify-between items-center`}>
+        <TouchableOpacity
+          onPress={onPress}
+          activeOpacity={0.5}
+          style={tw`flex-row gap-2 items-center self-start`}>
+          <FastImage
+            style={tw`w-12 h-12 rounded-2xl`}
+            resizeMode={FastImage.resizeMode.cover}
+            source={{
+              uri: item?.user?.image,
+            }}
+          />
+          <View style={tw`gap-[2px]`}>
+            <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
+              {item?.user?.full_name}
+            </Text>
+            <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
+              {item?.user?.user_name}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        {actionOptions && (
+          <IButton
+            svg={IconVThreeDots}
+            onPress={actionOptions}
+            containerStyle={tw`w-9 h-9 bg-base shadow-none`}
+          />
+        )}
+      </View>
       {item?.content && (
         <View style={tw`py-3`}>
           <Text style={tw`text-sm text-color-Black900 font-NunitoSansBold`}>

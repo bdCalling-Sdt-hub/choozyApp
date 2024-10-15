@@ -4,8 +4,7 @@ import {
   RouteProp,
 } from '@react-navigation/native';
 
-export interface NavigProps<RouteParamsDataType> {
+export interface NavigProps<RouteParamsDataType extends ParamListBase = {}> {
   navigation?: NavigationProp<ParamListBase>;
-  route?: RouteProp<{params: RouteParamsDataType | any}, 'params'>;
+  route?: RouteProp<{params: RouteParamsDataType}, 'params'>;
 }
-

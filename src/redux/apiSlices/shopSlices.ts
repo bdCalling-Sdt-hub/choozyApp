@@ -1,11 +1,20 @@
 import {api} from '../api/baseApi';
+import {IShop} from '../interface/shop';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
-    createPost: builder.mutation({
+    getShop: builder.query<IShop, any>({
+      query: () => ({
+        url: `shops`,
+      }),
+    }),
+    createShop: builder.mutation({
       query: data => ({
         url: `/shops`,
         method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
         body: data,
       }),
       invalidatesTags: ['shop'],
@@ -21,4 +30,5 @@ const authSlice = api.injectEndpoints({
   }),
 });
 
-export const {useCreatePostMutation, useUpdateShopMutation} = authSlice;
+export const {useCreateShopMutation, useUpdateShopMutation, useGetShopQuery} =
+  authSlice;

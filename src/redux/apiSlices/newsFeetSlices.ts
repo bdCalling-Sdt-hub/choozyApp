@@ -25,6 +25,9 @@ const authSlice = api.injectEndpoints({
       query: data => ({
         url: `/newsfeeds`,
         method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
         body: data,
       }),
       invalidatesTags: ['news_feed'],
@@ -50,21 +53,21 @@ const authSlice = api.injectEndpoints({
         url: `/updateNewsfeeds/${id}`,
         method: 'PUT',
       }),
-      invalidatesTags: ['friend'],
+      invalidatesTags: ['news_feed'],
     }),
     deleteNewFeet: builder.mutation({
       query: id => ({
         url: `/newsfeeds/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['friend'],
+      invalidatesTags: ['news_feed'],
     }),
     deleteComment: builder.mutation({
       query: id => ({
         url: `/commentDelete/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['friend'],
+      invalidatesTags: ['news_feed'],
     }),
   }),
 });

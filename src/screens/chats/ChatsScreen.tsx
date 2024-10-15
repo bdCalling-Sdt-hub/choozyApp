@@ -12,6 +12,7 @@ import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetMassagesQuery} from '../../redux/apiSlices/message';
+import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 import Chats from './components/Chats';
 import GroupsSection from './components/GroupsSection';
 
@@ -30,6 +31,10 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
 
   // console.log(JSON.stringify(MessagesData, null, 2));
   const [options, setOptions] = React.useState<'Chats' | 'groups'>('Chats');
+
+  const {data: Shop} = useGetShopQuery({});
+
+  const [isShop, setIsShop] = React.useState(!!Shop?.data?.[0]?.id);
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -131,7 +136,9 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
             title: 'My Stores',
             onPress: () => {
               setActionModalOpen(false);
-              navigation?.navigate('CreateShop');
+              if (!!Shop?.data?.[0]?.id) {
+                navigation?.navigate('MyWall', {state: 'store'});
+              } else navigation?.navigate('CreateShop');
             },
           },
           // {

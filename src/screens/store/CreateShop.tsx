@@ -9,10 +9,28 @@ import InputText from '../../components/inputs/InputText';
 import NormalModal from '../../components/modals/NormalModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useCreateShopMutation} from '../../redux/apiSlices/shopSlices';
 
 const CreateShop = ({navigation}: NavigProps<null>) => {
   const [storeName, setStoreName] = React.useState('');
+  const [createShop] = useCreateShopMutation();
   const [showCreatedShopModal, setShowCreateShopModal] = React.useState(false);
+
+  const handleCreateShop = async (name: string) => {
+    // console.log(name);
+    const formData = new FormData();
+    name && formData.append('shop_name', name);
+    formData.append('status', '1');
+    const res = await createShop(formData);
+    if (res.data?.id) {
+      setShowCreateShopModal(true);
+      setShowCreateShopModal(false);
+      navigation?.navigate('MyWall', {
+        storeName,
+      });
+    }
+  };
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -71,10 +89,7 @@ const CreateShop = ({navigation}: NavigProps<null>) => {
           <TButton
             containerStyle={tw`w-full my-3 bg-primary600`}
             onPress={() => {
-              setShowCreateShopModal(false);
-              navigation?.navigate('MyWall', {
-                storeName,
-              });
+              handleCreateShop(storeName);
             }}
             title="Done"
           />

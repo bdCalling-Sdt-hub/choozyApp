@@ -21,6 +21,7 @@ import ActionModal from '../../components/modals/ActionModal';
 import NormalModal from '../../components/modals/NormalModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {IProduct} from '../../redux/interface/products';
 
 const categoryData = [
   {
@@ -68,21 +69,15 @@ const categoryData = [
     name: 'Study',
   },
 ];
-interface RouteData {
-  id?: number;
-  productCode?: string;
-  name?: string;
-  category?: string;
-  description?: string;
-  price?: number;
-  currency?: string;
-  images: Array<string>;
-}
 
-const MyProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
+const MyProductDetailsScreen = ({
+  navigation,
+  route,
+}: NavigProps<{item: IProduct}>) => {
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
   const {height, width} = useWindowDimensions();
-  const Item: RouteData = route?.params?.item;
+  const Item = route?.params.item;
+
   const [showAddProductModal, setShowProductPostModal] = React.useState(false);
   const [showCategoryModal, setShowCategoryModal] = React.useState(false);
   const [selectCategory, setSelectCategory] = React.useState('Vehicle');
@@ -115,7 +110,7 @@ const MyProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={Item.images}
+            data={Item?.product_images}
             renderItem={({item, index}) => {
               return (
                 <>
@@ -129,7 +124,7 @@ const MyProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
                   <View
                     style={tw`bg-[#FFFFFF99] absolute  bottom-4 rounded-lg px-2 py-1 right-5`}>
                     <Text style={tw`text-center font-NunitoSansBold text-base`}>
-                      {index + 1}/{Item?.images?.length}
+                      {index + 1}/{Item?.product_images?.length}
                     </Text>
                   </View>
                 </>
@@ -140,12 +135,12 @@ const MyProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
             <View style={tw`flex-row justify-between items-center`}>
               <Text
                 style={tw`text-color-Black900 font-NunitoSansBold text-2xl`}>
-                €{Item.price}
+                €{Item?.price}
               </Text>
               <View style={tw`items-end gap-1`}>
                 <Text
                   style={tw`text-color-Black1000 font-NunitoSansBold text-sm`}>
-                  {Item.category}
+                  {Item?.category_name}
                 </Text>
                 <Text
                   style={tw`text-color-Black600 font-NunitoSansRegular text-xs`}>
@@ -155,7 +150,7 @@ const MyProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
             </View>
             <Text
               style={tw`text-color-Black900 font-NunitoSansBold text-lg my-4`}>
-              {Item.name}
+              {Item?.product_name}
             </Text>
           </View>
         </View>
@@ -166,11 +161,7 @@ const MyProductDetailsScreen = ({navigation, route}: NavigProps<RouteData>) => {
               Description
             </Text>
             <Text style={tw`text-color-Black800 font-NunitoSansRegular`}>
-              The Audi Q4 e-tron is a sleek, all-electric SUV that combines
-              cutting-edge technology with dynamic performance. It offers a
-              spacious interior, advanced infotainment system, and a range of up
-              to 250 miles on a single charge, making it ideal for both daily
-              commutes and longer journeys.
+              {Item?.description}
             </Text>
           </View>
         </View>

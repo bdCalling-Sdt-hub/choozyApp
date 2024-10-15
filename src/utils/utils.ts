@@ -71,7 +71,6 @@ export const useImagePicker = async ({
         maxWidth: 500,
         maxHeight: 500,
         quality: 0.5,
-        includeBase64: true,
       });
 
       if (!result.didCancel) {
@@ -84,8 +83,7 @@ export const useImagePicker = async ({
         maxWidth: 500,
         maxHeight: 500,
         quality: 0.5,
-        includeBase64: true,
-        selectionLimit: selectionLimit ? selectionLimit : 1, // Set to 0 for unlimited image selection
+        selectionLimit: selectionLimit || 1, // Set to 0 for unlimited image selection
       });
 
       if (!result.didCancel) {

@@ -3,22 +3,14 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import tw from '../../lib/tailwind';
+import {IProduct} from '../../redux/interface/products';
 
 export interface IProductCarProps {
   onPress?: () => void;
   containerStyle?: any;
   showStatus?: boolean;
   status?: 'Delivered' | 'Pending' | 'Cancelled';
-  item: {
-    id?: number;
-    productCode?: string;
-    name?: string;
-    category?: string;
-    description?: string;
-    price?: number;
-    currency?: string;
-    images: Array<string>;
-  };
+  item: IProduct;
 }
 
 const ProductCard = ({
@@ -40,7 +32,7 @@ const ProductCard = ({
         style={tw`w-full  h-32 rounded-xl`}
         resizeMode={FastImage.resizeMode.contain}
         source={{
-          uri: item.images![0],
+          uri: item.product_images[0],
         }}
       />
       <View style={tw` flex-row justify-between gap-2`}>
@@ -50,13 +42,13 @@ const ProductCard = ({
         </Text>
         <Text
           style={tw`text-center text-[#615E69] font-NunitoSansRegular text-xs`}>
-          {item.productCode}
+          {item.product_code}
         </Text>
       </View>
       <Text
         numberOfLines={2}
-        style={tw`text-center text-color-Black900 font-NunitoSansBold text-sm flex-1`}>
-        {item.name}
+        style={tw`text-left text-color-Black900 font-NunitoSansBold text-sm flex-1`}>
+        {item.product_name}
       </Text>
 
       <View>
