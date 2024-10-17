@@ -7,16 +7,26 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {
+  useResendOtpMutation,
+  useVerifyEmailMutation,
+} from '../../redux/apiSlices/authSlice';
 
 import React from 'react';
 import BackWithHeader from '../../components/backHeader/BackWithHeader';
 import TButton from '../../components/buttons/TButton';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
-const VerifyEmail = ({navigation}: NavigProps<null>) => {
+const VerifyEmail = ({navigation, route}: NavigProps<{email: string}>) => {
+  const {showToast} = useToast();
+
+  const [verifyPin] = useVerifyEmailMutation();
+  const [sendOtp] = useResendOtpMutation();
+
   // Use React state with correct typing for OTP (array of strings)
-  const [otp, setOtp] = React.useState<string[]>(['', '', '', '']);
+  const [otp, setOtp] = React.useState<string[]>(['', '', '', '', '', '']);
   const inputRefs = React.useRef<(TextInput | null)[]>([]);
 
   // Function to handle text change with correct typing for value and index
@@ -60,6 +70,13 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
     }
   };
 
+  const onSubmit = async () => {
+    if (otp.join('').length === 6) {
+      const res = await verifyPin({otp: otp});
+      console.log(res);
+    }
+  };
+
   return (
     <View style={tw`bg-base flex-1`}>
       <BackWithHeader navigation={navigation} title="OTP Verification" />
@@ -68,7 +85,7 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
         keyboardShouldPersistTaps="always">
         <View>
           <Text style={tw`text-lg text-color-Black800 font-NunitoSansRegular`}>
-            We just sent a verification code to alima012@gmail.com
+            We just sent a verification code to {route?.params?.email}
           </Text>
           <View style={tw`gap-2 pt-8`}>
             <Text style={tw`text-sm text-color-Black950 font-NunitoSansBold`}>
@@ -78,7 +95,7 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
               {otp.map((digit, index) => (
                 <View
                   key={index}
-                  style={tw`w-14 h-14 rounded-2xl border border-[#D1D1D1] justify-center items-center`}>
+                  style={tw`w-13 h-13 rounded-2xl border border-[#D1D1D1] justify-center items-center`}>
                   <TextInput
                     ref={el => (inputRefs.current[index] = el)}
                     value={digit}
@@ -96,21 +113,40 @@ const VerifyEmail = ({navigation}: NavigProps<null>) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={tw`flex-row items-center`}>
+        <View style={tw`flex-row items-center`}>
           <Text style={tw`text-color-Black800 font-NunitoSansRegular`}>
             Didn’t receive the code?
           </Text>
-          <Text
-            onPress={() => navigation?.replace('Login')}
-            style={tw`text-primary font-NunitoSansExtraBold`}>
-            {' '}
-            Send again
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={async () => {
+              await sendOtp({email: route?.params?.email}).then(res => {
+                console.log(res);
+                if (res.data?.status === 200) {
+                  showToast({
+                    title: 'Success',
+                    titleStyle: tw`text-gray-500 text-base font-NunitoSansBold`,
+                    contentStyle: tw`text-sm`,
+                    content: res.data?.message,
+                    btnDisplay: true,
+                  });
+                }
+              });
+              setOtp(['', '', '', '', '', '']);
+              inputRefs.current[0]?.focus();
+            }}>
+            <Text style={tw`text-primary font-NunitoSansExtraBold px-2`}>
+              Send again
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
       <View style={tw`px-[4%]`}>
         <TButton
-          onPress={() => navigation?.replace('CreateNewPassword')}
+          onPress={async () => {
+            await onSubmit();
+            setOtp(['', '', '', '', '', '']);
+            inputRefs.current[0]?.focus();
+          }}
           isLoading={false}
           title="Submit"
           containerStyle={tw`my-10 w-full bg-primary`}

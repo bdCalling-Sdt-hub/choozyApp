@@ -56,3 +56,9 @@ export interface IProfile {
     image: string;
   };
 }
+
+export interface ValidToken {
+  message: string;
+  status: 200;
+  token_status: boolean;
+}

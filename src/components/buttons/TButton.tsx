@@ -42,7 +42,9 @@ const TButton = ({
         <ActivityIndicator color={loadingColor ? loadingColor : ''} />
       )}
       {title && (
-        <Text style={[tw`text-white font-semibold`, titleStyle]}>{title}</Text>
+        <Text style={[tw`text-white font-semibold text-sm`, titleStyle]}>
+          {title}
+        </Text>
       )}
     </TouchableOpacity>
   );

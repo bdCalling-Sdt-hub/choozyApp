@@ -25,6 +25,7 @@ import Routes from './Routes';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const dispatch = useDispatch();
+
   return (
     <>
       <DrawerContentScrollView showsVerticalScrollIndicator={false} {...props}>

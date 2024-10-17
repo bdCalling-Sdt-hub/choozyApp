@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 import {useDeviceContext} from 'twrnc';
+import {ToastProvider} from '../components/modals/Toaster';
 import tw from '../lib/tailwind';
 import store from '../redux/store';
 import SplashScreen from '../screens/spalsh/SplashScreen';
@@ -20,9 +21,11 @@ function AppRoutes() {
         <SplashScreen setIsSplash={setIsSplash} />
       ) : (
         <GestureHandlerRootView>
-          <NavigationContainer>
-            <CustomDrawer />
-          </NavigationContainer>
+          <ToastProvider>
+            <NavigationContainer>
+              <CustomDrawer />
+            </NavigationContainer>
+          </ToastProvider>
         </GestureHandlerRootView>
       )}
     </Provider>

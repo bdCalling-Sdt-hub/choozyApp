@@ -66,8 +66,15 @@ const categoryData = [
   },
 ];
 
-interface StoreProps extends NavigProps<any> {}
-const Store = ({navigation}: StoreProps) => {
+interface StoreProps extends NavigProps<any> {
+  showAddProductModal: boolean;
+  setShowProductPostModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const Store = ({
+  navigation,
+  setShowProductPostModal,
+  showAddProductModal,
+}: StoreProps) => {
   // console.log();
   const {
     data: Products,
@@ -103,7 +110,6 @@ const Store = ({navigation}: StoreProps) => {
   };
 
   const {data: Shop} = useGetShopQuery({});
-  const [showAddProductModal, setShowProductPostModal] = React.useState(false);
   const [showCategoryModal, setShowCategoryModal] = React.useState(false);
   const [selectCategory, setSelectCategory] = React.useState('Vehicle');
 

@@ -22,6 +22,7 @@ import IwtButton from '../../components/buttons/IwtButton';
 import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useLoginUserMutation} from '../../redux/apiSlices/authSlice';
@@ -31,8 +32,9 @@ interface ISingInForm {
   password: string;
 }
 
-const LoginScreen = ({navigation}: NavigProps<null>) => {
+const LoginScreen = ({navigation}: NavigProps<any>) => {
   const dispatch = useDispatch();
+  const {showToast} = useToast();
   const [check, setCheck] = React.useState(false);
   const [showPass, setShowPass] = React.useState(false);
   const [rememberItems, setRememberItems] = React.useState({
@@ -40,14 +42,24 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
     email: lStorage.getString('email') || '',
     password: lStorage.getString('password') || '',
   });
-  const [loginUser] = useLoginUserMutation({});
+  const [loginUser, results] = useLoginUserMutation({});
   const onSubmitHandler = async (data: ISingInForm) => {
     console.log(data);
     const res = await loginUser(data);
     console.log(res);
+
+    if (res.error) {
+      console.log(res.error?.error);
+      showToast({
+        title: 'Error',
+        titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+        content: res.error?.error,
+        btnDisplay: true,
+      });
+    }
     if (res.data?.token) {
       setStorageToken(res.data?.token);
-      navigation?.replace('Loading');
+      navigation?.replace('HomeRoutes');
     }
   };
   return (
@@ -94,8 +106,8 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
               errors.email = 'Invalid email address';
             }
             // check or validity of password 6 digit
-            if (values.password.length < 6) {
-              errors.password = 'Password must be at least 6 characters';
+            if (values.password.length < 8) {
+              errors.password = 'Password must be at least 8 characters';
             }
             if (!values.password) {
               errors.password = 'Required';
@@ -184,6 +196,8 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
                   </Text>
                 </TouchableOpacity>
                 <TButton
+                  isLoading={results.isLoading}
+                  loadingColor="white"
                   onPress={handleSubmit}
                   title="Log in"
                   containerStyle={tw`w-full mb-5 mt-3 bg-primary text-lg `}

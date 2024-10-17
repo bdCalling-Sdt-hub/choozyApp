@@ -1,4 +1,11 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import React, {
+  createContext,
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import {
   Dimensions,
   Pressable,
@@ -180,3 +187,51 @@ const PopUpModal = forwardRef<PopUpModalRef, PopUpModalProps>(
 );
 
 export default PopUpModal;
+
+interface ToastContextType {
+  showToast: (data: PopUpModalProps) => void;
+  closeToast: () => void;
+}
+
+const ToastContext = createContext<ToastContextType | undefined>(undefined);
+
+/**
+ * Hook to use the toast context.
+ * @throws {Error} if called outside of a ToastProvider
+ * @returns {ToastContextType} the toast context
+ */
+export const useToast = () => {
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error('useToast must be used within a ToastProvider');
+  }
+  return context;
+};
+
+/**
+ * Context provider for managing toast notifications.
+ * @param children React node representing the children components.
+ */
+export const ToastProvider: React.FC<{children: React.ReactNode}> = ({
+  children,
+}) => {
+  const ref = useRef<PopUpModalRef>(null);
+
+  const showToast = (data: PopUpModalProps) => {
+    if (ref.current) {
+      ref.current.open(data);
+    }
+  };
+  const closeToast = () => {
+    if (ref.current) {
+      ref.current.close();
+    }
+  };
+
+  return (
+    <ToastContext.Provider value={{showToast, closeToast}}>
+      {children}
+      <PopUpModal ref={ref} />
+    </ToastContext.Provider>
+  );
+};

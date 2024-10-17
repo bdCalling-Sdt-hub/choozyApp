@@ -38,7 +38,7 @@ import {PrimaryColor} from '../../utils/utils';
 const Post = React.lazy(() => import('./components/Post'));
 const Store = React.lazy(() => import('./components/Store'));
 
-const MyWall = ({navigation, route}: NavigProps<{item: string}>) => {
+const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
   // console.log(route);
   const {
     data: wallData,
@@ -236,7 +236,11 @@ const MyWall = ({navigation, route}: NavigProps<{item: string}>) => {
                 <ActivityIndicator color={PrimaryColor} />
               </View>
             }>
-            <Store navigation={navigation} />
+            <Store
+              showAddProductModal={showAddProductModal}
+              setShowProductPostModal={setShowProductPostModal}
+              navigation={navigation}
+            />
           </Suspense>
         )}
       </ScrollView>

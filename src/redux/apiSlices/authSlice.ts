@@ -1,9 +1,15 @@
-import {IProfile, IUserProfile} from '../interface/auth';
+import {IProfile, IUserProfile, ValidToken} from '../interface/auth';
 
 import {api} from '../api/baseApi';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
+    tokenCheck: builder.query<ValidToken, any>({
+      query: token => ({
+        url: `/validate-token`,
+      }),
+      providesTags: ['user'],
+    }),
     getProfile: builder.query<IProfile, any>({
       query: token => ({
         url: `/getProfile`,
@@ -46,7 +52,7 @@ const authSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['user'],
     }),
-    verifyUser: builder.mutation({
+    verifyEmail: builder.mutation({
       query: data => ({
         url: `/verifyOtp`,
         method: 'POST',
@@ -90,6 +96,8 @@ const authSlice = api.injectEndpoints({
 });
 
 export const {
+  useTokenCheckQuery,
+  useLazyTokenCheckQuery,
   useCreateUserMutation,
   useForgotPasswordMutation,
   useGetOtherUserProfileQuery,
@@ -99,6 +107,6 @@ export const {
   useLoginUserMutation,
   useResetPasswordMutation,
   useUserUpdateMutation,
-  useVerifyUserMutation,
+  useVerifyEmailMutation,
   useGetProfileQuery,
 } = authSlice;

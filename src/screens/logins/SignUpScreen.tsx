@@ -24,22 +24,55 @@ import IwtButton from '../../components/buttons/IwtButton';
 import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useCreateUserMutation} from '../../redux/apiSlices/authSlice';
 
 interface ISingUpForm {
-  name: string;
+  full_name: string;
   email: string;
   password: string;
   address: string;
+  role: 'MEMBER';
 }
 
-const SignUpScreen = ({navigation}: NavigProps<null>) => {
+const SignUpScreen = ({navigation}: NavigProps<any>) => {
+  const {showToast} = useToast();
+
   const [check, setCheck] = React.useState(false);
   const [showPass, setShowPass] = React.useState(false);
 
+  const [createUser] = useCreateUserMutation({});
+
   const onSubmitHandler = (data: ISingUpForm) => {
     console.log(data);
+
+    // console.log(data);
+    createUser(data).then(res => {
+      console.log(res);
+
+      if (res.data) {
+        showToast({
+          title: 'Success',
+          titleStyle: tw`text-green-500 text-base font-NunitoSansBold`,
+          contentStyle: tw`text-sm`,
+          content: res.data?.message,
+          btnDisplay: true,
+        });
+        navigation?.navigate('Verify', {email: data.email});
+      }
+
+      if (res.error) {
+        showToast({
+          title: 'Error',
+          titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+          containerStyle: tw`text-xs`,
+          content: res.error?.messages?.email,
+          btnDisplay: true,
+        });
+      }
+    });
   };
 
   return (
@@ -58,24 +91,31 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
         </View>
         {/*================= login title and subtitle ================= */}
         <View style={tw`px-[4%] gap-3`}>
-          <Text style={tw`text-[24px] text-black font-NunitoSansExtraBold `}>
+          <Text
+            style={tw`text-[24px] text-color-Black800 font-NunitoSansExtraBold `}>
             Sing Up.
           </Text>
         </View>
         {/*================= inputs fields email or password  ================= */}
 
         <Formik
-          initialValues={{email: '', password: '', name: '', address: ''}}
+          initialValues={{
+            full_name: '',
+            role: 'MEMBER',
+            email: '',
+            password: '',
+            address: '',
+          }}
           onSubmit={onSubmitHandler}
           validate={values => {
             const errors: {
               email?: string;
               password?: string;
-              name?: string;
+              full_name?: string;
               address?: string;
             } = {};
-            if (!values.name) {
-              errors.name = 'Required';
+            if (!values.full_name) {
+              errors.full_name = 'Required';
             }
             if (!values.email) {
               errors.email = 'Required';
@@ -90,8 +130,8 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
               errors.email = 'Invalid email address';
             }
             // check or validity of password 6 digit
-            if (values.password.length < 6) {
-              errors.password = 'Password must be at least 6 characters';
+            if (values.password.length < 8) {
+              errors.password = 'Password must be at least 8 characters';
             }
             if (!values.password) {
               errors.password = 'Required';
@@ -111,17 +151,29 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
                 {/*======================= email ======================== */}
 
                 <InputText
-                  value={values.name}
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
+                  value={values.full_name}
+                  onChangeText={handleChange('full_name')}
+                  onBlur={handleBlur('full_name')}
                   floatingPlaceholder
                   placeholder="Full Name"
                   svgFirstIcon={IconUser}
                 />
-                {errors.name && touched.name && (
-                  <Text style={tw`text-red-500`}>{errors.name}</Text>
+                {errors.full_name && touched.full_name && (
+                  <Text style={tw`text-red-500`}>{errors.full_name}</Text>
                 )}
 
+                {/* <InputText
+                  value={values.user_name}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  floatingPlaceholder
+                  placeholder="Username"
+                  svgFirstIcon={IconAtTheRatOf}
+                />
+
+                {errors.user_name && touched.user_name && (
+                  <Text style={tw`text-red-500`}>{errors.user_name}</Text>
+                )} */}
                 <InputText
                   value={values.email}
                   onChangeText={handleChange('email')}
@@ -185,7 +237,7 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
                 </TouchableOpacity>
                 <TButton
                   onPress={handleSubmit}
-                  title="Log in"
+                  title="Sing Up"
                   containerStyle={tw`w-full mb-5 mt-3 bg-primary text-lg `}
                   titleStyle={tw`text-white font-NunitoSansSemiBold`}
                 />

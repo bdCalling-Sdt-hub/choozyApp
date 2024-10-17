@@ -4,18 +4,25 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useLazyTokenCheckQuery} from '../../redux/apiSlices/authSlice';
 import {getStorageToken} from '../../utils/utils';
 
-const LoadingSplash = ({navigation}: NavigProps<null>) => {
+const LoadingSplash = ({navigation}: NavigProps<any>) => {
   const token = getStorageToken();
+  const [checkToken] = useLazyTokenCheckQuery({});
   // console.log(token);
-  setTimeout(() => {
-    if (token) {
-      navigation?.replace('HomeRoutes');
+  const handleCheckValidToken = async () => {
+    const res = await checkToken(token).unwrap();
+    if (res.token_status) {
+      (navigation as any)?.replace('HomeRoutes');
     } else {
-      navigation?.replace('Login');
+      (navigation as any)?.replace('Login');
     }
-  }, 100);
+  };
+
+  React.useEffect(() => {
+    handleCheckValidToken();
+  }, []);
 
   return (
     <View style={tw`flex-1 w-full bg-primary justify-center items-center`}>

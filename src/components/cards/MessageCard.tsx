@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import tw from '../../lib/tailwind';
+import {getRandomColor} from '../../utils/getRandomColor';
 
 interface MessageCardProps {
   item: {
@@ -63,7 +64,7 @@ const MessageCard = ({
             />
           ) : (
             <View
-              style={tw`w-full h-full bg-primary rounded-2xl justify-center items-center`}>
+              style={tw`w-full h-full bg-[${getRandomColor()}] rounded-2xl justify-center items-center`}>
               <Text style={tw`text-white font-NunitoSansBold text-lg shadow`}>
                 {item.name?.slice(0, 1).toUpperCase()}
               </Text>
