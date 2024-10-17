@@ -8,12 +8,15 @@ import {height} from '../../utils/utils';
 interface NoFoundCardProps {
   title?: string;
   description?: string;
+  hight?: number;
 }
 
-const NoFoundCard = ({description, title}: NoFoundCardProps) => {
+const NoFoundCard = ({description, title, hight}: NoFoundCardProps) => {
   return (
     <View
-      style={tw`flex-1 justify-center items-center h-[${height * 0.18}] gap-3`}>
+      style={tw`flex-1 justify-center items-center h-[${
+        hight ? hight : height * 0.18
+      }] gap-3`}>
       <SvgXml
         height={100}
         width={100}

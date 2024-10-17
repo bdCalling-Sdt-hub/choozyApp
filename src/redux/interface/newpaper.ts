@@ -1,5 +1,6 @@
 export interface INewpaper {
   newsfeed_id: number;
+  id: number;
   user: {
     id: number;
     full_name: string;
@@ -12,6 +13,7 @@ export interface INewpaper {
   newsfeed_status: string;
   like_count: number;
   auth_user_liked: boolean;
+  privacy: string;
   comments: Array<IComment>;
 }
 

@@ -1,4 +1,3 @@
-import React, {useCallback} from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -6,23 +5,25 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import React, {useCallback} from 'react';
 import {
   useCommentMutation,
   useGetAllNewFeetQuery,
 } from '../../redux/apiSlices/newsFeetSlices';
 
-import FastImage from 'react-native-fast-image';
-import {TextInput} from 'react-native-gesture-handler';
-import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
-import IButton from '../../components/buttons/IButton';
 import CommentCard from '../../components/cards/CommentCard';
+import FastImage from 'react-native-fast-image';
+import IButton from '../../components/buttons/IButton';
+import {INewpaper} from '../../redux/interface/newpaper';
+import {IconSend} from '../../icons/icons';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import {NavigProps} from '../../interfaces/NaviProps';
+import NoFoundCard from '../../components/cards/NoFoundCard';
 import PostCard from '../../components/cards/PostCard';
 import SideModal from '../../components/modals/SideModal';
-import {IconSend} from '../../icons/icons';
-import {NavigProps} from '../../interfaces/NaviProps';
+import {TextInput} from 'react-native-gesture-handler';
 import tw from '../../lib/tailwind';
 import {useGetUserProfileQuery} from '../../redux/apiSlices/authSlice';
-import {INewpaper} from '../../redux/interface/newpaper';
 
 const StatusScreen = ({navigation}: NavigProps<null>) => {
   const {
@@ -36,7 +37,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
   }>({
     open: false,
   });
-  const [reply, setReply] = React.useState(null);
+  const [reply, setReply] = React.useState<any>(null);
   const [comment, setComment] = React.useState('');
   const [createComment] = useCommentMutation();
   const {data: userProfile} = useGetUserProfileQuery({});
@@ -95,6 +96,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
             colors={['#4964C6']}
           />
         }
+        ListEmptyComponent={() => <NoFoundCard title="No Status" />}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
         contentContainerStyle={tw`gap-2 mt-3 pb-6 tablet:mx-[30%]`}
@@ -147,7 +149,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
                 style={tw`h-14 flex-row items-center ml-2`}>
                 <Text
                   style={tw`text-color-Black800  bg-slate-200 p-1 font-NunitoSansBold rounded-lg`}>
-                  {reply?.full_name}{' '}
+                  {reply?.full_name}
                   <Text style={tw`text-xs text-blue-600`}>x</Text>
                 </Text>
               </TouchableOpacity>

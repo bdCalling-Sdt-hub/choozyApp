@@ -18,7 +18,7 @@ import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
-const ContactScreen = ({navigation}: NavigProps<null>) => {
+const ContactScreen = ({navigation}: NavigProps<any>) => {
   const {
     data: contacts,
     isLoading: contactsLoading,

@@ -49,9 +49,13 @@ const authSlice = api.injectEndpoints({
       invalidatesTags: ['news_feed'],
     }),
     updateNewsFeet: builder.mutation({
-      query: id => ({
+      query: ({data, id}) => ({
         url: `/updateNewsfeeds/${id}`,
-        method: 'PUT',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: data,
       }),
       invalidatesTags: ['news_feed'],
     }),
