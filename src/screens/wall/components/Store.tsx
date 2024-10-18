@@ -2,6 +2,7 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {IconBasicsleft, IconImage} from '../../../icons/icons';
 import {
   useCreateProductMutation,
+  useGetCategoriesQuery,
   useGetUserProductsQuery,
 } from '../../../redux/apiSlices/productSlices';
 
@@ -19,53 +20,6 @@ import tw from '../../../lib/tailwind';
 import {useGetShopQuery} from '../../../redux/apiSlices/shopSlices';
 import {useImagePicker} from '../../../utils/utils';
 
-const categoryData = [
-  {
-    id: 1,
-    name: 'Vehicle',
-  },
-  {
-    id: 2,
-    name: 'Electronics',
-  },
-  {
-    id: 3,
-    name: 'Property',
-  },
-  {
-    id: 4,
-    name: 'Study',
-  },
-  {
-    id: 5,
-    name: 'Vehicle',
-  },
-  {
-    id: 6,
-    name: 'Electronics',
-  },
-  {
-    id: 7,
-    name: 'Property',
-  },
-  {
-    id: 8,
-    name: 'Study',
-  },
-  {
-    id: 10,
-    name: 'Study',
-  },
-  {
-    id: 11,
-    name: 'Study',
-  },
-  {
-    id: 12,
-    name: 'Study',
-  },
-];
-
 interface StoreProps extends NavigProps<any> {
   showAddProductModal: boolean;
   setShowProductPostModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -82,6 +36,10 @@ const Store = ({
     refetch: productRefetch,
   } = useGetUserProductsQuery({});
 
+  const {data: categories} = useGetCategoriesQuery({});
+
+  // console.log(categories?.data.data);
+
   const handleImage = async () => {
     try {
       const image = await useImagePicker({
@@ -90,7 +48,7 @@ const Store = ({
       });
 
       image?.forEach(item => {
-        setProductInfo(pre => {
+        setProductInfo((pre: any) => {
           return {
             ...pre,
             images: [
@@ -111,18 +69,24 @@ const Store = ({
 
   const {data: Shop} = useGetShopQuery({});
   const [showCategoryModal, setShowCategoryModal] = React.useState(false);
-  const [selectCategory, setSelectCategory] = React.useState('Vehicle');
+  const [selectCategory, setSelectCategory] = React.useState(
+    categories?.data?.data?.[0]?.category_name || 'Select Category',
+  );
 
   const [createProduct] = useCreateProductMutation({});
 
-  const [productInfo, setProductInfo] = React.useState({
-    category_id: 3,
-    shop_id: 0,
-    product_name: '',
-    description: '',
-    price: '00',
-    images: [],
+  const [productInfo, setProductInfo] = React.useState<{
+    category_id?: number;
+    shop_id?: number;
+    product_name?: string;
+    description?: string;
+    price?: number;
+    images?: any[];
+    status?: number;
+  }>({
+    category_id: categories?.data?.data?.[0]?.id,
     status: 1,
+    images: [],
   });
 
   const handleAddProducts = React.useCallback(
@@ -248,7 +212,7 @@ const Store = ({
                 {selectCategory}
               </Text>
             </TouchableOpacity>
-            <View style={tw`h-14`}>
+            {/* <View style={tw`h-14`}>
               <InputText
                 placeholder="Product code"
                 // value={productInfo.product_code}
@@ -257,11 +221,11 @@ const Store = ({
                 placeholderTextColor={'#A5A3A9'}
                 style={tw`font-NunitoSansRegular `}
               />
-            </View>
+            </View> */}
             <View style={tw`h-14`}>
               <InputText
                 placeholder="Price"
-                defaultValue={productInfo.price.toString()}
+                defaultValue={productInfo?.price?.toString()}
                 onChangeText={text =>
                   setProductInfo({...productInfo, price: Number(text)})
                 }
@@ -317,18 +281,18 @@ const Store = ({
             </TouchableOpacity>
           </View>
           <View style={tw`py-4 gap-4`}>
-            {categoryData.map((item, index) => (
+            {categories?.data?.data.map((item, index) => (
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  setSelectCategory(item.name);
+                  setSelectCategory(item.category_name);
                   setShowCategoryModal(false);
-                  setProductInfo({...productInfo, category_id: 1});
+                  setProductInfo({...productInfo, category_id: item?.id});
                 }}
                 activeOpacity={0.5}
                 style={tw`py-2`}>
                 <Text style={tw`text-color-Black600  font-NunitoSansRegular`}>
-                  {item.name}
+                  {item.category_name}
                 </Text>
               </TouchableOpacity>
             ))}

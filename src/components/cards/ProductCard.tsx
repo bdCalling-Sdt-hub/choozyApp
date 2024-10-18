@@ -28,27 +28,30 @@ const ProductCard = ({
         tw`bg-white w-[48%] tablet:w-[25%]  p-2 md:p-4 tablet:p-5 shadow-md shadow-slate-800 rounded-xl gap-2`,
         containerStyle,
       ]}>
-      <FastImage
-        style={tw`w-full  h-32 rounded-xl`}
-        resizeMode={FastImage.resizeMode.contain}
-        source={{
-          uri: item.product_images[0],
-        }}
-      />
+      {item?.product_images && (
+        <FastImage
+          style={tw`w-full  h-32 rounded-xl`}
+          resizeMode={FastImage.resizeMode.contain}
+          source={{
+            uri: item?.product_images![0],
+          }}
+        />
+      )}
+
       <View style={tw` flex-row justify-between gap-2`}>
         <Text
           style={tw`text-center font-NunitoSansBold text-sm text-color-Black900`}>
-          € {item.price}
+          € {item?.price}
         </Text>
         <Text
           style={tw`text-center text-[#615E69] font-NunitoSansRegular text-xs`}>
-          {item.product_code}
+          {item?.product_code}
         </Text>
       </View>
       <Text
         numberOfLines={2}
         style={tw`text-left text-color-Black900 font-NunitoSansBold text-sm flex-1`}>
-        {item.product_name}
+        {item?.product_name}
       </Text>
 
       <View>

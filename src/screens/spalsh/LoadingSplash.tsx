@@ -19,7 +19,6 @@ const LoadingSplash = ({navigation}: NavigProps<any>) => {
       (navigation as any)?.replace('Login');
     }
   };
-
   React.useEffect(() => {
     handleCheckValidToken();
   }, []);

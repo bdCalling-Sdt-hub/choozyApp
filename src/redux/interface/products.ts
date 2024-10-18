@@ -1,4 +1,5 @@
 import {IFechtStatus} from './Fechting';
+import {IPagination} from './pagination';
 import {IShop} from './shop';
 
 export interface IProduct {
@@ -17,4 +18,13 @@ export interface IProduct {
 
 export interface IProducts extends IFechtStatus {
   data: Array<IProduct>;
+}
+
+export interface ICategory {
+  id: number;
+  category_name: string;
+}
+
+export interface ICategories {
+  data: IPagination<ICategory>;
 }

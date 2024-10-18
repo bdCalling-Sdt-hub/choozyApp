@@ -1,11 +1,18 @@
+import {ICategories, IProducts} from '../interface/products';
+
 import {api} from '../api/baseApi';
-import {IProducts} from '../interface/products';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
     getUserProducts: builder.query<IProducts, any>({
       query: () => ({
         url: `/userproducts`,
+      }),
+      providesTags: ['product'],
+    }),
+    getCategories: builder.query<ICategories, any>({
+      query: () => ({
+        url: `/categories`,
       }),
       providesTags: ['product'],
     }),
@@ -21,10 +28,13 @@ const authSlice = api.injectEndpoints({
       invalidatesTags: ['product'],
     }),
     updateProduct: builder.mutation({
-      query: data => ({
-        url: `/products/${data.id}`,
+      query: ({data, id}) => ({
+        url: `/products/${id}`,
         method: 'POST',
         body: data,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }),
       invalidatesTags: ['product'],
     }),
@@ -42,4 +52,6 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useGetUserProductsQuery,
+  useGetCategoriesQuery,
+  useDeleteProductMutation,
 } = authSlice;
