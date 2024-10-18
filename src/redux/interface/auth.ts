@@ -47,11 +47,12 @@ export interface IProfile {
   status: true;
   message: string;
   data: {
-    id: string;
+    id: number;
     full_name: string;
     user_name: string;
     email: string;
     bio: string;
+    privicy: 'public' | 'private' | 'friends';
     location: string;
     image: string;
   };

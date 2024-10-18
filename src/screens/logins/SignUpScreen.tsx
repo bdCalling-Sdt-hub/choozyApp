@@ -6,6 +6,7 @@ import {
   View,
 } from 'react-native';
 import {
+  IconAtTheRatOf,
   IconCloseEye,
   IconEmail,
   IconFacebook,
@@ -32,6 +33,7 @@ import {useCreateUserMutation} from '../../redux/apiSlices/authSlice';
 interface ISingUpForm {
   full_name: string;
   email: string;
+  user_name?: string;
   password: string;
   address: string;
   role: 'MEMBER';
@@ -50,25 +52,25 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
 
     // console.log(data);
     createUser(data).then(res => {
-      console.log(res);
+      console.log(res?.e);
 
       if (res.data) {
         showToast({
           title: 'Success',
-          titleStyle: tw`text-green-500 text-base font-NunitoSansBold`,
+          titleStyle: tw`text-primary text-base font-NunitoSansBold`,
           contentStyle: tw`text-sm`,
-          content: res.data?.message,
+          content: "We've sent you an email. Please check your inbox.",
           btnDisplay: true,
         });
         navigation?.navigate('Verify', {email: data.email});
       }
 
-      if (res.error) {
+      if (res.error?.error) {
         showToast({
           title: 'Error',
           titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
           containerStyle: tw`text-xs`,
-          content: res.error?.messages?.email,
+          content: res?.error?.messages?.email,
           btnDisplay: true,
         });
       }
@@ -103,6 +105,7 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
             full_name: '',
             role: 'MEMBER',
             email: '',
+            user_name: '',
             password: '',
             address: '',
           }}
@@ -110,6 +113,7 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
           validate={values => {
             const errors: {
               email?: string;
+              user_name?: string;
               password?: string;
               full_name?: string;
               address?: string;
@@ -119,6 +123,9 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
             }
             if (!values.email) {
               errors.email = 'Required';
+            }
+            if (!values.user_name) {
+              errors.user_name = 'Required';
             }
             if (!values.address) {
               errors.address = 'Required';
@@ -162,10 +169,10 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
                   <Text style={tw`text-red-500`}>{errors.full_name}</Text>
                 )}
 
-                {/* <InputText
+                <InputText
                   value={values.user_name}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
+                  onChangeText={handleChange('user_name')}
+                  onBlur={handleBlur('user_name')}
                   floatingPlaceholder
                   placeholder="Username"
                   svgFirstIcon={IconAtTheRatOf}
@@ -173,7 +180,7 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
 
                 {errors.user_name && touched.user_name && (
                   <Text style={tw`text-red-500`}>{errors.user_name}</Text>
-                )} */}
+                )}
                 <InputText
                   value={values.email}
                   onChangeText={handleChange('email')}

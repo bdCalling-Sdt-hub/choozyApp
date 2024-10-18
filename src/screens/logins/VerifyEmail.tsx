@@ -18,10 +18,10 @@ import TButton from '../../components/buttons/TButton';
 import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {setStorageToken} from '../../utils/utils';
 
 const VerifyEmail = ({navigation, route}: NavigProps<{email: string}>) => {
   const {showToast} = useToast();
-
   const [verifyPin] = useVerifyEmailMutation();
   const [sendOtp] = useResendOtpMutation();
 
@@ -42,9 +42,6 @@ const VerifyEmail = ({navigation, route}: NavigProps<{email: string}>) => {
     // Move to the next input if value is entered
     if (value && index <= otp.length - 1) {
       inputRefs.current[index + 1]?.focus();
-    }
-    if (value && index) {
-      console.log(value);
     }
 
     // Move to the previous input if value is deleted
@@ -72,8 +69,29 @@ const VerifyEmail = ({navigation, route}: NavigProps<{email: string}>) => {
 
   const onSubmit = async () => {
     if (otp.join('').length === 6) {
-      const res = await verifyPin({otp: otp});
-      console.log(res);
+      console.log(otp.join(''));
+      const res = await verifyPin({otp: otp.join('')});
+      if (res.error) {
+        console.log(res.error?.error);
+        showToast({
+          title: 'Error',
+          titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+          content: res.error?.messages?.otp,
+          btnDisplay: true,
+        });
+      }
+      if (res.data?.token) {
+        setStorageToken(res.data?.token);
+        (navigation as any)?.replace('VerifySuccess');
+      }
+    } else {
+      showToast({
+        title: 'warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: 'Please enter valid OTP',
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
     }
   };
 

@@ -8,8 +8,12 @@ import InputText from '../../components/inputs/InputText';
 import {IconWrite} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
 
-const Settings = ({navigation}: NavigProps<null>) => {
+const Settings = ({navigation}: NavigProps<any>) => {
+  const {data: userProfile} = useGetProfileQuery({});
+  // console.log(userProfile);
+  // const {showToast, closeToast} = useToast();
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -33,9 +37,9 @@ const Settings = ({navigation}: NavigProps<null>) => {
           <TouchableOpacity style={tw`w-16 justify-center items-center`}>
             <FastImage
               style={tw`w-16 h-16 rounded-2xl`}
-              resizeMode={FastImage.resizeMode.contain}
+              resizeMode={FastImage.resizeMode.cover}
               source={{
-                uri: 'https://randomuser.me/api/portraits/men/19.jpg',
+                uri: userProfile?.data?.image,
               }}
             />
             {/* <View
@@ -44,25 +48,28 @@ const Settings = ({navigation}: NavigProps<null>) => {
             </View> */}
           </TouchableOpacity>
           <View style={tw`flex-row gap-2`}>
-            <Text>Private</Text>
-            <Text>Public</Text>
-            <Text>Contacts Only</Text>
+            <Text style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
+              {userProfile?.data?.privicy === 'public'
+                ? 'Public'
+                : userProfile?.data?.privicy === 'friends'
+                ? 'Contacts Only'
+                : 'Private'}
+            </Text>
           </View>
           <View
             style={tw`gap-6 border-b border-b-color-Black200 pb-10 border-dashed`}>
             <View style={tw`justify-center items-center `}>
               <Text
                 style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
-                Edwin Martins
+                {userProfile?.data?.full_name}
               </Text>
               <Text
                 style={tw`text-color-Black600 font-NunitoSansRegular text-xs`}>
-                edwinmartin@gmail.com
+                {userProfile?.data?.email}
               </Text>
             </View>
-            <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-sm`}>
-              Cut from geometric cotton lace mimicking decorative fretwork, this
-              blouse reveals hints of skin offsetting its long-sleeve silhouette
+            <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-sm `}>
+              {userProfile?.data?.bio}
             </Text>
           </View>
         </View>
@@ -72,14 +79,14 @@ const Settings = ({navigation}: NavigProps<null>) => {
         <View style={tw`h-14`}>
           <InputText
             editable={false}
-            placeholder="Jenifer Lopez"
+            placeholder={userProfile?.data?.full_name}
             floatingPlaceholder
           />
         </View>
         <View style={tw` h-14`}>
           <InputText
             editable={false}
-            placeholder="Times squre, USA"
+            placeholder={userProfile?.data?.location}
             floatingPlaceholder
           />
         </View>

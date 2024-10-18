@@ -6,9 +6,9 @@ import {IconRightTik} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
-const VerifySuccess = ({navigation}: NavigProps<null>) => {
+const VerifySuccess = ({navigation}: NavigProps<any>) => {
   setTimeout(() => {
-    navigation?.replace('HomeRoutes');
+    (navigation as any)?.replace('HomeRoutes');
   }, 500);
   return (
     <View style={tw`flex-1 bg-base justify-center items-center`}>

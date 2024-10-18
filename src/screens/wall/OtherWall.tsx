@@ -1,91 +1,72 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import React, {Suspense} from 'react';
 import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  IconLock,
+  IconMenu,
+  IconPlus,
   IconPost,
   IconPostBlue,
+  IconPublic,
   IconStore,
   IconStoreBlue,
+  IconUser,
 } from '../../icons/icons';
 
-import React from 'react';
+import {DrawerActions} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import SimpleButton from '../../components/buttons/SimpleButton';
-import TButton from '../../components/buttons/TButton';
+import IButton from '../../components/buttons/IButton';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import OtherWallPost from './components/OtherWallPost';
-import OtherWallStore from './components/OtherWallStore';
+import {useGetOtherUserProfileQuery} from '../../redux/apiSlices/authSlice';
+import {PrimaryColor} from '../../utils/utils';
 
-const categoryData = [
-  {
-    id: 1,
-    name: 'Vehicle',
-  },
-  {
-    id: 2,
-    name: 'Electronics',
-  },
-  {
-    id: 3,
-    name: 'Property',
-  },
-  {
-    id: 4,
-    name: 'Study',
-  },
-  {
-    id: 5,
-    name: 'Vehicle',
-  },
-  {
-    id: 6,
-    name: 'Electronics',
-  },
-  {
-    id: 7,
-    name: 'Property',
-  },
-  {
-    id: 8,
-    name: 'Study',
-  },
-  {
-    id: 10,
-    name: 'Study',
-  },
-  {
-    id: 11,
-    name: 'Study',
-  },
-  {
-    id: 12,
-    name: 'Study',
-  },
-];
+// import Post from './components/Post';
+// import Store from './components/Store';
 
-const OtherWall = ({navigation}: NavigProps<null>) => {
-  // console.log(route);
+const Post = React.lazy(() => import('./components/OtherWallPost'));
+const Store = React.lazy(() => import('./components/OtherWallStore'));
+
+const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
+  console.log(route?.params);
+  const {
+    data: wallData,
+    isLoading: wallLoading,
+    refetch: wallRefetch,
+  } = useGetOtherUserProfileQuery(route?.params?.id);
+
+  // console.log(Shop?.data?.[0]?.id);
+  // console.log(wallData);
+
   const [options, setOptions] = React.useState('post');
-  const [isPublic, setIsPublic] = React.useState(true);
 
-  const [isFollow, setIsFollow] = React.useState(false);
+  const [showAddPostModal, setShowAddPostModal] = React.useState(false);
+  const [showAddProductModal, setShowProductPostModal] = React.useState(false);
+
+  // console.log(Shop?.data?.[0]?.id);
+
+  // console.log(wallData?.data.news_feeds.length);
 
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
-        title="Back"
+        title="My Wall"
         containerStyle={tw`justify-between`}
         ComponentBtn={
-          <TButton
+          <IButton
             onPress={() => {
-              setIsFollow(!isFollow);
+              navigation?.dispatch(DrawerActions.openDrawer());
             }}
-            title={isFollow ? 'Following' : 'Follow'}
-            containerStyle={tw`${
-              isFollow ? 'bg-primary' : 'bg-white '
-            }   py-1 w-24 `}
-            titleStyle={tw`${isFollow ? 'text-white' : 'text-black'}`}
+            svg={IconMenu}
+            containerStyle={tw`w-12  h-12 bg-primary50 shadow-none`}
           />
         }
         onPress={() => {
@@ -93,8 +74,16 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
         }}
       />
       <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={wallLoading}
+            onRefresh={wallRefetch}
+            colors={[PrimaryColor]}
+          />
+        }
         contentContainerStyle={tw`pb-6`}
         nestedScrollEnabled
+        keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%]`}>
           <View
@@ -102,59 +91,75 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
             <FastImage
               style={tw`w-16 h-16  rounded-3xl`}
               source={{
-                uri: 'https://randomuser.me/api/portraits/men/19.jpg',
+                uri: wallData?.data?.image,
               }}
-              resizeMode={FastImage.resizeMode.contain}
+              resizeMode={FastImage.resizeMode.cover}
             />
             <View
-              style={tw`flex-1 max-w-[50%]  flex-row justify-between tablet:max-w-72 `}>
-              <View style={tw`justify-center items-center`}>
-                <Text
-                  style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  236
-                </Text>
-                <Text
-                  style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Posts
-                </Text>
-              </View>
-              <View style={tw`justify-center items-center`}>
-                <Text
-                  style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  79
-                </Text>
-                <Text
-                  style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Products
-                </Text>
-              </View>
-              <View style={tw`justify-center items-center`}>
-                <Text
-                  style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  100
-                </Text>
-                <Text
-                  style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Contacts
-                </Text>
-              </View>
+              style={tw`flex-1 max-w-[50%]  flex-row  gap-[80%] tablet:max-w-72 `}>
+              {wallData && wallData?.data?.news_feeds?.length > 0 && (
+                <View style={tw`justify-center items-center`}>
+                  <Text
+                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                    {wallData?.data?.news_feeds?.length}
+                  </Text>
+                  <Text
+                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                    Posts
+                  </Text>
+                </View>
+              )}
+              {wallData && wallData?.data?.formattedProducts?.length > 0 && (
+                <View style={tw`justify-center items-center`}>
+                  <Text
+                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                    {wallData?.data?.formattedProducts?.length}
+                  </Text>
+                  <Text
+                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                    Products
+                  </Text>
+                </View>
+              )}
+              {wallData && wallData?.data?.friends_count > 0 && (
+                <View style={tw`justify-center items-center`}>
+                  <Text
+                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                    {wallData?.data?.friends_count}
+                  </Text>
+                  <Text
+                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                    Contacts
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
-          <View style={tw`gap-2`}>
-            <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
-              Sam
-            </Text>
+          <View style={tw`gap-2 justify-center`}>
+            <View style={tw`flex-row  gap-1 items-center`}>
+              <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
+                {wallData?.data?.full_name}
+              </Text>
+              <View style={tw` px-2 rounded-full`}>
+                {wallData?.data?.privacy === 'public' ? (
+                  <SvgXml xml={IconPublic} width={10} />
+                ) : wallData?.data?.privacy === 'private' ? (
+                  <SvgXml xml={IconLock} width={10} />
+                ) : (
+                  <SvgXml xml={IconUser} width={10} />
+                )}
+              </View>
+            </View>
             <Text
               style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
-              Cut from geometric cotton lace mimicking decorative fretwork, this
-              blouse reveals hints of skin offsetting its long-sleeve silhouette
+              {wallData?.data?.bio}
             </Text>
           </View>
         </View>
 
         {/*================= options here =================== */}
-        <View style={tw`flex-row items-center justify-between px-[4%]  my-4`}>
-          <View style={tw`flex-row items-center gap-3 `}>
+        {wallData?.data?.shop ? (
+          <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => setOptions('post')}
@@ -184,33 +189,68 @@ const OtherWall = ({navigation}: NavigProps<null>) => {
                 style={tw` ${
                   options == 'store' ? 'text-primary' : 'text-[#34303E]'
                 } font-NunitoSansBold text-sm`}>
-                Store
+                {wallData?.data?.shop?.shop_name}
               </Text>
             </TouchableOpacity>
           </View>
-          <View>
-            <SimpleButton
-              onPress={() => navigation?.navigate('SingleMessage')}
-              containerStyle={tw`gap-2  rounded-xl h-8`}
-              svgIcon={`<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.9541 0.709802C14.93 0.761862 14.8965 0.810638 14.8536 0.853553L5.40076 10.3064L8.07126 14.7573C8.16786 14.9183 8.34653 15.0116 8.53386 14.9989C8.72119 14.9862 8.88561 14.8696 8.95958 14.697L14.9541 0.709802Z" fill="#5D5D5D"/>
-              <path d="M4.69366 9.59931L0.242756 6.92876C0.0817496 6.83216 -0.0115621 6.65349 0.00115182 6.46616C0.0138657 6.27883 0.130462 6.11441 0.303045 6.04044L14.293 0.0447451C14.2399 0.0688812 14.1902 0.102782 14.1465 0.146447L4.69366 9.59931Z" fill="#5D5D5D"/>
-              </svg>
-              `}
-              titleStyle={tw`text-color-Black800`}
-              title="Message"
-            />
+        ) : (
+          <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setOptions('post')}
+              style={tw`h-11 px-2 flex-row gap-2  
+              
+                   border-b-[3px] border-b-primary
+              
+                justify-center items-center`}>
+              <SvgXml xml={IconPostBlue} />
+              <Text style={tw`  text-primary  font-NunitoSansBold text-sm`}>
+                Post
+              </Text>
+            </TouchableOpacity>
           </View>
-        </View>
+        )}
 
         {options == 'post' ? (
-          <View style={tw`tablet:mx-[30%]`}>
-            <OtherWallPost navigation={navigation} />
-          </View>
+          <Suspense
+            fallback={
+              <View>
+                <ActivityIndicator color={PrimaryColor} />
+              </View>
+            }>
+            <View style={tw`tablet:mx-[30%]`}>
+              <Post
+                showAddPostModal={showAddPostModal}
+                setShowAddPostModal={setShowAddPostModal}
+                navigation={navigation}
+              />
+            </View>
+          </Suspense>
         ) : (
-          <OtherWallStore navigation={navigation} />
+          <Suspense
+            fallback={
+              <View>
+                <ActivityIndicator color={PrimaryColor} />
+              </View>
+            }>
+            <Store
+              showAddProductModal={showAddProductModal}
+              setShowProductPostModal={setShowProductPostModal}
+              navigation={navigation}
+            />
+          </Suspense>
         )}
       </ScrollView>
+
+      {/* floating icon here */}
+      <IButton
+        onPress={() => {
+          if (options == 'post') setShowAddPostModal(!showAddPostModal);
+          else setShowProductPostModal(!showAddProductModal);
+        }}
+        svg={IconPlus}
+        containerStyle={tw`absolute bottom-10 right-6 h-12 w-12 rounded-3xl items-center justify-center bg-primary900 `}
+      />
     </View>
   );
 };

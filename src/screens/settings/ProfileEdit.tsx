@@ -1,4 +1,13 @@
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  useGetProfileQuery,
+  useUserUpdateMutation,
+} from '../../redux/apiSlices/authSlice';
+import {
+  usePrivacyFriendMutation,
+  usePrivacyPrivateMutation,
+  usePrivacyPublicMutation,
+} from '../../redux/apiSlices/profilePrivacy';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -7,20 +16,132 @@ import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
+import {useToast} from '../../components/modals/Toaster';
 import {IconFillCamera} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useImagePicker} from '../../utils/utils';
 
-const ProfileEdit = ({navigation}: NavigProps<null>) => {
+const ProfileEdit = ({navigation}: NavigProps<any>) => {
+  const {showToast, closeToast} = useToast();
+  const {data: userProfile} = useGetProfileQuery({});
   const [image, setImage] = React.useState<Asset>();
+  const [userInfo, setUserInfo] = React.useState<{
+    full_name?: string;
+    email?: string;
+    bio?: string;
+    image?: Asset;
+    location?: string;
+    _method?: 'PUT';
+  }>({
+    full_name: userProfile?.data?.full_name || '',
+    email: userProfile?.data?.email || '',
+    bio: userProfile?.data?.bio || '',
+    image: undefined,
+    location: userProfile?.data?.location || '',
+    _method: 'PUT',
+  });
 
   const handleImage = async () => {
-    const image = await useImagePicker({
-      option: 'library',
-    });
-    setImage(image![0]);
+    try {
+      const image = await useImagePicker({
+        option: 'library',
+      });
+      setImage(image![0]);
+      setUserInfo({...userInfo, image: image![0]});
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const [createPublic] = usePrivacyPublicMutation({});
+  const [createPrivate] = usePrivacyPrivateMutation({});
+  const [createFriend] = usePrivacyFriendMutation({});
+
+  const [updatedProfile] = useUserUpdateMutation({});
+
+  const handleUpdateProfile = async () => {
+    // check every input is not empty
+
+    if (!userInfo?.full_name) {
+      showToast({
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: 'Please enter your full name',
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
+      return;
+    }
+
+    if (!userInfo?.email) {
+      showToast({
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: 'Please enter your email address',
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
+      return;
+    }
+
+    if (!userInfo?.location) {
+      showToast({
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: 'Please enter your location',
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
+      return;
+    }
+
+    if (!userInfo?.bio) {
+      showToast({
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: 'Please enter your bio',
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    if (image) {
+      formData.append('image', {
+        name: image?.fileName,
+        type: image?.type,
+        uri: image?.uri,
+      });
+    }
+    userInfo?.full_name &&
+      formData.append('full_name', userInfo?.full_name || '');
+    userInfo.email && formData.append('email', userInfo?.email || '');
+    userInfo?.bio && formData.append('bio', userInfo?.bio || '');
+    userInfo?.location && formData.append('location', userInfo?.location || '');
+    formData.append('_method', 'PUT');
+
+    const res = await updatedProfile(formData);
+    console.log(res);
+    if (res.data) {
+      showToast({
+        title: 'Success',
+        titleStyle: tw`text-primary text-base font-NunitoSansBold`,
+        contentStyle: tw`text-sm`,
+        content: res.data?.message,
+        buttonStyle: tw`bg-primary`,
+        buttonText: 'OK',
+        onPress: () => {
+          navigation?.goBack();
+          closeToast();
+        },
+      });
+    }
+  };
+
+  // console.log(userProfile);
+  // const {showToast, closeToast} = useToast();
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -41,6 +162,7 @@ const ProfileEdit = ({navigation}: NavigProps<null>) => {
       />
 
       <ScrollView
+        keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw`pb-8`}>
         <View style={tw`mt-9`}>
@@ -52,9 +174,7 @@ const ProfileEdit = ({navigation}: NavigProps<null>) => {
                 style={tw`w-16 h-16 rounded-2xl`}
                 resizeMode={FastImage.resizeMode.cover}
                 source={{
-                  uri: image
-                    ? image.uri
-                    : 'https://randomuser.me/api/portraits/men/19.jpg',
+                  uri: image ? image.uri : userProfile?.data?.image,
                 }}
               />
               <View
@@ -67,22 +187,69 @@ const ProfileEdit = ({navigation}: NavigProps<null>) => {
               <View style={tw`justify-center items-center `}>
                 <Text
                   style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
-                  Edwin Martins
+                  {userProfile?.data?.full_name}
                 </Text>
                 <Text
                   style={tw`text-color-Black600 font-NunitoSansRegular text-xs`}>
-                  edwinmartin@gmail.com
+                  {userProfile?.data?.email}
                 </Text>
+              </View>
+
+              <View style={tw`flex-row justify-center items-center gap-5`}>
+                <TouchableOpacity
+                  onPress={() => {
+                    createPublic({});
+                  }}
+                  activeOpacity={0.5}
+                  style={tw``}>
+                  <Text
+                    style={
+                      userProfile?.data?.privicy === 'public'
+                        ? tw`text-primary font-NunitoSansExtraBold text-xs`
+                        : tw`text-color-Black600 font-NunitoSansRegular text-xs`
+                    }>
+                    Public
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    createPrivate({});
+                  }}
+                  activeOpacity={0.5}
+                  style={tw``}>
+                  <Text
+                    style={
+                      userProfile?.data?.privicy === 'private'
+                        ? tw`text-primary font-NunitoSansExtraBold text-xs`
+                        : tw`text-color-Black600 font-NunitoSansRegular text-xs`
+                    }>
+                    Private
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    createFriend({});
+                  }}
+                  activeOpacity={0.5}
+                  style={tw``}>
+                  <Text
+                    style={
+                      userProfile?.data?.privicy === 'friends'
+                        ? tw`text-primary font-NunitoSansExtraBold text-xs`
+                        : tw`text-color-Black600 font-NunitoSansRegular text-xs`
+                    }>
+                    Contact Only
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <View style={tw`h-32 `}>
                 <InputText
-                  placeholder="bio"
                   multiline
                   fieldStyle={tw`h-32 py-3`}
                   textAlignVertical="top"
-                  defaultValue=" Cut from geometric cotton lace mimicking decorative fretwork, this
-              blouse reveals hints of skin offsetting its long-sleeve silhouette"
+                  value={userInfo?.bio}
+                  onChangeText={e => setUserInfo({...userInfo, bio: e})}
                 />
               </View>
             </View>
@@ -94,20 +261,23 @@ const ProfileEdit = ({navigation}: NavigProps<null>) => {
             <InputText
               placeholder="Full Name"
               floatingPlaceholder
-              defaultValue="Edwin Martins"
+              value={userInfo?.full_name}
+              onChangeText={e => setUserInfo({...userInfo, full_name: e})}
             />
           </View>
           <View style={tw` h-14`}>
             <InputText
               placeholder="location"
               floatingPlaceholder
+              value={userInfo?.location}
+              onChangeText={e => setUserInfo({...userInfo, location: e})}
               defaultValue="Times squre ,USA"
             />
           </View>
         </View>
 
         <TouchableOpacity
-          onPress={() => navigation?.navigate('UpdatePassword')}
+          onPress={() => (navigation as any)?.replace('UpdatePassword')}
           style={tw`px-[4%] mt-2 self-end`}>
           <Text style={tw`text-primary600 font-NunitoSansBold text-sm `}>
             Update Password
@@ -117,7 +287,7 @@ const ProfileEdit = ({navigation}: NavigProps<null>) => {
           <TButton
             title="Save Changes"
             onPress={() => {
-              navigation?.goBack();
+              handleUpdateProfile();
             }}
             containerStyle={tw`my-3 w-full bg-primary`}
           />

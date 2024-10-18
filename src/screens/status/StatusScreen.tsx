@@ -1,3 +1,4 @@
+import React, {useCallback} from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -5,25 +6,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback} from 'react';
 import {
   useCommentMutation,
   useGetAllNewFeetQuery,
 } from '../../redux/apiSlices/newsFeetSlices';
 
-import CommentCard from '../../components/cards/CommentCard';
 import FastImage from 'react-native-fast-image';
-import IButton from '../../components/buttons/IButton';
-import {INewpaper} from '../../redux/interface/newpaper';
-import {IconSend} from '../../icons/icons';
+import {TextInput} from 'react-native-gesture-handler';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
-import {NavigProps} from '../../interfaces/NaviProps';
+import IButton from '../../components/buttons/IButton';
+import CommentCard from '../../components/cards/CommentCard';
 import NoFoundCard from '../../components/cards/NoFoundCard';
 import PostCard from '../../components/cards/PostCard';
 import SideModal from '../../components/modals/SideModal';
-import {TextInput} from 'react-native-gesture-handler';
+import {IconSend} from '../../icons/icons';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetUserProfileQuery} from '../../redux/apiSlices/authSlice';
+import {INewpaper} from '../../redux/interface/newpaper';
 
 const StatusScreen = ({navigation}: NavigProps<null>) => {
   const {
@@ -106,7 +106,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
             <PostCard
               setComment={setIsComment}
               onPress={() => {
-                navigation?.navigate('OtherWall', {item: item});
+                navigation?.navigate('OtherWall', {id: item?.newsfeed_id});
               }}
               item={item}
             />

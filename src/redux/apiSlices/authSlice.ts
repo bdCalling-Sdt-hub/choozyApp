@@ -26,7 +26,7 @@ const authSlice = api.injectEndpoints({
       query: id => ({
         url: `/anotherUserProfile/${id}`,
       }),
-      providesTags: ['user'],
+      // providesTags: ['user'],
     }),
     loginUser: builder.mutation({
       query: data => ({
@@ -63,6 +63,17 @@ const authSlice = api.injectEndpoints({
     userUpdate: builder.mutation({
       query: data => ({
         url: `/profile`,
+        method: 'POST',
+        body: data,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }),
+      invalidatesTags: ['user'],
+    }),
+    userPasswordUpdate: builder.mutation({
+      query: data => ({
+        url: `/updatePassword`,
         method: 'POST',
         body: data,
       }),
@@ -109,4 +120,5 @@ export const {
   useUserUpdateMutation,
   useVerifyEmailMutation,
   useGetProfileQuery,
+  useUserPasswordUpdateMutation,
 } = authSlice;

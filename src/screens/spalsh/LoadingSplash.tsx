@@ -7,20 +7,29 @@ import tw from '../../lib/tailwind';
 import {useLazyTokenCheckQuery} from '../../redux/apiSlices/authSlice';
 import {getStorageToken} from '../../utils/utils';
 
-const LoadingSplash = ({navigation}: NavigProps<any>) => {
+const LoadingSplash = ({navigation}: NavigProps<null>) => {
   const token = getStorageToken();
   const [checkToken] = useLazyTokenCheckQuery({});
   // console.log(token);
   const handleCheckValidToken = async () => {
-    const res = await checkToken(token).unwrap();
-    if (res.token_status) {
-      (navigation as any)?.replace('HomeRoutes');
-    } else {
+    try {
+      const res = await checkToken(token).unwrap();
+      if (res.token_status) {
+        (navigation as any)?.replace('HomeRoutes');
+      } else {
+        (navigation as any)?.replace('Login');
+      }
+    } catch (error) {
+      console.log(error);
       (navigation as any)?.replace('Login');
     }
   };
   React.useEffect(() => {
-    handleCheckValidToken();
+    if (token) {
+      handleCheckValidToken();
+    } else {
+      (navigation as any)?.replace('Login');
+    }
   }, []);
 
   return (
