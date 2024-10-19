@@ -2,7 +2,7 @@ export interface INewpaper {
   newsfeed_id: number;
   id: number;
   user: {
-    id: number;
+    user_id: number;
     full_name: string;
     user_name: string;
     image: string;

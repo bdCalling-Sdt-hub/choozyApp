@@ -106,7 +106,12 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
             <PostCard
               setComment={setIsComment}
               onPress={() => {
-                navigation?.navigate('OtherWall', {id: item?.newsfeed_id});
+                console.log(userProfile?.data.id);
+                if (userProfile?.data.id === item?.user?.user_id) {
+                  navigation?.navigate('MyWall');
+                } else {
+                  navigation?.navigate('OtherWall', {id: item?.user?.user_id});
+                }
               }}
               item={item}
             />

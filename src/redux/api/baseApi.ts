@@ -73,10 +73,10 @@ export const api = createApi({
     'message',
     'group',
     'news_feed',
-    'facedown',
     'friend',
     'shop',
     'product',
+    'wall',
     'payment',
   ],
 });

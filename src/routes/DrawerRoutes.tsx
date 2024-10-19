@@ -122,7 +122,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           onPress={() => {
             props.navigation.closeDrawer();
             removeStorageToken();
-            props.navigation.navigate('Login');
+            props.navigation.reset({routes: [{name: 'Loading'}]});
           }}
           style={tw` flex-row gap-3 items-center`}>
           <IButton

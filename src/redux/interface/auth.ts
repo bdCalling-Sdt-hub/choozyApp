@@ -63,3 +63,14 @@ export interface ValidToken {
   status: 200;
   token_status: boolean;
 }
+
+export interface IUsername {
+  status: number;
+  message: string;
+  data: [
+    {
+      user_id: number;
+      user_name: string;
+    },
+  ];
+}

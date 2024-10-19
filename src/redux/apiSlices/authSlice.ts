@@ -16,11 +16,17 @@ const authSlice = api.injectEndpoints({
       }),
       providesTags: ['user'],
     }),
+    getUserName: builder.query<IProfile, any>({
+      query: userName => ({
+        url: `/get-user-name?query=${userName}`,
+      }),
+      providesTags: ['user'],
+    }),
     getUserProfile: builder.query<IUserProfile, any>({
       query: token => ({
         url: `/userProfile`,
       }),
-      providesTags: ['user'],
+      providesTags: ['user', 'wall'],
     }),
     getOtherUserProfile: builder.query<IUserProfile, any>({
       query: id => ({
@@ -121,4 +127,5 @@ export const {
   useVerifyEmailMutation,
   useGetProfileQuery,
   useUserPasswordUpdateMutation,
+  useLazyGetUserNameQuery,
 } = authSlice;

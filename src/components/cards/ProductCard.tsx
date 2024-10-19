@@ -20,6 +20,7 @@ const ProductCard = ({
   showStatus,
   containerStyle,
 }: IProductCarProps) => {
+  console.log(item);
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -28,12 +29,12 @@ const ProductCard = ({
         tw`bg-white w-[48%] tablet:w-[25%]  p-2 md:p-4 tablet:p-5 shadow-md shadow-slate-800 rounded-xl gap-2`,
         containerStyle,
       ]}>
-      {item?.product_images && (
+      {item?.images && (
         <FastImage
           style={tw`w-full  h-32 rounded-xl`}
           resizeMode={FastImage.resizeMode.contain}
           source={{
-            uri: item?.product_images![0],
+            uri: item?.images![0]?.url,
           }}
         />
       )}

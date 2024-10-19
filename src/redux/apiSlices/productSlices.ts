@@ -25,7 +25,7 @@ const authSlice = api.injectEndpoints({
         },
         body: data,
       }),
-      invalidatesTags: ['product'],
+      invalidatesTags: ['product', 'user'],
     }),
     updateProduct: builder.mutation({
       query: ({data, id}) => ({

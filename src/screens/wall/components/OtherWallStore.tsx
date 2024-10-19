@@ -1,13 +1,16 @@
 import React from 'react';
 import {View} from 'react-native';
-import productData from '../../../assets/database/product.json';
 import ProductCard from '../../../components/cards/ProductCard';
 import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
+import {IProduct} from '../../../redux/interface/products';
 
-interface StoreProps extends NavigProps<null> {}
-const OtherWallStore = ({navigation}: StoreProps) => {
+interface StoreProps extends NavigProps<null> {
+  productData?: IProduct[];
+}
+const OtherWallStore = ({navigation, productData}: StoreProps) => {
   // console.log();
+  // console.log(productData);
   return (
     <View style={tw`px-[4%]`}>
       <View

@@ -34,7 +34,15 @@ const Store = ({
     data: Products,
     isLoading: productsLoading,
     refetch: productRefetch,
-  } = useGetUserProductsQuery({});
+    error: productError,
+  } = useGetUserProductsQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
+
+  // console.log(productError);
 
   const {data: categories} = useGetCategoriesQuery({});
 
@@ -92,7 +100,7 @@ const Store = ({
   const handleAddProducts = React.useCallback(
     async (UData: typeof productInfo) => {
       const fromData = new FormData();
-      UData?.category_id && fromData.append('category_id', 1);
+      UData?.category_id && fromData.append('category_id', UData?.category_id);
       UData?.product_name &&
         fromData.append('product_name', UData?.product_name);
       UData?.description && fromData.append('description', UData?.description);
@@ -102,15 +110,16 @@ const Store = ({
         fromData.append(`images[${index}]`, item);
       });
       UData?.status && fromData.append('status', UData?.status);
-      fromData.append('shop_id', Shop?.data?.[0]?.id);
+      fromData.append('shop_id', Shop?.data?.id);
       console.log(UData?.images);
       const res = await createProduct(fromData);
       console.log(res);
       if (res?.data?.data?.id) {
         productRefetch();
         setShowProductPostModal(false);
+        setSelectCategory('Select Category');
         setProductInfo({
-          category_id: 3,
+          category_id: 0,
           shop_id: 0,
           product_name: '',
           description: '',
@@ -123,12 +132,15 @@ const Store = ({
     [productInfo],
   );
 
+  // console.log(productInfo);
+
   return (
     <>
       <View style={tw`px-[4%]`}>
         <View
           style={tw`flex-row flex-wrap  gap-2 md:gap-3 tablet:gap-16 tablet:justify-center`}>
           {Products?.data &&
+            !productError?.data &&
             Products?.data.map((item, index) => (
               <ProductCard
                 key={index}
@@ -225,7 +237,6 @@ const Store = ({
             <View style={tw`h-14`}>
               <InputText
                 placeholder="Price"
-                defaultValue={productInfo?.price?.toString()}
                 onChangeText={text =>
                   setProductInfo({...productInfo, price: Number(text)})
                 }
@@ -303,4 +314,4 @@ const Store = ({
   );
 };
 
-export default Store;
+export default React.memo(Store);

@@ -7,12 +7,14 @@ import CreatedHeaderWithITB from '../../components/backHeader/CreatedHeaderWithI
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import NormalModal from '../../components/modals/NormalModal';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useCreateShopMutation} from '../../redux/apiSlices/shopSlices';
 
 const CreateShop = ({navigation}: NavigProps<null>) => {
   const [storeName, setStoreName] = React.useState('');
+  const {showToast} = useToast();
   const [createShop] = useCreateShopMutation();
   const [showCreatedShopModal, setShowCreateShopModal] = React.useState(false);
 
@@ -20,8 +22,17 @@ const CreateShop = ({navigation}: NavigProps<null>) => {
     // console.log(name);
     const formData = new FormData();
     name && formData.append('shop_name', name);
-    formData.append('status', '1');
+    formData.append('status', 1);
     const res = await createShop(formData);
+    if (res.error) {
+      showToast({
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: res.error.data.error,
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
+    }
     if (res.data?.id) {
       setShowCreateShopModal(true);
       setShowCreateShopModal(false);

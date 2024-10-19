@@ -57,7 +57,7 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
   // console.log(Shop?.data?.[0]?.id);
 
   // console.log(wallData?.data.news_feeds.length);
-
+  console.log(wallData?.data?.image);
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -91,13 +91,23 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
         <View style={tw`px-[4%]`}>
           <View
             style={tw`flex-row items-center  tablet:justify-start gap-8  my-5`}>
-            <FastImage
-              style={tw`w-16 h-16  rounded-3xl`}
-              source={{
-                uri: wallData?.data?.image,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-            />
+            {wallData?.data?.image ? (
+              <FastImage
+                style={tw`w-16 h-16  rounded-3xl`}
+                source={{
+                  uri: wallData?.data?.image,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            ) : (
+              <View
+                style={tw`w-16 h-16 justify-center items-center bg-primary rounded-full `}>
+                <Text style={tw` font-NunitoSansBold text-2xl text-white `}>
+                  {wallData?.data?.full_name.slice(0, 1).toUpperCase()}
+                </Text>
+              </View>
+            )}
+
             <View
               style={tw`flex-1 max-w-[50%]  flex-row  gap-[80%] tablet:max-w-72 `}>
               {wallData && wallData?.data?.news_feeds?.length > 0 && (

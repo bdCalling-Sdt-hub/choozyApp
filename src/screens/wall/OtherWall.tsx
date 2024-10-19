@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import {
   IconLock,
-  IconMenu,
-  IconPlus,
   IconPost,
   IconPostBlue,
   IconPublic,
@@ -19,11 +17,9 @@ import {
   IconUser,
 } from '../../icons/icons';
 
-import {DrawerActions} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import IButton from '../../components/buttons/IButton';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetOtherUserProfileQuery} from '../../redux/apiSlices/authSlice';
@@ -36,7 +32,7 @@ const Post = React.lazy(() => import('./components/OtherWallPost'));
 const Store = React.lazy(() => import('./components/OtherWallStore'));
 
 const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
-  console.log(route?.params);
+  // console.log(route?.params);
   const {
     data: wallData,
     isLoading: wallLoading,
@@ -58,17 +54,8 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
-        title="My Wall"
+        title="Back"
         containerStyle={tw`justify-between`}
-        ComponentBtn={
-          <IButton
-            onPress={() => {
-              navigation?.dispatch(DrawerActions.openDrawer());
-            }}
-            svg={IconMenu}
-            containerStyle={tw`w-12  h-12 bg-primary50 shadow-none`}
-          />
-        }
         onPress={() => {
           navigation?.goBack();
         }}
@@ -220,8 +207,7 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
             }>
             <View style={tw`tablet:mx-[30%]`}>
               <Post
-                showAddPostModal={showAddPostModal}
-                setShowAddPostModal={setShowAddPostModal}
+                userId={route?.params?.id as number}
                 navigation={navigation}
               />
             </View>
@@ -234,23 +220,12 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
               </View>
             }>
             <Store
-              showAddProductModal={showAddProductModal}
-              setShowProductPostModal={setShowProductPostModal}
+              productData={wallData?.data.formattedProducts}
               navigation={navigation}
             />
           </Suspense>
         )}
       </ScrollView>
-
-      {/* floating icon here */}
-      <IButton
-        onPress={() => {
-          if (options == 'post') setShowAddPostModal(!showAddPostModal);
-          else setShowProductPostModal(!showAddProductModal);
-        }}
-        svg={IconPlus}
-        containerStyle={tw`absolute bottom-10 right-6 h-12 w-12 rounded-3xl items-center justify-center bg-primary900 `}
-      />
     </View>
   );
 };

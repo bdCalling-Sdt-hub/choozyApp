@@ -11,6 +11,7 @@ import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
 import {useGetMassagesQuery} from '../../redux/apiSlices/message';
 import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 import Chats from './components/Chats';
@@ -32,9 +33,13 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   // console.log(JSON.stringify(MessagesData, null, 2));
   const [options, setOptions] = React.useState<'Chats' | 'groups'>('Chats');
 
+  const {data: userInfo, isSuccess} = useGetProfileQuery({});
+
   const {data: Shop} = useGetShopQuery({});
 
-  const [isShop, setIsShop] = React.useState(!!Shop?.data?.[0]?.id);
+  // console.log(userInfo.data?.data?.id);
+  // console.log(Shop);
+  // console.log(lStorage.getString('token'));
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -136,7 +141,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
             title: 'My Stores',
             onPress: () => {
               setActionModalOpen(false);
-              if (!!Shop?.data?.[0]?.id) {
+              if (Shop?.data?.id) {
                 navigation?.navigate('MyWall', {state: 'store'});
               } else navigation?.navigate('CreateShop');
             },

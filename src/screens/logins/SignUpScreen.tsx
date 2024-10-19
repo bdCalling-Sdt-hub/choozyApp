@@ -16,11 +16,14 @@ import {
   IconPassword,
   IconUser,
 } from '../../icons/icons';
+import {
+  useCreateUserMutation,
+  useLazyGetUserNameQuery,
+} from '../../redux/apiSlices/authSlice';
 
 import {Formik} from 'formik';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {Checkbox} from 'react-native-ui-lib';
 import IwtButton from '../../components/buttons/IwtButton';
 import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
@@ -28,7 +31,6 @@ import InputText from '../../components/inputs/InputText';
 import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import {useCreateUserMutation} from '../../redux/apiSlices/authSlice';
 
 interface ISingUpForm {
   full_name: string;
@@ -44,22 +46,24 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
 
   const [check, setCheck] = React.useState(false);
   const [showPass, setShowPass] = React.useState(false);
+  const [errorUsername, setErrorUsername] = React.useState(false);
 
   const [createUser] = useCreateUserMutation({});
+  const [userNameChecker, {isFetching: userNameCheckerFetching}] =
+    useLazyGetUserNameQuery();
 
   const onSubmitHandler = (data: ISingUpForm) => {
-    console.log(data);
-
     // console.log(data);
     createUser(data).then(res => {
-      console.log(res?.e);
+      // console.log(res?.e);
 
       if (res.data) {
         showToast({
           title: 'Success',
           titleStyle: tw`text-primary text-base font-NunitoSansBold`,
           contentStyle: tw`text-sm`,
-          content: "We've sent you an email. Please check your inbox.",
+          content:
+            "We've sent you an email for verification, it will expire in Time 10 minutes. Please check your inbox.",
           btnDisplay: true,
         });
         navigation?.navigate('Verify', {email: data.email});
@@ -127,6 +131,16 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
             if (!values.user_name) {
               errors.user_name = 'Required';
             }
+            if (values.user_name) {
+              userNameChecker(values.user_name).then(res => {
+                if (res.error) {
+                  setErrorUsername(true);
+                }
+                if (res.data) {
+                  setErrorUsername(false);
+                }
+              });
+            }
             if (!values.address) {
               errors.address = 'Required';
             }
@@ -181,6 +195,20 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
                 {errors.user_name && touched.user_name && (
                   <Text style={tw`text-red-500`}>{errors.user_name}</Text>
                 )}
+                {((!errors.user_name && errorUsername) ||
+                  values?.user_name) && (
+                  <Text
+                    style={
+                      errorUsername
+                        ? tw`text-green-500 text-xs`
+                        : tw`text-red-500 text-xs`
+                    }>
+                    {errorUsername
+                      ? `@${values?.user_name} Username is available`
+                      : `x ${values?.user_name} Username is not available`}
+                  </Text>
+                )}
+
                 <InputText
                   value={values.email}
                   onChangeText={handleChange('email')}
@@ -225,23 +253,6 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
               </View>
               {/* check box the Keep me logged In */}
               <View style={tw`px-[4%] `}>
-                <TouchableOpacity
-                  style={tw` my-5 flex-row items-center `}
-                  onPress={() => {
-                    setCheck(!check);
-                  }}>
-                  <Checkbox
-                    color="#4964C6"
-                    size={25}
-                    style={tw`border-2 border-[#E8E8EA]`}
-                    value={check}
-                    onValueChange={value => setCheck(value)}
-                  />
-                  <Text
-                    style={tw`ml-2  font-NunitoSansBold text-color-Black800`}>
-                    Keep me logged in
-                  </Text>
-                </TouchableOpacity>
                 <TButton
                   onPress={handleSubmit}
                   title="Sing Up"

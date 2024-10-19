@@ -5,8 +5,9 @@ const authSlice = api.injectEndpoints({
   endpoints: builder => ({
     getShop: builder.query<IShop, any>({
       query: () => ({
-        url: `shops`,
+        url: `user-shop`,
       }),
+      providesTags: ['shop'],
     }),
     createShop: builder.mutation({
       query: data => ({
@@ -17,7 +18,7 @@ const authSlice = api.injectEndpoints({
         },
         body: data,
       }),
-      invalidatesTags: ['shop'],
+      invalidatesTags: ['shop', 'user'],
     }),
     updateShop: builder.mutation({
       query: data => ({
