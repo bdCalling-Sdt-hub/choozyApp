@@ -31,7 +31,7 @@ const PostCard = ({
   const [like] = useLikeUnlikeMutation();
 
   // console.log('recall');
-
+  // console.log(item?.user?.image);
   return (
     <View style={tw` p-4 bg-white`}>
       <View style={tw`flex-row justify-between items-center`}>
@@ -39,13 +39,23 @@ const PostCard = ({
           onPress={onPress}
           activeOpacity={0.5}
           style={tw`flex-row gap-2 items-center self-start`}>
-          <FastImage
-            style={tw`w-12 h-12 rounded-2xl`}
-            resizeMode={FastImage.resizeMode.cover}
-            source={{
-              uri: item?.user?.image,
-            }}
-          />
+          {item?.user?.image ? (
+            <FastImage
+              style={tw`w-12 h-12 rounded-2xl`}
+              resizeMode={FastImage.resizeMode.cover}
+              source={{
+                uri: item?.user?.image,
+              }}
+            />
+          ) : (
+            <View
+              style={tw`w-12 h-12 rounded-2xl bg-primary justify-center items-center`}>
+              <Text style={tw`text-white rounded-2xl font-NunitoSansBold`}>
+                {item?.user?.full_name.slice(0, 1)}
+              </Text>
+            </View>
+          )}
+
           <View style={tw`gap-[2px]`}>
             <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
               {item?.user?.full_name}

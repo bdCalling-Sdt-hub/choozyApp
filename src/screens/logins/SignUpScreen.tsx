@@ -66,7 +66,7 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
             "We've sent you an email for verification, it will expire in Time 10 minutes. Please check your inbox.",
           btnDisplay: true,
         });
-        navigation?.navigate('Verify', {email: data.email});
+        navigation?.navigate('Verify', {email: data.email, from: 'signup'});
       }
 
       if (res.error?.error) {

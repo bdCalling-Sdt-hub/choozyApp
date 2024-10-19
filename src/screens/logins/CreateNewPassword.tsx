@@ -5,14 +5,59 @@ import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import {TextField} from 'react-native-ui-lib';
 import TButton from '../../components/buttons/TButton';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useResetPasswordMutation} from '../../redux/apiSlices/authSlice';
 
-const CreateNewPassword = ({navigation}: NavigProps<null>) => {
+const CreateNewPassword = ({
+  navigation,
+  route,
+}: NavigProps<{email: string}>) => {
+  const {showToast, closeToast} = useToast();
   const [showPass, setShowPass] = React.useState({
     password: false,
     confirmPassword: false,
   });
+
+  const [passInfo, setPassInfo] = React.useState({
+    password: '',
+    c_password: '',
+  });
+
+  const [resetPassword] = useResetPasswordMutation();
+
+  const handlePasswordUpdated = () => {
+    if (passInfo.password !== passInfo.c_password) {
+      showToast({
+        title: 'error',
+        content: 'Passwords do not match',
+      });
+    } else {
+      resetPassword({
+        email: route?.params?.email,
+        password: passInfo.password,
+        c_password: passInfo.c_password,
+      }).then(res => {
+        console.log(res);
+        if (res.data) {
+          showToast({
+            title: 'success',
+            titleStyle: tw`text-primary text-base font-NunitoSansBold`,
+            content: res.data?.message,
+            contentStyle: tw`text-sm`,
+            buttonStyle: tw`bg-primary`,
+            buttonText: 'OK',
+            onPress: () => {
+              (navigation as any)?.replace('HomeRoutes');
+              closeToast();
+            },
+          });
+        }
+      });
+    }
+  };
+
   return (
     <View style={tw`bg-base flex-1`}>
       <View style={tw`px-[4%] py-8 flex-row gap-3 items-center`}>
@@ -40,6 +85,8 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
               fieldStyle={tw` `}
               //  floatingPlaceholder
               placeholder="********"
+              value={passInfo.password}
+              onChangeText={text => setPassInfo({...passInfo, password: text})}
               secureTextEntry={!showPass.password}
             />
             <TouchableOpacity
@@ -67,6 +114,10 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
               fieldStyle={tw` `}
               //  floatingPlaceholder
               placeholder="********"
+              value={passInfo.c_password}
+              onChangeText={text =>
+                setPassInfo({...passInfo, c_password: text})
+              }
               secureTextEntry={!showPass.confirmPassword}
             />
             <TouchableOpacity
@@ -86,7 +137,9 @@ const CreateNewPassword = ({navigation}: NavigProps<null>) => {
       </ScrollView>
       <View style={tw`px-[4%]`}>
         <TButton
-          onPress={() => navigation?.replace('VerifySuccess')}
+          onPress={() => {
+            handlePasswordUpdated();
+          }}
           isLoading={false}
           title="Submit"
           containerStyle={tw`my-10 w-full bg-primary`}

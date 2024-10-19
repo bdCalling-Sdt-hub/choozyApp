@@ -27,7 +27,8 @@ interface ILogoWithHeader extends NavigProps<null> {
   };
   offSearch?: boolean;
   offMenu?: boolean;
-  onFinish?: () => void;
+  onFinish?: (text: string) => void;
+  searchValue?: string;
 }
 
 const LogoWithHeader = ({
@@ -37,8 +38,10 @@ const LogoWithHeader = ({
   offMenu,
   onFinish,
   offSearch,
+  searchValue,
 }: ILogoWithHeader) => {
   const [searchVisible, setSearchVisible] = React.useState(false);
+  const [searchText, setSearchText] = React.useState('');
 
   return (
     <View style={tw`px-[4%] flex-row justify-between items-center`}>
@@ -87,11 +90,14 @@ const LogoWithHeader = ({
           <InputText
             containerStyle={tw`w-full border-2 border-transparent bg-color-Black50 `}
             placeholder="Search"
-            onChangeText={text => {}}
+            defaultValue={searchValue}
+            onChangeText={text => {
+              setSearchText(text);
+            }}
             focusSTyle={tw`border-[#B3C5FF] border-2`}
             returnKeyType="done" // you can set returnKeyType like 'done', 'go', etc.
-            onSubmitEditing={() => {
-              onFinish && onFinish();
+            onSubmitEditing={e => {
+              onFinish && onFinish(e.nativeEvent.text);
               setSearchVisible(!searchVisible);
             }}
             svgFirstIcon={IconSearch}

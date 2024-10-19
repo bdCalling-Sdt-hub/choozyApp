@@ -81,8 +81,10 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
             offPost: true,
             offProduct: true,
           }}
-          onFinish={() => {
-            navigation?.navigate('Search');
+          onFinish={text => {
+            navigation?.navigate('Search', {
+              text,
+            });
           }}
           navigation={navigation}
         />

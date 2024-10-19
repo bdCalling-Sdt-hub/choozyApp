@@ -44,9 +44,6 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
 
   const [options, setOptions] = React.useState('post');
 
-  const [showAddPostModal, setShowAddPostModal] = React.useState(false);
-  const [showAddProductModal, setShowProductPostModal] = React.useState(false);
-
   // console.log(Shop?.data?.[0]?.id);
 
   // console.log(wallData?.data.news_feeds.length);

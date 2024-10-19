@@ -11,7 +11,6 @@ import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
 import {useGetMassagesQuery} from '../../redux/apiSlices/message';
 import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 import Chats from './components/Chats';
@@ -33,9 +32,12 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   // console.log(JSON.stringify(MessagesData, null, 2));
   const [options, setOptions] = React.useState<'Chats' | 'groups'>('Chats');
 
-  const {data: userInfo, isSuccess} = useGetProfileQuery({});
-
-  const {data: Shop} = useGetShopQuery({});
+  const {data: Shop} = useGetShopQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
   // console.log(userInfo.data?.data?.id);
   // console.log(Shop);

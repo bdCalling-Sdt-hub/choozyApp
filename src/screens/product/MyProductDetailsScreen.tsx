@@ -107,7 +107,7 @@ const MyProductDetailsScreen = ({
         type: 'image/jpg',
         name: item,
       })) || [],
-    shop_id: Shop?.data?.[0]?.id,
+    shop_id: Shop?.data.id || 0,
     product_name: Item?.product_name || '',
     product_code: Item?.product_code || '',
     description: Item?.description || '',

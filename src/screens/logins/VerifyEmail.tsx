@@ -20,10 +20,15 @@ import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {setStorageToken} from '../../utils/utils';
 
-const VerifyEmail = ({navigation, route}: NavigProps<{email: string}>) => {
+const VerifyEmail = ({
+  navigation,
+  route,
+}: NavigProps<{email: string; from: 'forgetPassword' | 'signup'}>) => {
   const {showToast} = useToast();
   const [verifyPin] = useVerifyEmailMutation();
   const [sendOtp] = useResendOtpMutation();
+
+  // console.log(route);
 
   // Use React state with correct typing for OTP (array of strings)
   const [otp, setOtp] = React.useState<string[]>(['', '', '', '', '', '']);
@@ -71,8 +76,16 @@ const VerifyEmail = ({navigation, route}: NavigProps<{email: string}>) => {
     if (otp.join('').length === 6) {
       console.log(otp.join(''));
       const res = await verifyPin({otp: otp.join('')});
-      if (res.error) {
+      if (res.error?.error) {
         console.log(res.error?.error);
+        showToast({
+          title: 'Error',
+          titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+          content: res.error?.error,
+          btnDisplay: true,
+        });
+      }
+      if (res.error?.messages?.otp) {
         showToast({
           title: 'Error',
           titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
@@ -82,7 +95,13 @@ const VerifyEmail = ({navigation, route}: NavigProps<{email: string}>) => {
       }
       if (res.data?.token) {
         setStorageToken(res.data?.token);
-        (navigation as any)?.replace('VerifySuccess');
+        if (route?.params?.from === 'forgetPassword') {
+          (navigation as any)?.replace('CreateNewPassword', {
+            email: route?.params?.email,
+          });
+        } else {
+          (navigation as any)?.replace('VerifySuccess');
+        }
       }
     } else {
       showToast({

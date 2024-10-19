@@ -24,6 +24,7 @@ const CreateShop = ({navigation}: NavigProps<null>) => {
     name && formData.append('shop_name', name);
     formData.append('status', 1);
     const res = await createShop(formData);
+    console.log(res);
     if (res.error) {
       showToast({
         title: 'Warning',
@@ -33,7 +34,7 @@ const CreateShop = ({navigation}: NavigProps<null>) => {
         btnDisplay: true,
       });
     }
-    if (res.data?.id) {
+    if (res.data?.data?.id) {
       setShowCreateShopModal(true);
       setShowCreateShopModal(false);
       navigation?.navigate('MyWall', {
@@ -48,16 +49,6 @@ const CreateShop = ({navigation}: NavigProps<null>) => {
         onPress={() => navigation?.goBack()}
         title="My Shop"
         containerStyle={tw`justify-between items-center bg-white`}
-        // ComponentBtn={
-        //   <TouchableOpacity
-        //     onPress={() => {
-        //       // setActionModalOpen(!actionModalOpen);
-        //     }}
-        //     activeOpacity={0.5}
-        //     style={tw`px-4 py-2`}>
-        //     <SvgXml xml={IconVThreeDots} />
-        //   </TouchableOpacity>
-        // }
       />
 
       <View style={tw`justify-center items-center flex-1 gap-2`}>

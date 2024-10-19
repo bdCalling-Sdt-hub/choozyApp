@@ -3,22 +3,20 @@ import {IconBell, IconClose, IconSearch} from '../../icons/icons';
 
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import friends from '../../assets/database/friends.json';
-import productData from '../../assets/database/product.json';
 import IButton from '../../components/buttons/IButton';
 import SimpleButton from '../../components/buttons/SimpleButton';
 import MessageCard from '../../components/cards/MessageCard';
-import PostCard from '../../components/cards/PostCard';
 import ProductCard from '../../components/cards/ProductCard';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import {useGetAllNewFeetQuery} from '../../redux/apiSlices/newsFeetSlices';
+import {useSearchQuery} from '../../redux/apiSlices/searchSlices';
 
-const SearchScreen = ({navigation}: NavigProps<null>) => {
+const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [option, setOption] = React.useState('All');
-  const {data: statusData} = useGetAllNewFeetQuery({});
-
+  const [searchText, setSearchText] = React.useState('');
+  const {data: searchResults} = useSearchQuery(route?.params?.text);
+  // console.log(searchResults?.data.products);
   return (
     <View style={tw`flex-1 bg-white`}>
       <View style={tw`flex-row items-center py-2 gap-3 bg-white px-[4%]`}>
@@ -31,6 +29,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
         <InputText
           containerStyle={tw`w-full border-0 bg-color-Black50`}
           placeholder="Search"
+          defaultValue={route?.params?.text}
           onChangeText={text => {}}
           returnKeyType="done" // you can set returnKeyType like 'done', 'go', etc.
           onSubmitEditing={() => {}}
@@ -43,14 +42,6 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
           svg={IconBell}
           containerStyle={tw`w-12  h-12 bg-color-Black50 shadow-none`}
         />
-        {/* <IButton
-            onPress={() => {
-              setSearchVisible(!searchVisible);
-            }}
-            svg={IconMenu}
-            
-            containerStyle={tw`w-12  h-12 bg-color-Black50 shadow-none`}
-          /> */}
       </View>
       {/* ====================== filters icons ==================== */}
       <View style={tw`flex-row items-center gap-3 px-[4%] pb-2`}>
@@ -110,9 +101,9 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
         showsVerticalScrollIndicator={false}>
         {(option === 'All' || option === 'Posts') && (
           <View style={tw`flex-1 pb-7`}>
-            {statusData?.data?.newsfeeds.slice(0, 2).map((item, index) => (
+            {/*================= Post Card ============ */}
+            {searchResults?.data?.posts.slice(0, 2).map((item, index) => (
               <React.Fragment key={index}>
-                {/*================= Post Card ============ */}
                 <PostCard item={item} />
               </React.Fragment>
             ))}
@@ -125,7 +116,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
               showsHorizontalScrollIndicator={false}
               horizontal
               contentContainerStyle={tw`px-[4%] gap-4 mt-6 mb-10`}
-              data={productData}
+              data={searchResults?.data?.products}
               renderItem={({item, index}) => (
                 <ProductCard
                   onPress={() => {
@@ -142,7 +133,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
         {option === 'Products' && (
           <View style={tw`px-[4%]`}>
             <View style={tw`flex-row flex-wrap justify-between gap-3`}>
-              {productData?.map((item, index) => (
+              {searchResults?.data?.products?.map((item, index) => (
                 <ProductCard
                   key={index}
                   item={item}
@@ -156,7 +147,7 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
         )}
         {(option === 'All' || option === 'People') && (
           <View>
-            {friends.map((item, index) => (
+            {searchResults?.data?.people.map((item, index) => (
               <React.Fragment key={index}>
                 <MessageCard
                   disabled
@@ -167,17 +158,16 @@ const SearchScreen = ({navigation}: NavigProps<null>) => {
                   subTitleStyle={tw`text-color-Black500`}
                   titleStyle={tw`text-[#1D1929] text-sm`}
                   item={{
-                    image: item.avatar,
-                    name: item.name,
-                    lastMessage: item.followers,
+                    image: item.image,
+                    name: item.full_name,
+                    lastMessage: item.location,
                   }}
                   Component={
                     <TouchableOpacity activeOpacity={0.5}>
                       <Text
-                        style={tw`text-color-Black800 font-NunitoSansMedium ${
-                          item.action === 'Following' ? 'text-primary' : ''
-                        }`}>
-                        {item.action}
+                        style={tw`text-color-Black800 font-NunitoSansMedium text-primary
+                        `}>
+                        Contact
                       </Text>
                     </TouchableOpacity>
                   }

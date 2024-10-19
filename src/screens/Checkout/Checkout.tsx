@@ -6,6 +6,7 @@ import {
   IIConMasterCard,
   IIConVisaCard,
 } from '../../icons/IIcons';
+import {IconFillLove, IconRightArrow} from '../../icons/icons';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -16,11 +17,11 @@ import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
 import SideModal from '../../components/modals/SideModal';
-import {IconRightArrow} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {IProduct} from '../../redux/interface/products';
 
-const Checkout = ({navigation}: NavigProps<null>) => {
+const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
   const [close, setClose] = React.useState(false);
   const [shippingModal, setShippingModal] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false);
@@ -28,6 +29,11 @@ const Checkout = ({navigation}: NavigProps<null>) => {
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
 
   const popUpModalRef = React.useRef<PopUpModalRef>(null);
+
+  const Item = route?.params?.item;
+
+  console.log(Item?.category_name);
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -49,17 +55,20 @@ const Checkout = ({navigation}: NavigProps<null>) => {
           style={tw`w-28 h-28 rounded-2xl`}
           resizeMode={FastImage.resizeMode.contain}
           source={{
-            uri: 'https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg',
+            uri: Item?.product_images![0],
           }}
         />
         <View>
           <Text
             style={tw`text-base text-color-Black1000 font-NunitoSansRegular`}>
-            Ninja ZX-1
+            {Item?.product_name}
           </Text>
-          <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-            €398.99
-          </Text>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -69,33 +78,46 @@ const Checkout = ({navigation}: NavigProps<null>) => {
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Subtotal
           </Text>
-          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-            €398.99
-          </Text>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
         </View>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Shipping
           </Text>
-          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-            €7.00
-          </Text>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
         </View>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Discount
           </Text>
-          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-            €0.00
-          </Text>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
         </View>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Total
           </Text>
-          <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-            €398.99
-          </Text>
+
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={14} width={14} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
         </View>
       </View>
 
