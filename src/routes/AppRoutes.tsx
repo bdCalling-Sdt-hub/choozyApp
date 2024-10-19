@@ -1,6 +1,6 @@
-// In App.js in a new project
-
 import * as React from 'react';
+
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -15,20 +15,26 @@ import CustomDrawer from './DrawerRoutes';
 function AppRoutes() {
   const [isSplash, setIsSplash] = React.useState(true);
   useDeviceContext(tw);
+
   return (
-    <Provider store={store}>
-      {isSplash ? (
-        <SplashScreen setIsSplash={setIsSplash} />
-      ) : (
-        <GestureHandlerRootView>
-          <ToastProvider>
-            <NavigationContainer>
-              <CustomDrawer />
-            </NavigationContainer>
-          </ToastProvider>
-        </GestureHandlerRootView>
-      )}
-    </Provider>
+    <GestureHandlerRootView>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          {isSplash ? (
+            <SplashScreen setIsSplash={setIsSplash} />
+          ) : (
+            <ToastProvider>
+              <NavigationContainer>
+                {/* Wrap main content in SafeAreaView */}
+                <SafeAreaView style={tw`flex-1 `}>
+                  <CustomDrawer />
+                </SafeAreaView>
+              </NavigationContainer>
+            </ToastProvider>
+          )}
+        </Provider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
