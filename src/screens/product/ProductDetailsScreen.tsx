@@ -243,6 +243,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
             <IwtButton
               svg={IconSendNormal}
               onPress={() => {
+                setProposalModal(!proposalModal);
                 showToast({
                   content: 'Proposal sent!',
                   contentStyle: tw`text-xl`,

@@ -27,7 +27,9 @@ const NormalModal = ({
     <Modal
       transparent
       useGestureHandlerRootView
+      presentationStyle="overFullScreen"
       shouldRasterizeIOS
+      useKeyboardAvoidingView
       animationType={animationType}
       overlayBackgroundColor={'rgba(0, 0, 0, 0.3)'}
       visible={visible}

@@ -6,12 +6,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import {
-  IconBasicsleft,
-  IconDeleted,
-  IconImage,
-  IconVThreeDots,
-} from '../../icons/icons';
+import {IconDeleted, IconImage, IconVThreeDots} from '../../icons/icons';
 import {
   useDeleteProductMutation,
   useGetCategoriesQuery,
@@ -29,6 +24,7 @@ import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import ActionModal from '../../components/modals/ActionModal';
 import NormalModal from '../../components/modals/NormalModal';
+import SideModal from '../../components/modals/SideModal';
 import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
@@ -286,7 +282,6 @@ const MyProductDetailsScreen = ({
                         buttonText: 'Cancel',
                         onPress: () => {
                           closeToast();
-                          setActionModalOpen(false);
                         },
                         buttonStyle: tw`w-20 bg-primary`,
                       },
@@ -302,8 +297,6 @@ const MyProductDetailsScreen = ({
         ]}
       />
 
-      {/*==================== confirmation modal ===================*/}
-
       {/*======================== Products updated modals  ===================*/}
 
       {showAddProductModal && (
@@ -311,17 +304,17 @@ const MyProductDetailsScreen = ({
           scrollable
           visible={showAddProductModal}
           animationType="fade"
-          layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
+          layerContainerStyle={tw`flex-1 mx-[4%]  justify-center items-center `}
           containerStyle={tw` rounded-2xl p-5 my-3`}
           setVisible={setShowProductPostModal}>
           <CreatedHeaderWithITB
-            title="Add a new product"
+            title="Updated this product"
             onPress={() => setShowProductPostModal(false)}
           />
 
           <View
             style={tw`${
-              Android ? 'border-dashed border-t-[1px] border-t-[#E5E5E5]' : ''
+              Android ? 'border-dashed border-b-[1px] border-b-[#E5E5E5]' : ''
             } py-3`}>
             <Text
               style={tw`text-color-Black800 font-NunitoSansBold text-base my-3`}>
@@ -385,6 +378,7 @@ const MyProductDetailsScreen = ({
             </View>
             <TouchableOpacity
               onPress={() => {
+                setShowProductPostModal(false);
                 setShowCategoryModal(!showCategoryModal);
               }}
               activeOpacity={0.5}
@@ -439,33 +433,31 @@ const MyProductDetailsScreen = ({
               onPress={() => {
                 handleAddProducts(productInfo);
               }}
-              title="Add Product"
+              title="Updated Product"
             />
           </View>
         </NormalModal>
       )}
       {showCategoryModal && (
-        <NormalModal
+        <SideModal
+          headerOff
           scrollable
           visible={showCategoryModal}
-          animationType="fade"
-          layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
-          containerStyle={tw` rounded-2xl p-5 my-3`}
+          layerContainerStyle={tw` `}
+          containerStyle={tw` rounded-2xl p-5 `}
           setVisible={setShowCategoryModal}>
+          <CreatedHeaderWithITB
+            title="Select Category"
+            visibleIcon
+            onPress={() => {
+              setShowCategoryModal(false);
+              setShowProductPostModal(true);
+            }}
+          />
           <View
             style={tw` ${
-              Android ? 'border-dashed border-t-[1px] border-t-[#E5E5E5]' : ''
-            } py-2`}>
-            <TouchableOpacity
-              style={tw`flex-row items-center gap-3`}
-              onPress={() => setShowCategoryModal(false)}>
-              <SvgXml width={12} height={12} xml={IconBasicsleft} />
-              <Text
-                style={tw`text-color-Black800 font-NunitoSansBold text-base `}>
-                Select Category
-              </Text>
-            </TouchableOpacity>
-          </View>
+              Android ? 'border-dashed border-b-[1px] border-b-[#E5E5E5]' : ''
+            } py-2`}></View>
           <View style={tw`py-4 gap-4`}>
             {categories?.data?.data.map((item, index) => (
               <TouchableOpacity
@@ -474,16 +466,17 @@ const MyProductDetailsScreen = ({
                   setSelectCategory(item.category_name);
                   setShowCategoryModal(false);
                   setProductInfo({...productInfo, category_id: item?.id});
+                  setShowProductPostModal(true);
                 }}
                 activeOpacity={0.5}
                 style={tw`py-2`}>
-                <Text style={tw`text-color-Black600  font-NunitoSansRegular`}>
+                <Text style={tw`text-color-Black800  font-NunitoSansBold`}>
                   {item.category_name}
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
-        </NormalModal>
+        </SideModal>
       )}
     </View>
   );

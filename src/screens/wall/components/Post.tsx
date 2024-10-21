@@ -216,7 +216,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
         <SideModal
           visible={isComment.open}
           setVisible={() => setIsComment({open: false})}
-          containerStyle={tw`h-[90%]`}>
+          containerStyle={tw`h-[95%]`}>
           <View style={tw`px-4`}>
             <Text
               style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
@@ -239,7 +239,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
           <View style={tw`p-4 flex-row items-center `}>
             <FastImage
               style={tw`w-12 h-12 rounded-2xl`}
-              source={{uri: userProfile?.data.image}}
+              source={{uri: userProfile?.data?.image}}
               resizeMode={FastImage.resizeMode.cover}
             />
             <View style={tw`h-14 flex-1 flex-row justify-center`}>
@@ -258,7 +258,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
               <TextInput
                 // ref={openRef}
                 placeholder="Add a comment....."
-                style={tw`h-14 border border-slate-100 rounded-lg flex-1 mx-2 pl-1`}
+                style={tw`h-14 border border-slate-100 rounded-lg flex-1 mx-2`}
                 onChangeText={text => setComment(text)}
                 value={comment}
               />

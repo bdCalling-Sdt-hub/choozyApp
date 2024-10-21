@@ -240,8 +240,8 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         <View style={tw`flex-row items-center justify-between pt-2 gap-3 px-2`}>
           <TButton
             onPress={() => {
-              //   setCreateGroupModal(false);
-              //   navigation?.navigate('GroupMessage');
+              setShowTransferSelectModal(false);
+
               showToast({
                 svgIcon: (
                   <SvgXml
@@ -360,8 +360,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         <View style={tw`flex-row items-center justify-between pt-2 gap-3 px-2`}>
           <TButton
             onPress={() => {
-              //   setCreateGroupModal(false);
-              //   navigation?.navigate('GroupMessage');
+              setShowRequestSelectModal(false);
               showToast({
                 iconComponent: (
                   <FastImage

@@ -3,6 +3,7 @@ import {Dialog, PanningProvider} from 'react-native-ui-lib';
 
 import React from 'react';
 import tw from '../../lib/tailwind';
+import {Android} from '../../utils/utils';
 
 interface SideModalProps {
   visible?: boolean;
@@ -11,6 +12,7 @@ interface SideModalProps {
   containerStyle?: any;
   children?: React.ReactNode;
   scrollable?: boolean;
+  headerOff?: boolean;
 }
 
 const SideModal = ({
@@ -18,26 +20,39 @@ const SideModal = ({
   containerStyle,
   setVisible,
   visible,
+  headerOff,
 }: SideModalProps) => {
   return (
-    <Dialog
-      width={'100%'}
-      // height={Ios ? height - height * 0.4 : '100%'}
-      ignoreBackgroundPress={false}
-      visible={visible || false}
-      bottom={true}
-      onDismiss={() => setVisible && setVisible(false)}
-      panDirection={PanningProvider.Directions.DOWN}
-      containerStyle={tw` bg-white rounded-t-2xl `}
-      renderPannableHeader={() => (
-        <View style={tw`h-[4%] mt-[2%]`}>
-          <View style={tw`bg-gray-300 h-1 w-20 rounded-full self-center`} />
-        </View>
-      )}>
-      <Pressable disabled style={[tw`max-h-[95%]`, containerStyle]}>
-        {children}
-      </Pressable>
-    </Dialog>
+    <>
+      {visible && (
+        <Dialog
+          width={'100%'}
+          // height={Ios ? height - height * 0.4 : '100%'}
+          ignoreBackgroundPress={false}
+          visible={visible || false}
+          bottom={true}
+          onDismiss={() => setVisible && setVisible(false)}
+          panDirection={PanningProvider.Directions.DOWN}
+          containerStyle={tw` z-20 bg-white rounded-t-2xl ${
+            Android ? 'mt-3' : 'mt-20'
+          } `}
+          renderPannableHeader={() => (
+            <>
+              {!headerOff && (
+                <View style={tw`h-[4%] mt-[2%]`}>
+                  <View
+                    style={tw`bg-gray-300 h-1 w-20 rounded-full self-center`}
+                  />
+                </View>
+              )}
+            </>
+          )}>
+          <Pressable disabled style={[tw`${'max-h-[95%]'}`, containerStyle]}>
+            {children}
+          </Pressable>
+        </Dialog>
+      )}
+    </>
   );
 };
 

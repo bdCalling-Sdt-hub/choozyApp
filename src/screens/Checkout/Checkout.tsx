@@ -95,8 +95,8 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
       </View>
 
       <View
-        style={tw`px-[4%] py-12 gap-3 border-b ${
-          Android ? 'border-dashed border-t-[1px] border-t-[#E5E5E5]' : ''
+        style={tw`px-[4%] py-12 gap-3  ${
+          Android ? ' border-dashed border-b-[1px] border-b-[#E5E5E5]' : ''
         }`}>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
@@ -246,7 +246,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
               <View
                 style={tw`h-14 ${
                   Android
-                    ? 'border-dashed border-t-[1px] border-t-gray-400'
+                    ? 'border-dashed border-t-[1px] border-t-gray-200'
                     : ''
                 } rounded-2xl flex-row items-center  px-4 justify-between`}>
                 <Text style={tw`text-black font-NunitoSansBold text-sm`}>
@@ -309,7 +309,9 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
               containerStyle={tw`mt-12 mb-5 bg-[#6461FC] w-full shadow-none`}
               titleStyle={tw`font-NunitoSansBold text-white`}
               onPress={() => {
-                console.log('OK');
+                // console.log('OK');
+                setPaymentModal(!paymentModal);
+                purchaseSuccessFull();
               }}
               isLoading={false}
             />

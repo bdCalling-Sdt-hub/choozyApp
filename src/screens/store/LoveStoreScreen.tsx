@@ -21,34 +21,12 @@ import tw from '../../lib/tailwind';
 import {Android} from '../../utils/utils';
 
 const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
+  const {closeToast, showToast} = useToast();
   const [close, setClose] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
-  const {closeToast, showToast} = useToast();
   const [coin, setCoin] = React.useState('');
-
-  const purchaseSuccessFull = React.useCallback(async () => {
-    showToast({
-      iconComponent: (
-        <FastImage
-          style={tw`w-full h-40 rounded-2xl`}
-          source={require('../../assets/images/logo/extra/circus.png')}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-      ),
-      title: 'Congratulations! Your purchase is done',
-      titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-      buttonText: 'Done',
-      buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
-      contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-      onPress: () => {
-        closeToast();
-        setPaymentModal(false);
-        navigation?.navigate('Wallet');
-      },
-    });
-  }, []);
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -158,6 +136,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
               <TButton
                 onPress={() => {
                   setPaymentModal(!paymentModal);
+                  // setDateModal(!dateModal);
                 }}
                 title="Continue"
                 containerStyle={tw`w-full justify-center items-center bg-primary shadow-none`}
@@ -166,42 +145,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
           </View>
         </View>
       </ScrollView>
-      {/* <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`pb-6`}
-        data={[...Array(10)]}
-        renderItem={({item}) => (
-          <View
-            style={tw`mx-[4%] my-3 p-4 rounded-2xl flex-row justify-between items-center border border-dashed border-gray-300`}>
-            <View style={tw`flex-row items-center gap-3`}>
-              <SvgXml
-                style={{
-                  transform: [
-                    {
-                      rotate: '5deg',
-                    },
-                  ],
-                }}
-                height={36}
-                width={36}
-                xml={IconFillLove}
-              />
-              <View>
-                <Text>Only for $10.00</Text>
-                <Text>10</Text>
-              </View>
-            </View>
-            <TButton
-              onPress={() => {
-                setPaymentModal(!paymentModal);
-              }}
-              title="Get"
-              containerStyle={tw`p-2 bg-primary w-16 rounded-xl`}
-            />
-          </View>
-        )}
-      /> */}
-      {/*===================== payment modal ======================== */}
+
       <SideModal scrollable visible={paymentModal} setVisible={setPaymentModal}>
         <ScrollView
           keyboardShouldPersistTaps="always"
@@ -245,6 +189,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                 <InputText
                   //   editable={false}
                   onPress={() => {
+                    setPaymentModal(!paymentModal);
                     setDateModal(!dateModal);
                   }}
                   value={`${
@@ -273,13 +218,33 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
               containerStyle={tw`mt-12 mb-5 bg-[#6461FC] w-full shadow-none`}
               titleStyle={tw`font-NunitoSansBold text-white`}
               onPress={() => {
-                console.log('OK');
+                setPaymentModal(false);
+                showToast({
+                  iconComponent: (
+                    <FastImage
+                      style={tw`w-full h-40 rounded-2xl`}
+                      source={require('../../assets/images/logo/extra/circus.png')}
+                      resizeMode={FastImage.resizeMode.contain}
+                    />
+                  ),
+                  title: 'Congratulations! Your purchase is done',
+                  titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
+                  buttonText: 'Done',
+                  buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
+                  contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
+                  onPress: () => {
+                    closeToast();
+                    setPaymentModal(false);
+                    navigation?.navigate('Wallet');
+                  },
+                });
               }}
               isLoading={false}
             />
           </View>
         </ScrollView>
       </SideModal>
+
       <DateModal
         selectedDate={setSelectDate}
         setVisible={setDateModal}
