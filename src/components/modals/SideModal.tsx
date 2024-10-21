@@ -22,6 +22,8 @@ const SideModal = ({
   visible,
   headerOff,
 }: SideModalProps) => {
+  const [layoutHight, setLayoutHight] = React.useState<number>();
+  // console.log(layoutHight, height * 0.8);
   return (
     <>
       {visible && (
@@ -33,8 +35,8 @@ const SideModal = ({
           bottom={true}
           onDismiss={() => setVisible && setVisible(false)}
           panDirection={PanningProvider.Directions.DOWN}
-          containerStyle={tw` z-20 bg-white rounded-t-2xl ${
-            Android ? 'mt-3' : 'mt-20'
+          containerStyle={tw` z-20 bg-base rounded-t-2xl ${
+            Android ? 'mt-5' : 'mt-20'
           } `}
           renderPannableHeader={() => (
             <>
@@ -47,7 +49,12 @@ const SideModal = ({
               )}
             </>
           )}>
-          <Pressable disabled style={[tw`${'max-h-[95%]'}`, containerStyle]}>
+          <Pressable
+            onLayout={e => {
+              setLayoutHight(e.nativeEvent.layout.height);
+            }}
+            disabled
+            style={[tw`${'max-h-[95%]'}`, containerStyle]}>
             {children}
           </Pressable>
         </Dialog>
