@@ -6,7 +6,6 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import PopUpModal, {PopUpModalRef} from '../../components/modals/PopUpModal';
 import {
   IconDeleted,
   IconFillLove,
@@ -25,11 +24,13 @@ import SelectionCard from '../../components/cards/SelectionCard';
 import InputText from '../../components/inputs/InputText';
 import ActionModal from '../../components/modals/ActionModal';
 import NormalModal from '../../components/modals/NormalModal';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetCategoriesQuery} from '../../redux/apiSlices/productSlices';
 
 const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
+  const {closeToast, showToast} = useToast();
   const {data: categories} = useGetCategoriesQuery({});
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
   const {height, width} = useWindowDimensions();
@@ -42,7 +43,6 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
     React.useState(false);
   const [purchaseModal, setPurchaseModal] = React.useState(false);
   const [selectOption, setSelectOption] = React.useState('card');
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
   // console.log(Item);
   return (
     <View style={tw`flex-1 bg-base`}>
@@ -171,7 +171,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
             customComponent: (
               <TouchableOpacity
                 onPress={() => {
-                  popUpModalRef.current?.open({
+                  showToast({
                     title: 'Delete product',
                     content:
                       'Are you sure! You want to delete product permanently?',
@@ -190,7 +190,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
                       {
                         buttonText: 'Cancel',
                         onPress: () => {
-                          popUpModalRef.current?.close();
+                          closeToast();
                           setActionModalOpen(false);
                         },
                         buttonStyle: tw`w-20 bg-primary`,
@@ -243,7 +243,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
             <IwtButton
               svg={IconSendNormal}
               onPress={() => {
-                popUpModalRef.current?.open({
+                showToast({
                   content: 'Proposal sent!',
                   contentStyle: tw`text-xl`,
                   iconComponent: (
@@ -257,7 +257,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
                   onPress: () => {
                     setShowRequestSelectModal(!showRequestSelectModal);
                     setProposalModal(!proposalModal);
-                    popUpModalRef.current?.close();
+                    closeToast();
                     navigation?.navigate('SingleMessage', {proposal: true});
                   },
                 });
@@ -316,8 +316,6 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
           </View>
         </View>
       </NormalModal>
-
-      <PopUpModal ref={popUpModalRef} />
     </View>
   );
 };

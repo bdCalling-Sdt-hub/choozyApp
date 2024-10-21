@@ -1,14 +1,13 @@
-import PopUpModal, {PopUpModalRef} from '../../../components/modals/PopUpModal';
-
 import React from 'react';
 import {View} from 'react-native';
 import productData from '../../../assets/database/product.json';
 import ProductCard from '../../../components/cards/ProductCard';
+import {useToast} from '../../../components/modals/Toaster';
 import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 
 const SellOrder = ({navigation}: NavigProps<null>) => {
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
+  const {closeToast, showToast} = useToast();
   return (
     <View style={tw`flex-row flex-wrap justify-between gap-3`}>
       {productData?.map((item, index) => (
@@ -19,7 +18,7 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
           item={item}
           onPress={() => {
             // navigation?.navigate('MyProductDetails', {item: item});
-            popUpModalRef?.current?.open({
+            showToast({
               title: 'Are you sure?',
               titleStyle: tw`text-2xl`,
               content: 'You want to deliver this product.',
@@ -27,7 +26,7 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
               buttonText: 'Deliver',
               onPress: () => {
                 // navigation?.navigate('MyProductDetails', {item: item});
-                popUpModalRef?.current?.close();
+                closeToast();
               },
               buttonStyle: tw`bg-primary w-[35%] self-center`,
               containerStyle: tw`w-5/6`,
@@ -35,7 +34,6 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
           }}
         />
       ))}
-      <PopUpModal ref={popUpModalRef} />
     </View>
   );
 };

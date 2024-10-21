@@ -1,5 +1,4 @@
 import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import PopUpModal, {PopUpModalRef} from '../../components/modals/PopUpModal';
 import {
   IconBell,
   IconFillLove,
@@ -19,10 +18,12 @@ import TransactionCard from '../../components/cards/TransactionCard';
 import UserSelectionCard from '../../components/cards/UserSelectionCard';
 import InputText from '../../components/inputs/InputText';
 import NormalModal from '../../components/modals/NormalModal';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const WalletScreen = ({navigation}: NavigProps<null>) => {
+  const {closeToast, showToast} = useToast();
   const [selectionSate, setSelectionSate] = React.useState([]);
   const [showTransferModal, setShowTransferModal] = React.useState(false);
   const [showTransferSelectModal, setShowTransferSelectModal] =
@@ -30,8 +31,6 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
   const [showRequestModal, setShowRequestModal] = React.useState(false);
   const [showRequestSelectModal, setShowRequestSelectModal] =
     React.useState(false);
-
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -243,7 +242,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
             onPress={() => {
               //   setCreateGroupModal(false);
               //   navigation?.navigate('GroupMessage');
-              popUpModalRef.current?.open({
+              showToast({
                 svgIcon: (
                   <SvgXml
                     height={65}
@@ -255,7 +254,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                   />
                 ),
                 onPress: () => {
-                  popUpModalRef.current?.close();
+                  closeToast();
                   setShowTransferModal(false);
                   setShowTransferSelectModal(false);
                 },
@@ -363,7 +362,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
             onPress={() => {
               //   setCreateGroupModal(false);
               //   navigation?.navigate('GroupMessage');
-              popUpModalRef.current?.open({
+              showToast({
                 iconComponent: (
                   <FastImage
                     source={require('../../assets/icons/takingLove.png')}
@@ -372,7 +371,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                   />
                 ),
                 onPress: () => {
-                  popUpModalRef.current?.close();
+                  closeToast();
                   setShowRequestModal(false);
                   setShowRequestSelectModal(false);
                 },
@@ -400,7 +399,6 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
           />
         </View>
       </NormalModal>
-      <PopUpModal ref={popUpModalRef} />
     </View>
   );
 };

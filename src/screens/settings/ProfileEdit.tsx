@@ -8,6 +8,7 @@ import {
   usePrivacyPrivateMutation,
   usePrivacyPublicMutation,
 } from '../../redux/apiSlices/profilePrivacy';
+import {Android, useImagePicker} from '../../utils/utils';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -20,7 +21,6 @@ import {useToast} from '../../components/modals/Toaster';
 import {IconFillCamera} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import {useImagePicker} from '../../utils/utils';
 
 const ProfileEdit = ({navigation}: NavigProps<any>) => {
   const {showToast, closeToast} = useToast();
@@ -183,7 +183,9 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
               </View>
             </TouchableOpacity>
             <View
-              style={tw`gap-6 border-b border-b-color-Black200 pb-10 border-dashed`}>
+              style={tw`gap-6  pb-10 ${
+                Android ? 'border-dashed border-b-[1px] border-t-[#E5E5E5]' : ''
+              }`}>
               <View style={tw`justify-center items-center `}>
                 <Text
                   style={tw`text-color-Black900 font-NunitoSansBold text-base`}>

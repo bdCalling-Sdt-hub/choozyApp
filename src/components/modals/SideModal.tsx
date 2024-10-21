@@ -22,12 +22,13 @@ const SideModal = ({
   return (
     <Dialog
       width={'100%'}
-      useSafeArea
+      // height={Ios ? height - height * 0.4 : '100%'}
+      ignoreBackgroundPress={false}
       visible={visible || false}
       bottom={true}
       onDismiss={() => setVisible && setVisible(false)}
       panDirection={PanningProvider.Directions.DOWN}
-      containerStyle={tw`mt-[2%]  bg-white rounded-t-2xl `}
+      containerStyle={tw` bg-white rounded-t-2xl `}
       renderPannableHeader={() => (
         <View style={tw`h-[4%] mt-[2%]`}>
           <View style={tw`bg-gray-300 h-1 w-20 rounded-full self-center`} />

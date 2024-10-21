@@ -1,6 +1,6 @@
 // devices screen size
 
-import {Dimensions, PixelRatio} from 'react-native';
+import {Dimensions, PixelRatio, Platform} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import {MMKVLoader} from 'react-native-mmkv-storage';
@@ -9,6 +9,10 @@ import {imageUrl} from '../redux/api/baseApi';
 export const lStorage = new MMKVLoader().initialize();
 
 export const PrimaryColor = '#4964C6';
+
+export const Android = Platform.OS === 'android';
+
+export const Ios = Platform.OS === 'ios';
 
 export const makeImage = (url: string) => {
   return url.startsWith('https') ? url : imageUrl + url;

@@ -6,7 +6,6 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import PopUpModal, {PopUpModalRef} from '../../components/modals/PopUpModal';
 import {
   IconBasicsleft,
   IconDeleted,
@@ -18,6 +17,7 @@ import {
   useGetCategoriesQuery,
   useUpdateProductMutation,
 } from '../../redux/apiSlices/productSlices';
+import {Android, useImagePicker} from '../../utils/utils';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -29,16 +29,17 @@ import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import ActionModal from '../../components/modals/ActionModal';
 import NormalModal from '../../components/modals/NormalModal';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 import {IProduct} from '../../redux/interface/products';
-import {useImagePicker} from '../../utils/utils';
 
 const MyProductDetailsScreen = ({
   navigation,
   route,
 }: NavigProps<{item: IProduct}>) => {
+  const {showToast, closeToast} = useToast();
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
   const {height, width} = useWindowDimensions();
   const Item = route?.params.item;
@@ -50,8 +51,6 @@ const MyProductDetailsScreen = ({
     categories?.data?.data?.find(i => i.category_name === Item?.category_name)
       ?.category_name || 'Select Category',
   );
-
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
 
   // console.log(categories?.data.data);
 
@@ -157,7 +156,7 @@ const MyProductDetailsScreen = ({
     // console.log(selectItem);
     productDelete(Item?.id).then(res => {
       console.log(res);
-      popUpModalRef.current?.close();
+      closeToast();
       setActionModalOpen(false);
       navigation?.goBack();
     });
@@ -264,7 +263,7 @@ const MyProductDetailsScreen = ({
             customComponent: (
               <TouchableOpacity
                 onPress={() => {
-                  popUpModalRef.current?.open({
+                  showToast({
                     title: 'Delete product',
                     content:
                       'Are you sure! You want to delete product permanently?',
@@ -286,7 +285,7 @@ const MyProductDetailsScreen = ({
                       {
                         buttonText: 'Cancel',
                         onPress: () => {
-                          popUpModalRef.current?.close();
+                          closeToast();
                           setActionModalOpen(false);
                         },
                         buttonStyle: tw`w-20 bg-primary`,
@@ -321,7 +320,9 @@ const MyProductDetailsScreen = ({
           />
 
           <View
-            style={tw`border-b-[1px] border-b-[#E5E5E5] border-dashed py-3`}>
+            style={tw`${
+              Android ? 'border-dashed border-t-[1px] border-t-[#E5E5E5]' : ''
+            } py-3`}>
             <Text
               style={tw`text-color-Black800 font-NunitoSansBold text-base my-3`}>
               Select product images
@@ -451,7 +452,10 @@ const MyProductDetailsScreen = ({
           layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
           containerStyle={tw` rounded-2xl p-5 my-3`}
           setVisible={setShowCategoryModal}>
-          <View style={tw` border-dashed py-2`}>
+          <View
+            style={tw` ${
+              Android ? 'border-dashed border-t-[1px] border-t-[#E5E5E5]' : ''
+            } py-2`}>
             <TouchableOpacity
               style={tw`flex-row items-center gap-3`}
               onPress={() => setShowCategoryModal(false)}>
@@ -481,8 +485,6 @@ const MyProductDetailsScreen = ({
           </View>
         </NormalModal>
       )}
-
-      <PopUpModal ref={popUpModalRef} />
     </View>
   );
 };

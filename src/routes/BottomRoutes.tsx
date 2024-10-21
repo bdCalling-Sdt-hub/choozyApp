@@ -17,6 +17,7 @@ import CallsScreen from '../screens/calls/CallsScreen';
 import ChatsScreen from '../screens/chats/ChatsScreen';
 import ContactScreen from '../screens/contacts/ContactScreen';
 import StatusScreen from '../screens/status/StatusScreen';
+import {Android} from '../utils/utils';
 
 const Tab = createBottomTabNavigator();
 // height: 65,
@@ -29,7 +30,9 @@ function BottomRoutes() {
     <Tab.Navigator
       screenOptions={({route}) => ({
         headerShown: false,
-        tabBarStyle: tw`h-16 bg-white shadow-none border border-white`,
+        tabBarStyle: tw` ${
+          Android ? 'h-16' : 'h-26'
+        } bg-white shadow-none border border-white`,
         tabBarItemStyle: tw`my-[10px] tablet:my-5 flex-col`,
         tabBarLabelStyle: tw``,
         tabBarButton: props => <TouchableOpacity {...props} />,

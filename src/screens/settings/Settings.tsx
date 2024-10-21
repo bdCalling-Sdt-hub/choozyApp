@@ -9,6 +9,7 @@ import {IconWrite} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {Android} from '../../utils/utils';
 
 const Settings = ({navigation}: NavigProps<any>) => {
   const {data: userProfile} = useGetProfileQuery({});
@@ -57,7 +58,9 @@ const Settings = ({navigation}: NavigProps<any>) => {
             </Text>
           </View>
           <View
-            style={tw`gap-6 border-b border-b-color-Black200 pb-10 border-dashed`}>
+            style={tw`gap-6 ${
+              Android ? 'border-dashed border-b-[1px] border-t-[#E5E5E5]' : ''
+            }`}>
             <View style={tw`justify-center items-center `}>
               <Text
                 style={tw`text-color-Black900 font-NunitoSansBold text-base`}>

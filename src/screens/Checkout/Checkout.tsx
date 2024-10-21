@@ -1,5 +1,4 @@
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import PopUpModal, {PopUpModalRef} from '../../components/modals/PopUpModal';
 import {
   IIConAmericanExpress,
   IIConDiscover,
@@ -17,22 +16,45 @@ import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
 import SideModal from '../../components/modals/SideModal';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {IProduct} from '../../redux/interface/products';
+import {Android} from '../../utils/utils';
 
 const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
+  const {showToast, closeToast} = useToast();
   const [close, setClose] = React.useState(false);
   const [shippingModal, setShippingModal] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
 
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
-
   const Item = route?.params?.item;
 
   console.log(Item?.category_name);
+
+  const purchaseSuccessFull = React.useCallback(async () => {
+    showToast({
+      iconComponent: (
+        <FastImage
+          style={tw`w-full h-28 rounded-2xl`}
+          source={require('../../assets/images/logo/extra/birthday.png')}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+      ),
+      title: 'Congratulations! Your purchase is done',
+      titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
+      buttonText: 'Done',
+      buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
+      contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
+      onPress: () => {
+        closeToast();
+        setPaymentModal(false);
+        navigation?.goBack();
+      },
+    });
+  }, []);
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -73,7 +95,9 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
       </View>
 
       <View
-        style={tw`px-[4%] py-12 gap-3 border-b border-b-color-Black200 border-dashed `}>
+        style={tw`px-[4%] py-12 gap-3 border-b ${
+          Android ? 'border-dashed border-t-[1px] border-t-[#E5E5E5]' : ''
+        }`}>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Subtotal
@@ -220,7 +244,11 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
 
             <View style={tw`mt-4 gap-6`}>
               <View
-                style={tw`h-14 border border-dashed border-gray-300 rounded-2xl flex-row items-center  px-4 justify-between`}>
+                style={tw`h-14 ${
+                  Android
+                    ? 'border-dashed border-t-[1px] border-t-gray-400'
+                    : ''
+                } rounded-2xl flex-row items-center  px-4 justify-between`}>
                 <Text style={tw`text-black font-NunitoSansBold text-sm`}>
                   Cards
                 </Text>
@@ -252,6 +280,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
                 <InputText
                   //   editable={false}
                   onPress={() => {
+                    setShippingModal(!paymentModal);
                     setDateModal(!dateModal);
                   }}
                   value={`${
@@ -280,25 +309,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
               containerStyle={tw`mt-12 mb-5 bg-[#6461FC] w-full shadow-none`}
               titleStyle={tw`font-NunitoSansBold text-white`}
               onPress={() => {
-                popUpModalRef?.current?.open({
-                  iconComponent: (
-                    <FastImage
-                      style={tw`w-full h-28 rounded-2xl`}
-                      source={require('../../assets/images/logo/extra/birthday.png')}
-                      resizeMode={FastImage.resizeMode.contain}
-                    />
-                  ),
-                  title: 'Congratulations! Your purchase is done',
-                  titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-                  buttonText: 'Done',
-                  buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
-                  contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-                  onPress: () => {
-                    popUpModalRef?.current?.close();
-                    setPaymentModal(false);
-                    navigation?.goBack();
-                  },
-                });
+                console.log('OK');
               }}
               isLoading={false}
             />
@@ -310,7 +321,6 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
         setVisible={setDateModal}
         visible={dateModal}
       />
-      <PopUpModal ref={popUpModalRef} />
     </View>
   );
 };

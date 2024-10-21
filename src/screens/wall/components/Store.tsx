@@ -5,6 +5,7 @@ import {
   useGetCategoriesQuery,
   useGetUserProductsQuery,
 } from '../../../redux/apiSlices/productSlices';
+import {Android, useImagePicker} from '../../../utils/utils';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -18,7 +19,6 @@ import NormalModal from '../../../components/modals/NormalModal';
 import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useGetShopQuery} from '../../../redux/apiSlices/shopSlices';
-import {useImagePicker} from '../../../utils/utils';
 
 interface StoreProps extends NavigProps<any> {
   showAddProductModal: boolean;
@@ -167,7 +167,9 @@ const Store = ({
           />
 
           <View
-            style={tw`border-b-[1px] border-b-[#E5E5E5] border-dashed py-3`}>
+            style={tw`${
+              Android ? 'border-dashed border-b-[1px] border-t-[#E5E5E5]' : ''
+            } py-3`}>
             <Text
               style={tw`text-color-Black800 font-NunitoSansBold text-base my-3`}>
               Select product images

@@ -1,5 +1,4 @@
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import PopUpModal, {PopUpModalRef} from '../../components/modals/PopUpModal';
 import {
   IIConAmericanExpress,
   IIConDiscover,
@@ -16,16 +15,41 @@ import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
 import SideModal from '../../components/modals/SideModal';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {Android} from '../../utils/utils';
 
 const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
   const [close, setClose] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
+  const {closeToast, showToast} = useToast();
   const [coin, setCoin] = React.useState('');
+
+  const purchaseSuccessFull = React.useCallback(async () => {
+    showToast({
+      iconComponent: (
+        <FastImage
+          style={tw`w-full h-40 rounded-2xl`}
+          source={require('../../assets/images/logo/extra/circus.png')}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+      ),
+      title: 'Congratulations! Your purchase is done',
+      titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
+      buttonText: 'Done',
+      buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
+      contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
+      onPress: () => {
+        closeToast();
+        setPaymentModal(false);
+        navigation?.navigate('Wallet');
+      },
+    });
+  }, []);
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -90,16 +114,21 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
               </View>
             </View>
             <View
-              style={tw`px-[4%] py-12 gap-3 border-b border-b-color-Black200 border-dashed `}>
+              style={tw`px-[4%] py-12 gap-3 ${
+                Android ? 'border-b border-dashed  border-b-gray-400' : ''
+              }`}>
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
                   style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
                   Total Love
                 </Text>
-                <Text
-                  style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-                  {coin || 0}
-                </Text>
+                <View style={tw`flex-row items-center gap-2`}>
+                  <SvgXml height={10} width={10} xml={IconFillLove} />
+                  <Text
+                    style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+                    {coin || 0}
+                  </Text>
+                </View>
               </View>
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
@@ -107,8 +136,8 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                   Love Prize
                 </Text>
                 <Text
-                  style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-                  €1.2
+                  style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+                  $1.4
                 </Text>
               </View>
 
@@ -119,7 +148,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                 </Text>
                 <Text
                   style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-                  €{parseInt(coin * 1.2).toFixed(2)}
+                  ${parseInt(coin * 1.2).toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -244,25 +273,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
               containerStyle={tw`mt-12 mb-5 bg-[#6461FC] w-full shadow-none`}
               titleStyle={tw`font-NunitoSansBold text-white`}
               onPress={() => {
-                popUpModalRef?.current?.open({
-                  iconComponent: (
-                    <FastImage
-                      style={tw`w-full h-40 rounded-2xl`}
-                      source={require('../../assets/images/logo/extra/circus.png')}
-                      resizeMode={FastImage.resizeMode.contain}
-                    />
-                  ),
-                  title: 'Congratulations! Your purchase is done',
-                  titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-                  buttonText: 'Done',
-                  buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
-                  contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-                  onPress: () => {
-                    popUpModalRef?.current?.close();
-                    setPaymentModal(false);
-                    navigation?.navigate('Wallet');
-                  },
-                });
+                console.log('OK');
               }}
               isLoading={false}
             />
@@ -274,7 +285,6 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
         setVisible={setDateModal}
         visible={dateModal}
       />
-      <PopUpModal ref={popUpModalRef} />
     </View>
   );
 };

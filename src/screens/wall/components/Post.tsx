@@ -14,7 +14,7 @@ import {
   useDeleteNewFeetMutation,
   useUpdateNewsFeetMutation,
 } from '../../../redux/apiSlices/newsFeetSlices';
-import {height, useImagePicker} from '../../../utils/utils';
+import {Android, height, useImagePicker} from '../../../utils/utils';
 
 import FastImage from 'react-native-fast-image';
 import CreatedHeaderWithITB from '../../../components/backHeader/CreatedHeaderWithITB';
@@ -216,7 +216,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
         <SideModal
           visible={isComment.open}
           setVisible={() => setIsComment({open: false})}
-          containerStyle={tw`h-[95%]`}>
+          containerStyle={tw`h-[90%]`}>
           <View style={tw`px-4`}>
             <Text
               style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
@@ -258,7 +258,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
               <TextInput
                 // ref={openRef}
                 placeholder="Add a comment....."
-                style={tw`h-14 border border-slate-100 rounded-lg flex-1 mx-2`}
+                style={tw`h-14 border border-slate-100 rounded-lg flex-1 mx-2 pl-1`}
                 onChangeText={text => setComment(text)}
                 value={comment}
               />
@@ -284,7 +284,6 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
           // cancelButtonIndex={2}
           showCancelButton
           dialogStyle={tw`bg-transparent`}
-          useSafeArea
           renderTitle={() => (
             <View style={tw`w-12 h-1 bg-gray-300 rounded-full self-center`} />
           )}
@@ -353,7 +352,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
             title="Create a post"
             onPress={() => setShowAddPostModal && setShowAddPostModal(false)}
           />
-          <View style={tw`gap-3 flex-row items-center mt-5`}>
+          <View style={tw`gap-3 flex-row items-center mt-5 `}>
             <FastImage
               style={tw`w-8 h-8 rounded-xl `}
               resizeMode={FastImage.resizeMode.cover}
@@ -363,7 +362,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
             />
             <View>
               <Text
-                style={tw`text-color-Black800 font-NunitoSansBold text-base`}>
+                style={tw`text-color-Black800 font-NunitoSansBold text-base `}>
                 {wallData?.data?.full_name}
               </Text>
               <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`}>
@@ -384,7 +383,9 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
             style={tw`h-32 text-color-Black400 font-NunitoSansRegular text-base px-2`}
           />
           <View
-            style={tw`border-t-[1px] border-t-[#E5E5E5] border-dashed py-3`}>
+            style={tw`  ${
+              Android ? 'border-dashed border-t-[1px] border-t-[#E5E5E5]' : ''
+            }  py-3`}>
             <Text
               style={tw`text-color-Black800 font-NunitoSansBold text-base my-2`}>
               Add to your post
