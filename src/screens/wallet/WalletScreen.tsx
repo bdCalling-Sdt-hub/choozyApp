@@ -1,29 +1,51 @@
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
-  IconBell,
+  FlatList,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
   IconFillLove,
   IconLockWithCircle,
+  IconMenu,
   IconSearch,
 } from '../../icons/icons';
 
-import React from 'react';
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
-import MessagesData from '../../assets/database/messages.json';
-import transaction from '../../assets/database/transaction.json';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import {DrawerActions} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import IButton from '../../components/buttons/IButton';
+import InputText from '../../components/inputs/InputText';
+import MessagesData from '../../assets/database/messages.json';
+import {NavigProps} from '../../interfaces/NaviProps';
+import NormalModal from '../../components/modals/NormalModal';
+import {PrimaryColor} from '../../utils/utils';
+import React from 'react';
 import SimpleButton from '../../components/buttons/SimpleButton';
+import {SvgXml} from 'react-native-svg';
 import TButton from '../../components/buttons/TButton';
 import TransactionCard from '../../components/cards/TransactionCard';
 import UserSelectionCard from '../../components/cards/UserSelectionCard';
-import InputText from '../../components/inputs/InputText';
-import NormalModal from '../../components/modals/NormalModal';
-import {useToast} from '../../components/modals/Toaster';
-import {NavigProps} from '../../interfaces/NaviProps';
+import {extractDateTimeParts} from '../../utils/extractDateTimeParts';
 import tw from '../../lib/tailwind';
+import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useToast} from '../../components/modals/Toaster';
 
 const WalletScreen = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
+
+  const {
+    data: userInfo,
+    refetch: refetchProfile,
+    isLoading: isLoadingProfile,
+  } = useGetProfileQuery({});
+
+  const {data: transaction} = useGetPaymentHistoryQuery({});
+
+  // console.log(transaction);
+
   const [selectionSate, setSelectionSate] = React.useState([]);
   const [showTransferModal, setShowTransferModal] = React.useState(false);
   const [showTransferSelectModal, setShowTransferSelectModal] =
@@ -38,102 +60,155 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         title={'My Wallet'}
         containerStyle={tw`justify-between`}
         onPress={() => navigation?.goBack()}
+        // ComponentBtn={
+        //   <TouchableOpacity
+        //     activeOpacity={0.5}
+        //     onPress={() => navigation?.navigate('Notification')}>
+        //     <SvgXml xml={IconBell} style={tw`w-6 h-6`} />
+        //   </TouchableOpacity>
+        // }
         ComponentBtn={
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => navigation?.navigate('Notification')}>
-            <SvgXml xml={IconBell} style={tw`w-6 h-6`} />
-          </TouchableOpacity>
+          <IButton
+            onPress={() => {
+              navigation?.dispatch(DrawerActions.openDrawer());
+            }}
+            svg={IconMenu}
+            containerStyle={tw`w-10  h-10 bg-primary50 shadow-none`}
+          />
         }
       />
-      <ScrollView>
-        {/*========================== wallet part ====================== */}
-        <View
-          style={tw`mx-[4%] my-4 self-center w-[95%] tablet:w-[40%] bg-[#6461FC] h-64 rounded-2xl p-4 gap-8 `}>
-          {/*========================== profile part ====================== */}
-          <View style={tw`flex-row items-center gap-3`}>
-            <FastImage
-              style={tw`w-12 h-12 rounded-2xl`}
-              source={{uri: 'https://randomuser.me/api/portraits/men/19.jpg'}}
-            />
-            <View style={tw`flex-row items-center justify-between`}>
-              <View>
-                <Text
-                  style={tw`text-white text-[12px] font-NunitoSansRegular `}>
-                  Hello Rishabh Singh
-                </Text>
-                <Text style={tw`text-white font-NunitoSansBold text-[18px]`}>
-                  Good Evening!
-                </Text>
-              </View>
-            </View>
-          </View>
-          {/*========================== balance part ====================== */}
-          <View style={tw``}>
-            <View style={tw`flex-row  gap-1  items-center`}>
-              <Text style={tw`text-white text-sm font-NunitoSansBold `}>
-                Available Balance
-              </Text>
-              <SvgXml
-                style={{
-                  transform: [{rotate: '5deg'}],
-                }}
-                xml={IconFillLove}
-              />
-            </View>
-            <Text
-              style={tw`text-white font-NunitoSansExtraBold text-[34px] tracking-wide`}>
-              12,400
-            </Text>
-          </View>
-          {/*========================== buttons part ====================== */}
-          <View style={tw`flex-row justify-between items-center gap-4`}>
-            <SimpleButton
-              onPress={() => setShowTransferModal(!showTransferModal)}
-              containerStyle={tw`bg-white py-2 rounded-xl border-[1px] flex-1 justify-center`}
-              title="Transfer"
-              titleStyle={tw`text-primary600`}
-            />
-            <SimpleButton
-              containerStyle={tw`bg-transparent py-2 rounded-xl border-[1px] flex-1 justify-center`}
-              title="Request"
-              titleStyle={tw`text-white`}
-              onPress={() => setShowRequestModal(!showRequestModal)}
-            />
-            <SimpleButton
-              onPress={() => navigation?.navigate('LoveStore')}
-              containerStyle={tw`bg-transparent py-2 rounded-xl border-[1px] flex-1 justify-center`}
-              title="Get"
-              titleStyle={tw`text-white`}
-            />
-          </View>
-        </View>
-        {/*==================== transaction history part ========================= */}
-        <>
-          {
-            <View style={tw`px-[4%] py-4`}>
-              <View style={tw` flex-row justify-between mb-2 `}>
-                <Text
-                  style={tw`text-color-Black1000 font-NunitoSansBold text-[18px]`}>
-                  Last Transactions
-                </Text>
-                <TouchableOpacity
-                  activeOpacity={0.5}
-                  onPress={() => {
-                    navigation?.navigate('TransactionHistory');
-                  }}>
-                  <Text style={tw`text-primary font-NunitoSansBold text-sm`}>
-                    View all
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoadingProfile}
+            onRefresh={refetchProfile}
+            colors={[PrimaryColor]}
+          />
+        }
+        data={[1]}
+        renderItem={() => {
+          return (
+            <>
+              {/*========================== wallet part ====================== */}
+              <View
+                style={tw`mx-[4%] my-4 self-center w-[95%] tablet:w-[40%] bg-[#6461FC] h-64 rounded-2xl p-4 gap-8 `}>
+                {/*========================== profile part ====================== */}
+                <View style={tw`flex-row items-center gap-3`}>
+                  {userInfo?.data?.image ? (
+                    <FastImage
+                      style={tw`w-12 h-12 rounded-2xl`}
+                      source={{uri: userInfo?.data?.image}}
+                    />
+                  ) : (
+                    <View
+                      style={tw`w-12 h-12 rounded-2xl bg-primary justify-center items-center`}>
+                      <Text
+                        style={tw`text-white font-NunitoSansBold text-[20px]`}>
+                        {userInfo?.data?.full_name[0]}
+                      </Text>
+                    </View>
+                  )}
+
+                  <View style={tw`flex-row items-center justify-between`}>
+                    <View>
+                      <Text
+                        style={tw`text-white text-[12px] font-NunitoSansRegular `}>
+                        {userInfo?.data?.full_name}
+                      </Text>
+                      <Text
+                        style={tw`text-white font-NunitoSansBold text-[18px]`}>
+                        Good{' '}
+                        {
+                          extractDateTimeParts(
+                            new Date().toISOString(),
+                            false,
+                            true,
+                          ).timeOfDay
+                        }
+                        !
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                {/*========================== balance part ====================== */}
+                <View style={tw``}>
+                  <View style={tw`flex-row  gap-1  items-center`}>
+                    <Text style={tw`text-white text-sm font-NunitoSansBold `}>
+                      Available Balance
+                    </Text>
+                    <SvgXml
+                      style={{
+                        transform: [{rotate: '5deg'}],
+                      }}
+                      xml={IconFillLove}
+                    />
+                  </View>
+                  <Text
+                    style={tw`text-white font-NunitoSansExtraBold text-[34px] tracking-wide`}>
+                    {userInfo?.data?.balance}
                   </Text>
-                </TouchableOpacity>
+                </View>
+                {/*========================== buttons part ====================== */}
+                <View
+                  style={tw` flex-row flex-wrap self-start items-center gap-4`}>
+                  <SimpleButton
+                    onPress={() => setShowTransferModal(!showTransferModal)}
+                    containerStyle={tw`bg-white py-2 rounded-xl border-[1px] self-start  justify-center`}
+                    title="Transfer"
+                    titleStyle={tw`text-primary600`}
+                  />
+                  <SimpleButton
+                    containerStyle={tw`bg-transparent py-2 rounded-xl border-[1px] self-start  justify-center`}
+                    title="Request"
+                    titleStyle={tw`text-white`}
+                    onPress={() => setShowRequestModal(!showRequestModal)}
+                  />
+                  <SimpleButton
+                    onPress={() => navigation?.navigate('LoveStore')}
+                    containerStyle={tw`bg-transparent py-2 rounded-xl border-[1px] self-start  justify-center`}
+                    title="Get"
+                    titleStyle={tw`text-white`}
+                  />
+                  <SimpleButton
+                    onPress={() => navigation?.navigate('TransferRequest')}
+                    containerStyle={tw`bg-transparent py-2 rounded-xl border-[1px] self-start  justify-center`}
+                    title="Trans. Request"
+                    titleStyle={tw`text-white`}
+                  />
+                </View>
               </View>
-              {transaction?.map((item, index) => {
-                return <TransactionCard item={item} key={index} />;
-              })}
-            </View>
-          }
-        </>
-      </ScrollView>
+              {/*==================== transaction history part ========================= */}
+              <>
+                {
+                  <View style={tw`px-[4%] py-4`}>
+                    <View style={tw` flex-row justify-between mb-2 `}>
+                      <Text
+                        style={tw`text-color-Black1000 font-NunitoSansBold text-[18px]`}>
+                        Last Transactions
+                      </Text>
+                      <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={() => {
+                          navigation?.navigate('TransactionHistory');
+                        }}>
+                        <Text
+                          style={tw`text-primary font-NunitoSansBold text-sm`}>
+                          View all
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    {transaction?.data?.transactions?.map((item, index) => {
+                      // console.log(item);
+                      return <TransactionCard item={item} key={index} />;
+                    })}
+                  </View>
+                }
+              </>
+            </>
+          );
+        }}
+      />
 
       {/*==================== transfer modals ========================= */}
       <NormalModal

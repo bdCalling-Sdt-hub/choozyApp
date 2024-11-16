@@ -1,6 +1,5 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
-  IconBell,
   IconBellWithDot,
   IconClose,
   IconSearch,
@@ -79,8 +78,9 @@ const LogoWithHeader = ({
       </View>
       <NormalModal
         animationType="fade"
-        containerStyle={tw`w-full`}
+        containerStyle={tw`w-full rounded-none`}
         setVisible={setSearchVisible}
+        layerContainerStyle={tw`justify-start items-start flex-1 `}
         visible={searchVisible}>
         {/*=========== search here =========== */}
         <View style={tw`flex-row items-center py-2 gap-3`}>
@@ -104,10 +104,10 @@ const LogoWithHeader = ({
           />
           <IButton
             onPress={() => {
+              onFinish && onFinish(searchText);
               setSearchVisible(!searchVisible);
-              navigation?.navigate('Notification');
             }}
-            svg={IconBell}
+            svg={IconSearch}
             containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
           />
           {/* <IButton

@@ -112,6 +112,7 @@ const PostCard = ({
                 newsfeed_id: item.newsfeed_id || item.id,
               });
               // console.log('like', res);
+              console.log(item.newsfeed_id);
               setLove(!love);
               likeOppress && likeOppress();
             }}>

@@ -1,20 +1,22 @@
+import {FlatList, View} from 'react-native';
+
 import React from 'react';
-import {View} from 'react-native';
-import transaction from '../../assets/database/transaction.json';
 import BackWithTitle from '../../components/backHeader/BackWithTitle';
 import TransactionCard from '../../components/cards/TransactionCard';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
 
 const TransactionsHistory = ({navigation}: NavigProps<null>) => {
+  const {data: transaction} = useGetPaymentHistoryQuery({});
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithTitle title="History" onPress={() => navigation?.goBack()} />
-      <View style={tw`px-[4%] pb-3`}>
-        {transaction?.map((item, index) => {
-          return <TransactionCard item={item} key={index} />;
-        })}
-      </View>
+      <FlatList
+        contentContainerStyle={tw`px-[4%] pb-3`}
+        data={transaction?.data?.transactions}
+        renderItem={({item}) => <TransactionCard item={item} />}
+      />
     </View>
   );
 };

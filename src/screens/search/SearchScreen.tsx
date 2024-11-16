@@ -1,22 +1,66 @@
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import {IconBell, IconClose, IconSearch} from '../../icons/icons';
+import React, {useCallback} from 'react';
+import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {IconClose, IconPlus, IconSearch, IconSend} from '../../icons/icons';
 
-import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import IButton from '../../components/buttons/IButton';
+import IwtButton from '../../components/buttons/IwtButton';
 import SimpleButton from '../../components/buttons/SimpleButton';
+import CommentCard from '../../components/cards/CommentCard';
 import MessageCard from '../../components/cards/MessageCard';
+import PostCard from '../../components/cards/PostCard';
 import ProductCard from '../../components/cards/ProductCard';
 import InputText from '../../components/inputs/InputText';
+import SideModal from '../../components/modals/SideModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import {useSearchQuery} from '../../redux/apiSlices/searchSlices';
+import {useGetUserProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useCommentMutation} from '../../redux/apiSlices/newsFeetSlices';
+import {useLazySearchQuery} from '../../redux/apiSlices/searchSlices';
+import {INewpaper} from '../../redux/interface/newpaper';
 
 const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [option, setOption] = React.useState('All');
-  const [searchText, setSearchText] = React.useState('');
-  const {data: searchResults} = useSearchQuery(route?.params?.text);
-  // console.log(searchResults?.data.products);
+  const [isComment, setIsComment] = React.useState<{
+    item?: INewpaper;
+    open?: boolean;
+  }>({
+    open: false,
+  });
+  const [searchText, setSearchText] = React.useState(route?.params?.text);
+  const [searchResults, setSearchResults] = React.useState(null);
+  const [reply, setReply] = React.useState<any>(null);
+  const [comment, setComment] = React.useState('');
+  const [createComment] = useCommentMutation();
+  const {data: userProfile} = useGetUserProfileQuery({});
+  const [globalSearch, globalResults] = useLazySearchQuery({});
+
+  const handleSearch = async () => {
+    const res = await globalSearch(searchText);
+    setSearchResults(res.data);
+  };
+
+  const handleComment = useCallback(() => {
+    const data = {
+      newsfeed_id: isComment?.item?.newsfeed_id,
+      comments: comment,
+    };
+
+    if (reply?.id) {
+      data.parent_id = reply.id;
+    }
+    console.log(data);
+    createComment(data).then(res => {
+      console.log(res);
+      setComment('');
+      setReply(null);
+    });
+  }, [comment, reply?.id]);
+
+  React.useEffect(() => {
+    handleSearch();
+  }, []);
   return (
     <View style={tw`flex-1 bg-white`}>
       <View style={tw`flex-row items-center py-2 gap-3 bg-white px-[4%]`}>
@@ -30,17 +74,21 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
           containerStyle={tw`w-full border-0 bg-color-Black50`}
           placeholder="Search"
           defaultValue={route?.params?.text}
-          onChangeText={text => {}}
+          onChangeText={text => {
+            setSearchText(text);
+          }}
           returnKeyType="done" // you can set returnKeyType like 'done', 'go', etc.
           onSubmitEditing={() => {}}
           svgFirstIcon={IconSearch}
         />
         <IButton
+          isLoading={globalResults?.isFetching}
           onPress={() => {
-            navigation?.navigate('Notification');
+            setSearchText(searchText);
+            handleSearch();
           }}
-          svg={IconBell}
-          containerStyle={tw`w-12  h-12 bg-color-Black50 shadow-none`}
+          svg={IconSearch}
+          containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
         />
       </View>
       {/* ====================== filters icons ==================== */}
@@ -96,87 +144,178 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
       </View>
 
       {/*==================== resutls ========================= */}
-      <ScrollView
+      <FlatList
         contentContainerStyle={tw`pt-3 pb-7`}
-        showsVerticalScrollIndicator={false}>
-        {(option === 'All' || option === 'Posts') && (
-          <View style={tw`flex-1 pb-7`}>
-            {/*================= Post Card ============ */}
-            {searchResults?.data?.posts.slice(0, 2).map((item, index) => (
-              <React.Fragment key={index}>
-                <PostCard item={item} />
-              </React.Fragment>
-            ))}
-          </View>
-        )}
-        <>
-          {option === 'All' && (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              horizontal
-              contentContainerStyle={tw`px-[4%] gap-4 mt-6 mb-10`}
-              data={searchResults?.data?.products}
-              renderItem={({item, index}) => (
-                <ProductCard
-                  onPress={() => {
-                    navigation?.navigate('ProductDetails', {item: item});
-                  }}
-                  key={index}
-                  item={item}
-                />
-              )}
-              keyExtractor={(item, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
+        data={[...Array(1)]}
+        renderItem={() => {
+          return (
+            <>
+              {(option === 'All' || option === 'Posts') &&
+                searchResults?.data?.posts?.length > 0 && (
+                  <View style={tw`flex-1 pb-7`}>
+                    {searchResults?.data?.posts
+                      .slice(0, 2)
+                      .map((item, index) => (
+                        <React.Fragment key={index}>
+                          <PostCard
+                            setComment={setIsComment}
+                            onPress={() => {
+                              console.log(userProfile?.data.id);
+                              if (
+                                userProfile?.data.id === item?.user?.user_id
+                              ) {
+                                navigation?.navigate('MyWall');
+                              } else {
+                                navigation?.navigate('OtherWall', {
+                                  id: item?.user?.user_id,
+                                });
+                              }
+                            }}
+                            item={item}
+                          />
+                        </React.Fragment>
+                      ))}
+                  </View>
+                )}
+              <>
+                {option === 'All' &&
+                  searchResults?.data?.products?.length > 0 && (
+                    <FlatList
+                      showsVerticalScrollIndicator={false}
+                      showsHorizontalScrollIndicator={false}
+                      horizontal
+                      contentContainerStyle={tw`px-[4%] py-3 gap-4`}
+                      data={searchResults?.data?.products}
+                      renderItem={({item, index}) => (
+                        <ProductCard
+                          containerStyle={tw`w-46`}
+                          onPress={() => {
+                            navigation?.navigate('ProductDetails', {
+                              item: item,
+                            });
+                          }}
+                          key={index}
+                          item={item}
+                        />
+                      )}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                  )}
+              </>
+              {option === 'Products' &&
+                searchResults?.data?.products?.length > 0 && (
+                  <View style={tw`px-[4%]`}>
+                    <View
+                      style={tw`flex-row flex-wrap  gap-2 md:gap-3 tablet:gap-16 tablet:justify-center`}>
+                      {searchResults?.data?.products?.map((item, index) => (
+                        <ProductCard
+                          key={index}
+                          item={item}
+                          onPress={() => {
+                            navigation?.navigate('ProductDetails', {
+                              item: item,
+                            });
+                          }}
+                        />
+                      ))}
+                    </View>
+                  </View>
+                )}
+              {(option === 'All' || option === 'People') &&
+                searchResults?.data?.people?.length > 0 && (
+                  <View style={tw``}>
+                    {searchResults?.data?.people.map((item, index) => (
+                      <React.Fragment key={index}>
+                        <MessageCard
+                          disabled
+                          onPress={() => navigation?.navigate('Message')}
+                          offPartThree
+                          containerStyle={tw`w-full items-center justify-center`}
+                          titleContainerStyle={tw`gap-1 `}
+                          joinBtn
+                          subTitleStyle={tw`text-color-Black500`}
+                          titleStyle={tw`text-[#1D1929] text-sm`}
+                          item={{
+                            image: item.image,
+                            name: item.full_name,
+                            lastMessage: item.location,
+                          }}
+                          Component={
+                            <IwtButton
+                              containerStyle={tw`self-center p-2 items-center bg-primary`}
+                              title="Add Contact"
+                              svg={IconPlus}
+                            />
+                          }
+                        />
+                      </React.Fragment>
+                    ))}
+                  </View>
+                )}
+            </>
+          );
+        }}
+      />
+      <SideModal
+        visible={isComment.open}
+        setVisible={() => setIsComment({open: false})}
+        containerStyle={tw`h-[95%]`}>
+        <View style={tw`px-4`}>
+          <Text style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
+            Comments
+          </Text>
+        </View>
+        <FlatList
+          data={isComment?.item?.comments}
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}
+          keyboardDismissMode="interactive"
+          renderItem={({item}) => {
+            return (
+              <View style={tw`px-4 pt-4`}>
+                <CommentCard key={item.id} setReply={setReply} item={item} />
+              </View>
+            );
+          }}
+        />
+        <View style={tw`p-4 flex-row items-center `}>
+          <FastImage
+            style={tw`w-12 h-12 rounded-2xl`}
+            source={{uri: userProfile?.data?.image}}
+            resizeMode={FastImage.resizeMode.cover}
+          />
+          <View style={tw`h-14 flex-1 flex-row justify-center`}>
+            {reply?.full_name && (
+              <TouchableOpacity
+                onPress={() => setReply(null)}
+                style={tw`h-14 flex-row items-center ml-2`}>
+                <Text
+                  style={tw`text-color-Black800  bg-slate-200 p-1 font-NunitoSansBold rounded-lg`}>
+                  {reply?.full_name}
+                  <Text style={tw`text-xs text-blue-600`}>x</Text>
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            <TextInput
+              // ref={openRef}
+              placeholder="Add a comment....."
+              style={tw`h-14 border border-slate-100 rounded-lg flex-1 mx-2`}
+              onChangeText={text => setComment(text)}
+              value={comment}
             />
-          )}
-        </>
-        {option === 'Products' && (
-          <View style={tw`px-[4%]`}>
-            <View style={tw`flex-row flex-wrap justify-between gap-3`}>
-              {searchResults?.data?.products?.map((item, index) => (
-                <ProductCard
-                  key={index}
-                  item={item}
-                  onPress={() => {
-                    navigation?.navigate('ProductDetails', {item: item});
-                  }}
-                />
-              ))}
-            </View>
           </View>
-        )}
-        {(option === 'All' || option === 'People') && (
-          <View>
-            {searchResults?.data?.people.map((item, index) => (
-              <React.Fragment key={index}>
-                <MessageCard
-                  disabled
-                  onPress={() => navigation?.navigate('Message')}
-                  offPartThree
-                  titleContainerStyle={tw`gap-1`}
-                  joinBtn
-                  subTitleStyle={tw`text-color-Black500`}
-                  titleStyle={tw`text-[#1D1929] text-sm`}
-                  item={{
-                    image: item.image,
-                    name: item.full_name,
-                    lastMessage: item.location,
-                  }}
-                  Component={
-                    <TouchableOpacity activeOpacity={0.5}>
-                      <Text
-                        style={tw`text-color-Black800 font-NunitoSansMedium text-primary
-                        `}>
-                        Contact
-                      </Text>
-                    </TouchableOpacity>
-                  }
-                />
-              </React.Fragment>
-            ))}
-          </View>
-        )}
-      </ScrollView>
+          <IButton
+            svg={IconSend}
+            containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
+            onPress={() => {
+              handleComment();
+              // setOpen(!open);
+            }}
+          />
+        </View>
+      </SideModal>
     </View>
   );
 };

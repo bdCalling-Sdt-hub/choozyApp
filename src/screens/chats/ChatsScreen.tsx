@@ -1,4 +1,3 @@
-import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   StatusBar,
@@ -6,15 +5,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import React, {Suspense} from 'react';
 
-import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import ActionModal from '../../components/modals/ActionModal';
-import {NavigProps} from '../../interfaces/NaviProps';
-import tw from '../../lib/tailwind';
-import {useGetMassagesQuery} from '../../redux/apiSlices/message';
-import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 import Chats from './components/Chats';
 import GroupsSection from './components/GroupsSection';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import {NavigProps} from '../../interfaces/NaviProps';
+import {setUser} from '../../redux/slices/userSlices';
+import tw from '../../lib/tailwind';
+import {useDispatch} from 'react-redux';
+import {useGetMassagesQuery} from '../../redux/apiSlices/message';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 
 // import Chats from './components/Chats';
 
@@ -25,8 +28,10 @@ import GroupsSection from './components/GroupsSection';
 // const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
+  const dispatch = useDispatch();
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
-
+  const {data: userInfo} = useGetProfileQuery({});
+  // console.log(userInfo);
   const {data: messagesData} = useGetMassagesQuery({});
 
   // console.log(JSON.stringify(MessagesData, null, 2));
@@ -39,9 +44,13 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
     },
   );
 
-  // console.log(userInfo.data?.data?.id);
+  // console.log(userInfo?.data);
   // console.log(Shop);
   // console.log(lStorage.getString('token'));
+
+  React.useEffect(() => {
+    dispatch(setUser(userInfo?.data));
+  }, [userInfo]);
 
   return (
     <View style={tw`flex-1 bg-white`}>

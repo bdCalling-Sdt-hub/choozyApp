@@ -54,6 +54,7 @@ export interface IProfile {
     bio: string;
     privicy: 'public' | 'private' | 'friends';
     location: string;
+    balance: string;
     image: string;
   };
 }

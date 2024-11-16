@@ -12,4 +12,4 @@ const authSlice = api.injectEndpoints({
   }),
 });
 
-export const {useSearchQuery} = authSlice;
+export const {useSearchQuery, useLazySearchQuery} = authSlice;

@@ -35,6 +35,7 @@ import OtherWallStore from '../screens/wall/components/OtherWallStore';
 import MyWall from '../screens/wall/MyWall';
 import OtherWall from '../screens/wall/OtherWall';
 import TransactionsHistory from '../screens/wallet/TransactionsHistory';
+import TransferRequest from '../screens/wallet/TransferRequest';
 import WalletScreen from '../screens/wallet/WalletScreen';
 import BottomRoutes from './BottomRoutes';
 
@@ -89,6 +90,7 @@ function Routes() {
       <Stack.Screen name="OtherWallStore" component={OtherWallStore} />
       <Stack.Screen name="OtherWallPost" component={OtherWallPost} />
       <Stack.Screen name="RequestContacts" component={RequestContacts} />
+      <Stack.Screen name="TransferRequest" component={TransferRequest} />
     </Stack.Navigator>
   );
 }
