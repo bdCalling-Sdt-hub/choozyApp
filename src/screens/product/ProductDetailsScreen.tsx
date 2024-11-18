@@ -6,13 +6,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import {
-  IconDeleted,
-  IconFillLove,
-  IconRightArrow,
-  IconRightTik,
-  IconSendNormal,
-} from '../../icons/icons';
+import {IconDeleted, IconFillLove, IconRightArrow} from '../../icons/icons';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
@@ -21,7 +15,6 @@ import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IwtButton from '../../components/buttons/IwtButton';
 import TButton from '../../components/buttons/TButton';
 import SelectionCard from '../../components/cards/SelectionCard';
-import InputText from '../../components/inputs/InputText';
 import ActionModal from '../../components/modals/ActionModal';
 import NormalModal from '../../components/modals/NormalModal';
 import {useToast} from '../../components/modals/Toaster';
@@ -123,13 +116,13 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
             <FastImage
               style={tw`w-14 h-14 rounded-2xl`}
               source={{
-                uri: Item?.seller_image,
+                uri: Item?.shop?.seller?.image,
               }}
             />
             <View>
               <Text
                 style={tw`text-lg font-NunitoSansRegular text-color-Black1000`}>
-                {Item?.seller_name}
+                {Item?.shop?.shop_name}
               </Text>
               <Text style={tw`text-base font-NunitoSansRegular text-[#148D79]`}>
                 Seller
@@ -142,14 +135,14 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
           <TButton
             title="Purchase Now"
             containerStyle={tw`flex-1 bg-primary`}
-            onPress={() => setPurchaseModal(true)}
+            onPress={() => navigation?.navigate('Checkout', {item: Item})}
           />
-          <TButton
+          {/* <TButton
             title="Make a Proposal"
             containerStyle={tw`flex-1 bg-white `}
             titleStyle={tw`text-primary`}
             onPress={() => setProposalModal(true)}
-          />
+          /> */}
         </View>
       </ScrollView>
 
@@ -208,7 +201,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
       />
 
       {/*==================== Proposal send modal =================== */}
-      <NormalModal
+      {/* <NormalModal
         animationType="fade"
         visible={proposalModal}
         setVisible={setProposalModal}
@@ -269,7 +262,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
             />
           </View>
         </View>
-      </NormalModal>
+      </NormalModal> */}
       {/*======================== purchase modal ========================== */}
       <NormalModal
         animationType="fade"
@@ -287,7 +280,7 @@ const ProductDetailsScreen = ({navigation, route}: NavigProps<{item: any}>) => {
             <SelectionCard
               title="Buy With Love "
               subtitle="Easy, Fast & Simple"
-              price="399"
+              price={Item.price}
               option="card"
               checked={selectOption == 'card' ? true : false}
               onPress={value => setSelectOption(value)}

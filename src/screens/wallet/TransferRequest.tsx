@@ -6,25 +6,26 @@ import {
   useRejectLoveRequestMutation,
 } from '../../redux/apiSlices/wallet';
 
-import BackWithTitle from '../../components/backHeader/BackWithTitle';
-import ConfrimationModal from '../../components/modals/ConfrimationModal';
-import InputText from '../../components/inputs/InputText';
-import {NavigProps} from '../../interfaces/NaviProps';
-import NormalModal from '../../components/modals/NormalModal';
-import {PrimaryColor} from '../../utils/utils';
 import React from 'react';
-import {SvgXml} from 'react-native-svg';
-import TButton from '../../components/buttons/TButton';
 import {Text} from 'react-native';
-import TransferRequestCard from '../../components/cards/TransferRequestCard';
-import tw from '../../lib/tailwind';
+import {SvgXml} from 'react-native-svg';
 import {useSelector} from 'react-redux';
+import BackWithTitle from '../../components/backHeader/BackWithTitle';
+import TButton from '../../components/buttons/TButton';
+import TransferRequestCard from '../../components/cards/TransferRequestCard';
+import InputText from '../../components/inputs/InputText';
+import ConfrimationModal from '../../components/modals/ConfrimationModal';
+import NormalModal from '../../components/modals/NormalModal';
 import {useToast} from '../../components/modals/Toaster';
+import {NavigProps} from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {PrimaryColor} from '../../utils/utils';
 
 const TransferRequest = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
   const transactionExtra = useSelector(state => state?.extra);
-  const user = useSelector(state => state?.user?.user);
+  const {data: user, refetch: refetchUser} = useGetProfileQuery({});
   // console.log(transactionExtra, user);
   const [confirmationModal, setConfirmationModal] = React.useState(false);
   const [selectItem, setSelectItem] = React.useState<null | any>(null);
@@ -69,15 +70,18 @@ const TransferRequest = ({navigation}: NavigProps<null>) => {
       });
     }
     if (res.data) {
+      setShowTransferModal(false);
       showToast({
         title: 'Success',
         titleStyle: tw`text-primary text-base font-NunitoSansBold`,
         contentStyle: tw`text-sm`,
-        content: 'Request has been accepted',
-        btnDisplay: true,
+        content: 'Transfer request accepted successfully',
+        // btnDisplay: true,
+        buttonText: 'OK',
+        buttonStyle: tw`bg-primary`,
         onPress: () => {
           closeToast();
-          setShowTransferModal(false);
+          refetchUser();
         },
       });
     }
@@ -160,7 +164,7 @@ const TransferRequest = ({navigation}: NavigProps<null>) => {
             />
             <Text
               style={tw`text-[34px] font-NunitoSansExtraBold text-color-Black1000 my-2`}>
-              {user.balance}
+              {user?.data?.balance}
             </Text>
           </View>
 

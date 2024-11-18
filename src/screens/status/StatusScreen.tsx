@@ -104,6 +104,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
         contentContainerStyle={tw`gap-2 mt-3 pb-6 tablet:mx-[30%]`}
         data={statusData?.data?.newsfeeds}
         renderItem={({item}) => {
+          // console.log(item);
           return (
             <PostCard
               setComment={setIsComment}

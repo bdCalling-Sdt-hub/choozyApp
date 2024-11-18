@@ -8,7 +8,6 @@ import {
 } from '@react-navigation/drawer';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {
-  IconCard,
   IconClockBlue,
   IconCopyBoardBlue,
   IconExit,
@@ -31,7 +30,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       <DrawerContentScrollView showsVerticalScrollIndicator={false} {...props}>
         <DrawerItemList {...props} />
         <View style={tw`flex-col flex-1 px-6 py-8 gap-10 `}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('Wallet');
             }}
@@ -44,7 +43,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
               style={tw`text-color-Black800 font-NunitoSansBold text-xs md:text-sm`}>
               My Wallet
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('OrderHistory');

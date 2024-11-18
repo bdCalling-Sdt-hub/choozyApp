@@ -12,26 +12,27 @@ import {
   IconSearch,
 } from '../../icons/icons';
 
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import {DrawerActions} from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
-import IButton from '../../components/buttons/IButton';
-import InputText from '../../components/inputs/InputText';
-import MessagesData from '../../assets/database/messages.json';
-import {NavigProps} from '../../interfaces/NaviProps';
-import NormalModal from '../../components/modals/NormalModal';
-import {PrimaryColor} from '../../utils/utils';
 import React from 'react';
-import SimpleButton from '../../components/buttons/SimpleButton';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
+import MessagesData from '../../assets/database/messages.json';
+import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import IButton from '../../components/buttons/IButton';
+import SimpleButton from '../../components/buttons/SimpleButton';
 import TButton from '../../components/buttons/TButton';
 import TransactionCard from '../../components/cards/TransactionCard';
 import UserSelectionCard from '../../components/cards/UserSelectionCard';
-import {extractDateTimeParts} from '../../utils/extractDateTimeParts';
-import tw from '../../lib/tailwind';
-import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
-import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import InputText from '../../components/inputs/InputText';
+import NormalModal from '../../components/modals/NormalModal';
 import {useToast} from '../../components/modals/Toaster';
+import {NavigProps} from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
+import {useAcceptLoveRequestMutation} from '../../redux/apiSlices/wallet';
+import {extractDateTimeParts} from '../../utils/extractDateTimeParts';
+import {PrimaryColor} from '../../utils/utils';
 
 const WalletScreen = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -44,6 +45,8 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
 
   const {data: transaction} = useGetPaymentHistoryQuery({});
 
+  const [requestLove] = useAcceptLoveRequestMutation({});
+
   // console.log(transaction);
 
   const [selectionSate, setSelectionSate] = React.useState([]);
@@ -53,6 +56,11 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
   const [showRequestModal, setShowRequestModal] = React.useState(false);
   const [showRequestSelectModal, setShowRequestSelectModal] =
     React.useState(false);
+
+  const handleRequestLove = async () => {
+    const res = await requestLove({});
+    console.log(res);
+  };
 
   return (
     <View style={tw`flex-1 bg-white`}>

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {
   IconLock,
+  IconPlus,
   IconPost,
   IconPostBlue,
   IconPublic,
@@ -20,9 +21,11 @@ import {
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import IwtButton from '../../components/buttons/IwtButton';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetOtherUserProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useSendFriendRequestMutation} from '../../redux/apiSlices/contactSlices';
 import {PrimaryColor} from '../../utils/utils';
 
 // import Post from './components/Post';
@@ -44,9 +47,15 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
 
   const [options, setOptions] = React.useState('post');
 
+  const [sendFriendRequest] = useSendFriendRequestMutation();
   // console.log(Shop?.data?.[0]?.id);
 
   // console.log(wallData?.data.news_feeds.length);
+
+  const handleSendFriendRequest = async () => {
+    const res = await sendFriendRequest(route?.params?.id);
+    console.log(res);
+  };
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -56,6 +65,14 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
         onPress={() => {
           navigation?.goBack();
         }}
+        ComponentBtn={
+          <IwtButton
+            containerStyle={tw`self-center p-2 items-center bg-primary`}
+            title="Add Contact"
+            svg={IconPlus}
+            onPress={handleSendFriendRequest}
+          />
+        }
       />
       <ScrollView
         refreshControl={

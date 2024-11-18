@@ -1,10 +1,4 @@
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import {
-  IIConAmericanExpress,
-  IIConDiscover,
-  IIConMasterCard,
-  IIConVisaCard,
-} from '../../icons/IIcons';
 import {IconFillLove, IconRightArrow} from '../../icons/icons';
 
 import React from 'react';
@@ -12,13 +6,13 @@ import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IwtButton from '../../components/buttons/IwtButton';
-import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
 import SideModal from '../../components/modals/SideModal';
 import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useCreateOrderMutation} from '../../redux/apiSlices/order';
 import {IProduct} from '../../redux/interface/products';
 import {Android} from '../../utils/utils';
 
@@ -26,13 +20,34 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
   const {showToast, closeToast} = useToast();
   const [close, setClose] = React.useState(false);
   const [shippingModal, setShippingModal] = React.useState(false);
+  const [orderInfo, setOrderInfo] = React.useState({
+    phone_number: '1234567890',
+    country: 'USA',
+    state: 'California',
+    city: 'San Francisco',
+    zipcode: '90001',
+    address: '123 Street, City',
+    notes: 'Please deliver between 9 AM - 5 PM',
+  });
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
 
   const Item = route?.params?.item;
 
-  console.log(Item?.category_name);
+  // console.log(Item?.category_name);
+  const [createOrder] = useCreateOrderMutation();
+
+  const handleCreateOrder = async () => {
+    console.log(Item?.id, Item?.price);
+
+    const res = await createOrder({
+      product_id: Item?.id,
+      total_amount: Item?.price,
+      ...orderInfo,
+    });
+    console.log(res);
+  };
 
   const purchaseSuccessFull = React.useCallback(async () => {
     showToast({
@@ -98,7 +113,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
         style={tw`px-[4%] py-12 gap-3  ${
           Android ? ' border-dashed border-b-[1px] border-b-[#E5E5E5]' : ''
         }`}>
-        <View style={tw`flex-row justify-between items-center`}>
+        {/* <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Subtotal
           </Text>
@@ -108,19 +123,19 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
               {Item?.price}
             </Text>
           </View>
-        </View>
+        </View> */}
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-            Shipping
+            Delivery Cost
           </Text>
           <View style={tw`flex-row items-center gap-2`}>
             <SvgXml height={10} width={10} xml={IconFillLove} />
             <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-              {Item?.price}
+              {0}
             </Text>
           </View>
         </View>
-        <View style={tw`flex-row justify-between items-center`}>
+        {/* <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Discount
           </Text>
@@ -130,7 +145,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
               {Item?.price}
             </Text>
           </View>
-        </View>
+        </View> */}
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Total
@@ -180,6 +195,10 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
                   containerStyle={tw` bg-white `}
                   placeholder="Country"
                   floatingPlaceholder
+                  value={orderInfo?.country}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, country: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -188,6 +207,10 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
                   placeholder="State"
                   floatingPlaceholder
                   keyboardType="decimal-pad"
+                  value={orderInfo?.state}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, state: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -196,6 +219,10 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
                   placeholder="City"
                   floatingPlaceholder
                   keyboardType="ascii-capable"
+                  value={orderInfo?.city}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, city: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -203,6 +230,10 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
                   containerStyle={tw` bg-white `}
                   placeholder="ZIP Code"
                   floatingPlaceholder
+                  value={orderInfo?.zipcode}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, zipcode: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -210,6 +241,26 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
                   containerStyle={tw` bg-white `}
                   placeholder="Address"
                   floatingPlaceholder
+                  value={orderInfo?.address}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, address: text})
+                  }
+                />
+              </View>
+              <View style={tw`h-20 `}>
+                <InputText
+                  multiline
+                  numberOfLines={4}
+                  verticalAlign="top"
+                  textAlign="left"
+                  textAlignVertical="top"
+                  containerStyle={tw` bg-white `}
+                  placeholder="Note"
+                  floatingPlaceholder
+                  value={orderInfo?.notes}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, notes: text})
+                  }
                 />
               </View>
             </View>
@@ -221,8 +272,9 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
                 onPress={() => {
                   // setPurchaseModal(false);
                   // navigation?.navigate('Checkout');
-                  setShippingModal(!shippingModal);
-                  setPaymentModal(!paymentModal);
+                  // setShippingModal(!shippingModal);
+                  // purchaseSuccessFull();
+                  handleCreateOrder();
                 }}
                 title="Next"
                 titleStyle={tw`font-NunitoSansBold`}
@@ -233,7 +285,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
         </ScrollView>
       </SideModal>
       {/*===================== payment modal ======================== */}
-      <SideModal scrollable visible={paymentModal} setVisible={setPaymentModal}>
+      {/* <SideModal scrollable visible={paymentModal} setVisible={setPaymentModal}>
         <ScrollView
           keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}>
@@ -317,7 +369,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
             />
           </View>
         </ScrollView>
-      </SideModal>
+      </SideModal> */}
       <DateModal
         selectedDate={setSelectDate}
         setVisible={setDateModal}

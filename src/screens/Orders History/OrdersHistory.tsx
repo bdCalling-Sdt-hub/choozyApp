@@ -18,7 +18,9 @@ const OrdersHistory = ({navigation}: NavigProps<null>) => {
         containerStyle={tw`bg-white`}
       />
 
-      <ScrollView contentContainerStyle={tw`px-[4%] bg-white mt-2 pb-12`}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={tw`px-[4%] bg-white mt-2 pb-12`}>
         {/*================= options here =================== */}
         <View style={tw`flex-row items-center gap-1  py-2`}>
           <TouchableOpacity
@@ -54,7 +56,11 @@ const OrdersHistory = ({navigation}: NavigProps<null>) => {
         </View>
 
         <View>
-          {options === 'Buying Orders' ? <BuyingOrders /> : <SellOrder />}
+          {options === 'Buying Orders' ? (
+            <BuyingOrders navigation={navigation} />
+          ) : (
+            <SellOrder navigation={navigation} />
+          )}
         </View>
       </ScrollView>
     </View>
