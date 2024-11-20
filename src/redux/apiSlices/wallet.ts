@@ -1,5 +1,5 @@
-import {api} from '../api/baseApi';
 import {IMyRequest} from '../interface/wallet';
+import {api} from '../api/baseApi';
 
 const walletSlice = api.injectEndpoints({
   endpoints: builder => ({
@@ -7,10 +7,11 @@ const walletSlice = api.injectEndpoints({
       query: () => ({
         url: `/my-request`,
       }),
+      keepUnusedDataFor: 0,
       providesTags: ['wallet'],
     }),
     loveRequest: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/request-love`,
         method: 'POST',
         body: data,
@@ -34,9 +35,9 @@ const walletSlice = api.injectEndpoints({
       invalidatesTags: ['wallet'],
     }),
     loveTransfer: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/transger-love`,
-        method: 'PUT',
+        method: 'POST',
         body: data,
       }),
       invalidatesTags: ['wallet'],

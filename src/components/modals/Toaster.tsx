@@ -1,3 +1,10 @@
+import {
+  Dimensions,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {
   createContext,
   forwardRef,
@@ -6,13 +13,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  Dimensions,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 
 import {Modal} from 'react-native-ui-lib';
 import tw from '../../lib/tailwind';

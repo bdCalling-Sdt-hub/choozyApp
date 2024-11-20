@@ -1,5 +1,5 @@
-import {api} from '../api/baseApi';
 import IPaymentTransactions from '../interface/payment';
+import {api} from '../api/baseApi';
 
 const paymentSlice = api.injectEndpoints({
   endpoints: builder => ({
@@ -10,7 +10,7 @@ const paymentSlice = api.injectEndpoints({
       providesTags: ['payment', 'wallet'],
     }),
 
-    paymentIntent: builder.mutation<any, {message: string}>({
+    paymentIntent: builder.mutation<any, any>({
       query: data => ({
         url: `/stripe/payment-intent`,
         method: 'POST',
@@ -18,7 +18,7 @@ const paymentSlice = api.injectEndpoints({
       }),
       // invalidatesTags: ['additional'],
     }),
-    confirmPayment: builder.mutation<any, {message: string}>({
+    confirmPayment: builder.mutation<any, any>({
       query: data => ({
         url: `/wallet-recharge`,
         method: 'POST',
@@ -29,5 +29,8 @@ const paymentSlice = api.injectEndpoints({
   }),
 });
 
-export const {useGetPaymentHistoryQuery, usePaymentIntentMutation} =
-  paymentSlice;
+export const {
+  useGetPaymentHistoryQuery,
+  usePaymentIntentMutation,
+  useConfirmPaymentMutation,
+} = paymentSlice;

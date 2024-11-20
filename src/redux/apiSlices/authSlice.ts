@@ -1,6 +1,7 @@
 import {IProfile, IUserProfile, ValidToken} from '../interface/auth';
 
 import {api} from '../api/baseApi';
+import {setUser} from '../slices/userSlices';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
@@ -14,7 +15,17 @@ const authSlice = api.injectEndpoints({
       query: token => ({
         url: `/getProfile`,
       }),
-      providesTags: ['user'],
+
+      onQueryStarted: async (arg, {dispatch, queryFulfilled}) => {
+        try {
+          const {data} = await queryFulfilled;
+          dispatch(setUser(data?.data));
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      providesTags: ['user', 'payment'],
     }),
     getUserName: builder.query<IProfile, any>({
       query: userName => ({

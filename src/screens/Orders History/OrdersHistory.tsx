@@ -1,14 +1,19 @@
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 
-import React from 'react';
 import BackButton from '../../components/backHeader/BackButton';
-import {NavigProps} from '../../interfaces/NaviProps';
-import tw from '../../lib/tailwind';
 import BuyingOrders from './components/BuyingOrders';
+import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
 import SellOrder from './components/SellOrder';
+import tw from '../../lib/tailwind';
+import {useSelector} from 'react-redux';
 
 const OrdersHistory = ({navigation}: NavigProps<null>) => {
   const [options, setOptions] = React.useState('Buying Orders');
+
+  const user = useSelector(state => state.user.user);
+
+  console.log(user);
 
   return (
     <View style={tw`flex-1 bg-base`}>

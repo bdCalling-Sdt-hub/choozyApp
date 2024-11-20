@@ -6,24 +6,26 @@ import {
   DrawerItemList,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
-import {Text, TouchableOpacity, View} from 'react-native';
 import {
   IconClockBlue,
   IconCopyBoardBlue,
   IconExit,
   IconQuestionBlue,
   IconSettingBlue,
+  IconStoreBlue,
   IconSupportedBlue,
 } from '../icons/icons';
+import {Text, TouchableOpacity, View} from 'react-native';
 
-import {useDispatch} from 'react-redux';
 import IButton from '../components/buttons/IButton';
-import tw from '../lib/tailwind';
-import {removeStorageToken} from '../utils/utils';
 import Routes from './Routes';
+import {removeStorageToken} from '../utils/utils';
+import tw from '../lib/tailwind';
+import {useSelector} from 'react-redux';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
-  const dispatch = useDispatch();
+  const user = useSelector(state => state.user.user);
+  // console.log(user);
 
   return (
     <>
@@ -44,6 +46,21 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
               My Wallet
             </Text>
           </TouchableOpacity> */}
+
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('Wallet');
+            }}
+            style={tw`flex-row gap-3 items-center`}>
+            <IButton
+              svg={IconStoreBlue}
+              containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
+            />
+            <Text
+              style={tw`text-color-Black800 font-NunitoSansBold text-xs md:text-sm`}>
+              Create Shop
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('OrderHistory');

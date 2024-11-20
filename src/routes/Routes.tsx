@@ -2,49 +2,52 @@
 
 import * as React from 'react';
 
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
+import BottomRoutes from './BottomRoutes';
+import Checkout from '../screens/Checkout/Checkout';
+import CreateNewPassword from '../screens/logins/CreateNewPassword';
+import CreateShop from '../screens/store/CreateShop';
+import FAQ from '../screens/settings/FAQ';
+import ForgetPassword from '../screens/logins/ForgetPassword';
 import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
-import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
-import Checkout from '../screens/Checkout/Checkout';
-import RequestContacts from '../screens/contacts/RequestContacts';
-import CreateNewPassword from '../screens/logins/CreateNewPassword';
-import ForgetPassword from '../screens/logins/ForgetPassword';
+import LoadingSplash from '../screens/spalsh/LoadingSplash';
 import LoginScreen from '../screens/logins/LoginScreen';
-import PassChanSuccess from '../screens/logins/PassChanSuccess';
-import SignUpScreen from '../screens/logins/SignUpScreen';
-import VerifyEmail from '../screens/logins/VerifyEmail';
-import VerifySuccess from '../screens/logins/VerifySuccess';
+import LoveStoreScreen from '../screens/store/LoveStoreScreen';
+import MyProductDetailsScreen from '../screens/product/MyProductDetailsScreen';
+import MyWall from '../screens/wall/MyWall';
 import NotificationScreen from '../screens/notificaiton/NotificationScreen';
 import OrdersHistory from '../screens/Orders History/OrdersHistory';
-import MyProductDetailsScreen from '../screens/product/MyProductDetailsScreen';
-import ProductDetailsScreen from '../screens/product/ProductDetailsScreen';
-import SearchScreen from '../screens/search/SearchScreen';
-import FAQ from '../screens/settings/FAQ';
-import ProfileEdit from '../screens/settings/ProfileEdit';
-import Settings from '../screens/settings/Settings';
-import Support from '../screens/settings/Support';
-import TermsAndCondition from '../screens/settings/TermsAndCondition';
-import UpdatePassword from '../screens/settings/UpdatePassword';
-import LoadingSplash from '../screens/spalsh/LoadingSplash';
-import CreateShop from '../screens/store/CreateShop';
-import LoveStoreScreen from '../screens/store/LoveStoreScreen';
+import OtherWall from '../screens/wall/OtherWall';
 import OtherWallPost from '../screens/wall/components/OtherWallPost';
 import OtherWallStore from '../screens/wall/components/OtherWallStore';
-import MyWall from '../screens/wall/MyWall';
-import OtherWall from '../screens/wall/OtherWall';
+import PassChanSuccess from '../screens/logins/PassChanSuccess';
+import ProductDetailsScreen from '../screens/product/ProductDetailsScreen';
+import ProfileEdit from '../screens/settings/ProfileEdit';
+import RequestContacts from '../screens/contacts/RequestContacts';
+import SearchScreen from '../screens/search/SearchScreen';
+import Settings from '../screens/settings/Settings';
+import SignUpScreen from '../screens/logins/SignUpScreen';
+import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
+import Support from '../screens/settings/Support';
+import TermsAndCondition from '../screens/settings/TermsAndCondition';
 import TransactionsHistory from '../screens/wallet/TransactionsHistory';
 import TransferRequest from '../screens/wallet/TransferRequest';
+import UpdatePassword from '../screens/settings/UpdatePassword';
+import VerifyEmail from '../screens/logins/VerifyEmail';
+import VerifySuccess from '../screens/logins/VerifySuccess';
 import WalletScreen from '../screens/wallet/WalletScreen';
-import BottomRoutes from './BottomRoutes';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 function Routes() {
   return (
     <Stack.Navigator
       initialRouteName="Loading"
-      screenOptions={{headerShown: false, animation: 'ios'}}>
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+      }}>
       {/*=================== logins part ======================= */}
       {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
       <Stack.Screen name="Loading" component={LoadingSplash} />

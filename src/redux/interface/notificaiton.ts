@@ -3,16 +3,17 @@ import {IFechtStatus} from './Fechting';
 export interface INotification {
   id: string;
   type: string;
+  notifiable_type: string;
+  notifiable_id: number;
   data: {
     message: string;
-    newsfeed_id: string;
-    user_id: string;
+    amount: string;
+    sender_id: number;
+    image: string;
   };
-  created_at: Date;
   read_at: null;
-  full_name: string;
-  image: string;
-  user_name: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface INotificationList extends IFechtStatus {

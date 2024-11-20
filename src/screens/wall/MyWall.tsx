@@ -1,4 +1,3 @@
-import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   RefreshControl,
@@ -9,7 +8,6 @@ import {
 } from 'react-native';
 import {
   IconLock,
-  IconMenu,
   IconPlus,
   IconPost,
   IconPostBlue,
@@ -18,19 +16,19 @@ import {
   IconStoreBlue,
   IconUser,
 } from '../../icons/icons';
+import React, {Suspense} from 'react';
 import {
   useGetOtherUserProfileQuery,
   useGetUserProfileQuery,
 } from '../../redux/apiSlices/authSlice';
 
-import {DrawerActions} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import {NavigProps} from '../../interfaces/NaviProps';
-import tw from '../../lib/tailwind';
 import {PrimaryColor} from '../../utils/utils';
+import {SvgXml} from 'react-native-svg';
+import tw from '../../lib/tailwind';
 
 // import Post from './components/Post';
 // import Store from './components/Store';
@@ -57,25 +55,11 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
   // console.log(Shop?.data?.[0]?.id);
 
   // console.log(wallData?.data.news_feeds.length);
-  console.log(wallData?.data?.image);
+  // console.log(wallData?.data?.image);
   return (
     <View style={tw`flex-1 bg-white`}>
-      <BackWithComponent
-        title="My Wall"
-        containerStyle={tw`justify-between`}
-        ComponentBtn={
-          <IButton
-            onPress={() => {
-              navigation?.dispatch(DrawerActions.openDrawer());
-            }}
-            svg={IconMenu}
-            containerStyle={tw`w-12  h-12 bg-primary50 shadow-none`}
-          />
-        }
-        onPress={() => {
-          navigation?.goBack();
-        }}
-      />
+      {/*================= header here =================== */}
+      <LogoWithHeader offSearch offMenu navigation={navigation} />
       <ScrollView
         refreshControl={
           <RefreshControl

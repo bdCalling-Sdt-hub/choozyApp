@@ -1,25 +1,28 @@
-import {Text, TouchableOpacity} from 'react-native';
 import {
   IconCall,
   IconFillCall,
   IconFillMessage,
   IconFillNote,
+  IconFillUser,
   IconFillUserPlus,
   IconFillWallet,
   IconMessage,
   IconNote,
+  IconUserB,
   IconUserPlus,
   IconWallet,
 } from '../icons/icons';
+import {Text, TouchableOpacity} from 'react-native';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {SvgXml} from 'react-native-svg';
-import tw from '../lib/tailwind';
+import {Android} from '../utils/utils';
 import ChatsScreen from '../screens/chats/ChatsScreen';
 import ContactScreen from '../screens/contacts/ContactScreen';
+import MyWall from '../screens/wall/MyWall';
 import StatusScreen from '../screens/status/StatusScreen';
+import {SvgXml} from 'react-native-svg';
 import WalletScreen from '../screens/wallet/WalletScreen';
-import {Android} from '../utils/utils';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import tw from '../lib/tailwind';
 
 const Tab = createBottomTabNavigator();
 // height: 65,
@@ -60,6 +63,9 @@ function BottomRoutes() {
             case 'Wallet':
               icon = focused ? IconFillWallet : IconWallet;
               break;
+            case 'Wall':
+              icon = focused ? IconFillUser : IconUserB;
+              break;
           }
 
           return <SvgXml xml={icon} />;
@@ -86,6 +92,7 @@ function BottomRoutes() {
       <Tab.Screen name="Contacts" component={ContactScreen} />
       {/* <Tab.Screen name="Calls" component={CallsScreen} /> */}
       <Tab.Screen name="Wallet" component={WalletScreen} />
+      <Tab.Screen name="Wall" component={MyWall} />
     </Tab.Navigator>
   );
 }

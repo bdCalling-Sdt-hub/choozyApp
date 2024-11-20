@@ -1,10 +1,10 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import moment from 'moment-timezone';
-import React from 'react';
 import FastImage from 'react-native-fast-image';
-import tw from '../../lib/tailwind';
 import {INotification} from '../../redux/interface/notificaiton';
+import React from 'react';
+import moment from 'moment-timezone';
+import tw from '../../lib/tailwind';
 
 interface NotificationCardProps {
   item: INotification;
@@ -38,19 +38,22 @@ const NotificationCard = ({
       style={[tw`flex-row items-center gap-3 px-[4%] py-2`, containerStyle]}>
       {!offPartOne && (
         <View style={tw`w-12 h-12 aspect-square rounded-2xl overflow-hidden`}>
-          <FastImage source={{uri: item.image}} style={tw`w-full h-full`} />
+          <FastImage
+            source={{uri: item.data?.image}}
+            style={tw`w-full h-full`}
+          />
         </View>
       )}
       {!offPartTow && (
         <View style={[tw`flex-1 `, titleContainerStyle]}>
           <View style={tw`flex-row items-center  flex-wrap gap-1`}>
-            <Text
+            {/* <Text
               style={[
                 tw`text-[#1D1929] font-NunitoSansBold text-sm`,
                 titleStyle,
               ]}>
-              {item.full_name}
-            </Text>
+              {item.data?.}
+            </Text> */}
             <Text
               style={[
                 tw`text-[#5D5D5D] font-NunitoSansRegular text-sm`,

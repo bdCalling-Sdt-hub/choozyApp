@@ -109,3 +109,18 @@ function getRandomHashColor() {
 
   return color;
 }
+
+export const formatCurrency = (
+  value: number,
+  locale = 'en-US',
+  currency = 'USD',
+) => {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
+// Usage:
+// const price = formatCurrency(1234.56, 'fr-FR', 'EUR');
+// console.log(price); // Output: "1 234,56 €" (French formatting for Euros)

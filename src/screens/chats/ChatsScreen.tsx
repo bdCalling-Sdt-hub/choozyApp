@@ -12,10 +12,7 @@ import Chats from './components/Chats';
 import GroupsSection from './components/GroupsSection';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import {NavigProps} from '../../interfaces/NaviProps';
-import {setUser} from '../../redux/slices/userSlices';
 import tw from '../../lib/tailwind';
-import {useDispatch} from 'react-redux';
-import {useGetMassagesQuery} from '../../redux/apiSlices/message';
 import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
 import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 
@@ -28,11 +25,12 @@ import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 // const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
-  const dispatch = useDispatch();
+  //***** its needed to add this line don't remove it**********
+  useGetProfileQuery({});
+  //******************
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
-  const {data: userInfo} = useGetProfileQuery({});
+
   // console.log(userInfo);
-  const {data: messagesData} = useGetMassagesQuery({});
 
   // console.log(JSON.stringify(MessagesData, null, 2));
   const [options, setOptions] = React.useState<'Chats' | 'groups'>('Chats');
@@ -48,22 +46,10 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   // console.log(Shop);
   // console.log(lStorage.getString('token'));
 
-  React.useEffect(() => {
-    dispatch(setUser(userInfo?.data));
-  }, [userInfo]);
-
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <LogoWithHeader
-        offSearch
-        searchOffItem={{
-          offPost: true,
-          offProduct: true,
-        }}
-        onPressMenu={() => setActionModalOpen(!actionModalOpen)}
-        navigation={navigation}
-      />
+      <LogoWithHeader offSearch offMenu navigation={navigation} />
 
       {/*================= options here =================== */}
       <View style={tw`flex-row items-center gap-1 px-[4%] py-2`}>

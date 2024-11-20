@@ -1,3 +1,4 @@
+import {IFechtStatus} from './Fechting';
 import {IPagination} from './pagination';
 
 export interface IFriend {
@@ -16,4 +17,7 @@ export interface IFriends {
 export interface IFriendsRequests {
   total_requests: number;
   friend_requests: IPagination<IFriend>;
+}
+export interface ISendRequests extends IFechtStatus {
+  data: Array<IFriend>;
 }

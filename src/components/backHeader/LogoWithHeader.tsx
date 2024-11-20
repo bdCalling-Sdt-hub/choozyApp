@@ -1,21 +1,25 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {
+  IconBell,
   IconBellWithDot,
   IconClose,
+  IconMenu,
   IconSearch,
   IconVThreeDots,
 } from '../../icons/icons';
 
-import React from 'react';
+import {DrawerActions} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import IButton from '../buttons/IButton';
+import InputText from '../inputs/InputText';
+import {NavigProps} from '../../interfaces/NaviProps';
+import NormalModal from '../modals/NormalModal';
+import React from 'react';
+import SearchCard from '../cards/SearchCard';
 import {SvgXml} from 'react-native-svg';
 import searchResults from '../../assets/database/search.json';
-import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import IButton from '../buttons/IButton';
-import SearchCard from '../cards/SearchCard';
-import InputText from '../inputs/InputText';
-import NormalModal from '../modals/NormalModal';
+import {useGetNotificationsQuery} from '../../redux/apiSlices/notificaiton';
 
 interface ILogoWithHeader extends NavigProps<null> {
   onPressMenu?: () => void;
@@ -28,6 +32,8 @@ interface ILogoWithHeader extends NavigProps<null> {
   offMenu?: boolean;
   onFinish?: (text: string) => void;
   searchValue?: string;
+  offHambar?: boolean;
+  onPressHambar?: () => void;
 }
 
 const LogoWithHeader = ({
@@ -38,9 +44,14 @@ const LogoWithHeader = ({
   onFinish,
   offSearch,
   searchValue,
+  offHambar,
+  onPressHambar,
 }: ILogoWithHeader) => {
   const [searchVisible, setSearchVisible] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
+  const {data} = useGetNotificationsQuery({});
+
+  const haveNotification = data?.data?.some(n => n.read_at === null);
 
   return (
     <View style={tw`px-[4%] flex-row justify-between items-center`}>
@@ -65,13 +76,22 @@ const LogoWithHeader = ({
         )}
         <IButton
           onPress={() => navigation?.navigate('Notification')}
-          svg={IconBellWithDot}
+          svg={haveNotification ? IconBellWithDot : IconBell}
           containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
         />
         {!offMenu && (
           <IButton
             onPress={onPressMenu}
             svg={IconVThreeDots}
+            containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
+          />
+        )}
+        {!offHambar && (
+          <IButton
+            onPress={() => {
+              navigation?.dispatch(DrawerActions.openDrawer());
+            }}
+            svg={IconMenu}
             containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
           />
         )}

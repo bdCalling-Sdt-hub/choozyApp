@@ -6,11 +6,7 @@ import FastImage from 'react-native-fast-image';
 import tw from '../../lib/tailwind';
 
 interface UserSelectionCardProps {
-  item: {
-    id: any;
-    name: string;
-    image: string;
-  };
+  item: any;
   selectionSate: any;
   setSelectionSate: React.Dispatch<SetStateAction<any>>;
 }
@@ -20,6 +16,7 @@ const UserSelectionCard = ({
   selectionSate,
   setSelectionSate,
 }: UserSelectionCardProps) => {
+  // console.log(item);
   return (
     <TouchableOpacity
       onPress={() => {
@@ -45,7 +42,7 @@ const UserSelectionCard = ({
             // }
           }}
         />
-        <Text>{item?.name}</Text>
+        <Text>{item?.full_name}</Text>
       </View>
       <FastImage
         source={{uri: item?.image}}

@@ -6,10 +6,10 @@ import {
   View,
 } from 'react-native';
 
-import React from 'react';
-import tw from '../../lib/tailwind'; // Tailwind helper function
 import {IOrder} from '../../redux/interface/order';
 import PriorityCard from './StatusCard';
+import React from 'react';
+import tw from '../../lib/tailwind'; // Tailwind helper function
 
 interface OrderCardProps {
   item: IOrder;
@@ -116,7 +116,7 @@ const OrderCard = ({
         {/* Buttons */}
         {item?.status !== 'canceled' && (
           <View style={tw`flex-row justify-between mt-4`}>
-            {!onlyFirst && (
+            {!onlySecond && (
               <TouchableOpacity
                 disabled={isLoading}
                 style={[
@@ -131,7 +131,7 @@ const OrderCard = ({
               </TouchableOpacity>
             )}
 
-            {!onlySecond && (
+            {!on && (
               <TouchableOpacity
                 disabled={isLoading}
                 style={[

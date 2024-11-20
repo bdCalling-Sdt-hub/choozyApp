@@ -1,5 +1,5 @@
-import {api} from '../api/baseApi';
 import {IOrders} from '../interface/order';
+import {api} from '../api/baseApi';
 
 const orderSlice = api.injectEndpoints({
   endpoints: builder => ({
@@ -11,7 +11,7 @@ const orderSlice = api.injectEndpoints({
       providesTags: ['wallet'],
     }),
     createOrder: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/order`,
         method: 'POST',
         body: data,

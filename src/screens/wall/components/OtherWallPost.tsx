@@ -4,19 +4,19 @@ import {
   useGetUserProfileQuery,
 } from '../../../redux/apiSlices/authSlice';
 
-import React from 'react';
+import CommentCard from '../../../components/cards/CommentCard';
 import FastImage from 'react-native-fast-image';
 import IButton from '../../../components/buttons/IButton';
-import CommentCard from '../../../components/cards/CommentCard';
-import NoFoundCard from '../../../components/cards/NoFoundCard';
-import PostCard from '../../../components/cards/PostCard';
-import SideModal from '../../../components/modals/SideModal';
+import {INewpaper} from '../../../redux/interface/newpaper';
 import {IconSend} from '../../../icons/icons';
 import {NavigProps} from '../../../interfaces/NaviProps';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
+import PostCard from '../../../components/cards/PostCard';
+import React from 'react';
+import SideModal from '../../../components/modals/SideModal';
+import {height} from '../../../utils/utils';
 import tw from '../../../lib/tailwind';
 import {useCommentMutation} from '../../../redux/apiSlices/newsFeetSlices';
-import {INewpaper} from '../../../redux/interface/newpaper';
-import {height} from '../../../utils/utils';
 
 interface OtherWallPost extends NavigProps<null> {
   userId: number;

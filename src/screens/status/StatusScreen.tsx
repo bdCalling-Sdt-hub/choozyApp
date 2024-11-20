@@ -1,4 +1,3 @@
-import React, {useCallback} from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -6,24 +5,25 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import React, {useCallback} from 'react';
 import {
   useCommentMutation,
   useGetAllNewFeetQuery,
 } from '../../redux/apiSlices/newsFeetSlices';
 
-import FastImage from 'react-native-fast-image';
-import {TextInput} from 'react-native-gesture-handler';
-import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
-import IButton from '../../components/buttons/IButton';
 import CommentCard from '../../components/cards/CommentCard';
+import FastImage from 'react-native-fast-image';
+import IButton from '../../components/buttons/IButton';
+import {INewpaper} from '../../redux/interface/newpaper';
+import {IconSend} from '../../icons/icons';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import {NavigProps} from '../../interfaces/NaviProps';
 import NoFoundCard from '../../components/cards/NoFoundCard';
 import PostCard from '../../components/cards/PostCard';
 import SideModal from '../../components/modals/SideModal';
-import {IconSend} from '../../icons/icons';
-import {NavigProps} from '../../interfaces/NaviProps';
+import {TextInput} from 'react-native-gesture-handler';
 import tw from '../../lib/tailwind';
 import {useGetUserProfileQuery} from '../../redux/apiSlices/authSlice';
-import {INewpaper} from '../../redux/interface/newpaper';
 
 const StatusScreen = ({navigation}: NavigProps<null>) => {
   const {
@@ -111,7 +111,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
               onPress={() => {
                 console.log(userProfile?.data.id);
                 if (userProfile?.data.id === item?.user?.user_id) {
-                  navigation?.navigate('MyWall');
+                  navigation?.navigate('Wall');
                 } else {
                   navigation?.navigate('OtherWall', {id: item?.user?.user_id});
                 }

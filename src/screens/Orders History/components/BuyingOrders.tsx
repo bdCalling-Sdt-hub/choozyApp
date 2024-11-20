@@ -1,10 +1,10 @@
+import {NavigProps} from '../../../interfaces/NaviProps';
+import OrderCard from '../../../components/cards/OrderCard';
 import React from 'react';
 import {View} from 'react-native';
-import OrderCard from '../../../components/cards/OrderCard';
-import {useToast} from '../../../components/modals/Toaster';
-import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useGetUserOrdersQuery} from '../../../redux/apiSlices/order';
+import {useToast} from '../../../components/modals/Toaster';
 
 const BuyingOrder = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -17,6 +17,7 @@ const BuyingOrder = ({navigation}: NavigProps<null>) => {
         <OrderCard
           secondButtonText="Deliver"
           firstButtonText="Cancel"
+          onlyFirst
           key={index}
           item={item}
         />

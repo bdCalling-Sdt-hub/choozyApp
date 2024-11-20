@@ -1,21 +1,16 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {
-  IconCallBlue,
-  IconMessageBlueUL,
-  IconSearch,
-  IconVideo,
-} from '../../icons/icons';
+import {IconMessageWhite, IconSearch} from '../../icons/icons';
 import {
   useUserFriendQuery,
   useUserFriendRequestsQuery,
 } from '../../redux/apiSlices/contactSlices';
 
+import InputText from '../../components/inputs/InputText';
+import MessageCard from '../../components/cards/MessageCard';
+import {NavigProps} from '../../interfaces/NaviProps';
+import NoFoundCard from '../../components/cards/NoFoundCard';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import MessageCard from '../../components/cards/MessageCard';
-import NoFoundCard from '../../components/cards/NoFoundCard';
-import InputText from '../../components/inputs/InputText';
-import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const ContactScreen = ({navigation}: NavigProps<any>) => {
@@ -92,11 +87,11 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
               item={{
                 image: item.image,
                 name: item.full_name,
-                // lastMessage: item.followers,
+                lastMessage: item.user_name,
               }}
               Component={
                 <View style={tw`px-4 flex-row gap-4 items-center`}>
-                  <TouchableOpacity>
+                  {/* <TouchableOpacity>
                     <SvgXml
                       height={20}
                       width={20}
@@ -111,8 +106,8 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
                       // fill={"#4964C6"}
                       xml={IconVideo}
                     />
-                  </TouchableOpacity>
-                  <TouchableOpacity
+                  </TouchableOpacity> */}
+                  {/* <TouchableOpacity
                     onPress={() => {
                       navigation?.navigate('SingleMessage');
                     }}>
@@ -122,6 +117,20 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
                       // fill={'#4964C6'}
                       xml={IconMessageBlueUL}
                     />
+                  </TouchableOpacity> */}
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation?.navigate('SingleMessage');
+                    }}
+                    style={tw`flex-row gap-2 items-center bg-primary px-3 py-2 rounded-md`}>
+                    <SvgXml
+                      height={15}
+                      width={15}
+                      // fill={'white'}
+                      xml={IconMessageWhite}
+                    />
+                    <Text style={tw`text-white `}>Message</Text>
                   </TouchableOpacity>
                 </View>
               }

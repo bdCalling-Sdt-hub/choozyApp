@@ -26,24 +26,8 @@ export interface people {
   id: number;
   full_name: string;
   user_name: string;
-  address: string;
-  location: string;
   email: string;
-  bio: string;
-  verify_email: 1;
-  verification_token: null;
-  otp: null;
-  otp_expires_at: null;
-  otp_verified_at: 0;
   image: string;
-  role: string;
-  google_id: null;
-  facebook_id: null;
-  privacy: string;
-  is_active: null;
-  status: string;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface ISearchResponse {

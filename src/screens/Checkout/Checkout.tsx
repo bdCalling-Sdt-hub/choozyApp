@@ -1,20 +1,20 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {IconFillLove, IconRightArrow} from '../../icons/icons';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 
-import React from 'react';
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
+import {Android} from '../../utils/utils';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import IwtButton from '../../components/buttons/IwtButton';
-import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
-import SideModal from '../../components/modals/SideModal';
-import {useToast} from '../../components/modals/Toaster';
+import FastImage from 'react-native-fast-image';
+import {IProduct} from '../../redux/interface/products';
+import InputText from '../../components/inputs/InputText';
+import IwtButton from '../../components/buttons/IwtButton';
 import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
+import SideModal from '../../components/modals/SideModal';
+import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
 import {useCreateOrderMutation} from '../../redux/apiSlices/order';
-import {IProduct} from '../../redux/interface/products';
-import {Android} from '../../utils/utils';
+import {useToast} from '../../components/modals/Toaster';
 
 const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
   const {showToast, closeToast} = useToast();
@@ -36,7 +36,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
   const Item = route?.params?.item;
 
   // console.log(Item?.category_name);
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, {isLoading}] = useCreateOrderMutation();
 
   const handleCreateOrder = async () => {
     console.log(Item?.id, Item?.price);
@@ -46,6 +46,21 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
       total_amount: Item?.price,
       ...orderInfo,
     });
+
+    if (res.data) {
+      setDateModal(false);
+      setPaymentModal(false);
+      setShippingModal(false);
+      purchaseSuccessFull();
+    }
+    if (res.error) {
+      showToast({
+        content: res.error?.message,
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500`,
+        btnDisplay: true,
+      });
+    }
     console.log(res);
   };
 
@@ -65,7 +80,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
       contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
       onPress: () => {
         closeToast();
-        setPaymentModal(false);
+
         navigation?.goBack();
       },
     });
@@ -154,6 +169,8 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
           <View style={tw`flex-row items-center gap-2`}>
             <SvgXml height={14} width={14} xml={IconFillLove} />
             <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {/* format of bd  */}
+
               {Item?.price}
             </Text>
           </View>
@@ -164,6 +181,7 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
         <View
           style={tw`flex-row items-center justify-between pt-2 gap-3  my-3`}>
           <IwtButton
+            isLoading={isLoading}
             svg={IconRightArrow}
             onPress={() => {
               // setPurchaseModal(false);

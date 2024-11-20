@@ -1,24 +1,25 @@
-import React, {useCallback} from 'react';
 import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {IconClose, IconPlus, IconSearch, IconSend} from '../../icons/icons';
+import {IconClose, IconSearch, IconSend} from '../../icons/icons';
+import React, {useCallback} from 'react';
 
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
-import IButton from '../../components/buttons/IButton';
-import IwtButton from '../../components/buttons/IwtButton';
-import SimpleButton from '../../components/buttons/SimpleButton';
 import CommentCard from '../../components/cards/CommentCard';
+import FastImage from 'react-native-fast-image';
+import IButton from '../../components/buttons/IButton';
+import {INewpaper} from '../../redux/interface/newpaper';
+import {ISearchResponse} from '../../redux/interface/search';
+import InputText from '../../components/inputs/InputText';
 import MessageCard from '../../components/cards/MessageCard';
+import {NavigProps} from '../../interfaces/NaviProps';
 import PostCard from '../../components/cards/PostCard';
 import ProductCard from '../../components/cards/ProductCard';
-import InputText from '../../components/inputs/InputText';
 import SideModal from '../../components/modals/SideModal';
-import {NavigProps} from '../../interfaces/NaviProps';
+import SimpleButton from '../../components/buttons/SimpleButton';
+import {SvgXml} from 'react-native-svg';
+import TButton from '../../components/buttons/TButton';
 import tw from '../../lib/tailwind';
-import {useGetUserProfileQuery} from '../../redux/apiSlices/authSlice';
 import {useCommentMutation} from '../../redux/apiSlices/newsFeetSlices';
 import {useLazySearchQuery} from '../../redux/apiSlices/searchSlices';
-import {INewpaper} from '../../redux/interface/newpaper';
+import {useSelector} from 'react-redux';
 
 const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [option, setOption] = React.useState('All');
@@ -29,11 +30,12 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
     open: false,
   });
   const [searchText, setSearchText] = React.useState(route?.params?.text);
-  const [searchResults, setSearchResults] = React.useState(null);
+  const [searchResults, setSearchResults] =
+    React.useState<ISearchResponse>(null);
   const [reply, setReply] = React.useState<any>(null);
   const [comment, setComment] = React.useState('');
   const [createComment] = useCommentMutation();
-  const {data: userProfile} = useGetUserProfileQuery({});
+  const user = useSelector(state => state?.user?.user);
   const [globalSearch, globalResults] = useLazySearchQuery({});
 
   const handleSearch = async () => {
@@ -57,6 +59,8 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
       setReply(null);
     });
   }, [comment, reply?.id]);
+
+  const sendFriendRequest = async () => {};
 
   React.useEffect(() => {
     handleSearch();
@@ -161,14 +165,12 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                           <PostCard
                             setComment={setIsComment}
                             onPress={() => {
-                              console.log(userProfile?.data.id);
-                              if (
-                                userProfile?.data.id === item?.user?.user_id
-                              ) {
-                                navigation?.navigate('MyWall');
+                              // console.log(userProfile?.data.id);
+                              if (user.id === item?.user_id) {
+                                navigation?.navigate('Wall');
                               } else {
                                 navigation?.navigate('OtherWall', {
-                                  id: item?.user?.user_id,
+                                  id: item?.user_id,
                                 });
                               }
                             }}
@@ -228,8 +230,16 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                     {searchResults?.data?.people.map((item, index) => (
                       <React.Fragment key={index}>
                         <MessageCard
-                          disabled
-                          onPress={() => navigation?.navigate('Message')}
+                          onPress={() => {
+                            console.log(user?.id, item?.id);
+                            if (user?.id === item?.id) {
+                              navigation?.navigate('Wall');
+                            } else {
+                              navigation?.navigate('OtherWall', {
+                                id: item?.id,
+                              });
+                            }
+                          }}
                           offPartThree
                           containerStyle={tw`w-full items-center justify-center`}
                           titleContainerStyle={tw`gap-1 `}
@@ -239,13 +249,23 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                           item={{
                             image: item.image,
                             name: item.full_name,
-                            lastMessage: item.location,
+                            lastMessage: '@' + item.user_name,
                           }}
                           Component={
-                            <IwtButton
-                              containerStyle={tw`self-center p-2 items-center bg-primary`}
-                              title="Add Contact"
-                              svg={IconPlus}
+                            <TButton
+                              containerStyle={tw`self-center p-2 w-24 items-center bg-primary`}
+                              title="View Profile"
+                              onPress={() => {
+                                if (user?.id === item?.id) {
+                                  navigation?.navigate('Wall');
+                                } else {
+                                  navigation?.navigate('OtherWall', {
+                                    id: item?.id,
+                                  });
+                                }
+                              }}
+                              titleStyle={tw`text-white text-xs`}
+                              // svg={IconPlus}
                             />
                           }
                         />
@@ -282,7 +302,7 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
         <View style={tw`p-4 flex-row items-center `}>
           <FastImage
             style={tw`w-12 h-12 rounded-2xl`}
-            source={{uri: userProfile?.data?.image}}
+            source={{uri: user?.image}}
             resizeMode={FastImage.resizeMode.cover}
           />
           <View style={tw`h-14 flex-1 flex-row justify-center`}>

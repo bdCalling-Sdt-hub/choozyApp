@@ -5,34 +5,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {IconFillLove, IconLockWithCircle} from '../../icons/icons';
 import {
-  IconFillLove,
-  IconLockWithCircle,
-  IconMenu,
-  IconSearch,
-} from '../../icons/icons';
+  useLoveRequestMutation,
+  useLoveTransferMutation,
+} from '../../redux/apiSlices/wallet';
 
-import {DrawerActions} from '@react-navigation/native';
-import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
-import MessagesData from '../../assets/database/messages.json';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import IButton from '../../components/buttons/IButton';
+import InputText from '../../components/inputs/InputText';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import {NavigProps} from '../../interfaces/NaviProps';
+import NormalModal from '../../components/modals/NormalModal';
+import {PrimaryColor} from '../../utils/utils';
+import React from 'react';
+import SearchUserCard from './components/SearchUserCard';
 import SimpleButton from '../../components/buttons/SimpleButton';
+import {SvgXml} from 'react-native-svg';
 import TButton from '../../components/buttons/TButton';
 import TransactionCard from '../../components/cards/TransactionCard';
-import UserSelectionCard from '../../components/cards/UserSelectionCard';
-import InputText from '../../components/inputs/InputText';
-import NormalModal from '../../components/modals/NormalModal';
-import {useToast} from '../../components/modals/Toaster';
-import {NavigProps} from '../../interfaces/NaviProps';
-import tw from '../../lib/tailwind';
-import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
-import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
-import {useAcceptLoveRequestMutation} from '../../redux/apiSlices/wallet';
 import {extractDateTimeParts} from '../../utils/extractDateTimeParts';
-import {PrimaryColor} from '../../utils/utils';
+import tw from '../../lib/tailwind';
+import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useSelector} from 'react-redux';
+import {useToast} from '../../components/modals/Toaster';
 
 const WalletScreen = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -45,11 +41,15 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
 
   const {data: transaction} = useGetPaymentHistoryQuery({});
 
-  const [requestLove] = useAcceptLoveRequestMutation({});
+  const [requestLove] = useLoveRequestMutation({});
+  const [transferLove] = useLoveTransferMutation({});
 
-  // console.log(transaction);
+  const {lovePrice, transactionsFee} = useSelector(state => state?.extra);
 
-  const [selectionSate, setSelectionSate] = React.useState([]);
+  const [selectionSate, setSelectionSate] = React.useState(null);
+  const [amountLove, setAmountLove] = React.useState('');
+  const [isTransfer, setIsTransfer] = React.useState(false);
+
   const [showTransferModal, setShowTransferModal] = React.useState(false);
   const [showTransferSelectModal, setShowTransferSelectModal] =
     React.useState(false);
@@ -58,33 +58,73 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
     React.useState(false);
 
   const handleRequestLove = async () => {
-    const res = await requestLove({});
-    console.log(res);
+    const res = await requestLove({
+      amount: amountLove,
+      request_id: selectionSate?.user_id,
+    });
+    // console.log(res);
+    if (res.data) {
+      setShowRequestModal(false);
+      setSelectionSate(null);
+      setAmountLove('');
+      showToast({
+        content: res.data.message,
+        title: 'success',
+        containerStyle: tw`text-xs`,
+        titleStyle: tw`text-green-500`,
+        btnDisplay: true,
+      });
+    }
+    if (res.error) {
+      showToast({
+        content: res.error?.message,
+        containerStyle: tw`text-xs`,
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500`,
+        btnDisplay: true,
+      });
+    }
   };
+
+  const handleTransferLove = async () => {
+    const res = await transferLove({
+      amount: amountLove,
+      total_love:
+        Number(amountLove) - (Number(amountLove) * transactionsFee) / 100,
+      received_id: selectionSate?.user_id,
+      payment_method: 'manual',
+    });
+    // console.log(res);
+    if (res.data) {
+      refetchProfile();
+      setShowTransferModal(false);
+      setSelectionSate(null);
+      setAmountLove('');
+      showToast({
+        content: res.data.message,
+        title: 'success',
+        titleStyle: tw`text-green-500`,
+        containerStyle: tw`text-xs`,
+        btnDisplay: true,
+      });
+    }
+    if (res.error) {
+      showToast({
+        content: res.error?.message,
+        title: 'Warning',
+        containerStyle: tw`text-xs`,
+        titleStyle: tw`text-yellow-500`,
+        btnDisplay: true,
+      });
+    }
+  };
+
+  // console.log(selectionSate);
 
   return (
     <View style={tw`flex-1 bg-white`}>
-      <BackWithComponent
-        title={'My Wallet'}
-        containerStyle={tw`justify-between`}
-        onPress={() => navigation?.goBack()}
-        // ComponentBtn={
-        //   <TouchableOpacity
-        //     activeOpacity={0.5}
-        //     onPress={() => navigation?.navigate('Notification')}>
-        //     <SvgXml xml={IconBell} style={tw`w-6 h-6`} />
-        //   </TouchableOpacity>
-        // }
-        ComponentBtn={
-          <IButton
-            onPress={() => {
-              navigation?.dispatch(DrawerActions.openDrawer());
-            }}
-            svg={IconMenu}
-            containerStyle={tw`w-10  h-10 bg-primary50 shadow-none`}
-          />
-        }
-      />
+      {/*================= header here =================== */}
+      <LogoWithHeader offSearch offMenu navigation={navigation} />
       <FlatList
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -161,7 +201,10 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                 <View
                   style={tw` flex-row flex-wrap self-start items-center gap-4`}>
                   <SimpleButton
-                    onPress={() => setShowTransferModal(!showTransferModal)}
+                    onPress={() => {
+                      setIsTransfer(true);
+                      setShowTransferModal(!showTransferModal);
+                    }}
                     containerStyle={tw`bg-white py-2 rounded-xl border-[1px] self-start  justify-center`}
                     title="Transfer"
                     titleStyle={tw`text-primary600`}
@@ -170,7 +213,10 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                     containerStyle={tw`bg-transparent py-2 rounded-xl border-[1px] self-start  justify-center`}
                     title="Request"
                     titleStyle={tw`text-white`}
-                    onPress={() => setShowRequestModal(!showRequestModal)}
+                    onPress={() => {
+                      setIsTransfer(false);
+                      setShowRequestModal(!showRequestModal);
+                    }}
                   />
                   <SimpleButton
                     onPress={() => navigation?.navigate('LoveStore')}
@@ -242,7 +288,9 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
           </View>
           <Text
             style={tw`text-[34px] font-NunitoSansExtraBold text-color-Black1000 my-2`}>
-            12,400
+            {(
+              Number(userInfo?.data?.balance) - Number(amountLove || 0)
+            ).toFixed(2)}
           </Text>
           <View style={tw`gap-5 my-3`}>
             <View style={tw`h-14`}>
@@ -250,12 +298,35 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                 keyboardType="decimal-pad"
                 placeholder="Enter Amount"
                 floatingPlaceholder
+                value={amountLove}
+                onChangeText={text => {
+                  // Allow only numbers and one decimal point
+                  const sanitizedText = text.replace(/[^0-9.]/g, '');
+
+                  // Limit input to 2 decimal places
+                  if (sanitizedText.includes('.')) {
+                    const [integer, decimal] = sanitizedText.split('.');
+                    if (decimal?.length > 2) {
+                      return; // Stop input if more than 2 decimal places
+                    }
+                  }
+
+                  // Check if balance is sufficient
+                  const newAmount = Number(sanitizedText || 0);
+                  const currentBalance = Number(userInfo?.data?.balance || 0);
+
+                  if (newAmount > currentBalance) {
+                    return; // Prevent setting amount that would make the balance negative
+                  }
+
+                  setAmountLove(sanitizedText);
+                }}
               />
             </View>
             <View style={tw`h-14`}>
               <InputText
                 editable={false}
-                value="+2.5%"
+                value={`${transactionsFee}%`}
                 style={tw`text-left text-color-Black800 font-NunitoSansExtraBold`}
                 placeholder="Transfer fee"
                 floatingPlaceholder
@@ -264,7 +335,11 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
             </View>
           </View>
           <View style={tw`my-2`}>
-            <Text>The receiver will received only 2,300</Text>
+            <Text>
+              The receiver will received only{' '}
+              {Number(amountLove) -
+                (Number(amountLove) * transactionsFee) / 100}
+            </Text>
           </View>
           <View
             style={tw`flex-row items-center justify-between pt-2 gap-3 px-2 my-3`}>
@@ -293,70 +368,56 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         setVisible={setShowTransferSelectModal}
         layerContainerStyle={tw`justify-center items-center h-full `}
         containerStyle={tw`w-[92%] h-[70%] rounded-3xl p-8 justify-center`}>
-        <View style={tw`gap-1 mb-3`}>
-          <Text style={tw`text-2xl text-color-Black900 font-NunitoSansBold`}>
-            Select from contacts
-          </Text>
-          <Text
-            style={tw`text-base text-color-Black400 font-NunitoSansRegular text-xs`}>
-            You can select multiple members
-          </Text>
-        </View>
-
-        <View style={tw`flex-row items-center gap-3 my-3`}>
-          <InputText placeholder="Search members" svgSecondIcon={IconSearch} />
-        </View>
-        <FlatList
-          contentContainerStyle={tw`py-4`}
-          showsVerticalScrollIndicator={false}
-          data={MessagesData.slice(0, 10)}
-          renderItem={({item}) => (
-            <>
-              <UserSelectionCard
-                item={item}
-                setSelectionSate={setSelectionSate}
-                selectionSate={selectionSate}
-              />
-            </>
-          )}
+        <SearchUserCard
+          selectionUser={selectionSate}
+          setSelectionUser={setSelectionSate}
         />
         <View style={tw`flex-row items-center justify-between pt-2 gap-3 px-2`}>
           <TButton
+            disabled={!selectionSate}
             onPress={() => {
+              if (!isTransfer) {
+                console.log('handleRequestLove');
+                handleRequestLove();
+              } else {
+                console.log('handleTransferLove');
+                handleTransferLove();
+              }
               setShowTransferSelectModal(false);
 
-              showToast({
-                svgIcon: (
-                  <SvgXml
-                    height={65}
-                    width={65}
-                    xml={IconFillLove}
-                    style={{
-                      transform: [{rotate: '5deg'}],
-                    }}
-                  />
-                ),
-                onPress: () => {
-                  closeToast();
-                  setShowTransferModal(false);
-                  setShowTransferSelectModal(false);
-                },
-                title: 'You’re done!',
-                titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-                content:
-                  'Your coins has been shared with the receiver(s) successfully',
-                contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-                buttonText: 'Back to your Wallet',
-                buttonStyle: tw`w-full justify-center items-center font-NunitoSansBold shadow-none`,
-              });
+              // showToast({
+              //   svgIcon: (
+              //     <SvgXml
+              //       height={65}
+              //       width={65}
+              //       xml={IconFillLove}
+              //       style={{
+              //         transform: [{rotate: '5deg'}],
+              //       }}
+              //     />
+              //   ),
+              //   onPress: () => {
+              //     closeToast();
+              //     setShowTransferModal(false);
+              //     setShowTransferSelectModal(false);
+              //   },
+              //   title: 'You’re done!',
+              //   titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
+              //   content:
+              //     'Your coins has been shared with the receiver(s) successfully',
+              //   contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
+              //   buttonText: 'Back to your Wallet',
+              //   buttonStyle: tw`w-full justify-center items-center font-NunitoSansBold shadow-none`,
+              // });
             }}
             title="Send"
-            containerStyle={tw`w-20 justify-center items-center bg-primary shadow-none`}
+            containerStyle={tw`w-20 justify-center items-center  bg-primary shadow-none`}
           />
           <TButton
             onPress={() => {
-              setShowTransferModal(!showTransferModal);
               setShowTransferSelectModal(!showTransferSelectModal);
+              setSelectionSate(null);
+              setIsTransfer(false);
             }}
             title="Cancel"
             containerStyle={tw`w-20 justify-center items-center bg-white border border-[#E8E8EA] shadow-none`}
@@ -382,6 +443,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                 placeholder="Enter Amount"
                 keyboardType="decimal-pad"
                 floatingPlaceholder
+                onChangeText={text => setAmountLove(text)}
               />
             </View>
           </View>
@@ -390,7 +452,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
             style={tw`flex-row items-center justify-between pt-2 gap-3 px-2 my-3`}>
             <TButton
               onPress={() => {
-                setShowRequestSelectModal(!showRequestSelectModal);
+                setShowTransferSelectModal(!showTransferSelectModal);
                 setShowRequestModal(!showRequestModal);
               }}
               title="Request"
@@ -405,80 +467,6 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
               titleStyle={tw`text-red-500`}
             />
           </View>
-        </View>
-      </NormalModal>
-      <NormalModal
-        animationType="fade"
-        visible={showRequestSelectModal}
-        setVisible={setShowRequestSelectModal}
-        layerContainerStyle={tw`justify-center items-center h-full `}
-        containerStyle={tw`w-[92%] h-[70%] rounded-3xl p-8 justify-center`}>
-        <View style={tw`gap-1 mb-3`}>
-          <Text style={tw`text-2xl text-color-Black900 font-NunitoSansBold`}>
-            Select from contacts
-          </Text>
-          <Text
-            style={tw`text-base text-color-Black400 font-NunitoSansRegular text-xs`}>
-            You can select multiple members
-          </Text>
-        </View>
-
-        <View style={tw`flex-row items-center gap-3 my-3`}>
-          <InputText placeholder="Search members" svgSecondIcon={IconSearch} />
-        </View>
-        <FlatList
-          contentContainerStyle={tw`py-4`}
-          showsVerticalScrollIndicator={false}
-          data={MessagesData.slice(0, 10)}
-          renderItem={({item}) => (
-            <>
-              <UserSelectionCard
-                item={item}
-                setSelectionSate={setSelectionSate}
-                selectionSate={selectionSate}
-              />
-            </>
-          )}
-        />
-        <View style={tw`flex-row items-center justify-between pt-2 gap-3 px-2`}>
-          <TButton
-            onPress={() => {
-              setShowRequestSelectModal(false);
-              showToast({
-                iconComponent: (
-                  <FastImage
-                    source={require('../../assets/icons/takingLove.png')}
-                    style={tw`w-16 h-16`}
-                    resizeMode={FastImage.resizeMode.contain}
-                  />
-                ),
-                onPress: () => {
-                  closeToast();
-                  setShowRequestModal(false);
-                  setShowRequestSelectModal(false);
-                },
-                title: 'Your request is pending',
-                titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-
-                content:
-                  'You will get love while the sender accept your request',
-                contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-                buttonText: 'Back to your Wallet',
-                buttonStyle: tw`w-full justify-center bg-Warning500 items-center font-NunitoSansBold shadow-none`,
-              });
-            }}
-            title="Send"
-            containerStyle={tw`w-20 justify-center items-center bg-primary shadow-none`}
-          />
-          <TButton
-            onPress={() => {
-              setShowRequestModal(!showRequestModal);
-              setShowRequestSelectModal(!showRequestSelectModal);
-            }}
-            title="Cancel"
-            containerStyle={tw`w-20 justify-center items-center bg-white border border-[#E8E8EA] shadow-none`}
-            titleStyle={tw`text-red-500`}
-          />
         </View>
       </NormalModal>
     </View>

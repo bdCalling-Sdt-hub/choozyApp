@@ -1,4 +1,3 @@
-import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   RefreshControl,
@@ -9,7 +8,6 @@ import {
 } from 'react-native';
 import {
   IconLock,
-  IconPlus,
   IconPost,
   IconPostBlue,
   IconPublic,
@@ -17,16 +15,24 @@ import {
   IconStoreBlue,
   IconUser,
 } from '../../icons/icons';
+import React, {Suspense} from 'react';
+import {
+  useCancelRequestMutation,
+  useSendFriendRequestMutation,
+  useUnfriendMutation,
+  useUserFriendQuery,
+  useUserSendFriendRequestsQuery,
+} from '../../redux/apiSlices/contactSlices';
 
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import IwtButton from '../../components/buttons/IwtButton';
+import FastImage from 'react-native-fast-image';
 import {NavigProps} from '../../interfaces/NaviProps';
+import {PrimaryColor} from '../../utils/utils';
+import {SvgXml} from 'react-native-svg';
+import TButton from '../../components/buttons/TButton';
 import tw from '../../lib/tailwind';
 import {useGetOtherUserProfileQuery} from '../../redux/apiSlices/authSlice';
-import {useSendFriendRequestMutation} from '../../redux/apiSlices/contactSlices';
-import {PrimaryColor} from '../../utils/utils';
+import {useToast} from '../../components/modals/Toaster';
 
 // import Post from './components/Post';
 // import Store from './components/Store';
@@ -35,6 +41,7 @@ const Post = React.lazy(() => import('./components/OtherWallPost'));
 const Store = React.lazy(() => import('./components/OtherWallStore'));
 
 const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
+  const {closeToast, showToast} = useToast();
   // console.log(route?.params);
   const {
     data: wallData,
@@ -50,11 +57,86 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
   const [sendFriendRequest] = useSendFriendRequestMutation();
   // console.log(Shop?.data?.[0]?.id);
 
+  const [unfriend] = useUnfriendMutation();
+  const [cancelRequest] = useCancelRequestMutation();
+
+  const {data: friends} = useUserFriendQuery({});
+  const {data: friendsRequest} = useUserSendFriendRequestsQuery({});
   // console.log(wallData?.data.news_feeds.length);
 
   const handleSendFriendRequest = async () => {
     const res = await sendFriendRequest(route?.params?.id);
+
+    // console.log(res);
+    if (res.data) {
+      showToast({
+        content: res.data.message,
+        title: 'success',
+        titleStyle: tw`text-green-500`,
+        btnDisplay: true,
+      });
+    }
+    if (res.error) {
+      showToast({
+        content: res.error?.message,
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500`,
+        btnDisplay: true,
+      });
+    }
+  };
+  const handleUnFriendRequest = async () => {
+    const res = await unfriend(route?.params?.id);
+    // console.log(res);
+    if (res.data) {
+      showToast({
+        content: res.data.message,
+        title: 'success',
+        titleStyle: tw`text-green-500`,
+        btnDisplay: true,
+      });
+    }
+    if (res.error) {
+      showToast({
+        content: res.error?.message,
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500`,
+        btnDisplay: true,
+      });
+    }
+  };
+
+  const handleCancelRequest = async () => {
+    console.log(route?.params?.id);
+    const res = await cancelRequest(route?.params?.id);
+    if (res.data) {
+      showToast({
+        content: res.data.message,
+        title: 'success',
+        titleStyle: tw`text-green-500`,
+        btnDisplay: true,
+      });
+    }
+    if (res.error) {
+      showToast({
+        content: res.error?.message,
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500`,
+        btnDisplay: true,
+      });
+    }
     console.log(res);
+  };
+
+  const alreadyFriend = () => {
+    return friends?.friends?.data?.some(
+      item => item.user_id === route?.params?.id,
+    );
+  };
+  const alreadyFriendRequest = () => {
+    return friendsRequest?.data?.some(
+      item => item.user_id === route?.params?.id,
+    );
   };
 
   return (
@@ -66,11 +148,24 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
           navigation?.goBack();
         }}
         ComponentBtn={
-          <IwtButton
+          <TButton
             containerStyle={tw`self-center p-2 items-center bg-primary`}
-            title="Add Contact"
-            svg={IconPlus}
-            onPress={handleSendFriendRequest}
+            title={
+              alreadyFriend()
+                ? 'Remove Contact'
+                : alreadyFriendRequest()
+                ? 'Cancel Request'
+                : 'Add Contact'
+            }
+            onPress={() => {
+              if (alreadyFriendRequest()) {
+                handleCancelRequest();
+              } else if (alreadyFriend()) {
+                handleUnFriendRequest();
+              } else {
+                handleSendFriendRequest();
+              }
+            }}
           />
         }
       />

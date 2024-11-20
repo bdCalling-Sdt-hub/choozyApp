@@ -1,9 +1,9 @@
-import {Pressable, View} from 'react-native';
 import {Dialog, PanningProvider} from 'react-native-ui-lib';
+import {Pressable, View} from 'react-native';
 
+import {Android} from '../../utils/utils';
 import React from 'react';
 import tw from '../../lib/tailwind';
-import {Android} from '../../utils/utils';
 
 interface SideModalProps {
   visible?: boolean;
@@ -24,6 +24,17 @@ const SideModal = ({
 }: SideModalProps) => {
   const [layoutHight, setLayoutHight] = React.useState<number>();
   // console.log(layoutHight, height * 0.8);
+
+  const Ok = !headerOff && {
+    ...{
+      renderPannableHeader: () => (
+        <View style={tw`h-[4%] mt-[2%]`}>
+          <View style={tw`bg-gray-300 h-1 w-20 rounded-full self-center`} />
+        </View>
+      ),
+    },
+  };
+
   return (
     <>
       {visible && (
@@ -38,23 +49,16 @@ const SideModal = ({
           containerStyle={tw` z-20 bg-base rounded-t-2xl ${
             Android ? 'mt-5' : 'mt-20'
           } `}
-          renderPannableHeader={() => (
-            <>
-              {!headerOff && (
-                <View style={tw`h-[4%] mt-[2%]`}>
-                  <View
-                    style={tw`bg-gray-300 h-1 w-20 rounded-full self-center`}
-                  />
-                </View>
-              )}
-            </>
-          )}>
+          {...Ok}>
           <Pressable
             onLayout={e => {
               setLayoutHight(e.nativeEvent.layout.height);
             }}
             disabled
-            style={[tw`${'max-h-[95%]'}`, containerStyle]}>
+            style={[
+              tw`${!headerOff ? 'max-h-[95%]' : 'max-h-[100%]'}`,
+              containerStyle,
+            ]}>
             {children}
           </Pressable>
         </Dialog>
