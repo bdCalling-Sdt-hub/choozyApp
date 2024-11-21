@@ -47,20 +47,23 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             </Text>
           </TouchableOpacity> */}
 
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate('Wallet');
-            }}
-            style={tw`flex-row gap-3 items-center`}>
-            <IButton
-              svg={IconStoreBlue}
-              containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
-            />
-            <Text
-              style={tw`text-color-Black800 font-NunitoSansBold text-xs md:text-sm`}>
-              Create Shop
-            </Text>
-          </TouchableOpacity>
+          {!user?.shop?.seller?.email && (
+            <TouchableOpacity
+              onPress={() => {
+                props?.navigation?.navigate('CreateShop');
+              }}
+              style={tw`flex-row gap-3 items-center`}>
+              <IButton
+                svg={IconStoreBlue}
+                containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
+              />
+              <Text
+                style={tw`text-color-Black800 font-NunitoSansBold text-xs md:text-sm`}>
+                Create Shop
+              </Text>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('OrderHistory');
@@ -164,6 +167,7 @@ export default function CustomDrawer() {
         drawerPosition: 'right', // Drawer comes from the right
         drawerType: 'slide',
         headerShown: false,
+
         drawerStyle: tw`w-[66%] md:w-[65%] tablet:w-[22%] h-full`,
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}>

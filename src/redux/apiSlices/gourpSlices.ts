@@ -1,5 +1,5 @@
-import {api} from '../api/baseApi';
 import {IGroupList} from '../interface/group';
+import {api} from '../api/baseApi';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({

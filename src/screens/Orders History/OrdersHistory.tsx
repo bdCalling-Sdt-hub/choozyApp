@@ -1,4 +1,4 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 import BackButton from '../../components/backHeader/BackButton';
 import BuyingOrders from './components/BuyingOrders';
@@ -13,19 +13,17 @@ const OrdersHistory = ({navigation}: NavigProps<null>) => {
 
   const user = useSelector(state => state.user.user);
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <View style={tw`flex-1 bg-base`}>
       <BackButton
         onPress={() => navigation?.goBack()}
         title="Orders History"
-        containerStyle={tw`bg-white`}
+        containerStyle={tw`bg-white pb-0`}
       />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`px-[4%] bg-white mt-2 pb-12`}>
+      <View style={tw`px-[4%] bg-white  `}>
         {/*================= options here =================== */}
         <View style={tw`flex-row items-center gap-1  py-2`}>
           <TouchableOpacity
@@ -59,15 +57,12 @@ const OrdersHistory = ({navigation}: NavigProps<null>) => {
             </Text>
           </TouchableOpacity>
         </View>
-
-        <View>
-          {options === 'Buying Orders' ? (
-            <BuyingOrders navigation={navigation} />
-          ) : (
-            <SellOrder navigation={navigation} />
-          )}
-        </View>
-      </ScrollView>
+      </View>
+      {options === 'Buying Orders' ? (
+        <BuyingOrders navigation={navigation} />
+      ) : (
+        <SellOrder navigation={navigation} />
+      )}
     </View>
   );
 };

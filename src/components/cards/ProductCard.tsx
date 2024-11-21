@@ -2,6 +2,8 @@ import {Text, TouchableOpacity, View} from 'react-native';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
+import {SvgXml} from 'react-native-svg';
+import {IconFillLove} from '../../icons/icons';
 import tw from '../../lib/tailwind';
 import {IProduct} from '../../redux/interface/products';
 
@@ -40,10 +42,13 @@ const ProductCard = ({
       )}
 
       <View style={tw` flex-row justify-between gap-2`}>
-        <Text
-          style={tw`text-center font-NunitoSansBold text-sm text-color-Black900`}>
-          € {item?.price}
-        </Text>
+        <View style={tw`flex-row items-center gap-1`}>
+          <SvgXml height={10} width={10} xml={IconFillLove} />
+          <Text
+            style={tw`text-center font-NunitoSansBold text-sm text-color-Black900`}>
+            {item?.price}
+          </Text>
+        </View>
         <Text
           style={tw`text-center text-[#615E69] font-NunitoSansRegular text-xs`}>
           {item?.product_code}

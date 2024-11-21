@@ -4,13 +4,13 @@ import {
   usePaymentIntentMutation,
 } from '../../redux/apiSlices/paymentSlices';
 
-import {AIconSuccess} from '../../icons/AnimateICons';
 import React from 'react';
+import {View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import TButton from '../../components/buttons/TButton';
-import {View} from 'react-native';
-import tw from '../../lib/tailwind';
 import {useToast} from '../../components/modals/Toaster';
+import {AIconSuccess} from '../../icons/AnimateICons';
+import tw from '../../lib/tailwind';
 
 interface Props {
   navigation: any;
@@ -49,7 +49,7 @@ function CheckoutScreen({
         amount: totalAmount,
         payment_method: 'pm_card_visa',
       });
-      console.log(paymentInt);
+      // console.log(paymentInt);
       // const clientSecret = await fetchPaymentIntentClientSecret();
 
       if (paymentInt?.data?.data?.client_secret) {
@@ -66,22 +66,31 @@ function CheckoutScreen({
 
         if (error) {
           console.log('Payment confirmation error', error);
+          setPaymentModal(false);
+          showToast({
+            title: 'Warning',
+            titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+            contentStyle: tw`text-sm`,
+            content: 'Payment failed',
+            btnDisplay: true,
+          });
         } else if (paymentIntent) {
           setPaymentModal(false);
           showToast({
             title: 'Success',
-            titleStyle: tw`text-green-500 text-base font-NunitoSansBold`,
+            titleStyle: tw`text-green-700 text-base font-NunitoSansBold`,
             contentStyle: tw`text-sm`,
             svgIcon: <SvgXml xml={AIconSuccess} />,
             content: 'Payment successful',
+
             buttonText: 'OK',
             onPress: () => {
               navigation?.goBack();
               closeToast();
             },
-            buttonStyle: tw`bg-primary`,
+            buttonStyle: tw`bg-green-600`,
           });
-          const paymentRes = await confirmPaymentBackend({
+          await confirmPaymentBackend({
             amount: totalAmount,
             total_love: love,
             payment_method: 'card',
@@ -99,7 +108,7 @@ function CheckoutScreen({
       setExtraLoding(false);
     } catch (error) {
       setExtraLoding(false);
-      console.log(error);
+      // console.log(error);
     }
   };
 

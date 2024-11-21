@@ -8,7 +8,7 @@ const orderSlice = api.injectEndpoints({
       query: () => ({
         url: `/get-user-order`,
       }),
-      providesTags: ['wallet'],
+      providesTags: ['order'],
     }),
     createOrder: builder.mutation<any, any>({
       query: data => ({
@@ -16,31 +16,31 @@ const orderSlice = api.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      //   invalidatesTags: ['wallet'],
+      invalidatesTags: ['order'],
     }),
     cancelOrder: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/cancel-order`,
         method: 'POST',
         body: data,
       }),
-      //   invalidatesTags: ['wallet'],
+      invalidatesTags: ['order'],
     }),
     acceptDelivery: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/accept-delivery`,
         method: 'POST',
         body: data,
       }),
-      //   invalidatesTags: ['wallet'],
+      invalidatesTags: ['order'],
     }),
     rejectDelivery: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/reject-delivery`,
         method: 'POST',
         body: data,
       }),
-      //   invalidatesTags: ['wallet'],
+      invalidatesTags: ['order'],
     }),
 
     //============= buyer order part end================
@@ -49,23 +49,23 @@ const orderSlice = api.injectEndpoints({
       query: () => ({
         url: `/get-seller-order`,
       }),
-      providesTags: ['wallet'],
+      providesTags: ['order'],
     }),
     acceptOrder: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/accept-order`,
         method: 'POST',
         body: data,
       }),
-      //   invalidatesTags: ['wallet'],
+      invalidatesTags: ['order'],
     }),
     requestDelivery: builder.mutation<any, any>({
-      query: ({id, data}) => ({
+      query: data => ({
         url: `/delivery-request`,
         method: 'POST',
         body: data,
       }),
-      //   invalidatesTags: ['wallet'],
+      invalidatesTags: ['order'],
     }),
     //============= seller order part end================
   }),
@@ -76,10 +76,10 @@ export const {
   useAcceptOrderMutation,
   useCancelOrderMutation,
   useCreateOrderMutation,
+  useRejectDeliveryMutation,
+  useRequestDeliveryMutation,
   useGetSellerOrdersQuery,
   useGetUserOrdersQuery,
   useLazyGetSellerOrdersQuery,
   useLazyGetUserOrdersQuery,
-  useRejectDeliveryMutation,
-  useRequestDeliveryMutation,
 } = orderSlice;

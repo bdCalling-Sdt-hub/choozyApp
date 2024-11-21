@@ -6,7 +6,12 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import {IconDeleted, IconImage, IconVThreeDots} from '../../icons/icons';
+import {
+  IconDeleted,
+  IconFillLove,
+  IconImage,
+  IconVThreeDots,
+} from '../../icons/icons';
 import {
   useDeleteProductMutation,
   useGetCategoriesQuery,
@@ -207,10 +212,13 @@ const MyProductDetailsScreen = ({
           />
           <View style={tw`p-4`}>
             <View style={tw`flex-row justify-between items-center`}>
-              <Text
-                style={tw`text-color-Black900 font-NunitoSansBold text-2xl`}>
-                €{Item?.price}
-              </Text>
+              <View style={tw`flex-row gap-1 items-center`}>
+                <SvgXml xml={IconFillLove} />
+                <Text
+                  style={tw`text-color-Black900 font-NunitoSansBold text-2xl`}>
+                  {Item?.price}
+                </Text>
+              </View>
               <View style={tw`items-end gap-1`}>
                 <Text
                   style={tw`text-color-Black1000 font-NunitoSansBold text-sm`}>
@@ -371,7 +379,6 @@ const MyProductDetailsScreen = ({
                 value={productInfo.product_name}
                 placeholder="Set product name"
                 placeholderTextColor={'#A5A3A9'}
-                keyboardType="decimal-pad"
                 floatingPlaceholder
                 style={tw`font-NunitoSansRegular `}
               />
@@ -401,7 +408,8 @@ const MyProductDetailsScreen = ({
             </View>
             <View style={tw`h-14`}>
               <InputText
-                placeholder="Price"
+                placeholder="Love"
+                keyboardType="decimal-pad"
                 defaultValue={productInfo?.price?.toString()}
                 onChangeText={text =>
                   setProductInfo({...productInfo, price: Number(text)})

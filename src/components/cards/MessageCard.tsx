@@ -1,19 +1,14 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import moment from 'moment-timezone';
-import React from 'react';
 import FastImage from 'react-native-fast-image';
-import tw from '../../lib/tailwind';
+import {IUserChat} from '../../redux/interface/message';
+import React from 'react';
 import {getRandomColor} from '../../utils/getRandomColor';
+import moment from 'moment-timezone';
+import tw from '../../lib/tailwind';
 
 interface MessageCardProps {
-  item: {
-    image?: string;
-    name?: string;
-    lastMessage?: string;
-    unreadCount?: number;
-    time?: string;
-  };
+  item: IUserChat;
   onPress?: () => void;
   joinBtn?: boolean;
   joinPress?: () => void;
@@ -66,7 +61,7 @@ const MessageCard = ({
             <View
               style={tw`w-full h-full bg-[${getRandomColor()}] rounded-2xl justify-center items-center`}>
               <Text style={tw`text-white font-NunitoSansBold text-lg shadow`}>
-                {item.name?.slice(0, 1).toUpperCase()}
+                {item.full_name?.slice(0, 1).toUpperCase()}
               </Text>
             </View>
           )}
@@ -74,24 +69,33 @@ const MessageCard = ({
       )}
       {!offPartTow && (
         <View style={[tw`flex-1  gap-[2px]`, titleContainerStyle]}>
-          {item.name && (
+          {item.full_name && (
             <Text
               numberOfLines={1}
               style={[
                 tw`text-[#1D1929] font-NunitoSansBold text-sm`,
                 titleStyle,
               ]}>
-              {item.name}
+              {item.full_name}
             </Text>
           )}
 
-          {item.lastMessage && (
+          {item.last_message && (
             <Text
               style={[
                 tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
                 subTitleStyle,
               ]}>
-              {item.lastMessage}
+              {item.last_message}
+            </Text>
+          )}
+          {!item.last_message && (
+            <Text
+              style={[
+                tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
+                subTitleStyle,
+              ]}>
+              send a image
             </Text>
           )}
         </View>
@@ -113,18 +117,18 @@ const MessageCard = ({
             </TouchableOpacity>
           ) : (
             <>
-              {item.unreadCount !== 0 && (
+              {item.unread_count !== 0 && (
                 <View
                   style={tw`w-4 h-4 rounded-full bg-red-500 items-center justify-center`}>
                   <Text style={tw`text-white font-NunitoSansBold text-[10px]`}>
-                    {item.unreadCount}
+                    {item.unread_count}
                   </Text>
                 </View>
               )}
 
               <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`}>
                 {/* date format like this 8:10 AM/PM  */}
-                {moment(item.time).format('LT')}
+                {moment(item.last_message_time).format('LT')}
               </Text>
             </>
           )}

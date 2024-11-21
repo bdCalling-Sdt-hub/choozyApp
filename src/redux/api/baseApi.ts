@@ -79,6 +79,7 @@ export const api = createApi({
     'wall',
     'payment',
     'wallet',
+    'order',
   ],
 });
 

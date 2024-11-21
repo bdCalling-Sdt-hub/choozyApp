@@ -37,17 +37,20 @@ const OrderCard = ({
   secondButtonStyle,
 }: OrderCardProps) => {
   // console.log(item);
-
+  // console.log(item?.product?.images);
   return (
     <View style={tw`border-primary border rounded-md border-opacity-25`}>
       <View style={tw`bg-white rounded-lg shadow-sm p-4`}>
         {/* Product Section */}
         <View
-          style={tw`flex-row items-center gap-2 mb-4 bg-blue-50 p-3 rounded-md`}>
-          <Image
-            source={{uri: item?.product?.image}}
-            style={tw`w-20 h-20 rounded-md`}
-          />
+          style={tw`flex-row items-center gap-2 mb-4 bg-white p-3 rounded-md`}>
+          {item?.product?.images![0] && (
+            <Image
+              source={{uri: item?.product?.images![0]}}
+              style={tw`w-20 h-20 rounded-md`}
+            />
+          )}
+
           <View>
             <Text style={tw`text-lg font-bold text-gray-800`}>
               {item?.product?.product_name}
@@ -131,7 +134,7 @@ const OrderCard = ({
               </TouchableOpacity>
             )}
 
-            {!on && (
+            {!onlyFirst && (
               <TouchableOpacity
                 disabled={isLoading}
                 style={[

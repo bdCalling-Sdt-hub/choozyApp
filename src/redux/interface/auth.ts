@@ -56,6 +56,16 @@ export interface IProfile {
     location: string;
     balance: string;
     image: string;
+    shop: {
+      shop_name: string;
+      logo: string;
+      seller: {
+        seller_name: string;
+        user_name: string;
+        email: string;
+        image: string;
+      };
+    };
   };
 }
 

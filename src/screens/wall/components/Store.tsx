@@ -211,7 +211,6 @@ const Store = ({
                 value={productInfo.product_name}
                 placeholder="Set product name"
                 placeholderTextColor={'#A5A3A9'}
-                keyboardType="decimal-pad"
                 floatingPlaceholder
                 style={tw`font-NunitoSansRegular `}
               />
@@ -239,11 +238,12 @@ const Store = ({
             </View> */}
             <View style={tw`h-14`}>
               <InputText
-                placeholder="Price"
+                placeholder="Love"
                 onChangeText={text =>
                   setProductInfo({...productInfo, price: Number(text)})
                 }
                 floatingPlaceholder
+                keyboardType="decimal-pad"
                 placeholderTextColor={'#A5A3A9'}
                 style={tw`font-NunitoSansRegular `}
               />

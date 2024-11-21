@@ -12,6 +12,7 @@ import Chats from './components/Chats';
 import GroupsSection from './components/GroupsSection';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import {NavigProps} from '../../interfaces/NaviProps';
+import {getSocket} from '../../redux/services/socket';
 import tw from '../../lib/tailwind';
 import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
 import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
@@ -26,7 +27,7 @@ import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
   //***** its needed to add this line don't remove it**********
-  useGetProfileQuery({});
+  const {data: userInfo} = useGetProfileQuery({});
   //******************
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
 
@@ -45,6 +46,14 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   // console.log(userInfo?.data);
   // console.log(Shop);
   // console.log(lStorage.getString('token'));
+
+  // all socket login when user come to this screen
+  const socket = getSocket();
+  React.useEffect(() => {
+    if (userInfo?.data) {
+      socket?.emit('login', {id: userInfo?.data?.id});
+    }
+  }, [userInfo?.data]);
 
   return (
     <View style={tw`flex-1 bg-white`}>

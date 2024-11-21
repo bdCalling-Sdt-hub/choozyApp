@@ -3,7 +3,7 @@ import {IFechtStatus} from './Fechting';
 export interface IOrder {
   order_id: number;
   total_amount: number;
-  status: number;
+  status: string;
   created_at: number;
   user: {
     id: number;
@@ -23,7 +23,7 @@ export interface IOrder {
     product_name: string;
     price: string;
     description: string;
-    image: string;
+    images: [string];
   };
   notes: string;
 }

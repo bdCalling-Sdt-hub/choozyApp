@@ -1,14 +1,16 @@
 import {StatusBar, StyleSheet, View} from 'react-native';
+import {getSocket, initiateSocket} from '../../redux/services/socket';
 
-import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
+import {getStorageToken} from '../../utils/utils';
 import tw from '../../lib/tailwind';
 import {useLazyTokenCheckQuery} from '../../redux/apiSlices/authSlice';
-import {getStorageToken} from '../../utils/utils';
 
 const LoadingSplash = ({navigation}: NavigProps<null>) => {
   const token = getStorageToken();
+  const socket = getSocket();
   const [checkToken] = useLazyTokenCheckQuery({});
   // console.log(token);
   const handleCheckValidToken = async () => {
@@ -26,6 +28,9 @@ const LoadingSplash = ({navigation}: NavigProps<null>) => {
   };
   React.useEffect(() => {
     if (token) {
+      if (!socket) {
+        initiateSocket();
+      }
       handleCheckValidToken();
     } else {
       (navigation as any)?.replace('Login');

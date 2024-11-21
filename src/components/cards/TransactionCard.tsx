@@ -56,8 +56,8 @@ const TransactionCard = ({item}: TransactionCardProps) => {
           />
           <Text style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
             {item?.status == 'Buy' || item?.status == 'Receive'
-              ? '+' + parseInt(item?.total_love)
-              : '-' + parseInt(item?.total_love)}
+              ? '+' + parseFloat(item?.total_love).toFixed(2)
+              : '-' + parseFloat(item?.total_love).toFixed(2)}
           </Text>
         </View>
       </View>
