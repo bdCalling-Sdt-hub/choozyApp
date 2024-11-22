@@ -1,11 +1,6 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {IMessage, IUserChat} from '../../redux/interface/message';
-import {
-  IconAttachment,
-  IconCamera,
-  IconSend,
-  IconVThreeDots,
-} from '../../icons/icons';
+import {IconAttachment, IconCamera, IconSend} from '../../icons/icons';
 import {
   useGetMassagesQuery,
   useLazyGetMassagesQuery,
@@ -32,7 +27,7 @@ import {useSelector} from 'react-redux';
 const SingleMessageScreen = ({
   navigation,
   route,
-}: NavigProps<{id: string; item: IUserChat}>) => {
+}: NavigProps<{id: number; item: IUserChat}>) => {
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
   const [makeMute, setMakeMute] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState('');
@@ -96,12 +91,15 @@ const SingleMessageScreen = ({
     formData.append('receiver_id', route?.params?.id);
 
     const res = await sendMessage(formData);
-    console.log(res?.data);
+    // console.log(res?.data);
     if (res.data) {
       setMessage('');
       socket?.emit('message', {
         id: route?.params?.id,
       });
+      const res = await getMessages(route?.params?.id);
+      // console.log(res);
+      setAllMessage(res?.data?.data);
     }
   };
 
@@ -140,14 +138,14 @@ const SingleMessageScreen = ({
               <TouchableOpacity style={tw`px-3`} activeOpacity={0.5}>
                 <SvgXml xml={IconCallBlue} />
               </TouchableOpacity> */}
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setActionModalOpen(!actionModalOpen);
                 }}
                 style={tw`px-3`}
                 activeOpacity={0.5}>
                 <SvgXml xml={IconVThreeDots} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           }
         />

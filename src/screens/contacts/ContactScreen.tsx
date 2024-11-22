@@ -86,8 +86,8 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
               titleStyle={tw`text-color-Black600 text-sm`}
               item={{
                 image: item.image,
-                name: item.full_name,
-                lastMessage: item.user_name,
+                full_name: item.full_name,
+                last_message: item.user_name,
               }}
               Component={
                 <View style={tw`px-4 flex-row gap-4 items-center`}>
@@ -121,7 +121,10 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
 
                   <TouchableOpacity
                     onPress={() => {
-                      navigation?.navigate('SingleMessage');
+                      navigation?.navigate('SingleMessage', {
+                        id: item.user_id,
+                        item,
+                      });
                     }}
                     style={tw`flex-row gap-2 items-center bg-primary px-3 py-2 rounded-md`}>
                     <SvgXml

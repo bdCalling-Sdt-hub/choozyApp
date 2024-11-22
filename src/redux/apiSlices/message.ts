@@ -45,4 +45,5 @@ export const {
   useGetUserChatsQuery,
   useLazyGetMassagesQuery,
   useLazyGetUserChatsQuery,
+  usePrefetch: useMessageRefetch,
 } = authSlice;

@@ -1,19 +1,40 @@
-import {FlatList, View} from 'react-native';
+import {FlatList, RefreshControl, View} from 'react-native';
+import {PrimaryColor, height} from '../../../utils/utils';
 
 import {IconSearch} from '../../../icons/icons';
 import InputText from '../../../components/inputs/InputText';
 import MessageCard from '../../../components/cards/MessageCard';
 import {NavigProps} from '../../../interfaces/NaviProps';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
 import React from 'react';
+import {getSocket} from '../../../redux/services/socket';
 import tw from '../../../lib/tailwind';
 import {useGetUserChatsQuery} from '../../../redux/apiSlices/message';
 
 const Chats = ({navigation}: NavigProps<null>) => {
-  const {data: MessagesData} = useGetUserChatsQuery({});
+  const {data: MessagesData, isLoading, refetch} = useGetUserChatsQuery({});
 
   const [searchText, setSearchText] = React.useState('');
 
   // console.log(MessagesData?.data);
+
+  const socket = getSocket();
+
+  const handleMessage = () => {
+    refetch();
+  };
+
+  React.useEffect(() => {
+    if (socket) {
+      socket?.on('message', handleMessage);
+    }
+    return () => {
+      if (socket) {
+        socket?.off('message');
+      }
+    };
+  }, [socket]);
+
   return (
     <>
       <View style={tw`px-[4%] mb-3 h-14`}>
@@ -25,6 +46,16 @@ const Chats = ({navigation}: NavigProps<null>) => {
         />
       </View>
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={refetch}
+            colors={[PrimaryColor]}
+          />
+        }
+        ListEmptyComponent={
+          <NoFoundCard hight={height * 0.13} title="No Chats" />
+        }
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
         automaticallyAdjustKeyboardInsets

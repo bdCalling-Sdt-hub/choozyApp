@@ -2,8 +2,8 @@ import {Text, View} from 'react-native';
 
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import tw from '../../lib/tailwind';
 import {height} from '../../utils/utils';
+import tw from '../../lib/tailwind';
 
 interface NoFoundCardProps {
   title?: string;
