@@ -4,19 +4,21 @@ import {
   usePaymentIntentMutation,
 } from '../../redux/apiSlices/paymentSlices';
 
+import {AIconSuccess} from '../../icons/AnimateICons';
 import React from 'react';
-import {View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import TButton from '../../components/buttons/TButton';
-import {useToast} from '../../components/modals/Toaster';
-import {AIconSuccess} from '../../icons/AnimateICons';
+import {View} from 'react-native';
 import tw from '../../lib/tailwind';
+import {useToast} from '../../components/modals/Toaster';
 
 interface Props {
   navigation: any;
   love: any;
   totalAmount: any;
   setPaymentModal: any;
+  customerEmail: string; // Added customer email prop
+  customerName: string; // Added customer name prop
 }
 
 function CheckoutScreen({
@@ -24,6 +26,8 @@ function CheckoutScreen({
   love,
   totalAmount,
   setPaymentModal,
+  customerEmail,
+  customerName,
 }: Props) {
   const {closeToast, showToast} = useToast();
 
@@ -39,19 +43,24 @@ function CheckoutScreen({
   const handlePayPress = async () => {
     try {
       setExtraLoding(true);
-      // Gather the customer's billing information (for example, email)
+
+      // Gather the customer's billing information
       const billingDetails = {
-        email: 'jenny.rosen@example.com',
+        name: customerName, // Adding customer name
+        email: customerEmail, // Adding customer email
       };
 
       // Fetch the intent client secret from the backend
       const paymentInt = await paymentInent({
-        amount: totalAmount,
+        amount: totalAmount * 100,
         payment_method: 'pm_card_visa',
+        customer_email: customerEmail, // Pass email to backend if necessary
+        customer_name: customerName, // Pass name to backend if necessary
       });
-      // console.log(paymentInt);
-      // const clientSecret = await fetchPaymentIntentClientSecret();
-
+      if (paymentInt?.error) {
+        console.log(paymentInt.error);
+        console.warn(paymentInt.error?.message);
+      }
       if (paymentInt?.data?.data?.client_secret) {
         // Confirm the payment with the card details
         const {paymentIntent, error} = await confirmPayment(
@@ -82,7 +91,6 @@ function CheckoutScreen({
             contentStyle: tw`text-sm`,
             svgIcon: <SvgXml xml={AIconSuccess} />,
             content: 'Payment successful',
-
             buttonText: 'OK',
             onPress: () => {
               navigation?.goBack();
@@ -94,6 +102,8 @@ function CheckoutScreen({
             amount: totalAmount,
             total_love: love,
             payment_method: 'card',
+            customer_email: customerEmail, // Log or save customer email
+            customer_name: customerName, // Log or save customer name
           });
         }
       } else {
@@ -108,7 +118,7 @@ function CheckoutScreen({
       setExtraLoding(false);
     } catch (error) {
       setExtraLoding(false);
-      // console.log(error);
+      console.log(error);
     }
   };
 
@@ -141,26 +151,6 @@ function CheckoutScreen({
         loadingColor="#fff"
         onPress={() => {
           handlePayPress();
-          // setPaymentModal(false);
-          // showToast({
-          //   iconComponent: (
-          //     <FastImage
-          //       style={tw`w-full h-40 rounded-2xl`}
-          //       source={require('../../assets/images/logo/extra/circus.png')}
-          //       resizeMode={FastImage.resizeMode.contain}
-          //     />
-          //   ),
-          //   title: 'Congratulations! Your purchase is done',
-          //   titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-          //   buttonText: 'Done',
-          //   buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
-          //   contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-          //   onPress: () => {
-          //     closeToast();
-          //     setPaymentModal(false);
-          //     navigation?.navigate('Wallet');
-          //   },
-          // });
         }}
         isLoading={loading || extraLoding}
       />

@@ -14,7 +14,8 @@ export interface IGroup {
     image: string;
   };
   message_count: number;
-  last_message: null | string;
+  last_message: string;
+  unread_message_count: number;
 }
 
 export interface IGroupList extends IFechtStatus {
@@ -24,11 +25,15 @@ export interface IGroupList extends IFechtStatus {
 export interface IGroupMessage {
   id: number;
   sender_id: number;
+  sender: {
+    full_name: string;
+    image: string;
+  };
   message: string;
   images: [string];
-  is_read: number;
-  is_read_by_user: boolean;
-  read_by: [number];
+  is_read: string;
+  is_read_by_user: false;
+  read_by: [string];
   created_at: string;
 }
 
@@ -36,16 +41,16 @@ export interface IGroupMessageList extends IFechtStatus {
   data: IGroupMessage[];
 }
 
-export interface IGroupMember {
-  id: number;
-  full_name: string;
-  user_name: string;
-  email: string;
-  image: string;
-  created_at: Date;
-  updated_at: Date;
-}
-
-export interface IGroupMemberList extends IFechtStatus {
-  data: IGroupMember[];
+export interface IGroupMembers {
+  success: boolean;
+  member_count: number;
+  data: [
+    {
+      id: number;
+      full_name: string;
+      user_name: string;
+      email: string;
+      image: string;
+    },
+  ];
 }

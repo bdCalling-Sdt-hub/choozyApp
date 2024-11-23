@@ -81,22 +81,25 @@ const MessageCard = ({
           )}
 
           {item.last_message && (
-            <Text
-              style={[
-                tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
-                subTitleStyle,
-              ]}>
-              {item.last_message}
-            </Text>
-          )}
-          {!item.last_message && (
-            <Text
-              style={[
-                tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
-                subTitleStyle,
-              ]}>
-              send a image
-            </Text>
+            <>
+              {item.last_message ? (
+                <Text
+                  style={[
+                    tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
+                    subTitleStyle,
+                  ]}>
+                  {item.last_message}
+                </Text>
+              ) : (
+                <Text
+                  style={[
+                    tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
+                    subTitleStyle,
+                  ]}>
+                  send a image
+                </Text>
+              )}
+            </>
           )}
         </View>
       )}

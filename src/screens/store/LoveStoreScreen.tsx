@@ -1,3 +1,9 @@
+import {
+  IIConAmericanExpress,
+  IIConDiscover,
+  IIConMasterCard,
+  IIConVisaCard,
+} from '../../icons/IIcons';
 import {IconClose, IconFillLove} from '../../icons/icons';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 
@@ -27,6 +33,8 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
   const [coin, setCoin] = React.useState('');
+  const [customerName, setCustomerName] = React.useState('');
+  const [customerEmail, setCustomerEmail] = React.useState('');
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -161,11 +169,47 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
             <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
               Pay with
             </Text>
-
+            <View style={tw`my-4 gap-6`}>
+              <View
+                style={tw`h-14 ${
+                  Android ? 'border-dashed border-[1px] border-gray-200' : ''
+                } rounded-2xl flex-row items-center  px-4 justify-between`}>
+                <Text style={tw`text-black font-NunitoSansBold text-sm`}>
+                  Cards
+                </Text>
+                <View style={tw`flex-row items-center gap-3`}>
+                  <SvgXml xml={IIConMasterCard} />
+                  <SvgXml xml={IIConVisaCard} />
+                  <SvgXml xml={IIConAmericanExpress} />
+                  <SvgXml xml={IIConDiscover} />
+                </View>
+              </View>
+            </View>
+            <View style={tw`gap-3 mt-3`}>
+              {/* Input for Customer Name */}
+              <View style={tw`h-14`}>
+                <InputText
+                  placeholder="Enter Your Name"
+                  floatingPlaceholder
+                  onChangeText={(text: string) => setCustomerName(text)}
+                />
+              </View>
+              {/* Input for Customer Email */}
+              <View style={tw`h-14`}>
+                <InputText
+                  placeholder="Enter Your Email"
+                  keyboardType="email-address"
+                  floatingPlaceholder
+                  onChangeText={(text: string) => setCustomerEmail(text)}
+                />
+              </View>
+            </View>
             <StripeProvider publishableKey="pk_test_51M6AQECe4QqAuKX4hQuRPLKDeB192L6xZiop8yWhLLrmbBTZjSsPKPyGvhhHVlKQNikct3mhaeZgyGjYTA17VwbT00l34SeOAr">
               <LoveCheckout
                 setPaymentModal={setPaymentModal}
                 love={coin}
+                customerEmail={customerEmail}
+                customerName={customerName}
                 totalAmount={extra?.lovePrice * coin}
                 navigation={navigation}
               />

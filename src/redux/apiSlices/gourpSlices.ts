@@ -1,4 +1,4 @@
-import {IGroupList, IGroupMessageList} from '../interface/group';
+import {IGroupList, IGroupMembers, IGroupMessageList} from '../interface/group';
 
 import {api} from '../api/baseApi';
 
@@ -16,9 +16,9 @@ const authSlice = api.injectEndpoints({
       }),
       providesTags: ['group'],
     }),
-    getGroupMembers: builder.query<any, string>({
+    getGroupMembers: builder.query<IGroupMembers, any>({
       query: (id: string) => ({
-        url: `/groups/${id}/members`,
+        url: `/group-members?group_id=${id}`,
       }),
       providesTags: ['group'],
     }),
@@ -43,7 +43,7 @@ const authSlice = api.injectEndpoints({
     }),
     addMember: builder.mutation({
       query: data => ({
-        url: `/groups/${data.id}/members`,
+        url: `/add-group-members`,
         method: 'POST',
         body: data,
       }),
@@ -67,9 +67,23 @@ const authSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['message'],
     }),
+    isAllRead: builder.mutation({
+      query: id => ({
+        url: `/group-messages-read?group_id=${id}&_method=PUT`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['message'],
+    }),
     deleteMember: builder.mutation({
       query: ({groupId, memberId}) => ({
         url: `/groups/${groupId}/members/${memberId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['group'],
+    }),
+    liveGroup: builder.mutation({
+      query: groupId => ({
+        url: `/leave-group?group_id=${groupId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['group'],
@@ -97,4 +111,6 @@ export const {
   useMessageReadMutation,
   useSendGroupMessageMutation,
   useLazyGetGroupsQuery,
+  useLiveGroupMutation,
+  useIsAllReadMutation,
 } = authSlice;

@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@alantoa/lightbox": "^0.3.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/devtools": "^6.0.27",
     "@react-navigation/drawer": "^6.7.2",

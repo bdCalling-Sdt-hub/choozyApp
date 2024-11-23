@@ -11,6 +11,7 @@ import ActionModal from '../../components/modals/ActionModal';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import FastImage from 'react-native-fast-image';
 import IButton from '../../components/buttons/IButton';
+import ImageView from '../../components/imageViewer/ImageViwer';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import React from 'react';
@@ -194,25 +195,29 @@ const SingleMessageScreen = ({
         contentContainerStyle={tw`pb-4`}
         ListFooterComponent={() => (
           <>
-            <View style={tw`px-[4%] py-7 justify-center items-center gap-3`}>
-              <FastImage
-                style={tw`w-16 h-16 rounded-3xl`}
-                resizeMode={FastImage.resizeMode.contain}
-                source={{
-                  uri: Item?.image,
-                }}
-              />
-              <View style={tw`justify-center items-center `}>
-                <Text
-                  style={tw`text-color-Black1000 font-PoppinsBold text-[20px]`}>
-                  {Item?.full_name}
-                </Text>
-                <Text
-                  style={tw`text-color-Black500 font-NunitoSansSemiBold text-sm`}>
-                  location: {Item?.location}
-                </Text>
+            {Item && (
+              <View style={tw`px-[4%] py-7 justify-center items-center gap-3`}>
+                <FastImage
+                  style={tw`w-16 h-16 rounded-3xl`}
+                  resizeMode={FastImage.resizeMode.contain}
+                  source={{
+                    uri: Item?.image,
+                  }}
+                />
+                <View style={tw`justify-center items-center `}>
+                  <Text
+                    style={tw`text-color-Black1000 font-PoppinsBold text-[20px]`}>
+                    {Item?.full_name}
+                  </Text>
+                  {Item?.location && (
+                    <Text
+                      style={tw`text-color-Black500 font-NunitoSansSemiBold text-sm`}>
+                      location: {Item?.location}
+                    </Text>
+                  )}
+                </View>
               </View>
-            </View>
+            )}
           </>
         )}
         data={allMessage}
@@ -248,13 +253,10 @@ const SingleMessageScreen = ({
                       )}
 
                       {item.images?.length > 0 && (
-                        <View style={tw`items-end mt-3`}>
-                          <FastImage
-                            source={{
-                              uri: item.images[0],
-                            }}
-                            style={tw`h-32 w-60 rounded-xl`}
-                            resizeMode={FastImage.resizeMode.cover}
+                        <View style={tw`items-end mt-3 rounded-xl `}>
+                          <ImageView
+                            style={tw`h-60 w-60 rounded-xl`}
+                            source={{uri: item?.images[0]}} // Replace with your image source
                           />
                         </View>
                       )}
@@ -294,13 +296,12 @@ const SingleMessageScreen = ({
                             </View>
                           )}
                           {item.images?.length > 0 && (
-                            <View style={tw`items-start mt-3`}>
-                              <FastImage
-                                source={{
-                                  uri: item.images[0],
-                                }}
-                                style={tw`h-32 w-60 rounded-xl`}
-                                resizeMode={FastImage.resizeMode.cover}
+                            <View
+                              style={tw`items-start
+                             mt-3 rounded-xl `}>
+                              <ImageView
+                                style={tw`h-60 w-60 rounded-xl`}
+                                source={{uri: item?.images[0]}} // Replace with your image source
                               />
                             </View>
                           )}
@@ -338,6 +339,7 @@ const SingleMessageScreen = ({
           />
         </View>
         <IButton
+          disabled={message.length === 0}
           svg={IconSend}
           containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
           onPress={() => {

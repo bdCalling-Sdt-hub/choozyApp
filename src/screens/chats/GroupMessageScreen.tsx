@@ -8,6 +8,7 @@ import {
 } from '../../icons/icons';
 import {
   useLazyGetGroupMessagesQuery,
+  useLiveGroupMutation,
   useSendGroupMessageMutation,
 } from '../../redux/apiSlices/gourpSlices';
 
@@ -15,11 +16,11 @@ import ActionModal from '../../components/modals/ActionModal';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import FastImage from 'react-native-fast-image';
 import IButton from '../../components/buttons/IButton';
+import ImageView from '../../components/imageViewer/ImageViwer';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import {Switch} from 'react-native-ui-lib';
 import {getSocket} from '../../redux/services/socket';
 import moment from 'moment-timezone';
 import tw from '../../lib/tailwind';
@@ -31,7 +32,7 @@ const GroupMessageScreen = ({
   route,
 }: NavigProps<{id: string; item: IGroup}>) => {
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
-  const [makeMute, setMakeMute] = React.useState<boolean>(false);
+  const [showImageModal, setImageModal] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState('');
   const [allMessage, setAllMessage] = React.useState<Array<IGroupMessage>>([]);
   // console.log(route?.params?.id, route?.params?.item);
@@ -43,6 +44,7 @@ const GroupMessageScreen = ({
   const user = useSelector(state => state?.user?.user);
 
   const [sendMessage] = useSendGroupMessageMutation();
+  const [leaveGroup] = useLiveGroupMutation();
 
   // console.log(user);
   const socket = getSocket();
@@ -94,12 +96,20 @@ const GroupMessageScreen = ({
     console.log(res);
     if (res.data) {
       setMessage('');
-      socket?.emit('message', {
+      socket?.emit('group_message', {
         id: route?.params?.id,
       });
       const res = await getMessages(route?.params?.id);
       // console.log(res);
       setAllMessage(res?.data?.data);
+    }
+  };
+
+  const handleLeaveGroup = async () => {
+    const res = await leaveGroup(route?.params?.id);
+    console.log(res);
+    if (res.data) {
+      navigation?.goBack();
     }
   };
 
@@ -115,11 +125,11 @@ const GroupMessageScreen = ({
 
   React.useEffect(() => {
     if (socket) {
-      socket?.on('message', handleLoadData);
+      socket?.on('group_message', handleLoadData);
     }
 
     return () => {
-      socket?.off('message', handleLoadData);
+      socket?.off('group_message', handleLoadData);
     };
   }, [socket]);
 
@@ -198,13 +208,10 @@ const GroupMessageScreen = ({
                       )}
 
                       {item.images?.length > 0 && (
-                        <View style={tw`items-end mt-3`}>
-                          <FastImage
-                            source={{
-                              uri: item.images[0],
-                            }}
-                            style={tw`h-32 w-60 rounded-xl`}
-                            resizeMode={FastImage.resizeMode.cover}
+                        <View style={tw`items-end mt-3 rounded-xl `}>
+                          <ImageView
+                            style={tw`h-60 w-60 rounded-xl`}
+                            source={{uri: item?.images[0]}} // Replace with your image source
                           />
                         </View>
                       )}
@@ -218,7 +225,7 @@ const GroupMessageScreen = ({
                         {/* Avatar */}
                         <FastImage
                           source={{
-                            uri: item.images[0],
+                            uri: item.sender?.image,
                           }}
                           style={tw`w-8 h-8 rounded-full mr-3`}
                         />
@@ -227,7 +234,7 @@ const GroupMessageScreen = ({
                             style={tw`flex-row justify-between items-center my-1`}>
                             <Text
                               style={tw`text-color-Black1000 font-NunitoSansBold text-sm `}>
-                              {item?.is_read_by_user}
+                              {item?.sender?.full_name}
                             </Text>
                             <Text
                               style={tw`text-gray-500 text-xs pr-3 font-PoppinsRegular`}>
@@ -244,13 +251,10 @@ const GroupMessageScreen = ({
                             </View>
                           )}
                           {item.images?.length > 0 && (
-                            <View style={tw`items-start mt-3`}>
-                              <FastImage
-                                source={{
-                                  uri: item.images[0],
-                                }}
-                                style={tw`h-32 w-60 rounded-xl`}
-                                resizeMode={FastImage.resizeMode.cover}
+                            <View style={tw`items-start mt-3 rounded-xl `}>
+                              <ImageView
+                                style={tw`h-60 w-60 rounded-xl`}
+                                source={{uri: item?.images[0]}} // Replace with your image source
                               />
                             </View>
                           )}
@@ -288,6 +292,7 @@ const GroupMessageScreen = ({
           />
         </View>
         <IButton
+          disabled={message.length === 0}
           svg={IconSend}
           containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
           onPress={() => {
@@ -305,27 +310,29 @@ const GroupMessageScreen = ({
             title: 'Members',
             onPress: () => {
               setActionModalOpen(false);
-              navigation?.navigate('GroupMembers');
+              navigation?.navigate('GroupMembers', {
+                id: Item?.group_id,
+              });
             },
           },
-          {
-            title: 'Mute Notification',
-            //  onPress: () => {},
-            enableBoth: true,
-            customComponent: (
-              <Switch
-                offColor={'#E8E8EA'}
-                onColor={'#4964C6'}
-                value={makeMute}
-                onValueChange={value => setMakeMute(value)}
-              />
-            ),
-          },
+          // {
+          //   title: 'Mute Notification',
+          //   //  onPress: () => {},
+          //   enableBoth: true,
+          //   customComponent: (
+          //     <Switch
+          //       offColor={'#E8E8EA'}
+          //       onColor={'#4964C6'}
+          //       value={makeMute}
+          //       onValueChange={value => setMakeMute(value)}
+          //     />
+          //   ),
+          // },
           {
             title: 'Leave',
             titleStyle: tw`text-red-500`,
             onPress: () => {
-              navigation?.goBack();
+              handleLeaveGroup();
             },
           },
         ]}

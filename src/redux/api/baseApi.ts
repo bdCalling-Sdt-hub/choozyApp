@@ -49,6 +49,7 @@ const baseQueryWithRath: BaseQueryFn<BaseQueryArgs, unknown, unknown> = async (
     if (error.response?.data) {
       if (typeof error.response?.data === 'string') {
         const withCurly = (error.response.data += '}');
+
         return {error: JSON.parse(withCurly)};
       } else {
         return {error: error.response?.data};

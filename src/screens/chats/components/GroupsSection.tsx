@@ -12,6 +12,7 @@ import {PrimaryColor, useImagePicker} from '../../../utils/utils';
 import {
   useCreateGroupMutation,
   useGetGroupsQuery,
+  useIsAllReadMutation,
 } from '../../../redux/apiSlices/gourpSlices';
 
 import InputText from '../../../components/inputs/InputText';
@@ -23,6 +24,7 @@ import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import TButton from '../../../components/buttons/TButton';
 import UserSelectionCard from '../../../components/cards/UserSelectionCard';
+import {getSocket} from '../../../redux/services/socket';
 import tw from '../../../lib/tailwind';
 import {useUserFriendQuery} from '../../../redux/apiSlices/contactSlices';
 
@@ -41,9 +43,10 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
   } = useGetGroupsQuery({});
   const {data: contacts} = useUserFriendQuery({});
 
-  // console.log(createGroupData);
+  console.log(createGroupData);
 
   const [createGroup] = useCreateGroupMutation({});
+  const [readAll] = useIsAllReadMutation({});
 
   const handleAddImage = async () => {
     const image = await useImagePicker({
@@ -58,14 +61,13 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
       });
     }
   };
-
+  const socket = getSocket();
   const handleCreateGroup = async () => {
-    const groupMembers = createGroupData?.map((item: any) => item?.id);
-
-    console.log(groupMembers); // Check the IDs extracted from createGroupData
+    const groupMembers = createGroupData?.map((item: any) => item?.user_id);
 
     const formData = new FormData();
 
+    console.log(groupMembers); // Check the IDs extracted from createGroupData
     // Append fields to FormData
     groupName && formData.append('name', groupName);
     groupImage && formData.append('image', groupImage);
@@ -79,7 +81,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
     try {
       const res = await createGroup(formData);
 
-      console.log(res?.error); // Check if there's an error in the response
+      console.log(res); // Check if there's an error in the response
       if (res?.data) {
         setShowGroupModal(false);
         setGroupName('');
@@ -115,22 +117,30 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
         data={groupData?.data}
         renderItem={({item, index}) => (
           <MessageCard
-            onPress={() =>
+            onPress={() => {
+              socket?.emit('join_group', {
+                id: item?.group_id,
+              });
+              readAll(item?.group_id).then(res => {
+                console.log(res);
+              });
+
               navigation?.navigate('GroupMessage', {
                 id: item?.group_id,
                 item,
-              })
-            }
+              });
+            }}
             titleContainerStyle={tw`gap-1`}
             subTitleStyle={tw`text-color-Black500`}
             titleStyle={tw`text-[#1D1929]`}
             item={{
               image: item.group_image,
               email: item.group_creator.email,
-              full_name: item.group_name,
+              full_name: item.group_name + item?.group_id,
               last_message_time: item.created_date,
+              last_message: item?.last_message,
               user_name: item.group_creator.user_name,
-              unread_count: item?.message_count,
+              unread_count: item?.unread_message_count,
             }}
           />
         )}

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 
+import AddGroupMembers from '../screens/chats/AddMembers';
 import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
 import BottomRoutes from './BottomRoutes';
 import Checkout from '../screens/Checkout/Checkout';
@@ -40,6 +41,7 @@ import WalletScreen from '../screens/wallet/WalletScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
+
 function Routes() {
   return (
     <Stack.Navigator
@@ -69,6 +71,7 @@ function Routes() {
       <Stack.Screen name="SingleMessage" component={SingleMessageScreen} />
       <Stack.Screen name="GroupMessage" component={GroupMessageScreen} />
       <Stack.Screen name="GroupMembers" component={GroupMembers} />
+      <Stack.Screen name="AddGroupMembers" component={AddGroupMembers} />
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Wallet" component={WalletScreen} />
       <Stack.Screen name="TransactionHistory" component={TransactionsHistory} />

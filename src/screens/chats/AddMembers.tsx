@@ -1,17 +1,24 @@
 import {FlatList, RefreshControl, View} from 'react-native';
-import {IconMessageBlue, IconSearch, IconUserPlus} from '../../icons/icons';
+import {IconFillUserPlus, IconSearch} from '../../icons/icons';
+import React, {useEffect} from 'react';
+import {
+  useAddMemberMutation,
+  useGetGroupMembersQuery,
+} from '../../redux/apiSlices/gourpSlices';
 
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import InputText from '../../components/inputs/InputText';
 import MessageCard from '../../components/cards/MessageCard';
 import {NavigProps} from '../../interfaces/NaviProps';
 import {PrimaryColor} from '../../utils/utils';
-import React from 'react';
 import SimpleButton from '../../components/buttons/SimpleButton';
 import tw from '../../lib/tailwind';
-import {useGetGroupMembersQuery} from '../../redux/apiSlices/gourpSlices';
+import {useUserFriendQuery} from '../../redux/apiSlices/contactSlices';
 
-const GroupMembers = ({navigation, route}: NavigProps<{id: number}>) => {
+const AddGroupMembers = ({navigation, route}: NavigProps<{id: number}>) => {
+  const [newGroupMembers, setNewGroupMembers] = React.useState([]);
+  const [exitContact, setExitContact] = React.useState([]);
+
   const [searchText, setSearchText] = React.useState('');
   const {
     data: groupMember,
@@ -20,32 +27,42 @@ const GroupMembers = ({navigation, route}: NavigProps<{id: number}>) => {
   } = useGetGroupMembersQuery(route?.params?.id as any, {
     skip: !route?.params?.id,
   });
+  const {data: contacts} = useUserFriendQuery({});
+
+  useEffect(() => {
+    if (groupMember?.data && contacts?.friends?.data) {
+      const filteredContacts = contacts.friends.data.filter((contact: any) => {
+        return !groupMember.data.some(
+          (member: any) => member.id === contact.user_id,
+        );
+      });
+
+      setExitContact(filteredContacts);
+    }
+  }, [groupMember, contacts]);
+
+  const [addMembers] = useAddMemberMutation();
+  const handleAddMembers = async (id: number) => {
+    const res = await addMembers({
+      group_id: route?.params?.id,
+      user_ids: [id],
+      _method: 'PUT',
+    });
+    if (res?.data?.success) {
+      refetch();
+    }
+  };
 
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
-        title={'Members' + ` (${groupMember?.member_count})`}
+        title={'Add Members'}
         onPress={() => navigation?.goBack()}
         containerStyle={tw`justify-between`}
-        ComponentBtn={
-          <SimpleButton
-            onPress={() =>
-              navigation?.navigate('AddGroupMembers', {
-                id: route?.params?.id,
-              })
-            }
-            title="Add "
-            containerStyle={tw`px-3 py-1 rounded-md`}
-            titleStyle={tw`text-gray-500 text-sm`}
-            svgIcon={IconUserPlus}
-            svgHeight={13}
-            svgWidth={13}
-          />
-        }
       />
       <View style={tw`px-[4%] mb-3 h-14`}>
         <InputText
-          placeholder="Search group members"
+          placeholder="Search contacts"
           svgSecondIcon={IconSearch}
           value={searchText}
           onChangeText={text => setSearchText(text)}
@@ -54,7 +71,7 @@ const GroupMembers = ({navigation, route}: NavigProps<{id: number}>) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw`pb-6`}
-        data={groupMember?.data?.filter((item: any) =>
+        data={exitContact?.filter((item: any) =>
           item?.full_name?.toLowerCase().includes(searchText?.toLowerCase()),
         )}
         refreshControl={
@@ -69,7 +86,7 @@ const GroupMembers = ({navigation, route}: NavigProps<{id: number}>) => {
             <MessageCard
               //   onPress={() => navigation?.navigate('Message')}
               offPartThree
-              key={item.id}
+              key={item.user_id}
               titleContainerStyle={tw`gap-1`}
               subTitleStyle={tw`text-color-Black500`}
               titleStyle={tw`text-[#1D1929] text-sm`}
@@ -82,15 +99,12 @@ const GroupMembers = ({navigation, route}: NavigProps<{id: number}>) => {
               }}
               Component={
                 <SimpleButton
-                  onPress={() =>
-                    navigation?.navigate('SingleMessage', {
-                      id: item.user_id,
-                      item: item,
-                    })
-                  }
+                  onPress={() => {
+                    handleAddMembers(item.user_id);
+                  }}
                   containerStyle={tw`gap-2 flex-row-reverse rounded-xl h-8`}
-                  svgIcon={IconMessageBlue}
-                  title="Message"
+                  svgIcon={IconFillUserPlus}
+                  title="Add"
                 />
               }
             />
@@ -101,4 +115,4 @@ const GroupMembers = ({navigation, route}: NavigProps<{id: number}>) => {
   );
 };
 
-export default GroupMembers;
+export default AddGroupMembers;

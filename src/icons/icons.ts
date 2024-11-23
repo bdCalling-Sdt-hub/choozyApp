@@ -158,8 +158,13 @@ export const IconVThreeDots = `<svg width="3" height="13" viewBox="0 0 3 13" fil
 `;
 
 export const IconClose = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 1L17 17M1 17L17 1" stroke="#1D1929"/>
+<path d="M1 1L17 17M1 17L17 1"  stroke="#1D1929"/>
 </svg>
+`;
+export const IconCloseWhite = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1 1L17 17M1 17L17 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
 `;
 export const IconCloseRed = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1 1L17 17M1 17L17 1" stroke="red"/>
