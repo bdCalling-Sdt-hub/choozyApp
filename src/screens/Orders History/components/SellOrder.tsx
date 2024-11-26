@@ -5,13 +5,13 @@ import {
   useRequestDeliveryMutation,
 } from '../../../redux/apiSlices/order';
 
-import {NavigProps} from '../../../interfaces/NaviProps';
+import React from 'react';
 import NoFoundCard from '../../../components/cards/NoFoundCard';
 import OrderCard from '../../../components/cards/OrderCard';
-import {PrimaryColor} from '../../../utils/utils';
-import React from 'react';
-import tw from '../../../lib/tailwind';
 import {useToast} from '../../../components/modals/Toaster';
+import {NavigProps} from '../../../interfaces/NaviProps';
+import tw from '../../../lib/tailwind';
+import {PrimaryColor} from '../../../utils/utils';
 
 const SellOrder = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -46,20 +46,17 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
               console.log(res);
               if (res.data) {
                 showToast({
-                  content: 'Order Accepted Successfully',
-                  title: 'success',
-                  contentStyle: tw`text-sm`,
-                  titleStyle: tw`text-yellow-600`,
-                  buttonStyle: tw`bg-yellow-600`,
+                  title: 'Order Accepted Successfully',
+                  titleStyle: tw`py-8  bg-gray-50 font-NunitoSansBold rounded-md`,
+                  buttonStyle: tw`bg-primary`,
                   onPress: closeToast,
                 });
               }
               if (res.error) {
                 showToast({
-                  content: res.error?.message,
-                  title: 'Warning',
-                  titleStyle: tw`text-yellow-500`,
-                  contentStyle: tw`text-sm`,
+                  title: res.error?.message,
+                  titleStyle: tw`py-8 text-yellow-500 bg-gray-50 font-NunitoSansBold rounded-md`,
+                  buttonStyle: tw`bg-primary`,
                   onPress: closeToast,
                 });
               }
@@ -73,21 +70,17 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
               // console.log(res);
               if (res.data) {
                 showToast({
-                  content: 'Delivery Requested Send Successfully',
-                  title: 'success',
-
-                  contentStyle: tw`text-sm`,
-                  titleStyle: tw`text-primary`,
+                  title: 'Delivery Requested Send Successfully',
+                  titleStyle: tw`py-8  bg-gray-50 font-NunitoSansBold rounded-md`,
                   buttonStyle: tw`bg-primary`,
                   onPress: closeToast,
                 });
               }
               if (res.error) {
                 showToast({
-                  content: res.error?.message,
-                  title: 'Warning',
-                  titleStyle: tw`text-yellow-500`,
-                  contentStyle: tw`text-sm`,
+                  title: res.error?.message,
+                  titleStyle: tw`py-8 text-yellow-500 bg-gray-50 font-NunitoSansBold rounded-md`,
+                  buttonStyle: tw`bg-primary`,
                   onPress: closeToast,
                 });
               }

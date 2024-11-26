@@ -108,7 +108,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
             <View style={tw`flex-row items-center gap-3`}>
               <Text
                 style={tw`text-[24px] font-NunitoSansExtraBold text-color-Black1000 `}>
-                Buy love's
+                Get love
               </Text>
               <SvgXml
                 style={{

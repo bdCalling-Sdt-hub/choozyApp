@@ -1,11 +1,11 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import FastImage from 'react-native-fast-image';
-import {IUserChat} from '../../redux/interface/message';
-import React from 'react';
-import {getRandomColor} from '../../utils/getRandomColor';
 import moment from 'moment-timezone';
+import React from 'react';
+import FastImage from 'react-native-fast-image';
 import tw from '../../lib/tailwind';
+import {IUserChat} from '../../redux/interface/message';
+import {getRandomColor} from '../../utils/getRandomColor';
 
 interface MessageCardProps {
   item: IUserChat;
@@ -81,25 +81,23 @@ const MessageCard = ({
           )}
 
           {item.last_message && (
-            <>
-              {item.last_message ? (
-                <Text
-                  style={[
-                    tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
-                    subTitleStyle,
-                  ]}>
-                  {item.last_message}
-                </Text>
-              ) : (
-                <Text
-                  style={[
-                    tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
-                    subTitleStyle,
-                  ]}>
-                  send a image
-                </Text>
-              )}
-            </>
+            <Text
+              style={[
+                tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
+                subTitleStyle,
+              ]}>
+              {item.last_message}
+            </Text>
+          )}
+
+          {item.image && (
+            <Text
+              style={[
+                tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
+                subTitleStyle,
+              ]}>
+              send a image
+            </Text>
           )}
         </View>
       )}

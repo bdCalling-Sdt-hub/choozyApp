@@ -1,20 +1,20 @@
-import {IconFillLove, IconRightArrow} from '../../icons/icons';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {IconFillLove, IconRightArrow} from '../../icons/icons';
 
-import {Android} from '../../utils/utils';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import DateModal from '../../components/modals/DateModal';
-import FastImage from 'react-native-fast-image';
-import {IProduct} from '../../redux/interface/products';
-import InputText from '../../components/inputs/InputText';
-import IwtButton from '../../components/buttons/IwtButton';
-import {NavigProps} from '../../interfaces/NaviProps';
 import React from 'react';
-import SideModal from '../../components/modals/SideModal';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
+import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import IwtButton from '../../components/buttons/IwtButton';
+import InputText from '../../components/inputs/InputText';
+import DateModal from '../../components/modals/DateModal';
+import SideModal from '../../components/modals/SideModal';
+import {useToast} from '../../components/modals/Toaster';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useCreateOrderMutation} from '../../redux/apiSlices/order';
-import {useToast} from '../../components/modals/Toaster';
+import {IProduct} from '../../redux/interface/products';
+import {Android} from '../../utils/utils';
 
 const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
   const {showToast, closeToast} = useToast();
@@ -76,7 +76,8 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
       title: 'Congratulations! Your purchase is done',
       titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
       buttonText: 'Done',
-      buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
+
+      buttonStyle: tw`w-full justify-center bg-primary items-center font-NunitoSansBold shadow-none`,
       contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
       onPress: () => {
         closeToast();
