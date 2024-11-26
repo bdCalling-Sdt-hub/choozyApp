@@ -15,6 +15,7 @@ interface SideModalProps {
   children?: React.ReactNode;
   scrollable?: boolean;
   headerOff?: boolean;
+  closeBTN?: boolean;
 }
 
 const SideModal = ({
@@ -23,6 +24,7 @@ const SideModal = ({
   setVisible,
   visible,
   headerOff,
+  closeBTN,
 }: SideModalProps) => {
   const [layoutHight, setLayoutHight] = React.useState<number>();
   // console.log(layoutHight, height * 0.8);
@@ -63,7 +65,7 @@ const SideModal = ({
             ]}>
             {/* close button  */}
             <View>
-              {headerOff && (
+              {headerOff && closeBTN && (
                 <View style={tw`bg-white absolute top-3 right-3 z-50`}>
                   <Pressable
                     style={tw`p-2 bg-gray-200 rounded-full`}

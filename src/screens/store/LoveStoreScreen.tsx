@@ -205,6 +205,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
       <SideModal
         headerOff
         scrollable
+        closeBTN
         visible={paymentModal}
         setVisible={setPaymentModal}>
         <ScrollView
