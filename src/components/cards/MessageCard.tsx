@@ -43,7 +43,7 @@ const MessageCard = ({
   ImagePressable,
   cardStyle,
 }: MessageCardProps) => {
-  console.log(item?.images);
+  // console.log(item?.images);
 
   return (
     <TouchableOpacity
