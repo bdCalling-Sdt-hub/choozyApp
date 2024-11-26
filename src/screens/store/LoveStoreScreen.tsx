@@ -1,30 +1,55 @@
+import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
   IIConAmericanExpress,
   IIConDiscover,
   IIConMasterCard,
   IIConVisaCard,
 } from '../../icons/IIcons';
-import {IconClose, IconFillLove} from '../../icons/icons';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {IconClose, IconFillEarthWhite, IconFillLove} from '../../icons/icons';
 
-import {Android} from '../../utils/utils';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import DateModal from '../../components/modals/DateModal';
-import FastImage from 'react-native-fast-image';
-import InputText from '../../components/inputs/InputText';
-import LoveCheckout from './LoveCheckout';
-import {NavigProps} from '../../interfaces/NaviProps';
-import React from 'react';
-import SideModal from '../../components/modals/SideModal';
 import {StripeProvider} from '@stripe/stripe-react-native';
+import axios from 'axios';
+import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import TButton from '../../components/buttons/TButton';
-import tw from '../../lib/tailwind';
 import {useSelector} from 'react-redux';
+import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import IwtButton from '../../components/buttons/IwtButton';
+import TButton from '../../components/buttons/TButton';
+import InputText from '../../components/inputs/InputText';
+import DateModal from '../../components/modals/DateModal';
+import SideModal from '../../components/modals/SideModal';
 import {useToast} from '../../components/modals/Toaster';
+import {NavigProps} from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
+import {formatCurrency} from '../../utils/currencyFomator';
+import {Android} from '../../utils/utils';
+import LoveCheckout from './LoveCheckout';
+import Countries from './countries.json';
+
+const handleExchangeRate = async () => {
+  const res = await axios.get(
+    `https://v6.exchangerate-api.com/v6/abac13c63695c04cc1d7ac4f/latest/USD`,
+  );
+
+  return res?.data;
+};
 
 const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
+  const [countryModal, setCountryModal] = React.useState(false);
+  const [selectedCurrency, setSelectedCurrency] = React.useState<
+    (typeof Countries)[0]
+  >({
+    country: 'United States',
+    currency_code: 'USD',
+    locale: 'en-US',
+  });
+  const [allConversionRate, setAllConversionRate] = React.useState<
+    [{country: string; currency_code: string; locale: string}]
+  >([{country: 'United States', currency_code: 'USD', locale: 'en-US'}]);
+  const [calculateCurrency, setCalculateCurrency] = React.useState('');
+
   const {closeToast, showToast} = useToast();
+  // console.log(Countries);
   const extra = useSelector(state => state?.extra);
   // console.log(extra);
   const [close, setClose] = React.useState(false);
@@ -36,18 +61,27 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
   const [customerName, setCustomerName] = React.useState('');
   const [customerEmail, setCustomerEmail] = React.useState('');
 
+  React.useEffect(() => {
+    handleExchangeRate(selectedCurrency?.currency_code).then(res => {
+      setAllConversionRate(res?.conversion_rates);
+    });
+  }, [selectedCurrency]);
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
         onPress={() => navigation?.goBack()}
         containerStyle={tw`justify-between`}
         ComponentBtn={
-          <View>
-            <FastImage
-              source={{uri: 'https://randomuser.me/api/portraits/men/19.jpg'}}
-              style={tw`w-8 h-8 rounded-xl`}
-            />
-          </View>
+          <IwtButton
+            title={`${selectedCurrency?.currency_code}`}
+            titleStyle={tw`text-white text-xs`}
+            svg={IconFillEarthWhite}
+            onPress={() => {
+              setCountryModal(true);
+            }}
+            containerStyle={tw`p-0 bg-primary self-end w-22 gap-2  items-center justify-center h-7 rounded-md`}
+          />
         }
       />
       <ScrollView
@@ -123,18 +157,29 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                 </Text>
                 <Text
                   style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-                  ${extra?.lovePrice}
+                  {formatCurrency(
+                    extra?.lovePrice *
+                      allConversionRate[selectedCurrency?.currency_code] || 0,
+                    selectedCurrency?.currency_code,
+                    selectedCurrency?.locale,
+                  )}
                 </Text>
               </View>
 
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
                   style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-                  Total ({coin} * {extra?.lovePrice})
+                  Total
                 </Text>
                 <Text
                   style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-                  ${parseInt(coin * extra?.lovePrice).toFixed(2)}
+                  {formatCurrency(
+                    extra?.lovePrice *
+                      allConversionRate[selectedCurrency?.currency_code] *
+                      coin || 0,
+                    selectedCurrency?.currency_code,
+                    selectedCurrency?.locale,
+                  )}
                 </Text>
               </View>
             </View>
@@ -223,6 +268,46 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
         setVisible={setDateModal}
         visible={dateModal}
       />
+
+      <SideModal headerOff visible={countryModal} setVisible={setCountryModal}>
+        <View style={tw` bg-white p-4  `}>
+          <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
+            Select Country
+          </Text>
+        </View>
+
+        <FlatList
+          contentContainerStyle={tw`pb-12 bg-white`}
+          data={Countries}
+          renderItem={({item}) => (
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedCurrency(item);
+                  setCountryModal(false);
+                }}
+                style={tw`h-14 ${
+                  Android
+                    ? `border-dashed border-[1px] border-gray-200 ${
+                        selectedCurrency.currency_code == item.currency_code
+                          ? 'bg-primary'
+                          : ''
+                      }`
+                    : ''
+                } rounded-2xl flex-row items-center  px-4 justify-between`}>
+                <Text
+                  style={tw`text-black ${
+                    selectedCurrency.currency_code == item.currency_code
+                      ? 'text-white'
+                      : ''
+                  } font-NunitoSansBold text-sm`}>
+                  {item.country}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </SideModal>
     </View>
   );
 };
