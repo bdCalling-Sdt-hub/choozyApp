@@ -121,6 +121,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
         data={groupData?.data}
         renderItem={({item, index}) => (
           <MessageCard
+            cardStyle="message"
             onPress={() => {
               socket?.emit('join_group', {
                 id: item?.group_id,

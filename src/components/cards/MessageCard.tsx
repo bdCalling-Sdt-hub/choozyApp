@@ -22,6 +22,7 @@ interface MessageCardProps {
   Component?: React.ReactNode;
   disabled?: boolean;
   ImagePressable?: boolean;
+  cardStyle?: 'message' | 'group' | 'notification' | 'profile';
 }
 
 // three part are divided 1= is image part 2= is name and title part 3= is icons and options part
@@ -40,7 +41,10 @@ const MessageCard = ({
   Component,
   disabled,
   ImagePressable,
+  cardStyle,
 }: MessageCardProps) => {
+  console.log(item?.images);
+
   return (
     <TouchableOpacity
       disabled={disabled}
@@ -80,7 +84,7 @@ const MessageCard = ({
             </Text>
           )}
 
-          {item.last_message && (
+          {item.last_message ? (
             <Text
               style={[
                 tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
@@ -88,16 +92,16 @@ const MessageCard = ({
               ]}>
               {item.last_message}
             </Text>
-          )}
-
-          {item.image && (
-            <Text
-              style={[
-                tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
-                subTitleStyle,
-              ]}>
-              send a image
-            </Text>
+          ) : (
+            cardStyle === 'message' && (
+              <Text
+                style={[
+                  tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
+                  subTitleStyle,
+                ]}>
+                send a image
+              </Text>
+            )
           )}
         </View>
       )}

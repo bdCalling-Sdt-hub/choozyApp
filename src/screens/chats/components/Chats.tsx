@@ -1,15 +1,15 @@
 import {FlatList, RefreshControl, View} from 'react-native';
 import {PrimaryColor, height} from '../../../utils/utils';
 
-import {IconSearch} from '../../../icons/icons';
-import InputText from '../../../components/inputs/InputText';
-import MessageCard from '../../../components/cards/MessageCard';
-import {NavigProps} from '../../../interfaces/NaviProps';
-import NoFoundCard from '../../../components/cards/NoFoundCard';
 import React from 'react';
-import {getSocket} from '../../../redux/services/socket';
+import MessageCard from '../../../components/cards/MessageCard';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
+import InputText from '../../../components/inputs/InputText';
+import {IconSearch} from '../../../icons/icons';
+import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useGetUserChatsQuery} from '../../../redux/apiSlices/message';
+import {getSocket} from '../../../redux/services/socket';
 
 const Chats = ({navigation}: NavigProps<null>) => {
   const {data: MessagesData, isLoading, refetch} = useGetUserChatsQuery({});
@@ -67,6 +67,7 @@ const Chats = ({navigation}: NavigProps<null>) => {
         renderItem={({item}) => (
           <>
             <MessageCard
+              cardStyle="message"
               onPress={() =>
                 navigation?.navigate('SingleMessage', {id: item.id, item})
               }
