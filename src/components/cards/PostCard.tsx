@@ -2,13 +2,13 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {IconComment, IconFillLove, IconVThreeDots} from '../../icons/icons';
 import {height, width} from '../../utils/utils';
 
-import React from 'react';
 import FastImage from 'react-native-fast-image';
+import IButton from '../buttons/IButton';
+import {INewpaper} from '../../redux/interface/newpaper';
+import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
 import {useLikeUnlikeMutation} from '../../redux/apiSlices/newsFeetSlices';
-import {INewpaper} from '../../redux/interface/newpaper';
-import IButton from '../buttons/IButton';
 
 interface PostCardProps {
   item: INewpaper;
@@ -60,9 +60,17 @@ const PostCard = ({
             <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
               {item?.user?.full_name}
             </Text>
-            <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
-              {item?.user?.user_name}
-            </Text>
+            <View style={tw`flex-row gap-2`}>
+              <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
+                {item?.user?.user_name}
+              </Text>
+              {item?.privacy && item?.privacy !== 'public' && (
+                <Text
+                  style={tw`text-[8px] text-[#A5A3A9] font-NunitoSansRegular bg-gray-200 rounded-md py-[1px] px-1`}>
+                  {item?.privacy}
+                </Text>
+              )}
+            </View>
           </View>
         </TouchableOpacity>
         {actionOptions && (

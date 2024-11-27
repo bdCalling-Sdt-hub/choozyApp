@@ -5,13 +5,13 @@ import {
   useUserFriendRequestsQuery,
 } from '../../redux/apiSlices/contactSlices';
 
-import React from 'react';
 import BackButton from '../../components/backHeader/BackButton';
-import TButton from '../../components/buttons/TButton';
 import MessageCard from '../../components/cards/MessageCard';
 import {NavigProps} from '../../interfaces/NaviProps';
-import tw from '../../lib/tailwind';
 import {PrimaryColor} from '../../utils/utils';
+import React from 'react';
+import TButton from '../../components/buttons/TButton';
+import tw from '../../lib/tailwind';
 
 const RequestContacts = ({navigation}: NavigProps<null>) => {
   const {
@@ -63,8 +63,8 @@ const RequestContacts = ({navigation}: NavigProps<null>) => {
               titleStyle={tw`text-[#1D1929] text-sm`}
               item={{
                 image: item.image,
-                name: item.full_name,
-                // lastMessage: item.user_name,
+                full_name: item.full_name,
+                last_message: '@' + item.user_name,
               }}
               Component={
                 <View style={tw`flex-row gap-3 items-center `}>

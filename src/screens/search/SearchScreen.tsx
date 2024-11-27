@@ -1,25 +1,25 @@
-import React, {useCallback} from 'react';
 import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {IconClose, IconSearch, IconSend} from '../../icons/icons';
+import React, {useCallback} from 'react';
 
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
-import {useSelector} from 'react-redux';
-import IButton from '../../components/buttons/IButton';
-import SimpleButton from '../../components/buttons/SimpleButton';
-import TButton from '../../components/buttons/TButton';
 import CommentCard from '../../components/cards/CommentCard';
+import FastImage from 'react-native-fast-image';
+import IButton from '../../components/buttons/IButton';
+import {INewpaper} from '../../redux/interface/newpaper';
+import {ISearchResponse} from '../../redux/interface/search';
+import InputText from '../../components/inputs/InputText';
 import MessageCard from '../../components/cards/MessageCard';
+import {NavigProps} from '../../interfaces/NaviProps';
 import PostCard from '../../components/cards/PostCard';
 import ProductCard from '../../components/cards/ProductCard';
-import InputText from '../../components/inputs/InputText';
 import SideModal from '../../components/modals/SideModal';
-import {NavigProps} from '../../interfaces/NaviProps';
+import SimpleButton from '../../components/buttons/SimpleButton';
+import {SvgXml} from 'react-native-svg';
+import TButton from '../../components/buttons/TButton';
 import tw from '../../lib/tailwind';
 import {useCommentMutation} from '../../redux/apiSlices/newsFeetSlices';
 import {useLazySearchQuery} from '../../redux/apiSlices/searchSlices';
-import {INewpaper} from '../../redux/interface/newpaper';
-import {ISearchResponse} from '../../redux/interface/search';
+import {useSelector} from 'react-redux';
 
 const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [option, setOption] = React.useState('All');
@@ -262,8 +262,8 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                           titleStyle={tw`text-[#1D1929] text-sm`}
                           item={{
                             image: item.image,
-                            name: item.full_name,
-                            lastMessage: '@' + item.user_name,
+                            full_name: item.full_name,
+                            last_message: '@' + item.user_name,
                           }}
                           Component={
                             <TButton

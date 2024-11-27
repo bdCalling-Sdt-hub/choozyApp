@@ -1,3 +1,4 @@
+import {Android, useImagePicker} from '../../utils/utils';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
   useGetProfileQuery,
@@ -8,19 +9,18 @@ import {
   usePrivacyPrivateMutation,
   usePrivacyPublicMutation,
 } from '../../redux/apiSlices/profilePrivacy';
-import {Android, useImagePicker} from '../../utils/utils';
 
-import React from 'react';
-import FastImage from 'react-native-fast-image';
 import {Asset} from 'react-native-image-picker';
-import {SvgXml} from 'react-native-svg';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import TButton from '../../components/buttons/TButton';
-import InputText from '../../components/inputs/InputText';
-import {useToast} from '../../components/modals/Toaster';
+import FastImage from 'react-native-fast-image';
 import {IconFillCamera} from '../../icons/icons';
+import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
+import {SvgXml} from 'react-native-svg';
+import TButton from '../../components/buttons/TButton';
 import tw from '../../lib/tailwind';
+import {useToast} from '../../components/modals/Toaster';
 
 const ProfileEdit = ({navigation}: NavigProps<any>) => {
   const {showToast, closeToast} = useToast();
@@ -32,6 +32,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
     bio?: string;
     image?: Asset;
     location?: string;
+    contact?: string;
     _method?: 'PUT';
   }>({
     full_name: userProfile?.data?.full_name || '',
@@ -39,6 +40,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
     bio: userProfile?.data?.bio || '',
     image: undefined,
     location: userProfile?.data?.location || '',
+    contact: userProfile?.data?.contact || '',
     _method: 'PUT',
   });
 
@@ -120,6 +122,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
     userInfo.email && formData.append('email', userInfo?.email || '');
     userInfo?.bio && formData.append('bio', userInfo?.bio || '');
     userInfo?.location && formData.append('location', userInfo?.location || '');
+    userInfo?.contact && formData.append('contact', userInfo?.contact || '');
     formData.append('_method', 'PUT');
 
     const res = await updatedProfile(formData);
@@ -184,7 +187,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
             </TouchableOpacity>
             <View
               style={tw`gap-6  pb-10 ${
-                Android ? 'border-dashed border-b-[1px] border-t-[#E5E5E5]' : ''
+                Android ? 'border-dashed border-b-[1px] border-b-[#E5E5E5]' : ''
               }`}>
               <View style={tw`justify-center items-center `}>
                 <Text
@@ -269,11 +272,18 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
           </View>
           <View style={tw` h-14`}>
             <InputText
+              placeholder="contact number"
+              floatingPlaceholder
+              value={userInfo?.contact}
+              onChangeText={e => setUserInfo({...userInfo, contact: e})}
+            />
+          </View>
+          <View style={tw` h-14`}>
+            <InputText
               placeholder="location"
               floatingPlaceholder
               value={userInfo?.location}
               onChangeText={e => setUserInfo({...userInfo, location: e})}
-              defaultValue="Times squre ,USA"
             />
           </View>
         </View>

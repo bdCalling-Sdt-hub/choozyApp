@@ -39,7 +39,9 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
     isLoading: isLoadingProfile,
   } = useGetProfileQuery({});
 
-  const {data: transaction} = useGetPaymentHistoryQuery({});
+  const {data: transaction, refetch: walletRefetch} = useGetPaymentHistoryQuery(
+    {},
+  );
 
   const [requestLove] = useLoveRequestMutation({});
   const [transferLove] = useLoveTransferMutation({});
@@ -130,7 +132,10 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
         refreshControl={
           <RefreshControl
             refreshing={isLoadingProfile}
-            onRefresh={refetchProfile}
+            onRefresh={() => {
+              walletRefetch();
+              refetchProfile();
+            }}
             colors={[PrimaryColor]}
           />
         }

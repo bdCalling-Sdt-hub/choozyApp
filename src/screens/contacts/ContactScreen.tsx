@@ -1,4 +1,10 @@
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {IconMessageWhite, IconSearch} from '../../icons/icons';
 import {
   useUserFriendQuery,
@@ -9,6 +15,7 @@ import InputText from '../../components/inputs/InputText';
 import MessageCard from '../../components/cards/MessageCard';
 import {NavigProps} from '../../interfaces/NaviProps';
 import NoFoundCard from '../../components/cards/NoFoundCard';
+import {PrimaryColor} from '../../utils/utils';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
@@ -65,6 +72,16 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
         )}
       </View>
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={contactsLoading || allContactRequestLoading}
+            onRefresh={() => {
+              contactsRefetch();
+              allContactRequestRefetch();
+            }}
+            colors={[PrimaryColor]}
+          />
+        }
         refreshing={contactsLoading || allContactRequestLoading}
         onRefresh={() => {
           contactsRefetch();

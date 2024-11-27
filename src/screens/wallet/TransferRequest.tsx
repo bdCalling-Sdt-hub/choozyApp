@@ -48,11 +48,12 @@ const TransferRequest = ({navigation}: NavigProps<null>) => {
 
   const [amountLove, setAmountLove] = React.useState('');
   const handleAccept = async () => {
-    const transactions =
-      (Number(amountLove) * transactionsFee) / 100 + parseFloat(amountLove);
+    const transactions = (
+      Number(amountLove) -
+      (Number(selectItem?.amount) * transactionsFee) / 100
+    ).toFixed(2);
 
-    console.log(transactions, selectItem?.id, amountLove);
-
+    // console.log(transactions);
     const res = await acceptRequest({
       id: selectItem?.id,
       data: {
@@ -89,9 +90,6 @@ const TransferRequest = ({navigation}: NavigProps<null>) => {
       });
     }
   };
-
-  console.log(request);
-
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithTitle
@@ -113,7 +111,13 @@ const TransferRequest = ({navigation}: NavigProps<null>) => {
           <TransferRequestCard
             onPressAccept={() => {
               setSelectItem(item);
-              setAmountLove(item?.amount);
+              setAmountLove(
+                `${
+                  Number(item.amount) +
+                  (Number(item.amount) * transactionsFee) / 100
+                }`,
+              );
+
               setShowTransferModal(true);
             }}
             onPressDecline={() => {
@@ -216,8 +220,10 @@ const TransferRequest = ({navigation}: NavigProps<null>) => {
           <View style={tw`my-2`}>
             <Text>
               The receiver will received only{' '}
-              {Number(amountLove) -
-                (Number(amountLove) * transactionsFee) / 100}
+              {(
+                Number(amountLove) -
+                (Number(selectItem?.amount) * transactionsFee) / 100
+              ).toFixed(2)}
             </Text>
           </View>
           <View

@@ -108,7 +108,6 @@ const OtherWallPost = ({navigation, userId}: OtherWallPost) => {
             data={isComment?.item?.comments}
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
-            keyboardDismissMode="interactive"
             renderItem={({item}) => {
               return (
                 <View style={tw`px-4 pt-4`}>

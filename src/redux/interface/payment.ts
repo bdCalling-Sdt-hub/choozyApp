@@ -17,7 +17,7 @@ export interface ITransactions {
     email: string;
     image: string;
   };
-  status: 'Send' | 'Buy' | 'Purchase' | 'Receive';
+  status: 'Send' | 'Buy' | 'Purchase' | 'Received';
 
   created_at: string;
 }

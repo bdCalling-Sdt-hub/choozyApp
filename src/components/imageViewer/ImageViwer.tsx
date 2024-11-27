@@ -1,3 +1,16 @@
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Modal,
+  PermissionsAndroid,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Animated, {
   interpolate,
   runOnJS,
@@ -7,26 +20,17 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {
-  Dimensions,
-  Image,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
   Gesture,
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import React, {useRef, useState} from 'react';
 
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
+import RNFS from 'react-native-fs';
 
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 interface ImageViewProps {
-  source: any; // Image source (required)
+  source: {uri: string}; // Image source (required)
   style?: any; // Custom styles for the thumbnail
   modalBackgroundStyle?: any; // Style for the modal background
   headerStyle?: any; // Style for the header container
@@ -222,6 +226,40 @@ const ImageView: React.FC<ImageViewProps> = ({
     );
   };
 
+  const handleDownload = async () => {
+    if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Permission Required',
+          message: 'The app needs access to your storage to download images.',
+        },
+      );
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        Alert.alert(
+          'Permission Denied',
+          'Cannot download image without storage permission.',
+        );
+        return;
+      }
+    }
+
+    const fileName = source.uri.split('/').pop();
+    const path = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+    try {
+      await RNFS.downloadFile({
+        fromUrl: source.uri,
+        toFile: path,
+      }).promise;
+      Alert.alert('Download Successful', 'Image downloaded successfully.');
+    } catch (error) {
+      Alert.alert(
+        'Download Failed',
+        'An error occurred while downloading the image.',
+      );
+    }
+  };
+
   return (
     <>
       <Pressable onPress={handleOpenModal}>
@@ -242,6 +280,9 @@ const ImageView: React.FC<ImageViewProps> = ({
                 <Text style={[styles.closeButton, closeButtonStyle]}>
                   Close
                 </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleDownload()}>
+                <Text style={styles.downloadButton}>Download</Text>
               </TouchableOpacity>
             </View>
             <GestureDetector gesture={combinedGesture}>
@@ -274,10 +315,18 @@ const styles = StyleSheet.create({
     top: 50,
     right: 20,
     zIndex: 1,
+    flexDirection: 'row-reverse',
+    gap: 15,
   },
   closeButton: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  downloadButton: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 15,
   },
 });

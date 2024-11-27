@@ -14,7 +14,7 @@ import {
   IconPublic,
   IconStore,
   IconStoreBlue,
-  IconUser,
+  IconTwoUser,
 } from '../../icons/icons';
 import React, {Suspense} from 'react';
 import {
@@ -137,16 +137,22 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
               <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
                 {wallData?.data?.full_name}
               </Text>
-              <View style={tw` px-2 rounded-full`}>
+              <View style={tw` px-1 rounded-full`}>
                 {wallData?.data?.privacy === 'public' ? (
                   <SvgXml xml={IconPublic} width={10} />
                 ) : wallData?.data?.privacy === 'private' ? (
                   <SvgXml xml={IconLock} width={10} />
                 ) : (
-                  <SvgXml xml={IconUser} width={10} />
+                  <SvgXml xml={IconTwoUser} width={10} />
                 )}
               </View>
             </View>
+            {wallData?.data?.contact && (
+              <Text style={tw`text-color-Black400 font-NunitoSansBold text-xs`}>
+                {wallData?.data?.contact}
+              </Text>
+            )}
+
             <Text
               style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
               {wallData?.data?.bio}

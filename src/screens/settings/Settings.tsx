@@ -1,15 +1,15 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import React from 'react';
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
+import {Android} from '../../utils/utils';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import InputText from '../../components/inputs/InputText';
+import FastImage from 'react-native-fast-image';
 import {IconWrite} from '../../icons/icons';
+import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
+import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
 import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
-import {Android} from '../../utils/utils';
 
 const Settings = ({navigation}: NavigProps<any>) => {
   const {data: userProfile} = useGetProfileQuery({});
@@ -59,7 +59,9 @@ const Settings = ({navigation}: NavigProps<any>) => {
           </View>
           <View
             style={tw`gap-6 ${
-              Android ? 'border-dashed border-b-[1px] border-t-[#E5E5E5]' : ''
+              Android
+                ? 'border-dashed w-full border-b-[1px]  border-b-[#E5E5E5]'
+                : ''
             }`}>
             <View style={tw`justify-center items-center `}>
               <Text
@@ -71,7 +73,8 @@ const Settings = ({navigation}: NavigProps<any>) => {
                 {userProfile?.data?.email}
               </Text>
             </View>
-            <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-sm `}>
+            <Text
+              style={tw`text-[#A5A3A9] text-center font-NunitoSansRegular text-sm pb-2 `}>
               {userProfile?.data?.bio}
             </Text>
           </View>
@@ -83,6 +86,13 @@ const Settings = ({navigation}: NavigProps<any>) => {
           <InputText
             editable={false}
             placeholder={userProfile?.data?.full_name}
+            floatingPlaceholder
+          />
+        </View>
+        <View style={tw`h-14`}>
+          <InputText
+            editable={false}
+            placeholder={userProfile?.data?.contact}
             floatingPlaceholder
           />
         </View>

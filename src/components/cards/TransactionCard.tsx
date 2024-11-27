@@ -1,11 +1,11 @@
-import {Text, View} from 'react-native';
 import {IconFillLove, IconSendDown, IconSendUp} from '../../icons/icons';
+import {Text, View} from 'react-native';
 
-import React from 'react';
 import FastImage from 'react-native-fast-image';
+import {ITransactions} from '../../redux/interface/payment';
+import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
-import {ITransactions} from '../../redux/interface/payment';
 
 interface TransactionCardProps {
   item: ITransactions;
@@ -55,7 +55,7 @@ const TransactionCard = ({item}: TransactionCardProps) => {
             style={tw`w-6 h-6`}
           />
           <Text style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
-            {item?.status == 'Buy' || item?.status == 'Receive'
+            {item?.status == 'Buy' || item?.status == 'Received'
               ? '+' + parseFloat(item?.total_love).toFixed(2)
               : '-' + parseFloat(item?.total_love).toFixed(2)}
           </Text>

@@ -32,6 +32,7 @@ export interface IUserProfile {
     privacy: string;
     email: string;
     image: string;
+    contact: string;
     friends_count: 2;
     news_feeds: Array<INewpaper>;
     shop: {
@@ -54,6 +55,7 @@ export interface IProfile {
     bio: string;
     privicy: 'public' | 'private' | 'friends';
     location: string;
+    contact: string;
     balance: string;
     image: string;
     shop: {
