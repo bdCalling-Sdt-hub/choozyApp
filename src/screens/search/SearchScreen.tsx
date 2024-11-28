@@ -1,25 +1,25 @@
+import React, {useCallback} from 'react';
 import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {IconClose, IconSearch, IconSend} from '../../icons/icons';
-import React, {useCallback} from 'react';
 
-import CommentCard from '../../components/cards/CommentCard';
 import FastImage from 'react-native-fast-image';
+import {SvgXml} from 'react-native-svg';
+import {useSelector} from 'react-redux';
 import IButton from '../../components/buttons/IButton';
-import {INewpaper} from '../../redux/interface/newpaper';
-import {ISearchResponse} from '../../redux/interface/search';
-import InputText from '../../components/inputs/InputText';
+import SimpleButton from '../../components/buttons/SimpleButton';
+import TButton from '../../components/buttons/TButton';
+import CommentCard from '../../components/cards/CommentCard';
 import MessageCard from '../../components/cards/MessageCard';
-import {NavigProps} from '../../interfaces/NaviProps';
 import PostCard from '../../components/cards/PostCard';
 import ProductCard from '../../components/cards/ProductCard';
+import InputText from '../../components/inputs/InputText';
 import SideModal from '../../components/modals/SideModal';
-import SimpleButton from '../../components/buttons/SimpleButton';
-import {SvgXml} from 'react-native-svg';
-import TButton from '../../components/buttons/TButton';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useCommentMutation} from '../../redux/apiSlices/newsFeetSlices';
 import {useLazySearchQuery} from '../../redux/apiSlices/searchSlices';
-import {useSelector} from 'react-redux';
+import {INewpaper} from '../../redux/interface/newpaper';
+import {ISearchResponse} from '../../redux/interface/search';
 
 const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [option, setOption] = React.useState('All');
@@ -168,11 +168,11 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                             setComment={setIsComment}
                             onPress={() => {
                               // console.log(userProfile?.data.id);
-                              if (user.id === item?.user_id) {
+                              if (user.id === item?.user?.user_id) {
                                 navigation?.navigate('Wall');
                               } else {
                                 navigation?.navigate('OtherWall', {
-                                  id: item?.user_id,
+                                  id: item?.user?.user_id,
                                 });
                               }
                             }}

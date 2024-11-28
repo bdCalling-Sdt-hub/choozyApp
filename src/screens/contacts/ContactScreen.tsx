@@ -104,7 +104,11 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
           <>
             <MessageCard
               // disabled
-              onPress={() => navigation?.navigate('OtherWall')}
+              onPress={() =>
+                navigation?.navigate('OtherWall', {
+                  id: item.user_id,
+                })
+              }
               offPartThree
               titleContainerStyle={tw`gap-1`}
               joinBtn

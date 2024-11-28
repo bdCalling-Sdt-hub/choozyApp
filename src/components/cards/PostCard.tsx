@@ -33,7 +33,7 @@ const PostCard = ({
   // console.log('recall');
   // console.log(item?.user?.image);
   return (
-    <View style={tw` p-4   bg-white `}>
+    <View style={tw` p-4   bg-white shadow-sm m-2 rounded-md`}>
       <View style={tw`flex-row justify-between items-center`}>
         <TouchableOpacity
           onPress={onPress}
