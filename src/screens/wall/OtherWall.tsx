@@ -7,13 +7,14 @@ import {
   View,
 } from 'react-native';
 import {
+  IconCircleLock,
   IconLock,
   IconPost,
   IconPostBlue,
   IconPublic,
   IconStore,
   IconStoreBlue,
-  IconUser,
+  IconTwoUser,
 } from '../../icons/icons';
 import React, {Suspense} from 'react';
 import {
@@ -26,6 +27,7 @@ import {
 
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 import {NavigProps} from '../../interfaces/NaviProps';
 import {PrimaryColor} from '../../utils/utils';
 import {SvgXml} from 'react-native-svg';
@@ -139,6 +141,8 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
     );
   };
 
+  console.log(wallData?.data?.privicy, alreadyFriend());
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -148,25 +152,29 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
           navigation?.goBack();
         }}
         ComponentBtn={
-          <TButton
-            containerStyle={tw`self-center p-2 items-center bg-primary`}
-            title={
-              alreadyFriend()
-                ? 'Remove Contact'
-                : alreadyFriendRequest()
-                ? 'Cancel Request'
-                : 'Add Contact'
-            }
-            onPress={() => {
-              if (alreadyFriendRequest()) {
-                handleCancelRequest();
-              } else if (alreadyFriend()) {
-                handleUnFriendRequest();
-              } else {
-                handleSendFriendRequest();
-              }
-            }}
-          />
+          <>
+            {wallData?.data?.privacy === 'public' && (
+              <TButton
+                containerStyle={tw`self-center p-2 items-center bg-primary`}
+                title={
+                  alreadyFriend()
+                    ? 'Remove Contact'
+                    : alreadyFriendRequest()
+                    ? 'Cancel Request'
+                    : 'Add Contact'
+                }
+                onPress={() => {
+                  if (alreadyFriendRequest()) {
+                    handleCancelRequest();
+                  } else if (alreadyFriend()) {
+                    handleUnFriendRequest();
+                  } else {
+                    handleSendFriendRequest();
+                  }
+                }}
+              />
+            )}
+          </>
         }
       />
       <ScrollView
@@ -236,22 +244,68 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
               <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
                 {wallData?.data?.full_name}
               </Text>
-              <View style={tw` px-2 rounded-full`}>
+              {wallData?.data?.user_name && (
+                <Text
+                  style={tw`text-color-Black400 font-NunitoSansBold text-[10px]`}>
+                  @{wallData?.data?.user_name}
+                </Text>
+              )}
+              <View style={tw` px-1 rounded-full`}>
                 {wallData?.data?.privacy === 'public' ? (
                   <SvgXml xml={IconPublic} width={10} />
                 ) : wallData?.data?.privacy === 'private' ? (
                   <SvgXml xml={IconLock} width={10} />
                 ) : (
-                  <SvgXml xml={IconUser} width={10} />
+                  <SvgXml xml={IconTwoUser} width={10} />
                 )}
               </View>
             </View>
+
+            {wallData?.data?.contact &&
+              wallData?.data?.privacy !== 'private' && (
+                <Text
+                  style={tw`text-color-Black400 font-NunitoSansBold text-xs`}>
+                  {wallData?.data?.contact}
+                </Text>
+              )}
+
             <Text
               style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
               {wallData?.data?.bio}
             </Text>
           </View>
         </View>
+
+        {wallData?.data?.privacy === 'private' && (
+          <View style={tw`absolute w-full h-screen flex-1`}>
+            <LinearGradient
+              colors={[
+                'rgba(255, 255, 255, 0.1)',
+                'rgba(255, 255, 255, 0.8)',
+                'rgba(255, 255, 255, 0.9)',
+                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 1)',
+                'rgba(255, 255, 255, 1)',
+              ]}
+              start={{x: 0, y: 0}}
+              end={{x: 0, y: 1}}
+              style={tw`flex-1 h-full`}></LinearGradient>
+
+            <View
+              style={tw`absolute self-center z-50 h-[80%] items-center justify-center opacity-50 gap-2`}>
+              <View style={tw` self-center opacity-20`}>
+                <SvgXml height={100} width={100} xml={IconCircleLock} />
+              </View>
+              <Text style={tw`text-[#A5A3A9] font-NunitoSansBold text-base`}>
+                {wallData?.message}
+              </Text>
+            </View>
+          </View>
+        )}
 
         {/*================= options here =================== */}
         {wallData?.data?.shop ? (
@@ -290,49 +344,54 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => setOptions('post')}
-              style={tw`h-11 px-2 flex-row gap-2  
+          wallData?.data?.privacy !== 'private' && (
+            <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setOptions('post')}
+                style={tw`h-11 px-2 flex-row gap-2  
               
                    border-b-[3px] border-b-primary
               
                 justify-center items-center`}>
-              <SvgXml xml={IconPostBlue} />
-              <Text style={tw`  text-primary  font-NunitoSansBold text-sm`}>
-                Post
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {options == 'post' ? (
-          <Suspense
-            fallback={
-              <View>
-                <ActivityIndicator color={PrimaryColor} />
-              </View>
-            }>
-            <View style={tw`tablet:mx-[30%]`}>
-              <Post
-                userId={route?.params?.id as number}
-                navigation={navigation}
-              />
+                <SvgXml xml={IconPostBlue} />
+                <Text style={tw`  text-primary  font-NunitoSansBold text-sm`}>
+                  Post
+                </Text>
+              </TouchableOpacity>
             </View>
-          </Suspense>
-        ) : (
-          <Suspense
-            fallback={
-              <View>
-                <ActivityIndicator color={PrimaryColor} />
-              </View>
-            }>
-            <Store
-              productData={wallData?.data.formattedProducts}
-              navigation={navigation}
-            />
-          </Suspense>
+          )
+        )}
+        {wallData?.data?.privacy !== 'private' && (
+          <>
+            {options == 'post' ? (
+              <Suspense
+                fallback={
+                  <View>
+                    <ActivityIndicator color={PrimaryColor} />
+                  </View>
+                }>
+                <View style={tw`tablet:mx-[30%]`}>
+                  <Post
+                    userId={route?.params?.id as number}
+                    navigation={navigation}
+                  />
+                </View>
+              </Suspense>
+            ) : (
+              <Suspense
+                fallback={
+                  <View>
+                    <ActivityIndicator color={PrimaryColor} />
+                  </View>
+                }>
+                <Store
+                  productData={wallData?.data.formattedProducts}
+                  navigation={navigation}
+                />
+              </Suspense>
+            )}
+          </>
         )}
       </ScrollView>
     </View>

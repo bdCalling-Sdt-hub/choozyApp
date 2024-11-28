@@ -5,13 +5,13 @@ import {
   useRequestDeliveryMutation,
 } from '../../../redux/apiSlices/order';
 
-import React from 'react';
+import {NavigProps} from '../../../interfaces/NaviProps';
 import NoFoundCard from '../../../components/cards/NoFoundCard';
 import OrderCard from '../../../components/cards/OrderCard';
-import {useToast} from '../../../components/modals/Toaster';
-import {NavigProps} from '../../../interfaces/NaviProps';
-import tw from '../../../lib/tailwind';
 import {PrimaryColor} from '../../../utils/utils';
+import React from 'react';
+import tw from '../../../lib/tailwind';
+import {useToast} from '../../../components/modals/Toaster';
 
 const SellOrder = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -35,6 +35,7 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
       data={sellerOrder?.data}
       renderItem={({item, index}) => (
         <OrderCard
+          cardStyle="seller"
           secondButtonText="Deliver"
           onPressFirstButton={async () => {
             // "accept Order"
@@ -101,14 +102,16 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
             item.status === 'accepted' ||
             item.status === 'acceptDelivery' ||
             item.status === 'deliveryRequest' ||
-            item.status === 'rejectDelivery'
+            item.status === 'rejectDelivery' ||
+            item.status === 'amountReturned'
           }
           onlySecond={
             (item.status !== 'accepted' &&
               item.status !== 'pending' &&
               item.status === 'deliveryRequest') ||
             item.status === 'rejectDelivery' ||
-            item.status === 'acceptDelivery'
+            item.status === 'acceptDelivery' ||
+            item.status === 'amountReturned'
           }
           key={index}
           item={item}

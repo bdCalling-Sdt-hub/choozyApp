@@ -5,19 +5,23 @@ import tw from '../../lib/tailwind'; // Tailwind helper function
 
 interface PriorityCardProps {
   status: string;
+  cardStyle?: 'seller' | 'buyer';
 }
 
-const statusColors = {
-  pending: 'bg-yellow-100 text-yellow-800',
-  canceled: 'bg-red-100 text-red-800',
-  accepted: 'bg-blue-100 text-blue-800',
-  deliveryRequest: 'bg-orange-100 text-orange-800',
-  acceptDelivery: 'bg-green-100 text-green-800',
-  rejectDelivery: 'bg-gray-100 text-gray-800',
-  amountReturned: 'bg-green-100 text-green-800',
-};
+const PriorityCard = ({status, cardStyle}: PriorityCardProps) => {
+  const statusColors = {
+    pending: 'bg-yellow-100 text-yellow-800',
+    canceled: 'bg-red-100 text-red-800',
+    accepted: 'bg-blue-100 text-blue-800',
+    deliveryRequest: 'bg-orange-100 text-orange-800',
+    acceptDelivery: 'bg-green-100 text-green-800',
+    rejectDelivery: 'bg-gray-100 text-gray-800',
+    amountReturned:
+      cardStyle === 'seller'
+        ? 'bg-gray-100 text-gray-800'
+        : 'bg-green-100 text-green-800',
+  };
 
-const PriorityCard = ({status}: PriorityCardProps) => {
   const colorClasses = statusColors[status] || 'bg-gray-100 text-gray-800';
 
   return (

@@ -137,6 +137,12 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
               <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
                 {wallData?.data?.full_name}
               </Text>
+              {wallData?.data?.user_name && (
+                <Text
+                  style={tw`text-color-Black400 font-NunitoSansBold text-[10px]`}>
+                  @{wallData?.data?.user_name}
+                </Text>
+              )}
               <View style={tw` px-1 rounded-full`}>
                 {wallData?.data?.privacy === 'public' ? (
                   <SvgXml xml={IconPublic} width={10} />
@@ -147,6 +153,7 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
                 )}
               </View>
             </View>
+
             {wallData?.data?.contact && (
               <Text style={tw`text-color-Black400 font-NunitoSansBold text-xs`}>
                 {wallData?.data?.contact}

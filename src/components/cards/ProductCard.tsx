@@ -1,11 +1,11 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
-import {IconFillLove} from '../../icons/icons';
-import tw from '../../lib/tailwind';
 import {IProduct} from '../../redux/interface/products';
+import {IconFillLove} from '../../icons/icons';
+import React from 'react';
+import {SvgXml} from 'react-native-svg';
+import tw from '../../lib/tailwind';
 
 export interface IProductCarProps {
   onPress?: () => void;
@@ -32,13 +32,28 @@ const ProductCard = ({
         containerStyle,
       ]}>
       {item?.product_images && (
-        <FastImage
-          style={tw`w-full  h-32 rounded-xl`}
-          resizeMode={FastImage.resizeMode.contain}
-          source={{
-            uri: item?.product_images![0],
-          }}
-        />
+        <View>
+          <FastImage
+            style={tw`w-full  h-32 rounded-xl`}
+            resizeMode={FastImage.resizeMode.cover}
+            source={{
+              uri: item?.product_images![0],
+            }}
+          />
+          {item?.status && (
+            <Text
+              numberOfLines={2}
+              style={tw`absolute right-1 top-1 bg-white px-2 py-1 rounded-md ${
+                item?.status === 'pending'
+                  ? 'text-yellow-500 '
+                  : item?.status === 'cancelled'
+                  ? 'text-red-500'
+                  : 'text-green-500'
+              } font-NunitoSansBold text-xs `}>
+              {item?.status}
+            </Text>
+          )}
+        </View>
       )}
 
       <View style={tw` flex-row justify-between gap-2`}>

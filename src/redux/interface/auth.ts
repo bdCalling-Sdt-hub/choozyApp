@@ -23,7 +23,7 @@ export interface IUser extends IFechtStatus {
   };
 }
 
-export interface IUserProfile {
+export interface IUserProfile extends IFechtStatus {
   data: {
     id: 3;
     full_name: string;

@@ -6,13 +6,13 @@ import {
   useRejectDeliveryMutation,
 } from '../../../redux/apiSlices/order';
 
-import React from 'react';
+import {NavigProps} from '../../../interfaces/NaviProps';
 import NoFoundCard from '../../../components/cards/NoFoundCard';
 import OrderCard from '../../../components/cards/OrderCard';
-import {useToast} from '../../../components/modals/Toaster';
-import {NavigProps} from '../../../interfaces/NaviProps';
-import tw from '../../../lib/tailwind';
 import {PrimaryColor} from '../../../utils/utils';
+import React from 'react';
+import tw from '../../../lib/tailwind';
+import {useToast} from '../../../components/modals/Toaster';
 
 const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -111,7 +111,32 @@ const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
               }
               if (res.error) {
                 showToast({
-                  title: res.error?.message,
+                  title: 'Warning',
+                  content: res.error?.message,
+                  titleStyle: tw`py-8 text-yellow-500 bg-gray-50 font-NunitoSansBold rounded-md`,
+                  buttonStyle: tw`bg-primary`,
+                  onPress: closeToast,
+                });
+              }
+            }
+            if (item.status === 'accepted') {
+              const res = await rejectDelivery({
+                order_id: item.order_id,
+                _method: 'PUT',
+              });
+              console.log(res);
+              if (res.data) {
+                showToast({
+                  title: 'Order Rejected Successfully',
+                  titleStyle: tw`py-8  bg-gray-50 font-NunitoSansBold rounded-md`,
+                  buttonStyle: tw`bg-primary`,
+                  onPress: closeToast,
+                });
+              }
+              if (res.error) {
+                showToast({
+                  title: 'Warning',
+                  content: res.error?.message,
                   titleStyle: tw`py-8 text-yellow-500 bg-gray-50 font-NunitoSansBold rounded-md`,
                   buttonStyle: tw`bg-primary`,
                   onPress: closeToast,
@@ -120,17 +145,22 @@ const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
             }
           }}
           firstButtonText={item.status === 'pending' ? 'Cancel' : 'Accept'}
-          secondButtonText={item.status === 'deliveryRequest' ? 'Reject' : ''}
+          secondButtonText={
+            item.status === 'deliveryRequest' || item.status === 'accepted'
+              ? 'Reject'
+              : ''
+          }
           onlyFirst={
             item.status === 'pending' ||
             item.status === 'acceptDelivery' ||
-            item.status === 'accepted' ||
-            item.status === 'rejectDelivery'
+            item.status === 'rejectDelivery' ||
+            item.status === 'amountReturned'
           }
           onlySecond={
             item.status === 'accepted' ||
             item.status === 'acceptDelivery' ||
-            item.status === 'rejectDelivery'
+            item.status === 'rejectDelivery' ||
+            item.status === 'amountReturned'
           }
           firstButtonStyle={item.status === 'pending' ? tw`bg-red-800` : tw``}
           key={index}

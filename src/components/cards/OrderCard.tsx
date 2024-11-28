@@ -7,8 +7,10 @@ import {
 } from 'react-native';
 
 import {IOrder} from '../../redux/interface/order';
+import {IconFillLove} from '../../icons/icons';
 import PriorityCard from './StatusCard';
 import React from 'react';
+import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind'; // Tailwind helper function
 
 interface OrderCardProps {
@@ -22,6 +24,7 @@ interface OrderCardProps {
   secondButtonStyle?: any;
   onlyFirst?: boolean;
   onlySecond?: boolean;
+  cardStyle?: 'seller' | 'buyer';
 }
 
 const OrderCard = ({
@@ -35,6 +38,7 @@ const OrderCard = ({
   onPressFirstButton,
   onPressSecondButton,
   secondButtonStyle,
+  cardStyle,
 }: OrderCardProps) => {
   // console.log(item);
   // console.log(item?.product?.images);
@@ -55,9 +59,12 @@ const OrderCard = ({
             <Text style={tw`text-lg font-bold text-gray-800`}>
               {item?.product?.product_name}
             </Text>
-            <Text style={tw`text-sm text-gray-500 mt-1`}>
-              Price: ${item?.product?.price?.toFixed(2)}
-            </Text>
+            <View style={tw`flex-row items-center gap-1`}>
+              <Text style={tw`text-sm text-gray-500 mt-1`}>
+                {item?.product?.price}
+              </Text>
+              <SvgXml xml={IconFillLove} width={12} height={12} />
+            </View>
           </View>
         </View>
 
@@ -69,10 +76,15 @@ const OrderCard = ({
           <Text style={tw`text-sm text-gray-600`}>
             <Text style={tw`font-semibold`}>Order ID:</Text> {item?.order_id}
           </Text>
-          <Text style={tw`text-sm text-gray-600`}>
-            <Text style={tw`font-semibold`}>Total Amount:</Text> $
-            {item?.total_amount}
-          </Text>
+          <View style={tw`   flex-row items-center gap-1`}>
+            <Text style={tw`font-semibold text-gray-600`}>Total Amount:</Text>
+            <View style={tw`flex-row items-center gap-1`}>
+              <Text style={tw`text-sm text-gray-500 mt-1`}>
+                {item?.total_amount}
+              </Text>
+              <SvgXml xml={IconFillLove} width={15} height={15} />
+            </View>
+          </View>
 
           <Text style={tw`text-sm text-gray-600`}>
             <Text style={tw`font-semibold`}>Order Date:</Text>{' '}
@@ -82,7 +94,9 @@ const OrderCard = ({
             <Text style={tw`font-semibold`}>Phone:</Text> {item?.phone_number}
           </Text>
           <View style={tw`mt-2`}>
-            {item?.status && <PriorityCard status={item?.status} />}
+            {item?.status && (
+              <PriorityCard cardStyle={cardStyle} status={item?.status} />
+            )}
           </View>
         </View>
 

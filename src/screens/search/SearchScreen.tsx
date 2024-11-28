@@ -82,7 +82,9 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
             setSearchText(text);
           }}
           returnKeyType="done" // you can set returnKeyType like 'done', 'go', etc.
-          onSubmitEditing={() => {}}
+          onSubmitEditing={() => {
+            handleSearch();
+          }}
           svgFirstIcon={IconSearch}
         />
         <IButton

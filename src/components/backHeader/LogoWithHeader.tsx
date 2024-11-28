@@ -69,7 +69,9 @@ const LogoWithHeader = ({
       <View style={tw`flex-row gap-3`}>
         {!offSearch && (
           <IButton
-            onPress={() => setSearchVisible(!searchVisible)}
+            onPress={() => {
+              setSearchVisible(!searchVisible);
+            }}
             svg={IconSearch}
             containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
           />
