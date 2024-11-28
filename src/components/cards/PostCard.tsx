@@ -2,13 +2,13 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {IconComment, IconFillLove, IconVThreeDots} from '../../icons/icons';
 import {height, width} from '../../utils/utils';
 
-import FastImage from 'react-native-fast-image';
-import IButton from '../buttons/IButton';
-import {INewpaper} from '../../redux/interface/newpaper';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
 import {useLikeUnlikeMutation} from '../../redux/apiSlices/newsFeetSlices';
+import {INewpaper} from '../../redux/interface/newpaper';
+import IButton from '../buttons/IButton';
 
 interface PostCardProps {
   item: INewpaper;
@@ -33,7 +33,7 @@ const PostCard = ({
   // console.log('recall');
   // console.log(item?.user?.image);
   return (
-    <View style={tw` p-4 bg-white`}>
+    <View style={tw` p-4   bg-white `}>
       <View style={tw`flex-row justify-between items-center`}>
         <TouchableOpacity
           onPress={onPress}

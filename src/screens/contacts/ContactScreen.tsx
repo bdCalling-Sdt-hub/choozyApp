@@ -5,20 +5,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {IconMessageWhite, IconSearch} from '../../icons/icons';
 import {
   useUserFriendQuery,
   useUserFriendRequestsQuery,
 } from '../../redux/apiSlices/contactSlices';
 
-import InputText from '../../components/inputs/InputText';
-import MessageCard from '../../components/cards/MessageCard';
-import {NavigProps} from '../../interfaces/NaviProps';
-import NoFoundCard from '../../components/cards/NoFoundCard';
-import {PrimaryColor} from '../../utils/utils';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import MessageCard from '../../components/cards/MessageCard';
+import NoFoundCard from '../../components/cards/NoFoundCard';
+import {IconMessageWhite} from '../../icons/icons';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {PrimaryColor} from '../../utils/utils';
 
 const ContactScreen = ({navigation}: NavigProps<any>) => {
   const {
@@ -37,15 +37,24 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================== header part ================= */}
-      <View style={tw`bg-white px-[4%] py-2`}>
-        <View style={tw` gap-3  flex-row justify-center items-center`}>
-          <Text style={tw`text-2xl text-primary900 font-NunitoSansExtraBold`}>
-            Contacts
-          </Text>
-          <View style={tw` h-14 flex-1 `}>
-            <InputText placeholder="Search.." svgSecondIcon={IconSearch} />
-          </View>
-        </View>
+      <View style={tw``}>
+        <LogoWithHeader
+          offMenu
+          searchOffItem={{
+            offPeople: true,
+            offPost: true,
+            offProduct: true,
+          }}
+          onFinish={text => {
+            navigation?.navigate('Search', {
+              text,
+            });
+          }}
+          navigation={navigation}
+        />
+      </View>
+      <View style={tw` px-[4%] py-2`}>
+        <View style={tw` gap-3  flex-row justify-center items-center`}></View>
         {allContactRequest && allContactRequest?.total_requests > 0 && (
           <TouchableOpacity
             onPress={() => {
@@ -88,7 +97,7 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
           allContactRequestRefetch();
         }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`pb-6 bg-white gap-2 px-[2%]`}
+        contentContainerStyle={tw`pb-6  gap-2 px-[2%]`}
         data={contacts?.friends?.data}
         ListEmptyComponent={() => <NoFoundCard title="No Contacts" />}
         renderItem={({item, index}) => (

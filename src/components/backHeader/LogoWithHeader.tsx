@@ -9,17 +9,17 @@ import {
 } from '../../icons/icons';
 
 import {DrawerActions} from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
-import IButton from '../buttons/IButton';
-import InputText from '../inputs/InputText';
-import {NavigProps} from '../../interfaces/NaviProps';
-import NormalModal from '../modals/NormalModal';
 import React from 'react';
-import SearchCard from '../cards/SearchCard';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import searchResults from '../../assets/database/search.json';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetNotificationsQuery} from '../../redux/apiSlices/notificaiton';
+import IButton from '../buttons/IButton';
+import SearchCard from '../cards/SearchCard';
+import InputText from '../inputs/InputText';
+import NormalModal from '../modals/NormalModal';
 
 interface ILogoWithHeader extends NavigProps<null> {
   onPressMenu?: () => void;
@@ -54,7 +54,7 @@ const LogoWithHeader = ({
   const haveNotification = data?.data?.some(n => n.read_at === null);
 
   return (
-    <View style={tw`px-[4%] flex-row justify-between items-center`}>
+    <View style={tw`px-[4%] flex-row justify-between items-center bg-white`}>
       {/*============== image or logo==================  */}
       <View style={tw`py-4 flex-row items-center gap-2`}>
         <FastImage

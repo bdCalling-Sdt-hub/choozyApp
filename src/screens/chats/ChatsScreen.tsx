@@ -1,3 +1,4 @@
+import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   StatusBar,
@@ -5,17 +6,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {Suspense} from 'react';
 
-import ActionModal from '../../components/modals/ActionModal';
-import Chats from './components/Chats';
-import GroupsSection from './components/GroupsSection';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
-import {getSocket} from '../../redux/services/socket';
 import tw from '../../lib/tailwind';
 import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
 import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
+import {getSocket} from '../../redux/services/socket';
+import Chats from './components/Chats';
+import GroupsSection from './components/GroupsSection';
 
 // import Chats from './components/Chats';
 
@@ -58,7 +58,22 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <LogoWithHeader offSearch offMenu navigation={navigation} />
+      <View style={tw``}>
+        <LogoWithHeader
+          offMenu
+          searchOffItem={{
+            offPeople: true,
+            offPost: true,
+            offProduct: true,
+          }}
+          onFinish={text => {
+            navigation?.navigate('Search', {
+              text,
+            });
+          }}
+          navigation={navigation}
+        />
+      </View>
 
       {/*================= options here =================== */}
       <View style={tw`flex-row items-center gap-1 px-[4%] py-2`}>

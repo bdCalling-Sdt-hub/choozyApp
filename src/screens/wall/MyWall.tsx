@@ -1,3 +1,4 @@
+import React, {Suspense} from 'react';
 import {
   ActivityIndicator,
   RefreshControl,
@@ -16,19 +17,18 @@ import {
   IconStoreBlue,
   IconTwoUser,
 } from '../../icons/icons';
-import React, {Suspense} from 'react';
 import {
   useGetOtherUserProfileQuery,
   useGetUserProfileQuery,
 } from '../../redux/apiSlices/authSlice';
 
 import FastImage from 'react-native-fast-image';
-import IButton from '../../components/buttons/IButton';
-import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
-import {NavigProps} from '../../interfaces/NaviProps';
-import {PrimaryColor} from '../../utils/utils';
 import {SvgXml} from 'react-native-svg';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import IButton from '../../components/buttons/IButton';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {PrimaryColor} from '../../utils/utils';
 
 // import Post from './components/Post';
 // import Store from './components/Store';
@@ -59,7 +59,22 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <LogoWithHeader offSearch offMenu navigation={navigation} />
+      <View style={tw``}>
+        <LogoWithHeader
+          offMenu
+          searchOffItem={{
+            offPeople: true,
+            offPost: true,
+            offProduct: true,
+          }}
+          onFinish={text => {
+            navigation?.navigate('Search', {
+              text,
+            });
+          }}
+          navigation={navigation}
+        />
+      </View>
       <ScrollView
         refreshControl={
           <RefreshControl

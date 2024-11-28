@@ -6,13 +6,13 @@ import {
   useRejectDeliveryMutation,
 } from '../../../redux/apiSlices/order';
 
-import {NavigProps} from '../../../interfaces/NaviProps';
+import React from 'react';
 import NoFoundCard from '../../../components/cards/NoFoundCard';
 import OrderCard from '../../../components/cards/OrderCard';
-import {PrimaryColor} from '../../../utils/utils';
-import React from 'react';
-import tw from '../../../lib/tailwind';
 import {useToast} from '../../../components/modals/Toaster';
+import {NavigProps} from '../../../interfaces/NaviProps';
+import tw from '../../../lib/tailwind';
+import {PrimaryColor} from '../../../utils/utils';
 
 const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();

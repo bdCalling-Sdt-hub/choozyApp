@@ -11,24 +11,24 @@ import {
   useLoveTransferMutation,
 } from '../../redux/apiSlices/wallet';
 
-import FastImage from 'react-native-fast-image';
-import InputText from '../../components/inputs/InputText';
-import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
-import {NavigProps} from '../../interfaces/NaviProps';
-import NormalModal from '../../components/modals/NormalModal';
-import {PrimaryColor} from '../../utils/utils';
 import React from 'react';
-import SearchUserCard from './components/SearchUserCard';
-import SimpleButton from '../../components/buttons/SimpleButton';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
+import {useSelector} from 'react-redux';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import SimpleButton from '../../components/buttons/SimpleButton';
 import TButton from '../../components/buttons/TButton';
 import TransactionCard from '../../components/cards/TransactionCard';
-import {extractDateTimeParts} from '../../utils/extractDateTimeParts';
-import tw from '../../lib/tailwind';
-import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
-import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
-import {useSelector} from 'react-redux';
+import InputText from '../../components/inputs/InputText';
+import NormalModal from '../../components/modals/NormalModal';
 import {useToast} from '../../components/modals/Toaster';
+import {NavigProps} from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useGetPaymentHistoryQuery} from '../../redux/apiSlices/paymentSlices';
+import {extractDateTimeParts} from '../../utils/extractDateTimeParts';
+import {PrimaryColor} from '../../utils/utils';
+import SearchUserCard from './components/SearchUserCard';
 
 const WalletScreen = ({navigation}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -126,7 +126,22 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <LogoWithHeader offSearch offMenu navigation={navigation} />
+      <View style={tw``}>
+        <LogoWithHeader
+          offMenu
+          searchOffItem={{
+            offPeople: true,
+            offPost: true,
+            offProduct: true,
+          }}
+          onFinish={text => {
+            navigation?.navigate('Search', {
+              text,
+            });
+          }}
+          navigation={navigation}
+        />
+      </View>
       <FlatList
         showsVerticalScrollIndicator={false}
         refreshControl={
