@@ -35,11 +35,12 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
       data={sellerOrder?.data}
       renderItem={({item, index}) => (
         <OrderCard
+          // navigation={navigation}
           cardStyle="seller"
           secondButtonText="Deliver"
           onPressFirstButton={async () => {
             // "accept Order"
-            if (item.status === 'pending') {
+            if (item.status === 'Pending') {
               const res = await acceptOrder({
                 order_id: item.order_id,
                 _method: 'PUT',
@@ -63,7 +64,7 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
               }
             }
             // "request Delivery"
-            if (item.status === 'accepted') {
+            if (item.status === 'Accepted') {
               const res = await requestDelivery({
                 order_id: item.order_id,
                 _method: 'PUT',
@@ -88,30 +89,30 @@ const SellOrder = ({navigation}: NavigProps<null>) => {
             }
           }}
           firstButtonText={
-            item.status === 'pending'
+            item.status === 'Pending'
               ? 'Accept Order'
-              : item.status === 'accepted'
+              : item.status === 'Accepted'
               ? 'Request Delivery'
               : 'Accept'
           }
           firstButtonStyle={
-            item.status === 'pending' ? tw`bg-yellow-600` : tw``
+            item.status === 'Pending' ? tw`bg-yellow-600` : tw``
           }
           onlyFirst={
-            item.status === 'pending' ||
-            item.status === 'accepted' ||
-            item.status === 'acceptDelivery' ||
-            item.status === 'deliveryRequest' ||
-            item.status === 'rejectDelivery' ||
-            item.status === 'amountReturned'
+            item.status === 'Pending' ||
+            item.status === 'Accepted' ||
+            item.status === 'AcceptDelivery' ||
+            item.status === 'DeliveryRequest' ||
+            item.status === 'RejectDelivery' ||
+            item.status === 'AmountReturned'
           }
           onlySecond={
-            (item.status !== 'accepted' &&
-              item.status !== 'pending' &&
-              item.status === 'deliveryRequest') ||
-            item.status === 'rejectDelivery' ||
-            item.status === 'acceptDelivery' ||
-            item.status === 'amountReturned'
+            (item.status !== 'Accepted' &&
+              item.status !== 'Pending' &&
+              item.status === 'DeliveryRequest') ||
+            item.status === 'RejectDelivery' ||
+            item.status === 'AcceptDelivery' ||
+            item.status === 'AmountReturned'
           }
           key={index}
           item={item}

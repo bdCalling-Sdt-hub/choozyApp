@@ -10,13 +10,13 @@ interface PriorityCardProps {
 
 const PriorityCard = ({status, cardStyle}: PriorityCardProps) => {
   const statusColors = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    canceled: 'bg-red-100 text-red-800',
-    accepted: 'bg-blue-100 text-blue-800',
-    deliveryRequest: 'bg-orange-100 text-orange-800',
-    acceptDelivery: 'bg-green-100 text-green-800',
-    rejectDelivery: 'bg-gray-100 text-gray-800',
-    amountReturned:
+    Pending: 'bg-yellow-100 text-yellow-800',
+    Canceled: 'bg-red-100 text-red-800',
+    Accepted: 'bg-blue-100 text-blue-800',
+    DeliveryRequest: 'bg-orange-100 text-orange-800',
+    AcceptDelivery: 'bg-green-100 text-green-800',
+    RejectDelivery: 'bg-gray-100 text-gray-800',
+    AmountReturned:
       cardStyle === 'seller'
         ? 'bg-gray-100 text-gray-800'
         : 'bg-green-100 text-green-800',
@@ -28,7 +28,7 @@ const PriorityCard = ({status, cardStyle}: PriorityCardProps) => {
     <View
       style={tw`rounded-md p-1 px-3 self-start ${colorClasses.split(' ')[0]}`}>
       <Text style={tw`text-sm font-semibold ${colorClasses.split(' ')[1]}`}>
-        Status: {status}
+        {status}
       </Text>
     </View>
   );

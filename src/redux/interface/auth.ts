@@ -53,7 +53,7 @@ export interface IProfile {
     user_name: string;
     email: string;
     bio: string;
-    privicy: 'public' | 'private' | 'friends';
+    privacy: 'public' | 'private' | 'friends';
     location: string;
     contact: string;
     balance: string;

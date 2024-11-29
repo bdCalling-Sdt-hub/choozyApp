@@ -141,7 +141,7 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
     );
   };
 
-  console.log(wallData?.data?.privicy, alreadyFriend());
+  console.log(wallData?.data?.privacy, alreadyFriend());
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -225,18 +225,20 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
                   </Text>
                 </View>
               )}
-              {wallData && wallData?.data?.friends_count > 0 && (
-                <View style={tw`justify-center items-center`}>
-                  <Text
-                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                    {wallData?.data?.friends_count}
-                  </Text>
-                  <Text
-                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                    Contacts
-                  </Text>
-                </View>
-              )}
+              {wallData &&
+                wallData?.data?.friends_count > 0 &&
+                alreadyFriend() && (
+                  <View style={tw`justify-center items-center`}>
+                    <Text
+                      style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                      {wallData?.data?.friends_count}
+                    </Text>
+                    <Text
+                      style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                      Contacts
+                    </Text>
+                  </View>
+                )}
             </View>
           </View>
           <View style={tw`gap-2 justify-center`}>
@@ -261,13 +263,11 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
               </View>
             </View>
 
-            {wallData?.data?.contact &&
-              wallData?.data?.privacy !== 'private' && (
-                <Text
-                  style={tw`text-color-Black400 font-NunitoSansBold text-xs`}>
-                  {wallData?.data?.contact}
-                </Text>
-              )}
+            {wallData?.data?.contact && alreadyFriend() && (
+              <Text style={tw`text-color-Black400 font-NunitoSansBold text-xs`}>
+                {wallData?.data?.contact}
+              </Text>
+            )}
 
             <Text
               style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
@@ -276,7 +276,8 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
           </View>
         </View>
 
-        {wallData?.data?.privacy === 'private' && (
+        {(wallData?.data?.privacy === 'private' ||
+          (wallData?.data?.privacy === 'friends' && !alreadyFriend())) && (
           <View style={tw`absolute w-full h-screen flex-1`}>
             <LinearGradient
               colors={[
@@ -294,21 +295,32 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
               start={{x: 0, y: 0}}
               end={{x: 0, y: 1}}
               style={tw`flex-1 h-full`}></LinearGradient>
-
-            <View
-              style={tw`absolute self-center z-50 h-[80%] items-center justify-center opacity-50 gap-2`}>
-              <View style={tw` self-center opacity-20`}>
-                <SvgXml height={100} width={100} xml={IconCircleLock} />
+            {wallData?.data?.privacy === 'friends' && !alreadyFriend() ? (
+              <View
+                style={tw`absolute self-center z-50 h-[80%] items-center justify-center opacity-50 gap-2`}>
+                <View style={tw` self-center opacity-20`}>
+                  <SvgXml height={100} width={100} xml={IconTwoUser} />
+                </View>
+                <Text style={tw`text-[#A5A3A9] font-NunitoSansBold text-base`}>
+                  Profile Friends Only
+                </Text>
               </View>
-              <Text style={tw`text-[#A5A3A9] font-NunitoSansBold text-base`}>
-                {wallData?.message}
-              </Text>
-            </View>
+            ) : (
+              <View
+                style={tw`absolute self-center z-50 h-[80%] items-center justify-center opacity-50 gap-2`}>
+                <View style={tw` self-center opacity-20`}>
+                  <SvgXml height={100} width={100} xml={IconCircleLock} />
+                </View>
+                <Text style={tw`text-[#A5A3A9] font-NunitoSansBold text-base`}>
+                  {wallData?.message}
+                </Text>
+              </View>
+            )}
           </View>
         )}
 
         {/*================= options here =================== */}
-        {wallData?.data?.shop ? (
+        {wallData?.data?.shop && alreadyFriend() ? (
           <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -344,7 +356,8 @@ const OtherWall = ({navigation, route}: NavigProps<{id: number}>) => {
             </TouchableOpacity>
           </View>
         ) : (
-          wallData?.data?.privacy !== 'private' && (
+          wallData?.data?.privacy !== 'private' &&
+          alreadyFriend() && (
             <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
               <TouchableOpacity
                 activeOpacity={0.8}

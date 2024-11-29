@@ -1,20 +1,20 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {IconFillLove, IconRightArrow} from '../../icons/icons';
+import {ScrollView, Text, View} from 'react-native';
 
-import React from 'react';
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
+import {Android} from '../../utils/utils';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import IwtButton from '../../components/buttons/IwtButton';
-import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
-import SideModal from '../../components/modals/SideModal';
-import {useToast} from '../../components/modals/Toaster';
+import FastImage from 'react-native-fast-image';
+import {IProduct} from '../../redux/interface/products';
+import InputText from '../../components/inputs/InputText';
+import IwtButton from '../../components/buttons/IwtButton';
 import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
+import SideModal from '../../components/modals/SideModal';
+import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
 import {useCreateOrderMutation} from '../../redux/apiSlices/order';
-import {IProduct} from '../../redux/interface/products';
-import {Android} from '../../utils/utils';
+import {useToast} from '../../components/modals/Toaster';
 
 const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
   const {showToast, closeToast} = useToast();
@@ -94,13 +94,6 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
         onPress={() => navigation?.goBack()}
         titleStyle={tw`text-lg text-black font-NunitoSansRegular`}
         containerStyle={tw`justify-between`}
-        ComponentBtn={
-          <TouchableOpacity onPress={() => navigation?.goBack()}>
-            <Text style={tw`text-base text-red-600 font-NunitoSansBold`}>
-              Cancle
-            </Text>
-          </TouchableOpacity>
-        }
       />
 
       <View style={tw`px-[4%] flex-row items-center gap-3`}>
@@ -111,8 +104,9 @@ const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
             uri: Item?.product_images![0],
           }}
         />
-        <View>
+        <View style={tw`flex-1`}>
           <Text
+            numberOfLines={2}
             style={tw`text-base text-color-Black1000 font-NunitoSansRegular`}>
             {Item?.product_name}
           </Text>

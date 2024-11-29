@@ -11,7 +11,7 @@ import {useSelector} from 'react-redux';
 const OrdersHistory = ({navigation}: NavigProps<null>) => {
   const [options, setOptions] = React.useState('Buying Orders');
 
-  const user = useSelector(state => state.user.user);
+  const user = useSelector(state => state?.user?.user);
 
   // console.log(user);
 

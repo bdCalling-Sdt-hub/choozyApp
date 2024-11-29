@@ -1,5 +1,5 @@
-import {api} from '../api/baseApi';
 import {INewpaperList} from '../interface/newpaper';
+import {api} from '../api/baseApi';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
@@ -27,6 +27,7 @@ const authSlice = api.injectEndpoints({
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
+          accept: 'application/json',
         },
         body: data,
       }),

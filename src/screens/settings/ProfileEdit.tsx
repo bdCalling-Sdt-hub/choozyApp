@@ -209,7 +209,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
                   style={tw``}>
                   <Text
                     style={
-                      userProfile?.data?.privicy === 'public'
+                      userProfile?.data?.privacy === 'public'
                         ? tw`text-primary font-NunitoSansExtraBold text-xs`
                         : tw`text-color-Black600 font-NunitoSansRegular text-xs`
                     }>
@@ -224,7 +224,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
                   style={tw``}>
                   <Text
                     style={
-                      userProfile?.data?.privicy === 'private'
+                      userProfile?.data?.privacy === 'private'
                         ? tw`text-primary font-NunitoSansExtraBold text-xs`
                         : tw`text-color-Black600 font-NunitoSansRegular text-xs`
                     }>
@@ -239,7 +239,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
                   style={tw``}>
                   <Text
                     style={
-                      userProfile?.data?.privicy === 'friends'
+                      userProfile?.data?.privacy === 'friends'
                         ? tw`text-primary font-NunitoSansExtraBold text-xs`
                         : tw`text-color-Black600 font-NunitoSansRegular text-xs`
                     }>

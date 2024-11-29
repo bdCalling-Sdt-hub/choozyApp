@@ -1,4 +1,13 @@
 import {
+  IconAtTheRatOf,
+  IconCloseEye,
+  IconEmail,
+  IconLocation,
+  IconOpenEye,
+  IconPassword,
+  IconUser,
+} from '../../icons/icons';
+import {
   ScrollView,
   StatusBar,
   Text,
@@ -6,31 +15,19 @@ import {
   View,
 } from 'react-native';
 import {
-  IconAtTheRatOf,
-  IconCloseEye,
-  IconEmail,
-  IconFacebook,
-  IconGoogle,
-  IconLocation,
-  IconOpenEye,
-  IconPassword,
-  IconUser,
-} from '../../icons/icons';
-import {
   useCreateUserMutation,
   useLazyGetUserNameQuery,
 } from '../../redux/apiSlices/authSlice';
 
-import {Formik} from 'formik';
-import React from 'react';
 import FastImage from 'react-native-fast-image';
-import IwtButton from '../../components/buttons/IwtButton';
-import Or from '../../components/buttons/Or';
-import TButton from '../../components/buttons/TButton';
+import {Formik} from 'formik';
 import InputText from '../../components/inputs/InputText';
-import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
+import Or from '../../components/buttons/Or';
+import React from 'react';
+import TButton from '../../components/buttons/TButton';
 import tw from '../../lib/tailwind';
+import {useToast} from '../../components/modals/Toaster';
 
 interface ISingUpForm {
   full_name: string;
@@ -268,17 +265,17 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
         <View style={tw`px-[4%] gap-6`}>
           <Or />
 
-          <IwtButton
+          {/* <IwtButton
             containerStyle={tw`w-full bg-[#1877F2]`}
             title="Continue with Facebook"
             svg={IconFacebook}
-          />
-          <IwtButton
+          /> */}
+          {/* <IwtButton
             containerStyle={tw`w-full bg-[#FFFFFF]`}
             title="Continue with  Google"
             titleStyle={tw`text-color-Black800 font-NunitoSansBold`}
             svg={IconGoogle}
-          />
+          /> */}
         </View>
         {/* Sing up and  Forgot password? */}
         <View style={tw`items-center gap-2 mt-6`}>

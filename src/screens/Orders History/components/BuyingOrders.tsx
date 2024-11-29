@@ -6,13 +6,13 @@ import {
   useRejectDeliveryMutation,
 } from '../../../redux/apiSlices/order';
 
-import React from 'react';
+import {NavigProps} from '../../../interfaces/NaviProps';
 import NoFoundCard from '../../../components/cards/NoFoundCard';
 import OrderCard from '../../../components/cards/OrderCard';
-import {useToast} from '../../../components/modals/Toaster';
-import {NavigProps} from '../../../interfaces/NaviProps';
-import tw from '../../../lib/tailwind';
 import {PrimaryColor} from '../../../utils/utils';
+import React from 'react';
+import tw from '../../../lib/tailwind';
+import {useToast} from '../../../components/modals/Toaster';
 
 const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
   const {closeToast, showToast} = useToast();
@@ -37,8 +37,9 @@ const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
       data={BuyerOrder?.data}
       renderItem={({item, index}) => (
         <OrderCard
+          // navigation={navigation}
           onPressFirstButton={async () => {
-            if (item.status === 'pending') {
+            if (item.status === 'Pending') {
               console.log({
                 order_id: item.order_id,
                 _method: 'PUT',
@@ -66,7 +67,7 @@ const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
                 });
               }
             }
-            if (item.status === 'deliveryRequest') {
+            if (item.status === 'DeliveryRequest') {
               console.log({
                 order_id: item.order_id,
                 _method: 'PUT',
@@ -95,7 +96,7 @@ const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
             }
           }}
           onPressSecondButton={async () => {
-            if (item.status === 'deliveryRequest') {
+            if (item.status === 'DeliveryRequest') {
               const res = await rejectDelivery({
                 order_id: item.order_id,
                 _method: 'PUT',
@@ -119,7 +120,7 @@ const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
                 });
               }
             }
-            if (item.status === 'accepted') {
+            if (item.status === 'Accepted') {
               const res = await rejectDelivery({
                 order_id: item.order_id,
                 _method: 'PUT',
@@ -144,25 +145,25 @@ const BuyingOrder = ({navigation, route}: NavigProps<null>) => {
               }
             }
           }}
-          firstButtonText={item.status === 'pending' ? 'Cancel' : 'Accept'}
+          firstButtonText={item.status === 'Pending' ? 'Cancel' : 'Accept'}
           secondButtonText={
-            item.status === 'deliveryRequest' || item.status === 'accepted'
+            item.status === 'DeliveryRequest' || item.status === 'Accepted'
               ? 'Reject'
               : ''
           }
           onlyFirst={
-            item.status === 'pending' ||
-            item.status === 'acceptDelivery' ||
-            item.status === 'rejectDelivery' ||
-            item.status === 'amountReturned'
+            item.status === 'Pending' ||
+            item.status === 'AcceptDelivery' ||
+            item.status === 'RejectDelivery' ||
+            item.status === 'AmountReturned'
           }
           onlySecond={
-            item.status === 'accepted' ||
-            item.status === 'acceptDelivery' ||
-            item.status === 'rejectDelivery' ||
-            item.status === 'amountReturned'
+            item.status === 'Accepted' ||
+            item.status === 'AcceptDelivery' ||
+            item.status === 'RejectDelivery' ||
+            item.status === 'AmountReturned'
           }
-          firstButtonStyle={item.status === 'pending' ? tw`bg-red-800` : tw``}
+          firstButtonStyle={item.status === 'Pending' ? tw`bg-red-800` : tw``}
           key={index}
           item={item}
         />

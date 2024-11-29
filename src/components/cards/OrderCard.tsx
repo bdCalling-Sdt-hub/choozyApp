@@ -25,6 +25,7 @@ interface OrderCardProps {
   onlyFirst?: boolean;
   onlySecond?: boolean;
   cardStyle?: 'seller' | 'buyer';
+  navigation?: any;
 }
 
 const OrderCard = ({
@@ -39,6 +40,7 @@ const OrderCard = ({
   onPressSecondButton,
   secondButtonStyle,
   cardStyle,
+  navigation,
 }: OrderCardProps) => {
   // console.log(item);
   // console.log(item?.product?.images);
@@ -47,7 +49,13 @@ const OrderCard = ({
       <View style={tw`bg-white rounded-lg shadow-sm p-4`}>
         {/* Product Section */}
         <View
-          style={tw`flex-row items-center gap-2 mb-4 bg-white p-3 rounded-md`}>
+          // activeOpacity={0.8}
+          // onPress={() => {
+          //   navigation?.navigate('ProductDetails', {
+          //     item: item?.product,
+          //   });
+          // }}
+          style={tw`flex-row items-center gap-2 mb-4 bg-white  p-3 rounded-md`}>
           {item?.product?.images![0] && (
             <Image
               source={{uri: item?.product?.images![0]}}
@@ -55,8 +63,10 @@ const OrderCard = ({
             />
           )}
 
-          <View>
-            <Text style={tw`text-lg font-bold text-gray-800`}>
+          <View style={tw`flex-1`}>
+            <Text
+              numberOfLines={2}
+              style={tw`text-lg font-bold self-start flex-1 text-gray-800`}>
               {item?.product?.product_name}
             </Text>
             <View style={tw`flex-row items-center gap-1`}>

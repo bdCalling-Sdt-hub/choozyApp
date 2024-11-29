@@ -50,9 +50,9 @@ const Settings = ({navigation}: NavigProps<any>) => {
           </TouchableOpacity>
           <View style={tw`flex-row gap-2`}>
             <Text style={tw`text-color-Black900 font-NunitoSansBold text-base`}>
-              {userProfile?.data?.privicy === 'public'
+              {userProfile?.data?.privacy === 'public'
                 ? 'Public'
-                : userProfile?.data?.privicy === 'friends'
+                : userProfile?.data?.privacy === 'friends'
                 ? 'Contacts Only'
                 : 'Private'}
             </Text>

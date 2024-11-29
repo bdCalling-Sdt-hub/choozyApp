@@ -1,6 +1,6 @@
-import React, {useCallback} from 'react';
-import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {ActionSheet, ButtonProps} from 'react-native-ui-lib';
+import {Android, height, useImagePicker} from '../../../utils/utils';
+import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {
   IconImage,
   IconLock,
@@ -8,30 +8,30 @@ import {
   IconSend,
   IconUserSmall,
 } from '../../../icons/icons';
+import React, {useCallback} from 'react';
 import {
   useCommentMutation,
   useCreateNewFeetMutation,
   useDeleteNewFeetMutation,
   useUpdateNewsFeetMutation,
 } from '../../../redux/apiSlices/newsFeetSlices';
-import {Android, height, useImagePicker} from '../../../utils/utils';
 
-import FastImage from 'react-native-fast-image';
+import CommentCard from '../../../components/cards/CommentCard';
+import ConfrimationModal from '../../../components/modals/ConfrimationModal';
 import CreatedHeaderWithITB from '../../../components/backHeader/CreatedHeaderWithITB';
+import FastImage from 'react-native-fast-image';
 import IButton from '../../../components/buttons/IButton';
+import {INewpaper} from '../../../redux/interface/newpaper';
 import IwtButton from '../../../components/buttons/IwtButton';
+import {NavigProps} from '../../../interfaces/NaviProps';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
+import NormalModal from '../../../components/modals/NormalModal';
+import PostCard from '../../../components/cards/PostCard';
+import SideModal from '../../../components/modals/SideModal';
 import SimpleButton from '../../../components/buttons/SimpleButton';
 import TButton from '../../../components/buttons/TButton';
-import CommentCard from '../../../components/cards/CommentCard';
-import NoFoundCard from '../../../components/cards/NoFoundCard';
-import PostCard from '../../../components/cards/PostCard';
-import ConfrimationModal from '../../../components/modals/ConfrimationModal';
-import NormalModal from '../../../components/modals/NormalModal';
-import SideModal from '../../../components/modals/SideModal';
-import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useGetUserProfileQuery} from '../../../redux/apiSlices/authSlice';
-import {INewpaper} from '../../../redux/interface/newpaper';
 
 interface PostProps extends NavigProps<any> {
   setShowAddPostModal?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,7 +63,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
   const [postInfo, setPostInfo] = React.useState<{
     share_your_thoughts?: string;
     images?: any;
-    privacy: string;
+    privacy: 'public' | 'private' | 'friends';
     status: number;
   }>({
     privacy: 'public',
@@ -127,8 +127,8 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
         setShowAddPostModal && setShowAddPostModal(false);
         setPostInfo({
           share_your_thoughts: '',
-          images: {},
           privacy: 'public',
+          images: null,
           status: 1,
         });
       }
@@ -324,7 +324,7 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
                 setShowAddPostModal && setShowAddPostModal(true);
                 setPostInfo({
                   share_your_thoughts: selectItem?.content,
-                  privacy: selectItem?.privacy,
+                  privacy: selectItem?.privacy || 'public',
                   images: {
                     uri: selectItem?.images[0]?.url,
                   },
