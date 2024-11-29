@@ -8,26 +8,26 @@ import {
   View,
 } from 'react-native';
 import {IconImage, IconPuls, IconSearch} from '../../../icons/icons';
+import {PrimaryColor, height, useImagePicker} from '../../../utils/utils';
 import {
   useCreateGroupMutation,
   useGetGroupsQuery,
   useIsAllReadMutation,
 } from '../../../redux/apiSlices/gourpSlices';
-import {PrimaryColor, height, useImagePicker} from '../../../utils/utils';
 
+import InputText from '../../../components/inputs/InputText';
+import IwtButton from '../../../components/buttons/IwtButton';
+import MessageCard from '../../../components/cards/MessageCard';
+import {NavigProps} from '../../../interfaces/NaviProps';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
+import NormalModal from '../../../components/modals/NormalModal';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
-import IwtButton from '../../../components/buttons/IwtButton';
 import TButton from '../../../components/buttons/TButton';
-import MessageCard from '../../../components/cards/MessageCard';
-import NoFoundCard from '../../../components/cards/NoFoundCard';
 import UserSelectionCard from '../../../components/cards/UserSelectionCard';
-import InputText from '../../../components/inputs/InputText';
-import NormalModal from '../../../components/modals/NormalModal';
-import {NavigProps} from '../../../interfaces/NaviProps';
+import {getSocket} from '../../../redux/services/socket';
 import tw from '../../../lib/tailwind';
 import {useUserFriendQuery} from '../../../redux/apiSlices/contactSlices';
-import {getSocket} from '../../../redux/services/socket';
 
 const GroupsSection = ({navigation}: NavigProps<null>) => {
   const [showGroupModal, setShowGroupModal] = React.useState(false);
@@ -117,7 +117,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
         ListEmptyComponent={
           <NoFoundCard hight={height * 0.13} title="No Chats" />
         }
-        contentContainerStyle={tw`pb-16 gap-2`}
+        contentContainerStyle={tw`pb- gap-2 pt-2`}
         data={groupData?.data}
         renderItem={({item, index}) => (
           <MessageCard
