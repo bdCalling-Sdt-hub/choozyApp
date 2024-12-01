@@ -160,7 +160,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
             <>
               {/*========================== wallet part ====================== */}
               <View
-                style={tw`mx-[4%] my-4 self-center w-[95%] tablet:w-[40%] bg-[#6461FC] h-64 rounded-2xl p-4 gap-8 `}>
+                style={tw`mx-[4%] my-4 self-center w-[95%] tablet:w-[40%] bg-[#6461FC]  rounded-2xl p-4 gap-8 `}>
                 {/*========================== profile part ====================== */}
                 <View style={tw`flex-row items-center gap-3`}>
                   {userInfo?.data?.image ? (
