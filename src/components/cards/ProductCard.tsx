@@ -1,7 +1,10 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import React from 'react';
 import FastImage from 'react-native-fast-image';
+import {IProduct} from '../../redux/interface/products';
+import {IconFillLove} from '../../icons/icons';
+import React from 'react';
+import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
 
 export interface IProductCarProps {
@@ -9,16 +12,7 @@ export interface IProductCarProps {
   containerStyle?: any;
   showStatus?: boolean;
   status?: 'Delivered' | 'Pending' | 'Cancelled';
-  item: {
-    id?: number;
-    productCode?: string;
-    name?: string;
-    category?: string;
-    description?: string;
-    price?: number;
-    currency?: string;
-    images: Array<string>;
-  };
+  item: IProduct;
 }
 
 const ProductCard = ({
@@ -28,6 +22,7 @@ const ProductCard = ({
   showStatus,
   containerStyle,
 }: IProductCarProps) => {
+  // console.log(item);
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -36,27 +31,48 @@ const ProductCard = ({
         tw`bg-white w-[48%] tablet:w-[25%]  p-2 md:p-4 tablet:p-5 shadow-md shadow-slate-800 rounded-xl gap-2`,
         containerStyle,
       ]}>
-      <FastImage
-        style={tw`w-full  h-32 rounded-xl`}
-        resizeMode={FastImage.resizeMode.contain}
-        source={{
-          uri: item.images![0],
-        }}
-      />
+      {item?.product_images && (
+        <View>
+          <FastImage
+            style={tw`w-full  h-32 rounded-xl`}
+            resizeMode={FastImage.resizeMode.cover}
+            source={{
+              uri: item?.product_images![0],
+            }}
+          />
+          {item?.status && (
+            <Text
+              numberOfLines={2}
+              style={tw`absolute right-1 top-1 bg-white px-2 py-1 rounded-md ${
+                item?.status === 'pending'
+                  ? 'text-yellow-500 '
+                  : item?.status === 'cancelled'
+                  ? 'text-red-500'
+                  : 'text-green-500'
+              } font-NunitoSansBold text-xs `}>
+              {item?.status}
+            </Text>
+          )}
+        </View>
+      )}
+
       <View style={tw` flex-row justify-between gap-2`}>
-        <Text
-          style={tw`text-center font-NunitoSansBold text-sm text-color-Black900`}>
-          € {item.price}
-        </Text>
+        <View style={tw`flex-row items-center gap-1`}>
+          <SvgXml height={10} width={10} xml={IconFillLove} />
+          <Text
+            style={tw`text-center font-NunitoSansBold text-sm text-color-Black900`}>
+            {item?.price}
+          </Text>
+        </View>
         <Text
           style={tw`text-center text-[#615E69] font-NunitoSansRegular text-xs`}>
-          {item.productCode}
+          {item?.product_code}
         </Text>
       </View>
       <Text
         numberOfLines={2}
-        style={tw`text-center text-color-Black900 font-NunitoSansBold text-sm flex-1`}>
-        {item.name}
+        style={tw`text-left text-color-Black900 font-NunitoSansBold text-sm flex-1`}>
+        {item?.product_name}
       </Text>
 
       <View>

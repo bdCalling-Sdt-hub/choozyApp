@@ -6,28 +6,33 @@ import {
   DrawerItemList,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
-import {Text, TouchableOpacity, View} from 'react-native';
 import {
-  IconCard,
   IconClockBlue,
   IconCopyBoardBlue,
   IconExit,
   IconQuestionBlue,
   IconSettingBlue,
+  IconStoreBlue,
   IconSupportedBlue,
 } from '../icons/icons';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 import IButton from '../components/buttons/IButton';
-import tw from '../lib/tailwind';
 import Routes from './Routes';
+import {removeStorageToken} from '../utils/utils';
+import tw from '../lib/tailwind';
+import {useSelector} from 'react-redux';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
+  const user = useSelector(state => state.user.user);
+  // console.log(user);
+
   return (
     <>
       <DrawerContentScrollView showsVerticalScrollIndicator={false} {...props}>
         <DrawerItemList {...props} />
         <View style={tw`flex-col flex-1 px-6 py-8 gap-10 `}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('Wallet');
             }}
@@ -40,7 +45,25 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
               style={tw`text-color-Black800 font-NunitoSansBold text-xs md:text-sm`}>
               My Wallet
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+
+          {!user?.shop?.seller?.email && (
+            <TouchableOpacity
+              onPress={() => {
+                props?.navigation?.navigate('CreateShop');
+              }}
+              style={tw`flex-row gap-3 items-center`}>
+              <IButton
+                svg={IconStoreBlue}
+                containerStyle={tw`w-12 h-12 bg-primary50 shadow-none`}
+              />
+              <Text
+                style={tw`text-color-Black800 font-NunitoSansBold text-xs md:text-sm`}>
+                Create Shop
+              </Text>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('OrderHistory');
@@ -116,7 +139,9 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       <View style={tw` py-6 px-6`}>
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate('Login');
+            props.navigation.closeDrawer();
+            removeStorageToken();
+            props.navigation.reset({routes: [{name: 'Loading'}]});
           }}
           style={tw` flex-row gap-3 items-center`}>
           <IButton
@@ -142,6 +167,7 @@ export default function CustomDrawer() {
         drawerPosition: 'right', // Drawer comes from the right
         drawerType: 'slide',
         headerShown: false,
+
         drawerStyle: tw`w-[66%] md:w-[65%] tablet:w-[22%] h-full`,
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}>

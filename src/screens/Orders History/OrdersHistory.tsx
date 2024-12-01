@@ -1,24 +1,29 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
-import React from 'react';
 import BackButton from '../../components/backHeader/BackButton';
-import {NavigProps} from '../../interfaces/NaviProps';
-import tw from '../../lib/tailwind';
 import BuyingOrders from './components/BuyingOrders';
+import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
 import SellOrder from './components/SellOrder';
+import tw from '../../lib/tailwind';
+import {useSelector} from 'react-redux';
 
 const OrdersHistory = ({navigation}: NavigProps<null>) => {
   const [options, setOptions] = React.useState('Buying Orders');
+
+  const user = useSelector(state => state?.user?.user);
+
+  // console.log(user);
 
   return (
     <View style={tw`flex-1 bg-base`}>
       <BackButton
         onPress={() => navigation?.goBack()}
         title="Orders History"
-        containerStyle={tw`bg-white`}
+        containerStyle={tw`bg-white pb-0`}
       />
 
-      <ScrollView contentContainerStyle={tw`px-[4%] bg-white mt-2 pb-12`}>
+      <View style={tw`px-[4%] bg-white  `}>
         {/*================= options here =================== */}
         <View style={tw`flex-row items-center gap-1  py-2`}>
           <TouchableOpacity
@@ -52,11 +57,12 @@ const OrdersHistory = ({navigation}: NavigProps<null>) => {
             </Text>
           </TouchableOpacity>
         </View>
-
-        <View>
-          {options === 'Buying Orders' ? <BuyingOrders /> : <SellOrder />}
-        </View>
-      </ScrollView>
+      </View>
+      {options === 'Buying Orders' ? (
+        <BuyingOrders navigation={navigation} />
+      ) : (
+        <SellOrder navigation={navigation} />
+      )}
     </View>
   );
 };

@@ -12,22 +12,24 @@ interface DateModalProps {
 const DateModal = ({setVisible, visible, selectedDate}: DateModalProps) => {
   const [selectDate, setSelectDate] = React.useState(new Date());
   return (
-    <NormalModal
-      animationType="fade"
-      visible={visible}
-      setVisible={setVisible}
-      layerContainerStyle={tw`justify-center items-center flex-1 px-[4%] `}
-      containerStyle={tw`rounded-2xl`}>
-      <DateTimePicker
-        mode="single"
-        date={selectDate}
-        onChange={(params: any) => {
-          selectedDate && selectedDate(params.date);
-          setSelectDate(params.date);
-          setVisible(false);
-        }}
-      />
-    </NormalModal>
+    <>
+      <NormalModal
+        animationType="fade"
+        visible={visible}
+        setVisible={setVisible}
+        layerContainerStyle={tw`justify-center items-center flex-1 px-[4%] `}
+        containerStyle={tw`rounded-2xl`}>
+        <DateTimePicker
+          mode="single"
+          date={selectDate}
+          onChange={(params: any) => {
+            selectedDate && selectedDate(params.date);
+            setSelectDate(params.date);
+            setVisible(false);
+          }}
+        />
+      </NormalModal>
+    </>
   );
 };
 

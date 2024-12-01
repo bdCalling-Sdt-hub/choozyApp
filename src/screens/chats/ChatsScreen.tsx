@@ -11,51 +11,85 @@ import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
+import {getSocket} from '../../redux/services/socket';
+import Chats from './components/Chats';
+import GroupsSection from './components/GroupsSection';
 
-// import Contacts from './components/Contacts';
+// import Chats from './components/Chats';
 
 // import GroupsSection from './components/GroupsSection';
 
 // lazy load
-const Contacts = React.lazy(() => import('./components/Contacts'));
-const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
+// const Chats = React.lazy(() => import('./components/Chats'));
+// const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
+  //***** its needed to add this line don't remove it**********
+  const {data: userInfo} = useGetProfileQuery({});
+  //******************
   const [actionModalOpen, setActionModalOpen] = React.useState(false);
 
+  // console.log(userInfo);
+
   // console.log(JSON.stringify(MessagesData, null, 2));
-  const [options, setOptions] = React.useState<'contacts' | 'groups'>(
-    'contacts',
+  const [options, setOptions] = React.useState<'Chats' | 'groups'>('Chats');
+
+  const {data: Shop} = useGetShopQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+    },
   );
+
+  // console.log(userInfo?.data);
+  // console.log(Shop);
+  // console.log(lStorage.getString('token'));
+
+  // all socket login when user come to this screen
+  const socket = getSocket();
+  React.useEffect(() => {
+    if (userInfo?.data) {
+      socket?.emit('login', {id: userInfo?.data?.id});
+    }
+  }, [userInfo?.data]);
 
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <LogoWithHeader
-        offSearch
-        searchOffItem={{
-          offPost: true,
-          offProduct: true,
-        }}
-        onPressMenu={() => setActionModalOpen(!actionModalOpen)}
-        navigation={navigation}
-      />
+      <View style={tw``}>
+        <LogoWithHeader
+          offMenu
+          searchOffItem={{
+            offPeople: true,
+            offPost: true,
+            offProduct: true,
+          }}
+          onFinish={text => {
+            navigation?.navigate('Search', {
+              text,
+            });
+          }}
+          navigation={navigation}
+        />
+      </View>
 
       {/*================= options here =================== */}
       <View style={tw`flex-row items-center gap-1 px-[4%] py-2`}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => setOptions('contacts')}
+          onPress={() => setOptions('Chats')}
           style={tw`h-11 px-3 ${
-            options == 'contacts'
+            options == 'Chats'
               ? 'border-b-[3px] border-b-primary'
               : 'border-b-[3px] border-b-white'
           }  justify-center items-center`}>
           <Text
             style={tw` ${
-              options == 'contacts' ? 'text-primary' : 'text-[#34303E]'
+              options == 'Chats' ? 'text-primary' : 'text-[#34303E]'
             } font-NunitoSansBold text-sm`}>
-            Contacts
+            Chats
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -76,7 +110,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
       </View>
 
       {/*================= messages list/card here =================== */}
-      {options == 'contacts' ? (
+      {options == 'Chats' ? (
         <>
           <Suspense
             fallback={
@@ -84,7 +118,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
                 <ActivityIndicator color="#4964C6" />
               </View>
             }>
-            <Contacts navigation={navigation} />
+            <Chats navigation={navigation} />
           </Suspense>
         </>
       ) : (
@@ -128,7 +162,9 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
             title: 'My Stores',
             onPress: () => {
               setActionModalOpen(false);
-              navigation?.navigate('CreateShop');
+              if (Shop?.data?.id) {
+                navigation?.navigate('MyWall', {state: 'store'});
+              } else navigation?.navigate('CreateShop');
             },
           },
           // {

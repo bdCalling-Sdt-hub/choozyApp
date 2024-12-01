@@ -6,13 +6,83 @@ import FastImage from 'react-native-fast-image';
 import BackButton from '../../components/backHeader/BackButton';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useUserPasswordUpdateMutation} from '../../redux/apiSlices/authSlice';
 
-const UpdatePassword = ({navigation}: NavigProps<null>) => {
+const UpdatePassword = ({navigation}: NavigProps<any>) => {
+  const {closeToast, showToast} = useToast();
   const [showPassOld, setShowPassOld] = React.useState(false);
   const [showPassNew, setShowPassNew] = React.useState(false);
   const [showPassNewConfirm, setShowPassNewConfirm] = React.useState(false);
+  const [passInfo, setPassInfo] = React.useState({
+    current_password: '',
+    new_password: '',
+    confirm_password: '',
+  });
+
+  const [updatedPassword] = useUserPasswordUpdateMutation();
+
+  const handlePasswordUpdated = () => {
+    if (passInfo.new_password !== passInfo.confirm_password) {
+      showToast({
+        title: 'error',
+        content: 'Passwords do not match',
+      });
+    }
+    if (
+      passInfo?.current_password.length < 8 ||
+      passInfo.new_password.length < 8 ||
+      passInfo.confirm_password.length < 8
+    ) {
+      showToast({
+        content: 'Password must be at least 8 characters',
+        buttonStyle: tw`bg-primary`,
+        buttonText: 'OK',
+        onPress: () => {
+          closeToast();
+        },
+      });
+      return;
+    }
+
+    updatedPassword(passInfo).then(res => {
+      console.log(res);
+      if (res.data) {
+        showToast({
+          title: 'success',
+          titleStyle: tw`text-primary text-base font-NunitoSansBold`,
+          content: res.data?.message,
+          contentStyle: tw`text-sm`,
+          buttonStyle: tw`bg-primary`,
+          buttonText: 'Back',
+          onPress: () => {
+            closeToast();
+            navigation?.goBack();
+          },
+        });
+      }
+      if (res.error) {
+        showToast({
+          title: 'error',
+          titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+          content: res.error?.data?.message,
+          contentStyle: tw`text-sm`,
+          btnDisplay: true,
+        });
+      }
+      if (res.error?.message) {
+        showToast({
+          title: 'error',
+          titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+          content: res.error?.message,
+          contentStyle: tw`text-sm`,
+          btnDisplay: true,
+        });
+      }
+    });
+  };
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -45,6 +115,10 @@ const UpdatePassword = ({navigation}: NavigProps<null>) => {
             <InputText
               onPress={() => setShowPassOld(!showPassOld)}
               placeholder="Old Password"
+              value={passInfo.current_password}
+              onChangeText={text =>
+                setPassInfo({...passInfo, current_password: text})
+              }
               floatingPlaceholder
               secureTextEntry={!showPassOld}
               // svgFirstIcon={IconFillPassword}
@@ -56,6 +130,10 @@ const UpdatePassword = ({navigation}: NavigProps<null>) => {
               onPress={() => setShowPassNew(!showPassNew)}
               placeholder="New Password"
               floatingPlaceholder
+              value={passInfo.new_password}
+              onChangeText={text =>
+                setPassInfo({...passInfo, new_password: text})
+              }
               secureTextEntry={!showPassNew}
               // svgFirstIcon={IconFillPassword}
               svgSecondIcon={showPassNew ? IconCloseEye : IconOpenEye}
@@ -66,6 +144,10 @@ const UpdatePassword = ({navigation}: NavigProps<null>) => {
               onPress={() => setShowPassNewConfirm(!showPassNewConfirm)}
               placeholder="Confirm Password"
               floatingPlaceholder
+              value={passInfo.confirm_password}
+              onChangeText={text =>
+                setPassInfo({...passInfo, confirm_password: text})
+              }
               secureTextEntry={!showPassNewConfirm}
               // svgFirstIcon={IconFillPassword}
               svgSecondIcon={showPassNewConfirm ? IconCloseEye : IconOpenEye}
@@ -76,7 +158,7 @@ const UpdatePassword = ({navigation}: NavigProps<null>) => {
           <TButton
             title="Save Changes"
             onPress={() => {
-              navigation?.navigate('PassChanSuccess');
+              handlePasswordUpdated();
             }}
             containerStyle={tw`my-3 w-full bg-primary`}
           />

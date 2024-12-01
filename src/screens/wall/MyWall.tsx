@@ -1,237 +1,269 @@
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import React, {Suspense} from 'react';
 import {
-  IconBasicsleft,
-  IconImage,
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
   IconLock,
-  IconMenu,
   IconPlus,
   IconPost,
   IconPostBlue,
   IconPublic,
   IconStore,
   IconStoreBlue,
+  IconTwoUser,
 } from '../../icons/icons';
+import {
+  useGetOtherUserProfileQuery,
+  useGetUserProfileQuery,
+} from '../../redux/apiSlices/authSlice';
 
-import {DrawerActions} from '@react-navigation/native';
-import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {TextInput} from 'react-native-gesture-handler';
-import {Asset} from 'react-native-image-picker';
 import {SvgXml} from 'react-native-svg';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import CreatedHeaderWithITB from '../../components/backHeader/CreatedHeaderWithITB';
+import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import IButton from '../../components/buttons/IButton';
-import IwtButton from '../../components/buttons/IwtButton';
-import SimpleButton from '../../components/buttons/SimpleButton';
-import TButton from '../../components/buttons/TButton';
-import InputText from '../../components/inputs/InputText';
-import NormalModal from '../../components/modals/NormalModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
-import {useImagePicker} from '../../utils/utils';
+import {PrimaryColor} from '../../utils/utils';
+
+// import Post from './components/Post';
+// import Store from './components/Store';
 
 const Post = React.lazy(() => import('./components/Post'));
 const Store = React.lazy(() => import('./components/Store'));
 
-const categoryData = [
-  {
-    id: 1,
-    name: 'Vehicle',
-  },
-  {
-    id: 2,
-    name: 'Electronics',
-  },
-  {
-    id: 3,
-    name: 'Property',
-  },
-  {
-    id: 4,
-    name: 'Study',
-  },
-  {
-    id: 5,
-    name: 'Vehicle',
-  },
-  {
-    id: 6,
-    name: 'Electronics',
-  },
-  {
-    id: 7,
-    name: 'Property',
-  },
-  {
-    id: 8,
-    name: 'Study',
-  },
-  {
-    id: 10,
-    name: 'Study',
-  },
-  {
-    id: 11,
-    name: 'Study',
-  },
-  {
-    id: 12,
-    name: 'Study',
-  },
-];
-
-const MyWall = ({navigation}: NavigProps<null>) => {
+const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
   // console.log(route);
-  const [options, setOptions] = React.useState('post');
-  const [isPublic, setIsPublic] = React.useState(true);
+  const {
+    data: wallData,
+    isLoading: wallLoading,
+    refetch: wallRefetch,
+  } = useGetUserProfileQuery({});
+  const {data: otherWallData} = useGetOtherUserProfileQuery({});
+
+  // console.log(Shop?.data?.[0]?.id);
+
+  const [options, setOptions] = React.useState(route?.params?.state || 'post');
 
   const [showAddPostModal, setShowAddPostModal] = React.useState(false);
   const [showAddProductModal, setShowProductPostModal] = React.useState(false);
-  const [showCategoryModal, setShowCategoryModal] = React.useState(false);
-  const [selectCategory, setSelectCategory] = React.useState('Vehicle');
 
-  const [images, setImages] = React.useState<Array<Asset>>();
+  // console.log(Shop?.data?.[0]?.id);
 
-  const [post, setPost] = React.useState('');
-
-  const handleImage = async (need: 'post' | 'store') => {
-    if (need === 'post') {
-      const image = await useImagePicker({
-        option: 'library',
-      });
-      // check image lenth maximum 4
-      // console.log(image);
-      setImages(image);
-    }
-    if (need === 'store') {
-      const image = await useImagePicker({
-        option: 'library',
-        selectionLimit: 4,
-      });
-      // check image lenth maximum 4
-      setImages(image);
-    }
-  };
-
+  // console.log(wallData?.data.news_feeds.length);
+  // console.log(wallData?.data?.image);
   return (
     <View style={tw`flex-1 bg-white`}>
-      <BackWithComponent
-        title="My Wall"
-        containerStyle={tw`justify-between`}
-        ComponentBtn={
-          <IButton
-            onPress={() => {
-              navigation?.dispatch(DrawerActions.openDrawer());
-            }}
-            svg={IconMenu}
-            containerStyle={tw`w-12  h-12 bg-primary50 shadow-none`}
+      {/*================= header here =================== */}
+      <View style={tw``}>
+        <LogoWithHeader
+          offMenu
+          searchOffItem={{
+            offPeople: true,
+            offPost: true,
+            offProduct: true,
+          }}
+          onFinish={text => {
+            navigation?.navigate('Search', {
+              text,
+            });
+          }}
+          navigation={navigation}
+        />
+      </View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={wallLoading}
+            onRefresh={wallRefetch}
+            colors={[PrimaryColor]}
           />
         }
-        onPress={() => {
-          navigation?.goBack();
-        }}
-      />
-      <ScrollView
         contentContainerStyle={tw`pb-6`}
         nestedScrollEnabled
+        keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}>
         <View style={tw`px-[4%]`}>
           <View
-            style={tw`flex-row items-center justify-between tablet:justify-start gap-8  my-5`}>
-            <FastImage
-              style={tw`w-16 h-16  rounded-3xl`}
-              source={{
-                uri: 'https://randomuser.me/api/portraits/men/19.jpg',
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-            <View style={tw`flex-1  flex-row justify-between tablet:max-w-72 `}>
-              <View style={tw`justify-center items-center`}>
-                <Text
-                  style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  236
-                </Text>
-                <Text
-                  style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Posts
+            style={tw`flex-row items-center  tablet:justify-start gap-8  my-5`}>
+            {wallData?.data?.image ? (
+              <FastImage
+                style={tw`w-16 h-16  rounded-3xl`}
+                source={{
+                  uri: wallData?.data?.image,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            ) : (
+              <View
+                style={tw`w-16 h-16 justify-center items-center bg-primary rounded-full `}>
+                <Text style={tw` font-NunitoSansBold text-2xl text-white `}>
+                  {wallData?.data?.full_name.slice(0, 1).toUpperCase()}
                 </Text>
               </View>
-              <View style={tw`justify-center items-center`}>
-                <Text
-                  style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  18.7k
-                </Text>
-                <Text
-                  style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Followers
-                </Text>
-              </View>
-              <View style={tw`justify-center items-center`}>
-                <Text
-                  style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
-                  79
-                </Text>
-                <Text
-                  style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
-                  Following
-                </Text>
-              </View>
+            )}
+
+            <View
+              style={tw`flex-1 max-w-[50%]  flex-row  gap-[80%] tablet:max-w-72 `}>
+              {wallData && wallData?.data?.news_feeds?.length > 0 && (
+                <View style={tw`justify-center items-center`}>
+                  <Text
+                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                    {wallData?.data?.news_feeds?.length}
+                  </Text>
+                  <Text
+                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                    Posts
+                  </Text>
+                </View>
+              )}
+              {wallData && wallData?.data?.formattedProducts?.length > 0 && (
+                <View style={tw`justify-center items-center`}>
+                  <Text
+                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                    {wallData?.data?.formattedProducts?.length}
+                  </Text>
+                  <Text
+                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                    Products
+                  </Text>
+                </View>
+              )}
+              {wallData && wallData?.data?.friends_count > 0 && (
+                <View style={tw`justify-center items-center`}>
+                  <Text
+                    style={tw`text-color-Black800 font-NunitoSansBold text-[24px]`}>
+                    {wallData?.data?.friends_count}
+                  </Text>
+                  <Text
+                    style={tw`text-[#A5A3A9] font-NunitoSansBold text-[12px]`}>
+                    Contacts
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
-          <View style={tw`gap-2`}>
-            <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
-              Sam
-            </Text>
+          <View style={tw`gap-2 justify-center`}>
+            <View style={tw`flex-row  gap-1 items-center`}>
+              <Text style={tw`text-color-Black800 font-NunitoSansBold text-lg`}>
+                {wallData?.data?.full_name}
+              </Text>
+              {wallData?.data?.user_name && (
+                <Text
+                  style={tw`text-color-Black400 font-NunitoSansBold text-[10px]`}>
+                  @{wallData?.data?.user_name}
+                </Text>
+              )}
+              <View style={tw` px-1 rounded-full`}>
+                {wallData?.data?.privacy === 'public' ? (
+                  <SvgXml xml={IconPublic} width={10} />
+                ) : wallData?.data?.privacy === 'private' ? (
+                  <SvgXml xml={IconLock} width={10} />
+                ) : (
+                  <SvgXml xml={IconTwoUser} width={10} />
+                )}
+              </View>
+            </View>
+
+            {wallData?.data?.contact && (
+              <Text style={tw`text-color-Black400 font-NunitoSansBold text-xs`}>
+                {wallData?.data?.contact}
+              </Text>
+            )}
+
             <Text
               style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
-              Cut from geometric cotton lace mimicking decorative fretwork, this
-              blouse reveals hints of skin offsetting its long-sleeve silhouette
+              {wallData?.data?.bio}
             </Text>
           </View>
         </View>
 
         {/*================= options here =================== */}
-        <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => setOptions('post')}
-            style={tw`h-11 px-2 flex-row gap-2  ${
-              options == 'post'
-                ? 'border-b-[3px] border-b-primary'
-                : 'border-b-[3px] border-b-white'
-            }  justify-center items-center`}>
-            <SvgXml xml={options == 'post' ? IconPostBlue : IconPost} />
-            <Text
-              style={tw` ${
-                options == 'post' ? 'text-primary' : 'text-[#34303E]'
-              } font-NunitoSansBold text-sm`}>
-              Post
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => setOptions('store')}
-            style={tw`h-11 px-2 gap-2 ${
-              options == 'store'
-                ? 'border-b-[3px] border-b-primary'
-                : 'border-b-[3px] border-b-white'
-            }  justify-center items-center flex-row `}>
-            <SvgXml xml={options == 'store' ? IconStoreBlue : IconStore} />
-            <Text
-              style={tw` ${
-                options == 'store' ? 'text-primary' : 'text-[#34303E]'
-              } font-NunitoSansBold text-sm`}>
-              Store
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {options == 'post' ? (
-          <View style={tw`tablet:mx-[30%]`}>
-            <Post navigation={navigation} />
+        {wallData?.data?.shop ? (
+          <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setOptions('post')}
+              style={tw`h-11 px-2 flex-row gap-2  ${
+                options == 'post'
+                  ? 'border-b-[3px] border-b-primary'
+                  : 'border-b-[3px] border-b-white'
+              }  justify-center items-center`}>
+              <SvgXml xml={options == 'post' ? IconPostBlue : IconPost} />
+              <Text
+                style={tw` ${
+                  options == 'post' ? 'text-primary' : 'text-[#34303E]'
+                } font-NunitoSansBold text-sm`}>
+                Post
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setOptions('store')}
+              style={tw`h-11 px-2 gap-2 ${
+                options == 'store'
+                  ? 'border-b-[3px] border-b-primary'
+                  : 'border-b-[3px] border-b-white'
+              }  justify-center items-center flex-row `}>
+              <SvgXml xml={options == 'store' ? IconStoreBlue : IconStore} />
+              <Text
+                style={tw` ${
+                  options == 'store' ? 'text-primary' : 'text-[#34303E]'
+                } font-NunitoSansBold text-sm`}>
+                {wallData?.data?.shop?.shop_name}
+              </Text>
+            </TouchableOpacity>
           </View>
         ) : (
-          <Store navigation={navigation} />
+          <View style={tw`flex-row items-center gap-3 px-[4%] my-4`}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => setOptions('post')}
+              style={tw`h-11 px-2 flex-row gap-2  
+              
+                   border-b-[3px] border-b-primary
+              
+                justify-center items-center`}>
+              <SvgXml xml={IconPostBlue} />
+              <Text style={tw`  text-primary  font-NunitoSansBold text-sm`}>
+                Post
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {options == 'post' ? (
+          <Suspense
+            fallback={
+              <View>
+                <ActivityIndicator color={PrimaryColor} />
+              </View>
+            }>
+            <View style={tw`tablet:mx-[30%]`}>
+              <Post
+                showAddPostModal={showAddPostModal}
+                setShowAddPostModal={setShowAddPostModal}
+                navigation={navigation}
+              />
+            </View>
+          </Suspense>
+        ) : (
+          <Suspense
+            fallback={
+              <View>
+                <ActivityIndicator color={PrimaryColor} />
+              </View>
+            }>
+            <Store
+              showAddProductModal={showAddProductModal}
+              setShowProductPostModal={setShowProductPostModal}
+              navigation={navigation}
+            />
+          </Suspense>
         )}
       </ScrollView>
 
@@ -244,232 +276,6 @@ const MyWall = ({navigation}: NavigProps<null>) => {
         svg={IconPlus}
         containerStyle={tw`absolute bottom-10 right-6 h-12 w-12 rounded-3xl items-center justify-center bg-primary900 `}
       />
-
-      <NormalModal
-        visible={showAddPostModal}
-        scrollable
-        animationType="fade"
-        layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
-        containerStyle={tw` rounded-2xl p-5`}
-        setVisible={setShowAddPostModal}>
-        <CreatedHeaderWithITB
-          title="Create a post"
-          onPress={() => setShowAddPostModal(false)}
-        />
-        <View style={tw`gap-3 flex-row items-center mt-5`}>
-          <FastImage
-            style={tw`w-8 h-8 rounded-xl `}
-            resizeMode={FastImage.resizeMode.contain}
-            source={{
-              uri: 'https://randomuser.me/api/portraits/men/19.jpg',
-            }}
-          />
-          <View>
-            <Text style={tw`text-color-Black800 font-NunitoSansBold text-base`}>
-              Sam
-            </Text>
-            <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`}>
-              Edwinmartin_0097
-            </Text>
-          </View>
-        </View>
-        <TextInput
-          multiline
-          textAlignVertical="top"
-          placeholderTextColor={'#888888'}
-          placeholder="Share your thoughts..."
-          style={tw`h-32 text-color-Black400 font-NunitoSansRegular text-base px-2`}
-        />
-        <View style={tw`border-t-[1px] border-t-[#E5E5E5] border-dashed py-3`}>
-          <Text
-            style={tw`text-color-Black800 font-NunitoSansBold text-base my-2`}>
-            Add to your post
-          </Text>
-          <View style={tw`flex-row items-center gap-4`}>
-            <TouchableOpacity onPress={() => handleImage('post')}>
-              {images?.length > 0 ? (
-                <FastImage
-                  style={tw`w-12 rounded-xl h-12 `}
-                  resizeMode={FastImage.resizeMode.cover}
-                  source={{
-                    uri: images![0]?.uri,
-                  }}
-                />
-              ) : (
-                <SimpleButton
-                  onPress={() => handleImage('post')}
-                  svgIcon={IconImage}
-                  containerStyle={tw`w-12 rounded-xl h-12 items-center justify-center border-0 bg-color-Black50`}
-                />
-              )}
-            </TouchableOpacity>
-            <View style={tw`gap-2`}>
-              <Text
-                style={tw`text-color-Black800 font-NunitoSansBold text-base`}>
-                Privacy
-              </Text>
-              <View style={tw`flex-row items-center gap-2`}>
-                <IwtButton
-                  title="Public"
-                  svg={IconPublic}
-                  onPress={() => setIsPublic(true)}
-                  titleStyle={tw`text-[10px] text-black font-NunitoSansRegular `}
-                  containerStyle={tw` rounded-xl h-7 w-20 items-center  p-0 ${
-                    isPublic ? 'bg-primary100' : 'bg-white'
-                  } shadow-none`}
-                />
-                <IwtButton
-                  title="Private"
-                  svg={IconLock}
-                  onPress={() => setIsPublic(false)}
-                  titleStyle={tw`text-[10px] text-black font-NunitoSansRegular `}
-                  containerStyle={tw` rounded-xl h-7 w-20 items-center  p-0 ${
-                    isPublic ? 'bg-white' : 'bg-primary100'
-                  } shadow-none`}
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View>
-          <TButton
-            containerStyle={tw`w-full my-3 bg-primary600`}
-            onPress={() => setShowAddPostModal(false)}
-            title="Post"
-          />
-        </View>
-      </NormalModal>
-
-      {/*=================== Product add ===================== */}
-      <NormalModal
-        scrollable
-        visible={showAddProductModal}
-        animationType="fade"
-        layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
-        containerStyle={tw` rounded-2xl p-5 my-3`}
-        setVisible={setShowProductPostModal}>
-        <CreatedHeaderWithITB
-          title="Add a new product"
-          onPress={() => setShowProductPostModal(false)}
-        />
-
-        <View style={tw`border-b-[1px] border-b-[#E5E5E5] border-dashed py-3`}>
-          <Text
-            style={tw`text-color-Black800 font-NunitoSansBold text-base my-3`}>
-            Select product images
-          </Text>
-          <View style={tw`flex-row items-center gap-4`}>
-            <FlatList
-              contentContainerStyle={tw`gap-2`}
-              ListHeaderComponent={() => (
-                <SimpleButton
-                  onPress={() => handleImage('post')}
-                  svgIcon={IconImage}
-                  containerStyle={tw`w-12 rounded-xl h-12 items-center justify-center border-0 bg-color-Black50`}
-                />
-              )}
-              data={images}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => (
-                <View>
-                  <FastImage
-                    style={tw`w-14 h-12 rounded-xl `}
-                    resizeMode={FastImage.resizeMode.cover}
-                    source={{
-                      uri: item.uri,
-                    }}
-                  />
-                </View>
-              )}
-            />
-          </View>
-        </View>
-
-        <View style={tw`py-4 gap-4`}>
-          <View style={tw`h-14`}>
-            <InputText
-              placeholder="Set product prize"
-              placeholderTextColor={'#A5A3A9'}
-              keyboardType="decimal-pad"
-              floatingPlaceholder
-              style={tw`font-NunitoSansRegular `}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => {
-              setShowCategoryModal(!showCategoryModal);
-            }}
-            activeOpacity={0.5}
-            style={tw`h-14 justify-center items-start border border-[#E8E8EA] px-4 rounded-2xl`}>
-            <Text style={tw`text-color-Black600  font-NunitoSansRegular`}>
-              {selectCategory}
-            </Text>
-          </TouchableOpacity>
-          <View style={tw`h-14`}>
-            <InputText
-              placeholder="Product code"
-              floatingPlaceholder
-              placeholderTextColor={'#A5A3A9'}
-              style={tw`font-NunitoSansRegular `}
-            />
-          </View>
-          <View style={tw`h-40`}>
-            <InputText
-              multiline
-              textAlignVertical="top"
-              placeholder="Description"
-              // floatingPlaceholder
-              placeholderTextColor={'#A5A3A9'}
-              style={tw`h-40 py-3 font-NunitoSansRegular`}
-            />
-          </View>
-        </View>
-
-        <View>
-          <TButton
-            containerStyle={tw`w-full my-3 bg-primary600`}
-            onPress={() => setShowProductPostModal(false)}
-            title="Post"
-          />
-        </View>
-      </NormalModal>
-      <NormalModal
-        scrollable
-        visible={showCategoryModal}
-        animationType="fade"
-        layerContainerStyle={tw`flex-1 mx-[4%] justify-center items-center `}
-        containerStyle={tw` rounded-2xl p-5 my-3`}
-        setVisible={setShowCategoryModal}>
-        <View style={tw` border-dashed py-2`}>
-          <TouchableOpacity
-            style={tw`flex-row items-center gap-3`}
-            onPress={() => setShowCategoryModal(false)}>
-            <SvgXml width={12} height={12} xml={IconBasicsleft} />
-            <Text
-              style={tw`text-color-Black800 font-NunitoSansBold text-base `}>
-              Select Category
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={tw`py-4 gap-4`}>
-          {categoryData.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                setSelectCategory(item.name);
-                setShowCategoryModal(false);
-              }}
-              activeOpacity={0.5}
-              style={tw`py-2`}>
-              <Text style={tw`text-color-Black600  font-NunitoSansRegular`}>
-                {item.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </NormalModal>
     </View>
   );
 };

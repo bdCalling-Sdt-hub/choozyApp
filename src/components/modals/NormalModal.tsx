@@ -1,4 +1,4 @@
-import {Pressable, ScrollView, View} from 'react-native';
+import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
 
 import React from 'react';
 import {Modal} from 'react-native-ui-lib';
@@ -26,31 +26,39 @@ const NormalModal = ({
   return (
     <Modal
       transparent
-      // useKeyboardAvoidingView={false}
+      useGestureHandlerRootView
+      presentationStyle="overFullScreen"
+      shouldRasterizeIOS
+      useKeyboardAvoidingView
       animationType={animationType}
-      overlayBackgroundColor={'rgba(0, 0, 0, 0.2)'}
+      overlayBackgroundColor={'rgba(0, 0, 0, 0.3)'}
       visible={visible}
-      onBackgroundPress={() => setVisible && setVisible(!visible)}>
-      <View style={[tw``, layerContainerStyle]}>
-        <Pressable
-          disabled
-          style={[
-            tw`bg-white w-full p-4 `,
-            containerStyle,
-            tw`tablet:w-[35%]`,
-          ]}>
-          {scrollable ? (
-            <ScrollView
-              nestedScrollEnabled
-              keyboardShouldPersistTaps="always"
-              showsVerticalScrollIndicator={false}>
-              {children}
-            </ScrollView>
-          ) : (
-            children
-          )}
-        </Pressable>
-      </View>
+      onBackgroundPress={() => setVisible && setVisible(false)} // Ensure it toggles correctly
+    >
+      <TouchableWithoutFeedback onPress={() => setVisible && setVisible(false)}>
+        <View
+          style={[tw`flex-1 justify-center items-center`, layerContainerStyle]}>
+          <TouchableWithoutFeedback>
+            <View
+              style={[
+                tw`bg-white w-full p-4 rounded-xl`,
+                containerStyle,
+                tw`tablet:w-[35%]`,
+              ]}>
+              {scrollable ? (
+                <ScrollView
+                  nestedScrollEnabled
+                  keyboardShouldPersistTaps="always"
+                  showsVerticalScrollIndicator={false}>
+                  {children}
+                </ScrollView>
+              ) : (
+                children
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };

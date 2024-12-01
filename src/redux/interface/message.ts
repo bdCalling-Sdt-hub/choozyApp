@@ -1,47 +1,35 @@
-import {IFetchStatus} from './main';
+import {IFechtStatus} from './Fechting';
 
-export interface ILastMessage {
-  lastMessage: {
-    _id: string;
-    sender: {
-      _id: string;
-      fullName: string;
-    };
-    path: string;
-    image: string;
-    text: string;
-    audio: string;
-    createdAt: Date;
-  };
+export interface IUserChat {
+  id: number;
+  full_name: string;
+  user_name: string;
+  email: string;
+  location: string;
+  image: string;
+  last_message: string;
+  last_message_time: string;
+  unread_count: number;
 }
 
-export interface ICreateMessage {
-  chatId: string;
-  image?: File | string;
-  text?: string;
-  audio?: File | string;
-  path?: string;
+export interface IUserChats extends IFechtStatus {
+  data: Array<IUserChat>;
 }
 
 export interface IMessage {
-  chatId: string;
+  id: number;
+  message: string;
+  images: [string];
+  is_read: any;
+  created_at: string;
   sender: {
-    _id: string;
-    fullName: string;
-    avatar: string;
+    id: number;
+    full_name: string;
+    email: string;
+    image: string;
   };
-  text: string;
-  audio: string;
-  image: string;
-  path: string;
-  messageType: string;
-  friendsType: string;
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: 0;
 }
 
-export interface IMessages extends IFetchStatus {
+export interface IMessages extends IFechtStatus {
   data: Array<IMessage>;
 }

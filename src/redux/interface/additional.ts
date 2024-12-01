@@ -1,20 +1,23 @@
-import {IFetchStatus} from './main';
+import {IFechtStatus} from './Fechting';
 
-export interface ITermsAndPolicy {
-  _id: string;
-  createdBy: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: 0;
+export interface ITermsConditions extends IFechtStatus {
+  data: {
+    id: number;
+    content: string;
+    status: number;
+    created_at: string;
+    updated_at: string;
+  };
 }
 
-export interface ITermsAndPolicies extends IFetchStatus {
-  data: Array<ITermsAndPolicy>;
+export interface IFaq extends IFechtStatus {
+  id: number;
+  question: string;
+  answer: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
 }
-
-export interface IInputPagination {
-  id?: string;
-  page?: string;
-  limit?: string;
+export interface IFaqs extends IFechtStatus {
+  data: Array<IFaq>;
 }

@@ -3,16 +3,19 @@ import {
   IconBell,
   IconBellWithDot,
   IconClose,
+  IconMenu,
   IconSearch,
   IconVThreeDots,
 } from '../../icons/icons';
 
+import {DrawerActions} from '@react-navigation/native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import searchResults from '../../assets/database/search.json';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useGetNotificationsQuery} from '../../redux/apiSlices/notificaiton';
 import IButton from '../buttons/IButton';
 import SearchCard from '../cards/SearchCard';
 import InputText from '../inputs/InputText';
@@ -27,7 +30,10 @@ interface ILogoWithHeader extends NavigProps<null> {
   };
   offSearch?: boolean;
   offMenu?: boolean;
-  onFinish?: () => void;
+  onFinish?: (text: string) => void;
+  searchValue?: string;
+  offHambar?: boolean;
+  onPressHambar?: () => void;
 }
 
 const LogoWithHeader = ({
@@ -37,11 +43,18 @@ const LogoWithHeader = ({
   offMenu,
   onFinish,
   offSearch,
+  searchValue,
+  offHambar,
+  onPressHambar,
 }: ILogoWithHeader) => {
   const [searchVisible, setSearchVisible] = React.useState(false);
+  const [searchText, setSearchText] = React.useState('');
+  const {data} = useGetNotificationsQuery({});
+
+  const haveNotification = data?.data?.some(n => n.read_at === null);
 
   return (
-    <View style={tw`px-[4%] flex-row justify-between items-center`}>
+    <View style={tw`px-[4%] flex-row justify-between items-center bg-white`}>
       {/*============== image or logo==================  */}
       <View style={tw`py-4 flex-row items-center gap-2`}>
         <FastImage
@@ -56,14 +69,16 @@ const LogoWithHeader = ({
       <View style={tw`flex-row gap-3`}>
         {!offSearch && (
           <IButton
-            onPress={() => setSearchVisible(!searchVisible)}
+            onPress={() => {
+              setSearchVisible(!searchVisible);
+            }}
             svg={IconSearch}
             containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
           />
         )}
         <IButton
           onPress={() => navigation?.navigate('Notification')}
-          svg={IconBellWithDot}
+          svg={haveNotification ? IconBellWithDot : IconBell}
           containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
         />
         {!offMenu && (
@@ -73,11 +88,21 @@ const LogoWithHeader = ({
             containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
           />
         )}
+        {!offHambar && (
+          <IButton
+            onPress={() => {
+              navigation?.dispatch(DrawerActions.openDrawer());
+            }}
+            svg={IconMenu}
+            containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
+          />
+        )}
       </View>
       <NormalModal
         animationType="fade"
-        containerStyle={tw`w-full`}
+        containerStyle={tw`w-full rounded-none`}
         setVisible={setSearchVisible}
+        layerContainerStyle={tw`justify-start items-start flex-1 `}
         visible={searchVisible}>
         {/*=========== search here =========== */}
         <View style={tw`flex-row items-center py-2 gap-3`}>
@@ -87,21 +112,24 @@ const LogoWithHeader = ({
           <InputText
             containerStyle={tw`w-full border-2 border-transparent bg-color-Black50 `}
             placeholder="Search"
-            onChangeText={text => {}}
+            defaultValue={searchValue}
+            onChangeText={text => {
+              setSearchText(text);
+            }}
             focusSTyle={tw`border-[#B3C5FF] border-2`}
             returnKeyType="done" // you can set returnKeyType like 'done', 'go', etc.
-            onSubmitEditing={() => {
-              onFinish && onFinish();
+            onSubmitEditing={e => {
+              onFinish && onFinish(e.nativeEvent.text);
               setSearchVisible(!searchVisible);
             }}
             svgFirstIcon={IconSearch}
           />
           <IButton
             onPress={() => {
+              onFinish && onFinish(searchText);
               setSearchVisible(!searchVisible);
-              navigation?.navigate('Notification');
             }}
-            svg={IconBell}
+            svg={IconSearch}
             containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
           />
           {/* <IButton

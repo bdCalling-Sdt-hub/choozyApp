@@ -1,12 +1,18 @@
 // devices screen size
 
-import {Dimensions, PixelRatio} from 'react-native';
+import {Dimensions, PixelRatio, Platform} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import {MMKVLoader} from 'react-native-mmkv-storage';
 import {imageUrl} from '../redux/api/baseApi';
 
 export const lStorage = new MMKVLoader().initialize();
+
+export const PrimaryColor = '#4964C6';
+
+export const Android = Platform.OS === 'android';
+
+export const Ios = Platform.OS === 'ios';
 
 export const makeImage = (url: string) => {
   return url.startsWith('https') ? url : imageUrl + url;
@@ -69,7 +75,6 @@ export const useImagePicker = async ({
         maxWidth: 500,
         maxHeight: 500,
         quality: 0.5,
-        includeBase64: true,
       });
 
       if (!result.didCancel) {
@@ -82,8 +87,7 @@ export const useImagePicker = async ({
         maxWidth: 500,
         maxHeight: 500,
         quality: 0.5,
-        includeBase64: true,
-        selectionLimit: selectionLimit ? selectionLimit : 1, // Set to 0 for unlimited image selection
+        selectionLimit: selectionLimit || 1, // Set to 0 for unlimited image selection
       });
 
       if (!result.didCancel) {
@@ -94,3 +98,18 @@ export const useImagePicker = async ({
     console.log(error);
   }
 };
+
+function getRandomHashColor() {
+  let letters = '0123456789ABCDEF';
+  let color = '#';
+
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+
+  return color;
+}
+
+// Usage:
+// const price = formatCurrency(1234.56, 'fr-FR', 'EUR');
+// console.log(price); // Output: "1 234,56 €" (French formatting for Euros)

@@ -1,6 +1,8 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
 import React from 'react';
+import {SvgXml} from 'react-native-svg';
+import {IconFillLove} from '../../icons/icons';
 import tw from '../../lib/tailwind';
 
 interface SelectionCardProps {
@@ -48,9 +50,10 @@ const SelectionCard = ({
           </Text>
         </View>
       </View>
-      <View>
+      <View style={tw`flex-row gap-2 items-center`}>
+        <SvgXml xml={IconFillLove} />
         <Text style={tw`text-color-Black800 font-NunitoSansBold text-base`}>
-          ${price}
+          {price}
         </Text>
       </View>
     </TouchableOpacity>

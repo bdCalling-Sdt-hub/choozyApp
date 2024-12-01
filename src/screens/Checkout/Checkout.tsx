@@ -1,33 +1,92 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import PopUpModal, {PopUpModalRef} from '../../components/modals/PopUpModal';
-import {
-  IIConAmericanExpress,
-  IIConDiscover,
-  IIConMasterCard,
-  IIConVisaCard,
-} from '../../icons/IIcons';
+import {IconFillLove, IconRightArrow} from '../../icons/icons';
+import {ScrollView, Text, View} from 'react-native';
 
-import React from 'react';
-import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
+import {Android} from '../../utils/utils';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import IwtButton from '../../components/buttons/IwtButton';
-import TButton from '../../components/buttons/TButton';
-import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
-import SideModal from '../../components/modals/SideModal';
-import {IconRightArrow} from '../../icons/icons';
+import FastImage from 'react-native-fast-image';
+import {IProduct} from '../../redux/interface/products';
+import InputText from '../../components/inputs/InputText';
+import IwtButton from '../../components/buttons/IwtButton';
 import {NavigProps} from '../../interfaces/NaviProps';
+import React from 'react';
+import SideModal from '../../components/modals/SideModal';
+import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
+import {useCreateOrderMutation} from '../../redux/apiSlices/order';
+import {useToast} from '../../components/modals/Toaster';
 
-const Checkout = ({navigation}: NavigProps<null>) => {
+const Checkout = ({navigation, route}: NavigProps<{item: IProduct}>) => {
+  const {showToast, closeToast} = useToast();
   const [close, setClose] = React.useState(false);
   const [shippingModal, setShippingModal] = React.useState(false);
+  const [orderInfo, setOrderInfo] = React.useState({
+    phone_number: '1234567890',
+    country: 'USA',
+    state: 'California',
+    city: 'San Francisco',
+    zipcode: '90001',
+    address: '123 Street, City',
+    notes: 'Please deliver between 9 AM - 5 PM',
+  });
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
 
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
+  const Item = route?.params?.item;
+
+  // console.log(Item?.category_name);
+  const [createOrder, {isLoading}] = useCreateOrderMutation();
+
+  const handleCreateOrder = async () => {
+    console.log(Item?.id, Item?.price);
+
+    const res = await createOrder({
+      product_id: Item?.id,
+      total_amount: Item?.price,
+      ...orderInfo,
+    });
+
+    if (res.data) {
+      setDateModal(false);
+      setPaymentModal(false);
+      setShippingModal(false);
+      purchaseSuccessFull();
+    }
+    if (res.error) {
+      showToast({
+        content: res.error?.message,
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500`,
+        btnDisplay: true,
+      });
+    }
+    console.log(res);
+  };
+
+  const purchaseSuccessFull = React.useCallback(async () => {
+    showToast({
+      iconComponent: (
+        <FastImage
+          style={tw`w-full h-28 rounded-2xl`}
+          source={require('../../assets/images/logo/extra/birthday.png')}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+      ),
+      title: 'Congratulations! Your purchase is done',
+      titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
+      buttonText: 'Done',
+
+      buttonStyle: tw`w-full justify-center bg-primary items-center font-NunitoSansBold shadow-none`,
+      contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
+      onPress: () => {
+        closeToast();
+
+        navigation?.goBack();
+      },
+    });
+  }, []);
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
@@ -35,13 +94,6 @@ const Checkout = ({navigation}: NavigProps<null>) => {
         onPress={() => navigation?.goBack()}
         titleStyle={tw`text-lg text-black font-NunitoSansRegular`}
         containerStyle={tw`justify-between`}
-        ComponentBtn={
-          <TouchableOpacity onPress={() => navigation?.goBack()}>
-            <Text style={tw`text-base text-red-600 font-NunitoSansBold`}>
-              Cancle
-            </Text>
-          </TouchableOpacity>
-        }
       />
 
       <View style={tw`px-[4%] flex-row items-center gap-3`}>
@@ -49,53 +101,74 @@ const Checkout = ({navigation}: NavigProps<null>) => {
           style={tw`w-28 h-28 rounded-2xl`}
           resizeMode={FastImage.resizeMode.contain}
           source={{
-            uri: 'https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg',
+            uri: Item?.product_images![0],
           }}
         />
-        <View>
+        <View style={tw`flex-1`}>
           <Text
+            numberOfLines={2}
             style={tw`text-base text-color-Black1000 font-NunitoSansRegular`}>
-            Ninja ZX-1
+            {Item?.product_name}
           </Text>
-          <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-            €398.99
-          </Text>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
         </View>
       </View>
 
       <View
-        style={tw`px-[4%] py-12 gap-3 border-b border-b-color-Black200 border-dashed `}>
-        <View style={tw`flex-row justify-between items-center`}>
+        style={tw`px-[4%] py-12 gap-3  ${
+          Android ? ' border-dashed border-b-[1px] border-b-[#E5E5E5]' : ''
+        }`}>
+        {/* <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Subtotal
           </Text>
-          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-            €398.99
-          </Text>
-        </View>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
+        </View> */}
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-            Shipping
+            Delivery Cost
           </Text>
-          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-            €7.00
-          </Text>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {0}
+            </Text>
+          </View>
         </View>
-        <View style={tw`flex-row justify-between items-center`}>
+        {/* <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Discount
           </Text>
-          <Text style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-            €0.00
-          </Text>
-        </View>
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={10} width={10} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {Item?.price}
+            </Text>
+          </View>
+        </View> */}
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
             Total
           </Text>
-          <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-            €398.99
-          </Text>
+
+          <View style={tw`flex-row items-center gap-2`}>
+            <SvgXml height={14} width={14} xml={IconFillLove} />
+            <Text style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+              {/* format of bd  */}
+
+              {Item?.price}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -103,6 +176,7 @@ const Checkout = ({navigation}: NavigProps<null>) => {
         <View
           style={tw`flex-row items-center justify-between pt-2 gap-3  my-3`}>
           <IwtButton
+            isLoading={isLoading}
             svg={IconRightArrow}
             onPress={() => {
               // setPurchaseModal(false);
@@ -134,6 +208,10 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                   containerStyle={tw` bg-white `}
                   placeholder="Country"
                   floatingPlaceholder
+                  value={orderInfo?.country}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, country: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -142,6 +220,10 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                   placeholder="State"
                   floatingPlaceholder
                   keyboardType="decimal-pad"
+                  value={orderInfo?.state}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, state: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -150,6 +232,10 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                   placeholder="City"
                   floatingPlaceholder
                   keyboardType="ascii-capable"
+                  value={orderInfo?.city}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, city: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -157,6 +243,10 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                   containerStyle={tw` bg-white `}
                   placeholder="ZIP Code"
                   floatingPlaceholder
+                  value={orderInfo?.zipcode}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, zipcode: text})
+                  }
                 />
               </View>
               <View style={tw`h-14 `}>
@@ -164,6 +254,26 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                   containerStyle={tw` bg-white `}
                   placeholder="Address"
                   floatingPlaceholder
+                  value={orderInfo?.address}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, address: text})
+                  }
+                />
+              </View>
+              <View style={tw`h-20 `}>
+                <InputText
+                  multiline
+                  numberOfLines={4}
+                  verticalAlign="top"
+                  textAlign="left"
+                  textAlignVertical="top"
+                  containerStyle={tw` bg-white `}
+                  placeholder="Note"
+                  floatingPlaceholder
+                  value={orderInfo?.notes}
+                  onChangeText={text =>
+                    setOrderInfo({...orderInfo, notes: text})
+                  }
                 />
               </View>
             </View>
@@ -175,8 +285,9 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                 onPress={() => {
                   // setPurchaseModal(false);
                   // navigation?.navigate('Checkout');
-                  setShippingModal(!shippingModal);
-                  setPaymentModal(!paymentModal);
+                  // setShippingModal(!shippingModal);
+                  // purchaseSuccessFull();
+                  handleCreateOrder();
                 }}
                 title="Next"
                 titleStyle={tw`font-NunitoSansBold`}
@@ -187,7 +298,7 @@ const Checkout = ({navigation}: NavigProps<null>) => {
         </ScrollView>
       </SideModal>
       {/*===================== payment modal ======================== */}
-      <SideModal scrollable visible={paymentModal} setVisible={setPaymentModal}>
+      {/* <SideModal scrollable visible={paymentModal} setVisible={setPaymentModal}>
         <ScrollView
           keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}>
@@ -198,7 +309,11 @@ const Checkout = ({navigation}: NavigProps<null>) => {
 
             <View style={tw`mt-4 gap-6`}>
               <View
-                style={tw`h-14 border border-dashed border-gray-300 rounded-2xl flex-row items-center  px-4 justify-between`}>
+                style={tw`h-14 ${
+                  Android
+                    ? 'border-dashed border-t-[1px] border-t-gray-200'
+                    : ''
+                } rounded-2xl flex-row items-center  px-4 justify-between`}>
                 <Text style={tw`text-black font-NunitoSansBold text-sm`}>
                   Cards
                 </Text>
@@ -230,6 +345,7 @@ const Checkout = ({navigation}: NavigProps<null>) => {
                 <InputText
                   //   editable={false}
                   onPress={() => {
+                    setShippingModal(!paymentModal);
                     setDateModal(!dateModal);
                   }}
                   value={`${
@@ -258,37 +374,20 @@ const Checkout = ({navigation}: NavigProps<null>) => {
               containerStyle={tw`mt-12 mb-5 bg-[#6461FC] w-full shadow-none`}
               titleStyle={tw`font-NunitoSansBold text-white`}
               onPress={() => {
-                popUpModalRef?.current?.open({
-                  iconComponent: (
-                    <FastImage
-                      style={tw`w-full h-28 rounded-2xl`}
-                      source={require('../../assets/images/logo/extra/birthday.png')}
-                      resizeMode={FastImage.resizeMode.contain}
-                    />
-                  ),
-                  title: 'Congratulations! Your purchase is done',
-                  titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-                  buttonText: 'Done',
-                  buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
-                  contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-                  onPress: () => {
-                    popUpModalRef?.current?.close();
-                    setPaymentModal(false);
-                    navigation?.goBack();
-                  },
-                });
+                // console.log('OK');
+                setPaymentModal(!paymentModal);
+                purchaseSuccessFull();
               }}
               isLoading={false}
             />
           </View>
         </ScrollView>
-      </SideModal>
+      </SideModal> */}
       <DateModal
         selectedDate={setSelectDate}
         setVisible={setDateModal}
         visible={dateModal}
       />
-      <PopUpModal ref={popUpModalRef} />
     </View>
   );
 };

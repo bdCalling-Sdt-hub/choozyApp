@@ -1,71 +1,129 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import {IconComment, IconFillLove, IconSend} from '../../icons/icons';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {IconComment, IconFillLove, IconVThreeDots} from '../../icons/icons';
+import {height, width} from '../../utils/utils';
 
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 import tw from '../../lib/tailwind';
+import {useLikeUnlikeMutation} from '../../redux/apiSlices/newsFeetSlices';
+import {INewpaper} from '../../redux/interface/newpaper';
 import IButton from '../buttons/IButton';
-import InputText from '../inputs/InputText';
-import SideModal from '../modals/SideModal';
-import CommentCard from './CommentCard';
 
 interface PostCardProps {
-  item: any;
+  item: INewpaper;
   onPress?: () => void;
   svgIcon?: any;
   title?: string;
+  setComment?: React.Dispatch<React.SetStateAction<any>>;
+  likeOppress?: () => void;
+  actionOptions?: () => void;
 }
 
-const PostCard = ({item, onPress}: PostCardProps) => {
-  const [love, setLove] = React.useState(false);
-  const [isComment, setIsComment] = React.useState(false);
-  const [comment, setComment] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+const PostCard = ({
+  item,
+  onPress,
+  setComment,
+  likeOppress,
+  actionOptions,
+}: PostCardProps) => {
+  const [love, setLove] = React.useState(item?.auth_user_liked);
+  const [like] = useLikeUnlikeMutation();
+
+  // console.log('recall');
+  // console.log(item?.user?.image);
   return (
-    <View style={tw` p-4 bg-white`}>
-      <TouchableOpacity
-        onPress={onPress}
-        activeOpacity={0.5}
-        style={tw`flex-row gap-2 items-center self-start`}>
-        <FastImage
-          style={tw`w-12 h-12 rounded-2xl`}
-          resizeMode={FastImage.resizeMode.contain}
-          source={{
-            uri: item.user.avatar,
-          }}
-        />
-        <View style={tw`gap-[2px]`}>
-          <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
-            {item.user.name}
-          </Text>
-          <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
-            {item.user.status}
-          </Text>
-        </View>
-      </TouchableOpacity>
-      {item.content.text && (
+    <View style={tw` p-4   bg-white shadow-sm m-2 rounded-md`}>
+      <View style={tw`flex-row justify-between items-center`}>
+        <TouchableOpacity
+          onPress={onPress}
+          activeOpacity={0.5}
+          style={tw`flex-row gap-2 items-center self-start`}>
+          {item?.user?.image ? (
+            <FastImage
+              style={tw`w-12 h-12 rounded-2xl`}
+              resizeMode={FastImage.resizeMode.cover}
+              source={{
+                uri: item?.user?.image,
+              }}
+            />
+          ) : (
+            <View
+              style={tw`w-12 h-12 rounded-2xl bg-primary justify-center items-center`}>
+              <Text style={tw`text-white rounded-2xl font-NunitoSansBold`}>
+                {item?.user?.full_name.slice(0, 1)}
+              </Text>
+            </View>
+          )}
+
+          <View style={tw`gap-[2px]`}>
+            <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
+              {item?.user?.full_name}
+            </Text>
+            <View style={tw`flex-row gap-2`}>
+              <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
+                {item?.user?.user_name}
+              </Text>
+              {item?.privacy && item?.privacy !== 'public' && (
+                <Text
+                  style={tw`text-[8px] text-[#A5A3A9] font-NunitoSansRegular bg-gray-200 rounded-md py-[1px] px-1`}>
+                  {item?.privacy}
+                </Text>
+              )}
+            </View>
+          </View>
+        </TouchableOpacity>
+        {actionOptions && (
+          <IButton
+            svg={IconVThreeDots}
+            onPress={actionOptions}
+            containerStyle={tw`w-9 h-9 bg-base shadow-none`}
+          />
+        )}
+      </View>
+      {item?.content && (
         <View style={tw`py-3`}>
           <Text style={tw`text-sm text-color-Black900 font-NunitoSansBold`}>
-            {item.content.text}
+            {item?.content}
           </Text>
         </View>
       )}
 
-      {item.content.image && (
-        <FastImage
-          style={tw`w-full h-52 tablet:h-60 rounded-2xl my-1`}
-          resizeMode={FastImage.resizeMode.cover}
-          source={{
-            uri: item.content.image,
-          }}
+      {item?.images?.length > 0 && (
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={item?.images}
+          pagingEnabled
+          renderItem={({item}) => (
+            <View
+              style={tw` w-[${width * 0.92}px]  h-[${
+                height * 0.055
+              }] items-center bg-white rounded-2xl`}>
+              <FastImage
+                style={tw`w-full h-full rounded-2xl `}
+                resizeMode={FastImage.resizeMode.contain}
+                source={{
+                  uri: item?.url,
+                }}
+              />
+            </View>
+          )}
         />
       )}
-
       <View style={tw`px-2 gap-2 mt-3`}>
         {/* Icons Row */}
         <View style={tw`flex-row items-center gap-4 `}>
-          <TouchableOpacity onPress={() => setLove(!love)}>
+          <TouchableOpacity
+            onPress={async () => {
+              const res = await like({
+                newsfeed_id: item.newsfeed_id || item.id,
+              });
+              // console.log('like', res);
+              console.log(item.newsfeed_id);
+              setLove(!love);
+              likeOppress && likeOppress();
+            }}>
             <SvgXml
               xml={
                 love
@@ -79,7 +137,11 @@ const PostCard = ({item, onPress}: PostCardProps) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setIsComment(!isComment);
+              setComment &&
+                setComment({
+                  item,
+                  open: true,
+                });
             }}>
             <SvgXml xml={IconComment} />
           </TouchableOpacity>
@@ -89,63 +151,26 @@ const PostCard = ({item, onPress}: PostCardProps) => {
         <View style={tw`flex-row items-center gap-3`}>
           <Text
             style={tw`text-color-Black1000  font-NunitoSansRegular text-xs`}>
-            {item.content.views} views
+            {item?.like_count} likes
           </Text>
 
           <Text
             numberOfLines={1}
             style={tw`text-gray-400 font-NunitoSansRegular w-[70%] text-xs`}>
-            • Liked by
-            <Text style={tw`text-color-Black1000 font-NunitoSansBold`}>
-              {item?.content?.liked_by[0].name} and {item.content.likes} others
+            • Comment{' '}
+            <Text style={tw`text-color-Black500 font-NunitoSansBold`}>
+              {item?.comments?.length}
             </Text>
           </Text>
         </View>
 
         {/* Date */}
-        <Text style={tw`text-gray-400 text-xs`}>{item.content.created_at}</Text>
+        <Text style={tw`text-gray-400 text-xs`}>
+          {new Date().toDateString()}
+        </Text>
       </View>
-
-      <SideModal
-        visible={isComment}
-        setVisible={setIsComment}
-        containerStyle={tw`h-[95%]`}>
-        <View style={tw`px-4`}>
-          <Text style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
-            Comments
-          </Text>
-        </View>
-        <ScrollView
-          keyboardShouldPersistTaps="always"
-          showsVerticalScrollIndicator={false}
-          keyboardDismissMode="interactive">
-          <View style={tw`px-4 pt-4`}>
-            <CommentCard item={item} />
-          </View>
-        </ScrollView>
-        <View style={tw`p-4 flex-row items-center`}>
-          <FastImage
-            style={tw`w-12 h-12 rounded-2xl`}
-            source={{uri: item.user.avatar}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          <View style={tw`h-14 flex-1`}>
-            <InputText
-              placeholder="Add a comment....."
-              containerStyle={tw`h-14 border-0`}
-            />
-          </View>
-          <IButton
-            svg={IconSend}
-            containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
-            onPress={() => {
-              setOpen(!open);
-            }}
-          />
-        </View>
-      </SideModal>
     </View>
   );
 };
 
-export default PostCard;
+export default React.memo(PostCard);

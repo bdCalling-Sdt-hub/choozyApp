@@ -1,43 +1,87 @@
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import PopUpModal, {PopUpModalRef} from '../../components/modals/PopUpModal';
+import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
   IIConAmericanExpress,
   IIConDiscover,
   IIConMasterCard,
   IIConVisaCard,
 } from '../../icons/IIcons';
-import {IconClose, IconFillLove} from '../../icons/icons';
+import {IconClose, IconFillEarthWhite, IconFillLove} from '../../icons/icons';
 
+import {StripeProvider} from '@stripe/stripe-react-native';
+import axios from 'axios';
 import React from 'react';
-import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
+import {useSelector} from 'react-redux';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import IwtButton from '../../components/buttons/IwtButton';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
 import DateModal from '../../components/modals/DateModal';
 import SideModal from '../../components/modals/SideModal';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {formatCurrency} from '../../utils/currencyFomator';
+import {Android} from '../../utils/utils';
+import LoveCheckout from './LoveCheckout';
+import Countries from './countries.json';
+
+const handleExchangeRate = async () => {
+  const res = await axios.get(
+    `https://v6.exchangerate-api.com/v6/abac13c63695c04cc1d7ac4f/latest/USD`,
+  );
+
+  return res?.data;
+};
 
 const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
+  const [countryModal, setCountryModal] = React.useState(false);
+  const [selectedCurrency, setSelectedCurrency] = React.useState<
+    (typeof Countries)[0]
+  >({
+    country: 'United States',
+    currency_code: 'USD',
+    locale: 'en-US',
+  });
+  const [allConversionRate, setAllConversionRate] = React.useState<
+    [{country: string; currency_code: string; locale: string}]
+  >([{country: 'United States', currency_code: 'USD', locale: 'en-US'}]);
+  const [calculateCurrency, setCalculateCurrency] = React.useState('');
+
+  const {closeToast, showToast} = useToast();
+  // console.log(Countries);
+  const extra = useSelector(state => state?.extra);
+  // console.log(extra);
   const [close, setClose] = React.useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false);
+
   const [dateModal, setDateModal] = React.useState(false);
   const [selectData, setSelectDate] = React.useState<Date>(new Date());
-  const popUpModalRef = React.useRef<PopUpModalRef>(null);
   const [coin, setCoin] = React.useState('');
+  const [customerName, setCustomerName] = React.useState('');
+  const [customerEmail, setCustomerEmail] = React.useState('');
+
+  React.useEffect(() => {
+    handleExchangeRate(selectedCurrency?.currency_code).then(res => {
+      setAllConversionRate(res?.conversion_rates);
+    });
+  }, [selectedCurrency]);
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithComponent
         onPress={() => navigation?.goBack()}
         containerStyle={tw`justify-between`}
         ComponentBtn={
-          <View>
-            <FastImage
-              source={{uri: 'https://randomuser.me/api/portraits/men/19.jpg'}}
-              style={tw`w-8 h-8 rounded-xl`}
-            />
-          </View>
+          <IwtButton
+            title={`${selectedCurrency?.currency_code}`}
+            titleStyle={tw`text-white text-xs`}
+            svg={IconFillEarthWhite}
+            onPress={() => {
+              setCountryModal(true);
+            }}
+            containerStyle={tw`p-0 bg-primary self-end w-22 gap-2  items-center justify-center h-7 rounded-md`}
+          />
         }
       />
       <ScrollView
@@ -64,7 +108,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
             <View style={tw`flex-row items-center gap-3`}>
               <Text
                 style={tw`text-[24px] font-NunitoSansExtraBold text-color-Black1000 `}>
-                Buy love's
+                Get love
               </Text>
               <SvgXml
                 style={{
@@ -90,16 +134,21 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
               </View>
             </View>
             <View
-              style={tw`px-[4%] py-12 gap-3 border-b border-b-color-Black200 border-dashed `}>
+              style={tw`px-[4%] py-12 gap-3 ${
+                Android ? 'border-b border-dashed  border-b-gray-400' : ''
+              }`}>
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
                   style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
                   Total Love
                 </Text>
-                <Text
-                  style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-                  {coin || 0}
-                </Text>
+                <View style={tw`flex-row items-center gap-2`}>
+                  <SvgXml height={10} width={10} xml={IconFillLove} />
+                  <Text
+                    style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+                    {coin || 0}
+                  </Text>
+                </View>
               </View>
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
@@ -107,19 +156,30 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                   Love Prize
                 </Text>
                 <Text
-                  style={tw`text-base text-color-Black1000 font-NunitoSansBold`}>
-                  €1.2
+                  style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
+                  {formatCurrency(
+                    extra?.lovePrice *
+                      allConversionRate[selectedCurrency?.currency_code] || 0,
+                    selectedCurrency?.currency_code,
+                    selectedCurrency?.locale,
+                  )}
                 </Text>
               </View>
 
               <View style={tw`flex-row justify-between items-center`}>
                 <Text
                   style={tw`text-sm text-color-Black400 font-NunitoSansRegular`}>
-                  Total ({coin} * 1.2)
+                  Total
                 </Text>
                 <Text
                   style={tw`text-lg text-color-Black1000 font-NunitoSansBold`}>
-                  €{parseInt(coin * 1.2).toFixed(2)}
+                  {formatCurrency(
+                    extra?.lovePrice *
+                      allConversionRate[selectedCurrency?.currency_code] *
+                      coin || 0,
+                    selectedCurrency?.currency_code,
+                    selectedCurrency?.locale,
+                  )}
                 </Text>
               </View>
             </View>
@@ -127,64 +187,39 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
             <View
               style={tw`flex-row items-center justify-between pt-2 gap-3 px-2 my-3`}>
               <TButton
+                disabled={!coin}
                 onPress={() => {
                   setPaymentModal(!paymentModal);
+                  // setDateModal(!dateModal);
                 }}
                 title="Continue"
-                containerStyle={tw`w-full justify-center items-center bg-primary shadow-none`}
+                containerStyle={tw`w-full justify-center items-center ${
+                  !coin ? 'bg-primary opacity-25' : 'bg-primary'
+                } shadow-none`}
               />
             </View>
           </View>
         </View>
       </ScrollView>
-      {/* <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={tw`pb-6`}
-        data={[...Array(10)]}
-        renderItem={({item}) => (
-          <View
-            style={tw`mx-[4%] my-3 p-4 rounded-2xl flex-row justify-between items-center border border-dashed border-gray-300`}>
-            <View style={tw`flex-row items-center gap-3`}>
-              <SvgXml
-                style={{
-                  transform: [
-                    {
-                      rotate: '5deg',
-                    },
-                  ],
-                }}
-                height={36}
-                width={36}
-                xml={IconFillLove}
-              />
-              <View>
-                <Text>Only for $10.00</Text>
-                <Text>10</Text>
-              </View>
-            </View>
-            <TButton
-              onPress={() => {
-                setPaymentModal(!paymentModal);
-              }}
-              title="Get"
-              containerStyle={tw`p-2 bg-primary w-16 rounded-xl`}
-            />
-          </View>
-        )}
-      /> */}
-      {/*===================== payment modal ======================== */}
-      <SideModal scrollable visible={paymentModal} setVisible={setPaymentModal}>
+
+      <SideModal
+        headerOff
+        scrollable
+        closeBTN
+        visible={paymentModal}
+        setVisible={setPaymentModal}>
         <ScrollView
           keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}>
-          <View style={tw` bg-white p-4 `}>
+          <View style={tw` bg-white p-4  `}>
             <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
               Pay with
             </Text>
-
-            <View style={tw`mt-4 gap-6`}>
+            <View style={tw`my-4 gap-6`}>
               <View
-                style={tw`h-14 border border-dashed border-gray-300 rounded-2xl flex-row items-center  px-4 justify-between`}>
+                style={tw`h-14 ${
+                  Android ? 'border-dashed border-[1px] border-gray-200' : ''
+                } rounded-2xl flex-row items-center  px-4 justify-between`}>
                 <Text style={tw`text-black font-NunitoSansBold text-sm`}>
                   Cards
                 </Text>
@@ -195,86 +230,85 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                   <SvgXml xml={IIConDiscover} />
                 </View>
               </View>
-              <View style={tw`h-14 `}>
+            </View>
+            <View style={tw`gap-3 mt-3`}>
+              {/* Input for Customer Name */}
+              <View style={tw`h-14`}>
                 <InputText
-                  containerStyle={tw` bg-white `}
-                  placeholder="Name On card"
+                  placeholder="Enter Your Name"
                   floatingPlaceholder
-                  defaultValue="John Due"
+                  onChangeText={(text: string) => setCustomerName(text)}
                 />
               </View>
-              <View style={tw`h-14 `}>
+              {/* Input for Customer Email */}
+              <View style={tw`h-14`}>
                 <InputText
-                  containerStyle={tw` bg-white `}
-                  placeholder="Card Number"
+                  placeholder="Enter Your Email"
+                  keyboardType="email-address"
                   floatingPlaceholder
-                  keyboardType="decimal-pad"
-                  defaultValue="1254 2365 2545"
-                />
-              </View>
-              <View style={tw`h-14 `}>
-                <InputText
-                  //   editable={false}
-                  onPress={() => {
-                    setDateModal(!dateModal);
-                  }}
-                  value={`${
-                    selectData ? new Date(selectData).toLocaleDateString() : ''
-                  }`}
-                  containerStyle={tw` bg-white `}
-                  placeholder="Card Expiration"
-                  floatingPlaceholder
-                  svgSecondIcon={`<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-               <path d="M3.5 0.5V5.5M11.5 0.5V5.5M5 9H10M1.5 3H13.5C14.0523 3 14.5 3.44772 14.5 4V14C14.5 14.5523 14.0523 15     13.5 15H1.5C0.947716 15 0.5 14.5523 0.5 14V4C0.5 3.44772 0.947715 3 1.5 3Z" stroke="#5D5D5D"/>
-               </svg>
-                `}
-                />
-              </View>
-              <View style={tw`h-14 `}>
-                <InputText
-                  containerStyle={tw` bg-white `}
-                  placeholder="CVV"
-                  floatingPlaceholder
-                  defaultValue="574"
+                  onChangeText={(text: string) => setCustomerEmail(text)}
                 />
               </View>
             </View>
-            <TButton
-              title="Pay €398.99"
-              containerStyle={tw`mt-12 mb-5 bg-[#6461FC] w-full shadow-none`}
-              titleStyle={tw`font-NunitoSansBold text-white`}
-              onPress={() => {
-                popUpModalRef?.current?.open({
-                  iconComponent: (
-                    <FastImage
-                      style={tw`w-full h-40 rounded-2xl`}
-                      source={require('../../assets/images/logo/extra/circus.png')}
-                      resizeMode={FastImage.resizeMode.contain}
-                    />
-                  ),
-                  title: 'Congratulations! Your purchase is done',
-                  titleStyle: tw`text-color-Black1000 font-NunitoSansExtraBold`,
-                  buttonText: 'Done',
-                  buttonStyle: tw`w-full justify-center  items-center font-NunitoSansBold shadow-none`,
-                  contentStyle: tw`text-color-Black800 font-NunitoSansRegular`,
-                  onPress: () => {
-                    popUpModalRef?.current?.close();
-                    setPaymentModal(false);
-                    navigation?.navigate('Wallet');
-                  },
-                });
-              }}
-              isLoading={false}
-            />
+            <StripeProvider publishableKey="pk_test_51M6AQECe4QqAuKX4hQuRPLKDeB192L6xZiop8yWhLLrmbBTZjSsPKPyGvhhHVlKQNikct3mhaeZgyGjYTA17VwbT00l34SeOAr">
+              <LoveCheckout
+                setPaymentModal={setPaymentModal}
+                love={coin}
+                customerEmail={customerEmail}
+                customerName={customerName}
+                totalAmount={extra?.lovePrice * coin}
+                navigation={navigation}
+              />
+            </StripeProvider>
           </View>
         </ScrollView>
       </SideModal>
+
       <DateModal
         selectedDate={setSelectDate}
         setVisible={setDateModal}
         visible={dateModal}
       />
-      <PopUpModal ref={popUpModalRef} />
+
+      <SideModal headerOff visible={countryModal} setVisible={setCountryModal}>
+        <View style={tw` bg-white p-4  `}>
+          <Text style={tw`text-color-Black900 font-NunitoSansBold text-lg`}>
+            Select Country
+          </Text>
+        </View>
+
+        <FlatList
+          contentContainerStyle={tw`pb-12 bg-white`}
+          data={Countries}
+          renderItem={({item}) => (
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedCurrency(item);
+                  setCountryModal(false);
+                }}
+                style={tw`h-14 ${
+                  Android
+                    ? `border-dashed border-[1px] border-gray-200 ${
+                        selectedCurrency.currency_code == item.currency_code
+                          ? 'bg-primary'
+                          : ''
+                      }`
+                    : ''
+                } rounded-2xl flex-row items-center  px-4 justify-between`}>
+                <Text
+                  style={tw`text-black ${
+                    selectedCurrency.currency_code == item.currency_code
+                      ? 'text-white'
+                      : ''
+                  } font-NunitoSansBold text-sm`}>
+                  {item.country}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </SideModal>
     </View>
   );
 };

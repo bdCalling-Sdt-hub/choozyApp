@@ -1,4 +1,13 @@
 import {
+  IconAtTheRatOf,
+  IconCloseEye,
+  IconEmail,
+  IconLocation,
+  IconOpenEye,
+  IconPassword,
+  IconUser,
+} from '../../icons/icons';
+import {
   ScrollView,
   StatusBar,
   Text,
@@ -6,40 +15,67 @@ import {
   View,
 } from 'react-native';
 import {
-  IconCloseEye,
-  IconEmail,
-  IconFacebook,
-  IconGoogle,
-  IconLocation,
-  IconOpenEye,
-  IconPassword,
-  IconUser,
-} from '../../icons/icons';
+  useCreateUserMutation,
+  useLazyGetUserNameQuery,
+} from '../../redux/apiSlices/authSlice';
 
-import {Formik} from 'formik';
-import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {Checkbox} from 'react-native-ui-lib';
-import IwtButton from '../../components/buttons/IwtButton';
-import Or from '../../components/buttons/Or';
-import TButton from '../../components/buttons/TButton';
+import {Formik} from 'formik';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
+import Or from '../../components/buttons/Or';
+import React from 'react';
+import TButton from '../../components/buttons/TButton';
 import tw from '../../lib/tailwind';
+import {useToast} from '../../components/modals/Toaster';
 
 interface ISingUpForm {
-  name: string;
+  full_name: string;
   email: string;
+  user_name?: string;
   password: string;
   address: string;
+  role: 'MEMBER';
 }
 
-const SignUpScreen = ({navigation}: NavigProps<null>) => {
+const SignUpScreen = ({navigation}: NavigProps<any>) => {
+  const {showToast} = useToast();
+
   const [check, setCheck] = React.useState(false);
   const [showPass, setShowPass] = React.useState(false);
+  const [errorUsername, setErrorUsername] = React.useState(false);
+
+  const [createUser] = useCreateUserMutation({});
+  const [userNameChecker, {isFetching: userNameCheckerFetching}] =
+    useLazyGetUserNameQuery();
 
   const onSubmitHandler = (data: ISingUpForm) => {
-    console.log(data);
+    // console.log(data);
+    createUser(data).then(res => {
+      // console.log(res?.e);
+
+      if (res.data) {
+        showToast({
+          title: 'Success',
+          titleStyle: tw`text-primary text-base font-NunitoSansBold`,
+          contentStyle: tw`text-sm`,
+          content:
+            "We've sent you an email for verification, it will expire in Time 10 minutes. Please check your inbox.",
+          btnDisplay: true,
+        });
+        navigation?.navigate('Verify', {email: data.email, from: 'signup'});
+      }
+
+      if (res.error?.error) {
+        showToast({
+          title: 'Error',
+          titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+          containerStyle: tw`text-xs`,
+          content: res?.error?.messages?.email,
+          btnDisplay: true,
+        });
+      }
+    });
   };
 
   return (
@@ -58,27 +94,49 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
         </View>
         {/*================= login title and subtitle ================= */}
         <View style={tw`px-[4%] gap-3`}>
-          <Text style={tw`text-[24px] text-black font-NunitoSansExtraBold `}>
+          <Text
+            style={tw`text-[24px] text-color-Black800 font-NunitoSansExtraBold `}>
             Sing Up.
           </Text>
         </View>
         {/*================= inputs fields email or password  ================= */}
 
         <Formik
-          initialValues={{email: '', password: '', name: '', address: ''}}
+          initialValues={{
+            full_name: '',
+            role: 'MEMBER',
+            email: '',
+            user_name: '',
+            password: '',
+            address: '',
+          }}
           onSubmit={onSubmitHandler}
           validate={values => {
             const errors: {
               email?: string;
+              user_name?: string;
               password?: string;
-              name?: string;
+              full_name?: string;
               address?: string;
             } = {};
-            if (!values.name) {
-              errors.name = 'Required';
+            if (!values.full_name) {
+              errors.full_name = 'Required';
             }
             if (!values.email) {
               errors.email = 'Required';
+            }
+            if (!values.user_name) {
+              errors.user_name = 'Required';
+            }
+            if (values.user_name) {
+              userNameChecker(values.user_name).then(res => {
+                if (res.error) {
+                  setErrorUsername(true);
+                }
+                if (res.data) {
+                  setErrorUsername(false);
+                }
+              });
             }
             if (!values.address) {
               errors.address = 'Required';
@@ -90,8 +148,8 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
               errors.email = 'Invalid email address';
             }
             // check or validity of password 6 digit
-            if (values.password.length < 6) {
-              errors.password = 'Password must be at least 6 characters';
+            if (values.password.length < 8) {
+              errors.password = 'Password must be at least 8 characters';
             }
             if (!values.password) {
               errors.password = 'Required';
@@ -111,15 +169,41 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
                 {/*======================= email ======================== */}
 
                 <InputText
-                  value={values.name}
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
+                  value={values.full_name}
+                  onChangeText={handleChange('full_name')}
+                  onBlur={handleBlur('full_name')}
                   floatingPlaceholder
                   placeholder="Full Name"
                   svgFirstIcon={IconUser}
                 />
-                {errors.name && touched.name && (
-                  <Text style={tw`text-red-500`}>{errors.name}</Text>
+                {errors.full_name && touched.full_name && (
+                  <Text style={tw`text-red-500`}>{errors.full_name}</Text>
+                )}
+
+                <InputText
+                  value={values.user_name}
+                  onChangeText={handleChange('user_name')}
+                  onBlur={handleBlur('user_name')}
+                  floatingPlaceholder
+                  placeholder="Username"
+                  svgFirstIcon={IconAtTheRatOf}
+                />
+
+                {errors.user_name && touched.user_name && (
+                  <Text style={tw`text-red-500`}>{errors.user_name}</Text>
+                )}
+                {((!errors.user_name && errorUsername) ||
+                  values?.user_name) && (
+                  <Text
+                    style={
+                      errorUsername
+                        ? tw`text-green-500 text-xs`
+                        : tw`text-red-500 text-xs`
+                    }>
+                    {errorUsername
+                      ? `@${values?.user_name} Username is available`
+                      : `x ${values?.user_name} Username is not available`}
+                  </Text>
                 )}
 
                 <InputText
@@ -166,26 +250,9 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
               </View>
               {/* check box the Keep me logged In */}
               <View style={tw`px-[4%] `}>
-                <TouchableOpacity
-                  style={tw` my-5 flex-row items-center `}
-                  onPress={() => {
-                    setCheck(!check);
-                  }}>
-                  <Checkbox
-                    color="#4964C6"
-                    size={25}
-                    style={tw`border-2 border-[#E8E8EA]`}
-                    value={check}
-                    onValueChange={value => setCheck(value)}
-                  />
-                  <Text
-                    style={tw`ml-2  font-NunitoSansBold text-color-Black800`}>
-                    Keep me logged in
-                  </Text>
-                </TouchableOpacity>
                 <TButton
                   onPress={handleSubmit}
-                  title="Log in"
+                  title="Sing Up"
                   containerStyle={tw`w-full mb-5 mt-3 bg-primary text-lg `}
                   titleStyle={tw`text-white font-NunitoSansSemiBold`}
                 />
@@ -198,17 +265,17 @@ const SignUpScreen = ({navigation}: NavigProps<null>) => {
         <View style={tw`px-[4%] gap-6`}>
           <Or />
 
-          <IwtButton
+          {/* <IwtButton
             containerStyle={tw`w-full bg-[#1877F2]`}
             title="Continue with Facebook"
             svg={IconFacebook}
-          />
-          <IwtButton
+          /> */}
+          {/* <IwtButton
             containerStyle={tw`w-full bg-[#FFFFFF]`}
             title="Continue with  Google"
             titleStyle={tw`text-color-Black800 font-NunitoSansBold`}
             svg={IconGoogle}
-          />
+          /> */}
         </View>
         {/* Sing up and  Forgot password? */}
         <View style={tw`items-center gap-2 mt-6`}>

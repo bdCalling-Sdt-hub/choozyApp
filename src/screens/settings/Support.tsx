@@ -4,10 +4,46 @@ import React from 'react';
 import BackButton from '../../components/backHeader/BackButton';
 import TButton from '../../components/buttons/TButton';
 import InputText from '../../components/inputs/InputText';
+import {useToast} from '../../components/modals/Toaster';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
+import {useCreateSupportMutation} from '../../redux/apiSlices/additionalSlices';
 
-const Support = ({navigation}: NavigProps<null>) => {
+const Support = ({navigation}: NavigProps<any>) => {
+  const [supportText, setSupportText] = React.useState('');
+  const [createSupport] = useCreateSupportMutation();
+
+  const {showToast, closeToast} = useToast();
+
+  const handleCreateSupport = async () => {
+    // console.log(supportText);
+    const res = await createSupport({message: supportText});
+    // console.log(res.error?.data);
+    if (res.error?.data) {
+      showToast({
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: res.error?.data?.message,
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
+    }
+    if (res.data) {
+      showToast({
+        title: 'Success',
+        titleStyle: tw`text-primary text-base font-NunitoSansBold`,
+        contentStyle: tw`text-sm`,
+        content: res.data?.message,
+        buttonStyle: tw`bg-primary`,
+        buttonText: 'OK',
+        onPress: () => {
+          navigation?.goBack();
+          closeToast();
+        },
+      });
+    }
+  };
+
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackButton onPress={() => navigation?.goBack()} />
@@ -36,6 +72,8 @@ const Support = ({navigation}: NavigProps<null>) => {
               placeholder="Start writing"
               multiline
               textAlignVertical="top"
+              value={supportText}
+              onChangeText={text => setSupportText(text)}
               fieldStyle={tw`h-40 py-3`}
               placeholderTextColor={'#A5A3A9'}
             />
@@ -45,7 +83,7 @@ const Support = ({navigation}: NavigProps<null>) => {
           <TButton
             title="Submit"
             containerStyle={tw`bg-primary w-full `}
-            onPress={() => {}}
+            onPress={handleCreateSupport}
             isLoading={false}
           />
         </View>

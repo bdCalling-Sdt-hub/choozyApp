@@ -1,93 +1,159 @@
-import {FlatList, ScrollView, Text, View} from 'react-native';
-import {IconPuls, IconSearch} from '../../../icons/icons';
+import {
+  FlatList,
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {IconImage, IconPuls, IconSearch} from '../../../icons/icons';
+import {PrimaryColor, height, useImagePicker} from '../../../utils/utils';
+import {
+  useCreateGroupMutation,
+  useGetGroupsQuery,
+  useIsAllReadMutation,
+} from '../../../redux/apiSlices/gourpSlices';
 
-import React from 'react';
-import groupMessageData from '../../../assets/database/groups.json';
-import MessagesData from '../../../assets/database/messages.json';
-import IwtButton from '../../../components/buttons/IwtButton';
-import SimpleButton from '../../../components/buttons/SimpleButton';
-import TButton from '../../../components/buttons/TButton';
-import MessageCard from '../../../components/cards/MessageCard';
-import UserCard from '../../../components/cards/UserCard';
-import UserSelectionCard from '../../../components/cards/UserSelectionCard';
 import InputText from '../../../components/inputs/InputText';
-import NormalModal from '../../../components/modals/NormalModal';
+import IwtButton from '../../../components/buttons/IwtButton';
+import MessageCard from '../../../components/cards/MessageCard';
 import {NavigProps} from '../../../interfaces/NaviProps';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
+import NormalModal from '../../../components/modals/NormalModal';
+import React from 'react';
+import {SvgXml} from 'react-native-svg';
+import TButton from '../../../components/buttons/TButton';
+import UserSelectionCard from '../../../components/cards/UserSelectionCard';
+import {getSocket} from '../../../redux/services/socket';
 import tw from '../../../lib/tailwind';
+import {useUserFriendQuery} from '../../../redux/apiSlices/contactSlices';
 
 const GroupsSection = ({navigation}: NavigProps<null>) => {
-  const [createGroupModal, setCreateGroupModal] = React.useState(false);
-  const [createGroupData, setCreateGroupData] = React.useState([]);
+  const [showGroupModal, setShowGroupModal] = React.useState(false);
+  const [createGroupData, setCreateGroupData] = React.useState<any>([]);
+
+  const [groupName, setGroupName] = React.useState('');
+  const [groupImage, setGroupImage] = React.useState<any>();
+
+  const {
+    data: groupData,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetGroupsQuery({});
+  const {data: contacts} = useUserFriendQuery({});
+
+  console.log(createGroupData);
+
+  const [createGroup] = useCreateGroupMutation({});
+  const [readAll] = useIsAllReadMutation({});
+
+  const handleAddImage = async () => {
+    const image = await useImagePicker({
+      option: 'library',
+    });
+
+    if (image?.some(item => item?.uri)) {
+      setGroupImage({
+        uri: image![0]?.uri,
+        type: image![0]?.type,
+        name: image![0]?.fileName,
+      });
+    }
+  };
+  const socket = getSocket();
+  const handleCreateGroup = async () => {
+    const groupMembers = createGroupData?.map((item: any) => item?.user_id);
+
+    const formData = new FormData();
+
+    console.log(groupMembers); // Check the IDs extracted from createGroupData
+    // Append fields to FormData
+    groupName && formData.append('name', groupName);
+    groupImage && formData.append('image', groupImage);
+
+    // Append each member ID as a separate entry in the "members" field
+    groupMembers &&
+      groupMembers.forEach((memberId: number, index: number) => {
+        formData.append(`members[${index}]`, memberId.toString());
+      });
+
+    try {
+      const res = await createGroup(formData);
+
+      console.log(res); // Check if there's an error in the response
+      if (res?.data) {
+        setShowGroupModal(false);
+        setGroupName('');
+        setGroupImage(null);
+        setCreateGroupData([]);
+      }
+    } catch (error) {
+      console.error('Error creating group:', error); // Log errors for debugging
+    }
+  };
+
+  const [selectItem, setSelectItem] = React.useState(null);
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false} style={tw`flex-1`}>
-        <View style={tw` mt-2 relative`}>
-          {/*======================== search input  ==========================*/}
-          <View style={tw`px-[4%]`}>
-            <InputText
-              placeholder="Search for group"
-              svgSecondIcon={IconSearch}
-            />
-          </View>
-          {/*============================= view group =======================  */}
-          <View style={tw`flex-row justify-between items-center my-4 px-[4%]`}>
-            <Text style={tw`text-color-Black1000 font-NunitoSansBold text-lg`}>
-              Your Groups
-            </Text>
-            <SimpleButton
-              onPress={() => navigation?.navigate('AllGroups')}
-              title="View All"
-            />
-          </View>
-          {/*=========================== user cards ===================== */}
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={tw`px-[2%]`}
-            data={MessagesData.slice(20, 40)}
-            renderItem={({item}) => (
-              <>
-                {/* user card here */}
-                <UserCard
-                  onPress={() => navigation?.navigate('GroupMessage')}
-                  item={item}
-                />
-              </>
-            )}
+      <View style={tw` relative`}>
+        {/*======================== search input  ==========================*/}
+        <View style={tw`px-[4%] h-14`}>
+          <InputText
+            placeholder="Search for group"
+            svgSecondIcon={IconSearch}
           />
         </View>
+      </View>
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={refetch}
+            colors={[PrimaryColor]}
+          />
+        }
+        ListEmptyComponent={
+          <NoFoundCard hight={height * 0.13} title="No Chats" />
+        }
+        contentContainerStyle={tw`pb- gap-2 pt-2`}
+        data={groupData?.data}
+        renderItem={({item, index}) => (
+          <MessageCard
+            cardStyle="message"
+            onPress={() => {
+              socket?.emit('join_group', {
+                id: item?.group_id,
+              });
+              readAll(item?.group_id).then(res => {
+                console.log(res);
+              });
 
-        {/*======================= others groups ========================= */}
+              navigation?.navigate('GroupMessage', {
+                id: item?.group_id,
+                item,
+              });
+            }}
+            titleContainerStyle={tw`gap-1`}
+            subTitleStyle={tw`text-color-Black500`}
+            titleStyle={tw`text-[#1D1929]`}
+            item={{
+              image: item.group_image,
+              email: item.group_creator.email,
+              full_name: item.group_name + item?.group_id,
+              last_message_time: item.created_date,
+              last_message: item?.last_message,
+              user_name: item.group_creator.user_name,
+              unread_count: item?.unread_message_count,
+            }}
+          />
+        )}
+      />
 
-        <View style={tw`px-[4%] my-2`}>
-          <Text style={tw`text-color-Black1000 font-NunitoSansBold text-lg`}>
-            Other groups
-          </Text>
-        </View>
-        <View style={tw`pb-20`}>
-          {groupMessageData.slice(0, 10).map(item => (
-            <MessageCard
-              onPress={() => navigation?.navigate('GroupMessage')}
-              key={item.id}
-              titleContainerStyle={tw`gap-1`}
-              joinBtn
-              joinPress={() => navigation?.navigate('GroupMessage')}
-              subTitleStyle={tw`text-color-Black500`}
-              titleStyle={tw`text-[#1D1929]`}
-              item={{
-                image: item.image,
-                lastMessage: item.following,
-                name: item.groupName,
-                time: item.time,
-                unreadCount: item.unread,
-              }}
-            />
-          ))}
-        </View>
-      </ScrollView>
       <View style={tw`absolute bottom-3 right-0  px-4 py-2`}>
         <IwtButton
-          onPress={() => setCreateGroupModal(!createGroupModal)}
+          onPress={() => setShowGroupModal(!showGroupModal)}
           svg={IconPuls}
           title="Create Group"
           containerStyle={tw`bg-primary`}
@@ -97,8 +163,8 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
         animationType="fade"
         containerStyle={tw`w-[90%] h-[75%] rounded-3xl p-5`}
         layerContainerStyle={tw`w-full h-full justify-center items-center`}
-        setVisible={setCreateGroupModal}
-        visible={createGroupModal}>
+        setVisible={setShowGroupModal}
+        visible={showGroupModal}>
         <View style={tw`gap-1`}>
           <Text style={tw`text-2xl text-color-Black900 font-NunitoSansBold`}>
             Create a group
@@ -108,42 +174,69 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
             You can select multiple members
           </Text>
         </View>
-        <View style={tw`flex-row items-center gap-2 mb-5 mt-2`}>
-          <InputText
-            placeholder="Group name"
-            containerStyle={tw`w-full border-0 border-b border-[#7D9FDD] rounded-none `}
-            floatingPlaceholder
-          />
-        </View>
 
-        <View style={tw`flex-row items-center gap-3`}>
-          <InputText placeholder="Search members" svgSecondIcon={IconSearch} />
-        </View>
-        <FlatList
-          contentContainerStyle={tw`py-4`}
-          showsVerticalScrollIndicator={false}
-          data={MessagesData.slice(0, 10)}
-          renderItem={({item}) => (
-            <>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* add image options  */}
+          <View style={tw` gap-3 my-3`}>
+            <Text style={tw`text-color-Black900 font-NunitoSansBold text-sm`}>
+              Add image
+            </Text>
+            <TouchableOpacity
+              onPress={handleAddImage}
+              style={tw`w-16 h-16 rounded-md  justify-center items-center border-2 border-gray-200`}>
+              {groupImage ? (
+                <Image
+                  style={tw`w-14 h-14 rounded-md `}
+                  source={{
+                    uri: groupImage?.uri,
+                  }}
+                />
+              ) : (
+                <SvgXml xml={IconImage} />
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <View style={tw`flex-row items-center gap-2 mb-5 mt-2`}>
+            <InputText
+              placeholder="Group name"
+              containerStyle={tw`w-full   `}
+              floatingPlaceholder
+              value={groupName}
+              onChangeText={text => setGroupName(text)}
+            />
+          </View>
+
+          <View style={tw`flex-row items-center gap-3`}>
+            <InputText
+              placeholder="Search members"
+              svgSecondIcon={IconSearch}
+            />
+          </View>
+
+          <View style={tw`flex-1`}>
+            {contacts?.friends?.data?.map(item => (
               <UserSelectionCard
+                multiple
+                key={item.id}
                 item={item}
-                setSelectionSate={setCreateGroupData}
                 selectionSate={createGroupData}
+                setSelectionSate={setCreateGroupData}
               />
-            </>
-          )}
-        />
+            ))}
+          </View>
+        </ScrollView>
+
         <View style={tw`flex-row items-center justify-between pt-2 gap-3 px-2`}>
           <TButton
             onPress={() => {
-              setCreateGroupModal(false);
-              navigation?.navigate('GroupMessage');
+              handleCreateGroup();
             }}
             title="Create"
             containerStyle={tw`w-20 justify-center items-center bg-primary shadow-none`}
           />
           <TButton
-            onPress={() => setCreateGroupModal(false)}
+            onPress={() => setShowGroupModal(false)}
             title="Cancel"
             containerStyle={tw`w-20 justify-center items-center bg-white border border-[#E8E8EA] shadow-none`}
             titleStyle={tw`text-red-500`}

@@ -1,22 +1,28 @@
-import {Text, TouchableOpacity} from 'react-native';
 import {
   IconCall,
   IconFillCall,
   IconFillMessage,
   IconFillNote,
+  IconFillUser,
   IconFillUserPlus,
+  IconFillWallet,
   IconMessage,
   IconNote,
+  IconUserB,
   IconUserPlus,
+  IconWallet,
 } from '../icons/icons';
+import {Text, TouchableOpacity} from 'react-native';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {SvgXml} from 'react-native-svg';
-import tw from '../lib/tailwind';
-import CallsScreen from '../screens/calls/CallsScreen';
+import {Android} from '../utils/utils';
 import ChatsScreen from '../screens/chats/ChatsScreen';
-import PeopleScreen from '../screens/people/PeopleScreen';
+import ContactScreen from '../screens/contacts/ContactScreen';
+import MyWall from '../screens/wall/MyWall';
 import StatusScreen from '../screens/status/StatusScreen';
+import {SvgXml} from 'react-native-svg';
+import WalletScreen from '../screens/wallet/WalletScreen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import tw from '../lib/tailwind';
 
 const Tab = createBottomTabNavigator();
 // height: 65,
@@ -29,7 +35,9 @@ function BottomRoutes() {
     <Tab.Navigator
       screenOptions={({route}) => ({
         headerShown: false,
-        tabBarStyle: tw`h-16 bg-white shadow-none border border-white`,
+        tabBarStyle: tw` ${
+          Android ? 'h-16' : 'h-26'
+        } bg-white shadow-none border border-white`,
         tabBarItemStyle: tw`my-[10px] tablet:my-5 flex-col`,
         tabBarLabelStyle: tw``,
         tabBarButton: props => <TouchableOpacity {...props} />,
@@ -46,8 +54,17 @@ function BottomRoutes() {
             case 'People':
               icon = focused ? IconFillUserPlus : IconUserPlus;
               break;
+            case 'Contacts':
+              icon = focused ? IconFillUserPlus : IconUserPlus;
+              break;
             case 'Calls':
               icon = focused ? IconFillCall : IconCall;
+              break;
+            case 'Wallet':
+              icon = focused ? IconFillWallet : IconWallet;
+              break;
+            case 'Wall':
+              icon = focused ? IconFillUser : IconUserB;
               break;
           }
 
@@ -71,8 +88,11 @@ function BottomRoutes() {
       })}>
       <Tab.Screen name="Chats" component={ChatsScreen} />
       <Tab.Screen name="Status" component={StatusScreen} />
-      <Tab.Screen name="People" component={PeopleScreen} />
-      <Tab.Screen name="Calls" component={CallsScreen} />
+      {/* <Tab.Screen name="People" component={PeopleScreen} /> */}
+      <Tab.Screen name="Contacts" component={ContactScreen} />
+      {/* <Tab.Screen name="Calls" component={CallsScreen} /> */}
+      <Tab.Screen name="Wallet" component={WalletScreen} />
+      <Tab.Screen name="Wall" component={MyWall} />
     </Tab.Navigator>
   );
 }

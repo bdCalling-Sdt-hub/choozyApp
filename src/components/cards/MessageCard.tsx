@@ -4,15 +4,11 @@ import moment from 'moment-timezone';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import tw from '../../lib/tailwind';
+import {IUserChat} from '../../redux/interface/message';
+import {getRandomColor} from '../../utils/getRandomColor';
 
 interface MessageCardProps {
-  item: {
-    image?: string;
-    name?: string;
-    lastMessage?: string;
-    unreadCount?: number;
-    time?: string;
-  };
+  item: IUserChat;
   onPress?: () => void;
   joinBtn?: boolean;
   joinPress?: () => void;
@@ -25,6 +21,8 @@ interface MessageCardProps {
   titleContainerStyle?: any;
   Component?: React.ReactNode;
   disabled?: boolean;
+  ImagePressable?: boolean;
+  cardStyle?: 'message' | 'group' | 'notification' | 'profile';
 }
 
 // three part are divided 1= is image part 2= is name and title part 3= is icons and options part
@@ -42,43 +40,68 @@ const MessageCard = ({
   offPartThree,
   Component,
   disabled,
+  ImagePressable,
+  cardStyle,
 }: MessageCardProps) => {
+  // console.log(item?.images);
+
   return (
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
-      activeOpacity={0.5}
+      activeOpacity={0.8}
       style={[tw`flex-row items-center  gap-3 px-[4%] py-2`, containerStyle]}>
       {!offPartOne && (
-        <View style={tw`w-12 h-12 aspect-square rounded-2xl overflow-hidden`}>
-          <FastImage
-            source={{uri: item.image}}
-            resizeMode={FastImage.resizeMode.contain}
-            style={tw`w-full h-full`}
-          />
-        </View>
+        <TouchableOpacity
+          disabled={!ImagePressable}
+          style={tw`w-12 h-12 aspect-square rounded-2xl overflow-hidden`}>
+          {item.image ? (
+            <FastImage
+              source={{uri: item.image}}
+              resizeMode={FastImage.resizeMode.cover}
+              style={tw`w-full h-full`}
+            />
+          ) : (
+            <View
+              style={tw`w-full h-full bg-[${getRandomColor()}] rounded-2xl justify-center items-center`}>
+              <Text style={tw`text-white font-NunitoSansBold text-lg shadow`}>
+                {item.full_name?.slice(0, 1).toUpperCase()}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
       )}
       {!offPartTow && (
         <View style={[tw`flex-1  gap-[2px]`, titleContainerStyle]}>
-          {item.name && (
+          {item.full_name && (
             <Text
               numberOfLines={1}
               style={[
                 tw`text-[#1D1929] font-NunitoSansBold text-sm`,
                 titleStyle,
               ]}>
-              {item.name}
+              {item.full_name}
             </Text>
           )}
 
-          {item.lastMessage && (
+          {item.last_message ? (
             <Text
               style={[
                 tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
                 subTitleStyle,
               ]}>
-              {item.lastMessage}
+              {item.last_message}
             </Text>
+          ) : (
+            cardStyle === 'message' && (
+              <Text
+                style={[
+                  tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`,
+                  subTitleStyle,
+                ]}>
+                send a image
+              </Text>
+            )
           )}
         </View>
       )}
@@ -99,18 +122,18 @@ const MessageCard = ({
             </TouchableOpacity>
           ) : (
             <>
-              {item.unreadCount !== 0 && (
+              {item.unread_count !== 0 && (
                 <View
                   style={tw`w-4 h-4 rounded-full bg-red-500 items-center justify-center`}>
                   <Text style={tw`text-white font-NunitoSansBold text-[10px]`}>
-                    {item.unreadCount}
+                    {item.unread_count}
                   </Text>
                 </View>
               )}
 
               <Text style={tw`text-[#A5A3A9] font-NunitoSansRegular text-xs`}>
                 {/* date format like this 8:10 AM/PM  */}
-                {moment(item.time).format('LT')}
+                {moment(item.last_message_time).format('LT')}
               </Text>
             </>
           )}

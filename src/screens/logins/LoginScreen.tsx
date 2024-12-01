@@ -1,42 +1,66 @@
 import {
+  IconCloseEye,
+  IconFillEmail,
+  IconFillPassword,
+  IconOpenEye,
+} from '../../icons/icons';
+import {
   ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  IconCloseEye,
-  IconFillEmail,
-  IconFillPassword,
-  IconOpenEye,
-} from '../../icons/icons';
+import {lStorage, setStorageToken} from '../../utils/utils';
 
-import {Formik} from 'formik';
-import React from 'react';
-import FastImage from 'react-native-fast-image';
 import {Checkbox} from 'react-native-ui-lib';
-import IwtButton from '../../components/buttons/IwtButton';
-import Or from '../../components/buttons/Or';
-import TButton from '../../components/buttons/TButton';
+import FastImage from 'react-native-fast-image';
+import {Formik} from 'formik';
 import InputText from '../../components/inputs/InputText';
 import {NavigProps} from '../../interfaces/NaviProps';
+import Or from '../../components/buttons/Or';
+import React from 'react';
+import TButton from '../../components/buttons/TButton';
 import tw from '../../lib/tailwind';
+import {useDispatch} from 'react-redux';
+import {useLoginUserMutation} from '../../redux/apiSlices/authSlice';
+import {useToast} from '../../components/modals/Toaster';
 
 interface ISingInForm {
   email: string;
   password: string;
 }
 
-const LoginScreen = ({navigation}: NavigProps<null>) => {
+const LoginScreen = ({navigation}: NavigProps<any>) => {
+  const dispatch = useDispatch();
+  const {showToast} = useToast();
   const [check, setCheck] = React.useState(false);
   const [showPass, setShowPass] = React.useState(false);
-
-  const onSubmitHandler = (data: ISingInForm) => {
+  const [rememberItems, setRememberItems] = React.useState({
+    check: lStorage.getBool('check') || false,
+    email: lStorage.getString('email') || '',
+    password: lStorage.getString('password') || '',
+  });
+  const [loginUser, results] = useLoginUserMutation({});
+  const onSubmitHandler = async (data: ISingInForm) => {
     console.log(data);
-    navigation?.navigate('HomeRoutes');
-  };
+    const res = await loginUser(data);
+    console.log(res);
 
+    if (res.error) {
+      console.log(res.error?.error);
+      showToast({
+        title: 'Error',
+        titleStyle: tw`text-red-500 text-base font-NunitoSansBold`,
+        content: res.error?.error,
+        btnDisplay: true,
+      });
+    }
+    if (res.data?.token) {
+      setStorageToken(res.data?.token);
+      navigation?.replace('HomeRoutes');
+    }
+  };
   return (
     <View style={tw`bg-base h-full`}>
       <ScrollView
@@ -64,7 +88,10 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
         {/*================= inputs fields email or password  ================= */}
 
         <Formik
-          initialValues={{email: '', password: ''}}
+          initialValues={{
+            email: rememberItems.email || '',
+            password: rememberItems.password || '',
+          }}
           onSubmit={onSubmitHandler}
           validate={values => {
             const errors: {email?: string; password?: string} = {};
@@ -78,8 +105,8 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
               errors.email = 'Invalid email address';
             }
             // check or validity of password 6 digit
-            if (values.password.length < 6) {
-              errors.password = 'Password must be at least 6 characters';
+            if (values.password.length < 8) {
+              errors.password = 'Password must be at least 8 characters';
             }
             if (!values.password) {
               errors.password = 'Required';
@@ -133,12 +160,33 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
                   style={tw` my-5 flex-row items-center `}
                   onPress={() => {
                     setCheck(!check);
+                    if (!rememberItems.check) {
+                      setRememberItems({
+                        check: true,
+                        email: values.email,
+                        password: values.password,
+                      });
+                      lStorage.setBool('check', true);
+                      lStorage.setString('email', values.email);
+                      lStorage.setString('password', values.password);
+                    }
+
+                    if (rememberItems.check) {
+                      lStorage.removeItem('email');
+                      lStorage.removeItem('password');
+                      lStorage.removeItem('check');
+                      setRememberItems({
+                        check: false,
+                        email: '',
+                        password: '',
+                      });
+                    }
                   }}>
                   <Checkbox
                     color="#4964C6"
                     size={25}
                     style={tw`border-2 border-[#E8E8EA]`}
-                    value={check}
+                    value={rememberItems.check}
                     onValueChange={value => setCheck(value)}
                   />
                   <Text
@@ -147,6 +195,8 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
                   </Text>
                 </TouchableOpacity>
                 <TButton
+                  isLoading={results.isLoading}
+                  loadingColor="white"
                   onPress={handleSubmit}
                   title="Log in"
                   containerStyle={tw`w-full mb-5 mt-3 bg-primary text-lg `}
@@ -161,34 +211,20 @@ const LoginScreen = ({navigation}: NavigProps<null>) => {
         <View style={tw`px-[4%] gap-6`}>
           <Or />
 
-          <IwtButton
+          {/* <IwtButton
             containerStyle={tw`w-full bg-[#1877F2]`}
             title="Continue with Facebook"
             svg={`<svg width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M9.67109 11.4688L10.2031 8H6.875V5.75C6.875 4.80102 7.34 3.875 8.83063 3.875H10.3438V0.921875C10.3438 0.921875 8.97055 0.6875 7.65758 0.6875C4.91656 0.6875 3.125 2.34875 3.125 5.35625V8H0.078125V11.4688H3.125V19.8542C4.36744 20.0486 5.63256 20.0486 6.875 19.8542V11.4688H9.67109Z" fill="white"/>
         </svg>
         `}
-          />
-          <IwtButton
+          /> */}
+          {/* <IwtButton
             containerStyle={tw`w-full bg-[#FFFFFF]`}
             title="Continue with  Google"
             titleStyle={tw`text-color-Black800 font-NunitoSansBold`}
-            svg={`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_703_91295)">
-<path d="M23.7682 12.2763C23.7682 11.4605 23.7021 10.6404 23.561 9.83789H12.2422V14.4589H18.7239C18.455 15.9492 17.5907 17.2676 16.3252 18.1054V21.1037H20.1922C22.463 19.0137 23.7682 15.9272 23.7682 12.2763Z" fill="#4285F4"/>
-<path d="M12.2391 24.0008C15.4756 24.0008 18.205 22.9382 20.1936 21.1039L16.3266 18.1055C15.2507 18.8375 13.8618 19.252 12.2435 19.252C9.11291 19.252 6.45849 17.1399 5.50607 14.3003H1.51562V17.3912C3.55274 21.4434 7.70192 24.0008 12.2391 24.0008Z" fill="#34A853"/>
-<path d="M5.50473 14.3002C5.00206 12.8099 5.00206 11.196 5.50473 9.70569V6.61475H1.51869C-0.183313 10.0055 -0.183313 14.0004 1.51869 17.3912L5.50473 14.3002Z" fill="#FBBC04"/>
-<path d="M12.2391 4.74966C13.9499 4.7232 15.6034 5.36697 16.8425 6.54867L20.2685 3.12262C18.0991 1.0855 15.2198 -0.034466 12.2391 0.000808666C7.70192 0.000808666 3.55274 2.55822 1.51562 6.61481L5.50166 9.70575C6.44967 6.86173 9.1085 4.74966 12.2391 4.74966Z" fill="#EA4335"/>
-</g>
-<defs>
-<clipPath id="clip0_703_91295">
-<rect width="24" height="24" fill="white"/>
-</clipPath>
-</defs>
-</svg>
-
-        `}
-          />
+            svg={IconGoogle}
+          /> */}
         </View>
         {/* Sing up and  Forgot password? */}
         <View style={tw`items-center gap-2 mt-6`}>
