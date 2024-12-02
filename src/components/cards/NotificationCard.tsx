@@ -1,10 +1,10 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import FastImage from 'react-native-fast-image';
-import {INotification} from '../../redux/interface/notificaiton';
-import React from 'react';
 import moment from 'moment-timezone';
+import React from 'react';
+import FastImage from 'react-native-fast-image';
 import tw from '../../lib/tailwind';
+import {INotification} from '../../redux/interface/notificaiton';
 
 interface NotificationCardProps {
   item: INotification;
@@ -55,6 +55,7 @@ const NotificationCard = ({
               {item.data?.}
             </Text> */}
             <Text
+              numberOfLines={2}
               style={[
                 tw`text-[#5D5D5D] font-NunitoSansRegular text-sm`,
                 titleStyle,
