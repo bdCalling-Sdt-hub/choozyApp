@@ -19,6 +19,7 @@ import {IconImage} from '../../../icons/icons';
 import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useGetShopQuery} from '../../../redux/apiSlices/shopSlices';
+import { useToast } from '../../../components/modals/Toaster';
 
 interface StoreProps extends NavigProps<any> {
   showAddProductModal: boolean;
@@ -43,7 +44,7 @@ const Store = ({
   );
 
   // console.log(productError);
-
+  const {showToast, closeToast} = useToast();
   const {data: categories} = useGetCategoriesQuery({});
 
   // console.log(categories?.data.data);
@@ -114,6 +115,17 @@ const Store = ({
       console.log(UData?.images);
       const res = await createProduct(fromData);
       console.log(res);
+      if(res.error){
+        setShowProductPostModal(false)
+        showToast({
+          title: 'Warning',
+          titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+          content: res.error?.message,
+          contentStyle: tw`text-sm`,
+          btnDisplay: true,
+        });
+      }
+
       if (res?.data?.data?.id) {
         productRefetch();
         setShowProductPostModal(false);

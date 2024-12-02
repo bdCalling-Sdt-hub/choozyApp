@@ -52,6 +52,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
       setImage(image![0]);
       setUserInfo({...userInfo, image: image![0]});
     } catch (error) {
+    
       console.log(error);
     }
   };
@@ -127,6 +128,15 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
 
     const res = await updatedProfile(formData);
     console.log(res);
+    if(res.error){
+      showToast({
+        title: 'Warning',
+        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+        content: res.error?.message,
+        contentStyle: tw`text-sm`,
+        btnDisplay: true,
+      });
+    }
     if (res.data) {
       showToast({
         title: 'Success',

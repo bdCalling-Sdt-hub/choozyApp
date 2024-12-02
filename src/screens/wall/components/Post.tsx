@@ -32,6 +32,7 @@ import SimpleButton from '../../../components/buttons/SimpleButton';
 import TButton from '../../../components/buttons/TButton';
 import tw from '../../../lib/tailwind';
 import {useGetUserProfileQuery} from '../../../redux/apiSlices/authSlice';
+import { useToast } from '../../../components/modals/Toaster';
 
 interface PostProps extends NavigProps<any> {
   setShowAddPostModal?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,8 +60,8 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
   // console.log(userProfile?.data?.image);
   // console.log(wallData);
   const [selectItem, setSelectItem] = React.useState<null | INewpaper>(null);
-
-  const [postInfo, setPostInfo] = React.useState<{
+  const {showToast, closeToast} = useToast();
+   const [postInfo, setPostInfo] = React.useState<{
     share_your_thoughts?: string;
     images?: any;
     privacy: 'public' | 'private' | 'friends';
@@ -122,6 +123,18 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
       UData?.status && fromData.append('status', UData?.status);
       const res = await createNewsPost(fromData);
       console.log(res);
+   
+        if(res.error){
+          setShowAddPostModal && setShowAddPostModal(false);
+          showToast({
+            title: 'Warning',
+            titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+            content: res.error?.message,
+            contentStyle: tw`text-sm`,
+            btnDisplay: true,
+          });
+        }
+
       if (res?.data?.data?.id) {
         wallRefetch();
         setShowAddPostModal && setShowAddPostModal(false);
