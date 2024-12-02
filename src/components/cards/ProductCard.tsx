@@ -1,11 +1,11 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import FastImage from 'react-native-fast-image';
-import {IProduct} from '../../redux/interface/products';
-import {IconFillLove} from '../../icons/icons';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
+import {IconFillLove} from '../../icons/icons';
 import tw from '../../lib/tailwind';
+import {IProduct} from '../../redux/interface/products';
 
 export interface IProductCarProps {
   onPress?: () => void;
@@ -50,7 +50,7 @@ const ProductCard = ({
                   ? 'text-red-500'
                   : 'text-green-500'
               } font-NunitoSansBold text-xs `}>
-              {item?.status}
+              {item?.status?.charAt(0).toUpperCase() + item?.status?.slice(1)}
             </Text>
           )}
         </View>

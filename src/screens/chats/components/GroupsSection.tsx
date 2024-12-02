@@ -8,26 +8,26 @@ import {
   View,
 } from 'react-native';
 import {IconImage, IconPuls, IconSearch} from '../../../icons/icons';
-import {PrimaryColor, height, useImagePicker} from '../../../utils/utils';
 import {
   useCreateGroupMutation,
   useGetGroupsQuery,
   useIsAllReadMutation,
 } from '../../../redux/apiSlices/gourpSlices';
+import {PrimaryColor, height, useImagePicker} from '../../../utils/utils';
 
-import InputText from '../../../components/inputs/InputText';
-import IwtButton from '../../../components/buttons/IwtButton';
-import MessageCard from '../../../components/cards/MessageCard';
-import {NavigProps} from '../../../interfaces/NaviProps';
-import NoFoundCard from '../../../components/cards/NoFoundCard';
-import NormalModal from '../../../components/modals/NormalModal';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
+import IwtButton from '../../../components/buttons/IwtButton';
 import TButton from '../../../components/buttons/TButton';
+import MessageCard from '../../../components/cards/MessageCard';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
 import UserSelectionCard from '../../../components/cards/UserSelectionCard';
-import {getSocket} from '../../../redux/services/socket';
+import InputText from '../../../components/inputs/InputText';
+import NormalModal from '../../../components/modals/NormalModal';
+import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useUserFriendQuery} from '../../../redux/apiSlices/contactSlices';
+import {getSocket} from '../../../redux/services/socket';
 
 const GroupsSection = ({navigation}: NavigProps<null>) => {
   const [showGroupModal, setShowGroupModal] = React.useState(false);
@@ -44,7 +44,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
   } = useGetGroupsQuery({});
   const {data: contacts} = useUserFriendQuery({});
 
-  console.log(createGroupData);
+  // console.log(createGroupData);
 
   const [createGroup] = useCreateGroupMutation({});
   const [readAll] = useIsAllReadMutation({});
@@ -82,7 +82,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
     try {
       const res = await createGroup(formData);
 
-      console.log(res); // Check if there's an error in the response
+      // console.log(res); // Check if there's an error in the response
       if (res?.data) {
         setShowGroupModal(false);
         setGroupName('');
@@ -94,7 +94,6 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
     }
   };
 
-  const [selectItem, setSelectItem] = React.useState(null);
   return (
     <>
       <View style={tw` relative`}>
@@ -141,7 +140,8 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
             item={{
               image: item.group_image,
               email: item.group_creator.email,
-              full_name: item.group_name + item?.group_id,
+              // full_name: item.group_name + item?.group_id,
+              full_name: item.group_name,
               last_message_time: item.created_date,
               last_message: item?.last_message,
               user_name: item.group_creator.user_name,

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {
   IconLock,
+  IconPenBlue,
   IconPlus,
   IconPost,
   IconPostBlue,
@@ -174,11 +175,25 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
                 {wallData?.data?.contact}
               </Text>
             )}
-
-            <Text
-              style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
-              {wallData?.data?.bio}
-            </Text>
+            {wallData?.data?.bio ? (
+              <Text
+                style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
+                {wallData?.data?.bio}
+              </Text>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation?.navigate('ProfileEdit');
+                }}
+                style={tw`flex-row items-start gap-2`}>
+                <Text
+                  style={tw`text-[#A5A3A9] font-NunitoSansRegular text-[12px] leading-4`}>
+                  Your profile is incomplete {'\n'} Please update your
+                  information
+                </Text>
+                <SvgXml width={10} height={10} xml={IconPenBlue} />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
 

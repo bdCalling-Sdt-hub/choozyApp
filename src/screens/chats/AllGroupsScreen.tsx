@@ -1,16 +1,16 @@
 import {FlatList, View} from 'react-native';
 
-import BackWithTitle from '../../components/backHeader/BackWithTitle';
-import {IconSearch} from '../../icons/icons';
-import InputText from '../../components/inputs/InputText';
-import MessageCard from '../../components/cards/MessageCard';
-import {NavigProps} from '../../interfaces/NaviProps';
 import React from 'react';
 import groupMessageData from '../../assets/database/groups.json';
+import BackWithTitle from '../../components/backHeader/BackWithTitle';
+import MessageCard from '../../components/cards/MessageCard';
+import InputText from '../../components/inputs/InputText';
+import {IconSearch} from '../../icons/icons';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 
 const AllGroupsScreen = ({navigation, route}: NavigProps<{id: string}>) => {
-  console.log(route?.params?.id);
+  // console.log(route?.params?.id);
   return (
     <View style={tw`flex-1 bg-white`}>
       <BackWithTitle title="All Groups" onPress={() => navigation?.goBack()} />
@@ -33,10 +33,10 @@ const AllGroupsScreen = ({navigation, route}: NavigProps<{id: string}>) => {
               titleStyle={tw`text-[#1D1929]`}
               item={{
                 image: item.image,
-                lastMessage: item.following,
-                name: item.groupName,
-                time: item.time,
-                unreadCount: item.unread,
+                last_message: item.following,
+                full_name: item.groupName,
+                last_message_time: item.time,
+                unread_count: item.unread,
               }}
             />
           </>

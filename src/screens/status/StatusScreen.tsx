@@ -15,7 +15,6 @@ import FastImage from 'react-native-fast-image';
 import {TextInput} from 'react-native-gesture-handler';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
 import IButton from '../../components/buttons/IButton';
-import CommentCard from '../../components/cards/CommentCard';
 import NoFoundCard from '../../components/cards/NoFoundCard';
 import PostCard from '../../components/cards/PostCard';
 import SideModal from '../../components/modals/SideModal';
@@ -23,7 +22,7 @@ import {IconSend} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetUserProfileQuery} from '../../redux/apiSlices/authSlice';
-import {INewpaper} from '../../redux/interface/newpaper';
+import CommentContainer from './components/CommentContainer';
 
 const StatusScreen = ({navigation}: NavigProps<null>) => {
   const {
@@ -31,45 +30,34 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
     isLoading: newsLoading,
     refetch: newsReFetch,
   } = useGetAllNewFeetQuery({});
-  const [isComment, setIsComment] = React.useState<{
-    item?: INewpaper;
-    open?: boolean;
-  }>({
-    open: false,
-  });
+
   const [reply, setReply] = React.useState<any>(null);
+  const [selectItem, setSelectItem] = React.useState<any>(null);
   const [comment, setComment] = React.useState('');
+  const [showCommentModal, setShowCommentModal] = React.useState(false);
+  // const [allComments, setALlComments] = React.useState<any>([]);
   const [createComment] = useCommentMutation();
   const {data: userProfile} = useGetUserProfileQuery({});
-  // console.log(statusData);
 
   const handleComment = useCallback(() => {
     const data = {
-      newsfeed_id: isComment?.item?.newsfeed_id,
+      newsfeed_id: selectItem?.id,
       comments: comment,
     };
 
     if (reply?.id) {
       data.parent_id = reply.id;
     }
-    console.log(data);
+
     createComment(data).then(res => {
-      console.log(res);
+      // console.log(res);
       setComment('');
       setReply(null);
+      // handleGetComment(selectItem?.newsfeed_id);
     });
   }, [comment, reply?.id]);
 
   // console.log(isComment);
-
-  React.useEffect(() => {
-    setIsComment({
-      ...isComment,
-      item: statusData?.data?.newsfeeds?.find(
-        item => item.newsfeed_id === isComment.item?.newsfeed_id,
-      ),
-    });
-  }, [statusData]);
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -107,9 +95,13 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
           // console.log(item);
           return (
             <PostCard
-              setComment={setIsComment}
+              onPressCement={() => {
+                setSelectItem(item);
+                // handleGetComment(item?.newsfeed_id);
+                setShowCommentModal(true);
+              }}
               onPress={() => {
-                console.log(userProfile?.data.id);
+                // console.log(userProfile?.data.id);
                 if (userProfile?.data.id === item?.user?.user_id) {
                   navigation?.navigate('Wall');
                 } else {
@@ -123,27 +115,16 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
       />
 
       <SideModal
-        visible={isComment.open}
-        setVisible={() => setIsComment({open: false})}
+        visible={showCommentModal}
+        setVisible={() => setShowCommentModal(false)}
         containerStyle={tw`h-[95%]`}>
         <View style={tw`px-4`}>
           <Text style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
             Comments
           </Text>
         </View>
-        <FlatList
-          data={isComment?.item?.comments}
-          keyboardShouldPersistTaps="always"
-          showsVerticalScrollIndicator={false}
-          keyboardDismissMode="interactive"
-          renderItem={({item}) => {
-            return (
-              <View style={tw`px-4 pt-4`}>
-                <CommentCard key={item.id} setReply={setReply} item={item} />
-              </View>
-            );
-          }}
-        />
+        <CommentContainer item={selectItem} setReply={setReply} />
+
         <View style={tw`p-4 flex-row items-center `}>
           <FastImage
             style={tw`w-12 h-12 rounded-2xl`}

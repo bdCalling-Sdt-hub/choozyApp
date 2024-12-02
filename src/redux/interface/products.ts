@@ -6,6 +6,7 @@ export interface IProduct {
   id: number;
   full_name: string;
   user_name: string;
+  status: string;
   image: string;
   product_name: string;
   category_name: string;

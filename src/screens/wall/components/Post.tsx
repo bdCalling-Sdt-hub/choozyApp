@@ -1,6 +1,6 @@
+import React, {useCallback} from 'react';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {ActionSheet, ButtonProps} from 'react-native-ui-lib';
-import {Android, height, useImagePicker} from '../../../utils/utils';
-import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {
   IconImage,
   IconLock,
@@ -8,31 +8,30 @@ import {
   IconSend,
   IconUserSmall,
 } from '../../../icons/icons';
-import React, {useCallback} from 'react';
 import {
   useCommentMutation,
   useCreateNewFeetMutation,
   useDeleteNewFeetMutation,
   useUpdateNewsFeetMutation,
 } from '../../../redux/apiSlices/newsFeetSlices';
+import {Android, height, useImagePicker} from '../../../utils/utils';
 
-import CommentCard from '../../../components/cards/CommentCard';
-import ConfrimationModal from '../../../components/modals/ConfrimationModal';
-import CreatedHeaderWithITB from '../../../components/backHeader/CreatedHeaderWithITB';
 import FastImage from 'react-native-fast-image';
+import CreatedHeaderWithITB from '../../../components/backHeader/CreatedHeaderWithITB';
 import IButton from '../../../components/buttons/IButton';
-import {INewpaper} from '../../../redux/interface/newpaper';
 import IwtButton from '../../../components/buttons/IwtButton';
-import {NavigProps} from '../../../interfaces/NaviProps';
-import NoFoundCard from '../../../components/cards/NoFoundCard';
-import NormalModal from '../../../components/modals/NormalModal';
-import PostCard from '../../../components/cards/PostCard';
-import SideModal from '../../../components/modals/SideModal';
 import SimpleButton from '../../../components/buttons/SimpleButton';
 import TButton from '../../../components/buttons/TButton';
+import NoFoundCard from '../../../components/cards/NoFoundCard';
+import PostCard from '../../../components/cards/PostCard';
+import ConfrimationModal from '../../../components/modals/ConfrimationModal';
+import NormalModal from '../../../components/modals/NormalModal';
+import SideModal from '../../../components/modals/SideModal';
+import {useToast} from '../../../components/modals/Toaster';
+import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useGetUserProfileQuery} from '../../../redux/apiSlices/authSlice';
-import { useToast } from '../../../components/modals/Toaster';
+import CommentContainer from '../../status/components/CommentContainer';
 
 interface PostProps extends NavigProps<any> {
   setShowAddPostModal?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,17 +39,14 @@ interface PostProps extends NavigProps<any> {
 }
 const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
   const {data: wallData, refetch: wallRefetch} = useGetUserProfileQuery({});
-  const [isComment, setIsComment] = React.useState<{
-    item?: INewpaper;
-    open?: boolean;
-  }>({
-    open: false,
-  });
+
   const [reply, setReply] = React.useState<any>(null);
   const [actionSheet, setActionSheet] = React.useState(false);
 
   const [confirmationModal, setConfirmationModal] = React.useState(false);
   const [comment, setComment] = React.useState('');
+
+  const [showCommentModal, setShowCommentModal] = React.useState(false);
 
   const {data: userProfile} = useGetUserProfileQuery({});
   const [createComment] = useCommentMutation();
@@ -59,14 +55,9 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
   const [updatedNewsPost] = useUpdateNewsFeetMutation({});
   // console.log(userProfile?.data?.image);
   // console.log(wallData);
-  const [selectItem, setSelectItem] = React.useState<null | INewpaper>(null);
+  const [selectItem, setSelectItem] = React.useState<any>(null);
   const {showToast, closeToast} = useToast();
-   const [postInfo, setPostInfo] = React.useState<{
-    share_your_thoughts?: string;
-    images?: any;
-    privacy: 'public' | 'private' | 'friends';
-    status: number;
-  }>({
+  const [postInfo, setPostInfo] = React.useState<any>({
     privacy: 'public',
     status: 1,
   });
@@ -93,9 +84,10 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
   };
 
   // console.log(isComment?.item);
+
   const handleComment = useCallback(() => {
     const data = {
-      newsfeed_id: isComment?.item?.id,
+      newsfeed_id: selectItem?.id,
       comments: comment,
     };
 
@@ -123,17 +115,17 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
       UData?.status && fromData.append('status', UData?.status);
       const res = await createNewsPost(fromData);
       console.log(res);
-   
-        if(res.error){
-          setShowAddPostModal && setShowAddPostModal(false);
-          showToast({
-            title: 'Warning',
-            titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
-            content: res.error?.message,
-            contentStyle: tw`text-sm`,
-            btnDisplay: true,
-          });
-        }
+
+      if (res.error) {
+        setShowAddPostModal && setShowAddPostModal(false);
+        showToast({
+          title: 'Warning',
+          titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+          content: res.error?.message,
+          contentStyle: tw`text-sm`,
+          btnDisplay: true,
+        });
+      }
 
       if (res?.data?.data?.id) {
         wallRefetch();
@@ -150,8 +142,8 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
   );
   const handleAddPostUpdated = React.useCallback(
     async (UData: typeof postInfo) => {
-      console.log('hitUpdate');
-      console.log(UData);
+      // console.log('hitUpdate');
+      // console.log(UData);
       const fromData = new FormData();
       UData?.share_your_thoughts &&
         fromData.append('share_your_thoughts', UData?.share_your_thoughts);
@@ -160,12 +152,12 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
       UData?.status && fromData.append('status', UData?.status);
       fromData.append('_method', 'PUT');
 
-      console.log(selectItem?.id);
+      // console.log(selectItem?.id);
       const res = await updatedNewsPost({
         data: fromData,
         id: selectItem?.id,
       });
-      console.log(res);
+      // console.log(res);
       if (res?.data?.data?.id) {
         wallRefetch();
         setShowAddPostModal && setShowAddPostModal(false);
@@ -190,15 +182,6 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
     });
   };
 
-  React.useEffect(() => {
-    setIsComment({
-      ...isComment,
-      item: wallData?.data?.news_feeds?.find(
-        item => item.id === isComment.item?.id,
-      ),
-    });
-  }, [wallData]);
-  // console.log(selectItem?.images[0].url);
   return (
     <>
       {wallData?.data?.news_feeds ? (
@@ -210,7 +193,11 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
                 setSelectItem(item);
                 setActionSheet(true);
               }}
-              setComment={setIsComment}
+              onPressCement={() => {
+                setSelectItem(item);
+                // handleGetComment(item?.newsfeed_id);
+                setShowCommentModal(true);
+              }}
               likeOppress={() => {
                 wallRefetch();
               }}
@@ -225,68 +212,53 @@ const Post = ({setShowAddPostModal, showAddPostModal}: PostProps) => {
         <NoFoundCard hight={height * 0.12} title="No Post Found" />
       )}
 
-      {isComment?.open && (
-        <SideModal
-          visible={isComment.open}
-          setVisible={() => setIsComment({open: false})}
-          containerStyle={tw`h-[95%]`}>
-          <View style={tw`px-4`}>
-            <Text
-              style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
-              Comments
-            </Text>
+      <SideModal
+        visible={showCommentModal}
+        setVisible={() => setShowCommentModal(false)}
+        containerStyle={tw`h-[95%]`}>
+        <View style={tw`px-4`}>
+          <Text style={tw`text-color-Black1000 font-NunitoSansBold text-base`}>
+            Comments
+          </Text>
+        </View>
+        <CommentContainer item={selectItem} setReply={setReply} />
+        <View style={tw`p-4 flex-row items-center `}>
+          <FastImage
+            style={tw`w-12 h-12 rounded-2xl`}
+            source={{uri: userProfile?.data?.image}}
+            resizeMode={FastImage.resizeMode.cover}
+          />
+          <View style={tw`h-14 flex-1 flex-row justify-center`}>
+            {reply?.full_name && (
+              <TouchableOpacity
+                onPress={() => setReply(null)}
+                style={tw`h-14 flex-row items-center ml-2`}>
+                <Text
+                  style={tw`text-color-Black800  bg-slate-200 p-1 font-NunitoSansBold rounded-lg`}>
+                  {reply?.full_name}
+                  <Text style={tw`text-xs text-blue-600`}>x</Text>
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            <TextInput
+              // ref={openRef}
+              placeholder="Add a comment....."
+              style={tw`h-14 border border-slate-100 rounded-lg flex-1 mx-2`}
+              onChangeText={text => setComment(text)}
+              value={comment}
+            />
           </View>
-          <FlatList
-            data={isComment?.item?.comments}
-            keyboardShouldPersistTaps="always"
-            showsVerticalScrollIndicator={false}
-            keyboardDismissMode="interactive"
-            renderItem={({item}) => {
-              return (
-                <View style={tw`px-4 pt-4`}>
-                  <CommentCard key={item.id} setReply={setReply} item={item} />
-                </View>
-              );
+          <IButton
+            svg={IconSend}
+            containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
+            onPress={() => {
+              handleComment();
+              // setOpen(!open);
             }}
           />
-          <View style={tw`p-4 flex-row items-center `}>
-            <FastImage
-              style={tw`w-12 h-12 rounded-2xl`}
-              source={{uri: userProfile?.data?.image}}
-              resizeMode={FastImage.resizeMode.cover}
-            />
-            <View style={tw`h-14 flex-1 flex-row justify-center`}>
-              {reply?.full_name && (
-                <TouchableOpacity
-                  onPress={() => setReply(null)}
-                  style={tw`h-14 flex-row items-center ml-2`}>
-                  <Text
-                    style={tw`text-color-Black800  bg-slate-200 p-1 font-NunitoSansBold rounded-lg`}>
-                    {reply?.full_name}
-                    <Text style={tw`text-xs text-blue-600`}>x</Text>
-                  </Text>
-                </TouchableOpacity>
-              )}
-
-              <TextInput
-                // ref={openRef}
-                placeholder="Add a comment....."
-                style={tw`h-14 border border-slate-100 rounded-lg flex-1 mx-2`}
-                onChangeText={text => setComment(text)}
-                value={comment}
-              />
-            </View>
-            <IButton
-              svg={IconSend}
-              containerStyle={tw`bg-primary p-4 w-14 shadow-none`}
-              onPress={() => {
-                handleComment();
-                // setOpen(!open);
-              }}
-            />
-          </View>
-        </SideModal>
-      )}
+        </View>
+      </SideModal>
 
       {actionSheet && (
         <ActionSheet

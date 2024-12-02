@@ -1,5 +1,12 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {IconComment, IconFillLove, IconVThreeDots} from '../../icons/icons';
+import {
+  IconComment,
+  IconFillLove,
+  IconLock,
+  IconPublic,
+  IconUserSmallBlack,
+  IconVThreeDots,
+} from '../../icons/icons';
 import {height, width} from '../../utils/utils';
 
 import React from 'react';
@@ -18,6 +25,7 @@ interface PostCardProps {
   setComment?: React.Dispatch<React.SetStateAction<any>>;
   likeOppress?: () => void;
   actionOptions?: () => void;
+  onPressCement?: () => void;
 }
 
 const PostCard = ({
@@ -26,6 +34,7 @@ const PostCard = ({
   setComment,
   likeOppress,
   actionOptions,
+  onPressCement,
 }: PostCardProps) => {
   const [love, setLove] = React.useState(item?.auth_user_liked);
   const [like] = useLikeUnlikeMutation();
@@ -56,20 +65,27 @@ const PostCard = ({
             </View>
           )}
 
-          <View style={tw`gap-[2px]`}>
+          <View style={tw`gap-[2px] justify-center`}>
             <Text style={tw`text-sm font-NunitoSansBold text-color-Black1000`}>
               {item?.user?.full_name}
             </Text>
-            <View style={tw`flex-row gap-2`}>
+            <View style={tw`flex-row gap-2 items-center`}>
               <Text style={tw`text-xs text-[#A5A3A9] font-NunitoSansRegular`}>
                 {item?.user?.user_name}
               </Text>
-              {item?.privacy && item?.privacy !== 'public' && (
-                <Text
-                  style={tw`text-[8px] text-[#A5A3A9] font-NunitoSansRegular bg-gray-200 rounded-md py-[1px] px-1`}>
-                  {item?.privacy}
-                </Text>
-              )}
+
+              <Text
+                style={tw`text-[8px] text-[#A5A3A9] font-NunitoSansRegular bg-gray-200 rounded-md  p-1 `}>
+                {item?.privacy === 'public' ? (
+                  <SvgXml xml={IconPublic} />
+                ) : item?.privacy === 'private' ? (
+                  <SvgXml xml={IconLock} />
+                ) : (
+                  item?.privacy === 'friends' && (
+                    <SvgXml xml={IconUserSmallBlack} width={8} height={8} />
+                  )
+                )}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -120,7 +136,7 @@ const PostCard = ({
                 newsfeed_id: item.newsfeed_id || item.id,
               });
               // console.log('like', res);
-              console.log(item.newsfeed_id);
+              // console.log(item.newsfeed_id);
               setLove(!love);
               likeOppress && likeOppress();
             }}>
@@ -135,14 +151,7 @@ const PostCard = ({
               }
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setComment &&
-                setComment({
-                  item,
-                  open: true,
-                });
-            }}>
+          <TouchableOpacity onPress={onPressCement}>
             <SvgXml xml={IconComment} />
           </TouchableOpacity>
         </View>
@@ -159,7 +168,7 @@ const PostCard = ({
             style={tw`text-gray-400 font-NunitoSansRegular w-[70%] text-xs`}>
             • Comment{' '}
             <Text style={tw`text-color-Black500 font-NunitoSansBold`}>
-              {item?.comments?.length}
+              {item?.comment_count}
             </Text>
           </Text>
         </View>

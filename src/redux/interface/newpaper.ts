@@ -14,7 +14,7 @@ export interface INewpaper {
   like_count: number;
   auth_user_liked: boolean;
   privacy: string;
-  comments: Array<IComment>;
+  comment_count: string;
 }
 
 export interface IComment {

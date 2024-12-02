@@ -4,6 +4,7 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {ExpandableSection} from 'react-native-ui-lib';
 import tw from '../../lib/tailwind';
+import {useDeleteCommentMutation} from '../../redux/apiSlices/newsFeetSlices';
 import {IComment} from '../../redux/interface/newpaper';
 
 interface CommentCardProps {
@@ -12,6 +13,8 @@ interface CommentCardProps {
 }
 const CommentCard = ({item, setReply}: CommentCardProps) => {
   const [isReply, setIsReply] = React.useState(false);
+
+  const [deleteComment] = useDeleteCommentMutation();
 
   return (
     <ExpandableSection
@@ -40,16 +43,26 @@ const CommentCard = ({item, setReply}: CommentCardProps) => {
                 style={tw`text-color-Black1000 text-base font-NunitoSansRegular`}>
                 {item?.comment}
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setReply(item);
-                  setIsReply(!isReply);
-                }}>
-                <Text
-                  style={tw`text-color-Black400 text-sm font-NunitoSansRegular`}>
-                  Reply
-                </Text>
-              </TouchableOpacity>
+              <View style={tw`flex-row gap-2`}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setReply(item);
+                    setIsReply(!isReply);
+                  }}>
+                  <Text
+                    style={tw`text-color-Black400 text-sm font-NunitoSansRegular`}>
+                    Reply
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteComment(item?.id);
+                  }}>
+                  <Text style={tw`text-red-500 text-sm font-NunitoSansRegular`}>
+                    Delete
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>

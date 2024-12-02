@@ -1,5 +1,5 @@
-import {INewpaperList} from '../interface/newpaper';
 import {api} from '../api/baseApi';
+import {INewpaperList} from '../interface/newpaper';
 
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
@@ -7,19 +7,19 @@ const authSlice = api.injectEndpoints({
       query: () => ({
         url: `/usernewsfeeds`,
       }),
-      providesTags: ['news_feed'],
+      providesTags: ['news_feed', 'comment'],
     }),
-    commentView: builder.query({
+    getComment: builder.query({
       query: id => ({
-        url: `/commentView/${id}`,
+        url: `/get-comment/${id}`,
       }),
-      providesTags: ['news_feed'],
+      providesTags: ['comment'],
     }),
     getAllNewFeet: builder.query<INewpaperList, any>({
       query: () => ({
         url: `/newsfeeds`,
       }),
-      providesTags: ['news_feed'],
+      providesTags: ['news_feed', 'comment'],
     }),
     createNewFeet: builder.mutation({
       query: data => ({
@@ -47,7 +47,7 @@ const authSlice = api.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['news_feed'],
+      invalidatesTags: ['comment'],
     }),
     updateNewsFeet: builder.mutation({
       query: ({data, id}) => ({
@@ -72,7 +72,7 @@ const authSlice = api.injectEndpoints({
         url: `/commentDelete/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['news_feed'],
+      invalidatesTags: ['comment'],
     }),
   }),
 });
@@ -85,6 +85,7 @@ export const {
   useUpdateNewsFeetMutation,
   useLikeUnlikeMutation,
   useCommentMutation,
-  useCommentViewQuery,
+  useGetCommentQuery,
+  useLazyGetCommentQuery,
   useDeleteCommentMutation,
 } = authSlice;
