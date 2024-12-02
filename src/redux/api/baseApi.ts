@@ -21,7 +21,8 @@ const baseQueryWithRath: BaseQueryFn<BaseQueryArgs, unknown, unknown> = async (
 
   try {
     const result: AxiosResponse = await axios({
-      baseURL: 'http://192.168.12.140:8000/api',
+      // baseURL: 'http://192.168.12.140:8000/api',
+      baseURL: 'http://137.184.184.228/api',
       ...args,
       url: args.url,
       method: args.method,
@@ -85,4 +86,5 @@ export const api = createApi({
   ],
 });
 
-export const imageUrl = 'http://192.168.12.160:7000/';
+// export const imageUrl = 'http://192.168.12.160:7000/';
+export const imageUrl = 'http://137.184.184.228/';

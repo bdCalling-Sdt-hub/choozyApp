@@ -2,43 +2,37 @@
 
 import * as React from 'react';
 
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AddGroupMembers from '../screens/chats/AddMembers';
 import AllGroupsScreen from '../screens/chats/AllGroupsScreen';
-import BottomRoutes from './BottomRoutes';
-import Checkout from '../screens/Checkout/Checkout';
-import CreateNewPassword from '../screens/logins/CreateNewPassword';
-import CreateShop from '../screens/store/CreateShop';
-import FAQ from '../screens/settings/FAQ';
-import ForgetPassword from '../screens/logins/ForgetPassword';
 import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
-import LoadingSplash from '../screens/spalsh/LoadingSplash';
-import LoginScreen from '../screens/logins/LoginScreen';
-import LoveStoreScreen from '../screens/store/LoveStoreScreen';
-import MyProductDetailsScreen from '../screens/product/MyProductDetailsScreen';
-import MyWall from '../screens/wall/MyWall';
+import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
+import Checkout from '../screens/Checkout/Checkout';
+import RequestContacts from '../screens/contacts/RequestContacts';
+import PassChanSuccess from '../screens/logins/PassChanSuccess';
 import NotificationScreen from '../screens/notificaiton/NotificationScreen';
 import OrdersHistory from '../screens/Orders History/OrdersHistory';
-import OtherWall from '../screens/wall/OtherWall';
-import OtherWallPost from '../screens/wall/components/OtherWallPost';
-import OtherWallStore from '../screens/wall/components/OtherWallStore';
-import PassChanSuccess from '../screens/logins/PassChanSuccess';
+import MyProductDetailsScreen from '../screens/product/MyProductDetailsScreen';
 import ProductDetailsScreen from '../screens/product/ProductDetailsScreen';
-import ProfileEdit from '../screens/settings/ProfileEdit';
-import RequestContacts from '../screens/contacts/RequestContacts';
 import SearchScreen from '../screens/search/SearchScreen';
+import FAQ from '../screens/settings/FAQ';
+import ProfileEdit from '../screens/settings/ProfileEdit';
 import Settings from '../screens/settings/Settings';
-import SignUpScreen from '../screens/logins/SignUpScreen';
-import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
 import Support from '../screens/settings/Support';
 import TermsAndCondition from '../screens/settings/TermsAndCondition';
+import UpdatePassword from '../screens/settings/UpdatePassword';
+import LoadingSplash from '../screens/spalsh/LoadingSplash';
+import CreateShop from '../screens/store/CreateShop';
+import LoveStoreScreen from '../screens/store/LoveStoreScreen';
+import OtherWallPost from '../screens/wall/components/OtherWallPost';
+import OtherWallStore from '../screens/wall/components/OtherWallStore';
+import MyWall from '../screens/wall/MyWall';
+import OtherWall from '../screens/wall/OtherWall';
 import TransactionsHistory from '../screens/wallet/TransactionsHistory';
 import TransferRequest from '../screens/wallet/TransferRequest';
-import UpdatePassword from '../screens/settings/UpdatePassword';
-import VerifyEmail from '../screens/logins/VerifyEmail';
-import VerifySuccess from '../screens/logins/VerifySuccess';
 import WalletScreen from '../screens/wallet/WalletScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import BottomRoutes from './BottomRoutes';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,16 +44,8 @@ function Routes() {
         headerShown: false,
         animation: 'slide_from_right',
       }}>
-      {/*=================== logins part ======================= */}
       {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
       <Stack.Screen name="Loading" component={LoadingSplash} />
-
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="SignUp" component={SignUpScreen} />
-      <Stack.Screen name="Forget" component={ForgetPassword} />
-      <Stack.Screen name="Verify" component={VerifyEmail} />
-      <Stack.Screen name="CreateNewPassword" component={CreateNewPassword} />
-      <Stack.Screen name="VerifySuccess" component={VerifySuccess} />
 
       {/*===================== Home / Bottom routes ================ */}
 

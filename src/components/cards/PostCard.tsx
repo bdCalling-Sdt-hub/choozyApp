@@ -75,7 +75,8 @@ const PostCard = ({
               </Text>
 
               <Text
-                style={tw`text-[8px] text-[#A5A3A9] font-NunitoSansRegular bg-gray-200 rounded-md  p-1 `}>
+              // style={tw`text-[8px] text-[#A5A3A9] font-NunitoSansRegular bg-gray-200 rounded-md  p-1 `}
+              >
                 {item?.privacy === 'public' ? (
                   <SvgXml xml={IconPublic} />
                 ) : item?.privacy === 'private' ? (

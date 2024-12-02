@@ -2,15 +2,15 @@ import * as React from 'react';
 
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
-import CustomDrawer from './DrawerRoutes';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
-import SplashScreen from '../screens/spalsh/SplashScreen';
-import {ToastProvider} from '../components/modals/Toaster';
-import store from '../redux/store';
-import tw from '../lib/tailwind';
 import {useDeviceContext} from 'twrnc';
+import {ToastProvider} from '../components/modals/Toaster';
+import tw from '../lib/tailwind';
+import store from '../redux/store';
+import SplashScreen from '../screens/spalsh/SplashScreen';
+import PublicRoutes from './PublicRoutes';
 
 function AppRoutes() {
   const [isSplash, setIsSplash] = React.useState(true);
@@ -27,7 +27,7 @@ function AppRoutes() {
               <NavigationContainer>
                 {/* Wrap main content in SafeAreaView */}
                 <SafeAreaView style={tw`flex-1 `}>
-                  <CustomDrawer />
+                  <PublicRoutes />
                 </SafeAreaView>
               </NavigationContainer>
             </ToastProvider>
