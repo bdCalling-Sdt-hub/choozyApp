@@ -17,7 +17,7 @@ const LoadingSplash = ({navigation}: NavigProps<null>) => {
     try {
       const res = await checkToken(token).unwrap();
       if (res.token_status) {
-        (navigation as any)?.replace('HomeRoutes');
+        (navigation as any)?.replace('DrawerRoutes');
       } else {
         (navigation as any)?.replace('Login');
       }

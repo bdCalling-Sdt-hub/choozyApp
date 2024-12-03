@@ -9,6 +9,7 @@ import LoginScreen from '../screens/logins/LoginScreen';
 import SignUpScreen from '../screens/logins/SignUpScreen';
 import VerifyEmail from '../screens/logins/VerifyEmail';
 import VerifySuccess from '../screens/logins/VerifySuccess';
+import LoadingSplash from '../screens/spalsh/LoadingSplash';
 import CustomDrawer from './DrawerRoutes';
 
 const Stack = createNativeStackNavigator();
@@ -16,12 +17,13 @@ const Stack = createNativeStackNavigator();
 function PublicRoutes() {
   return (
     <Stack.Navigator
+      initialRouteName="Loading"
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
       }}>
       {/*=================== logins part ======================= */}
-      {/* <Stack.Screen name="Splash" component={SplashScreen} /> */}
+      <Stack.Screen name="Loading" component={LoadingSplash} />
 
       <Stack.Screen name="DrawerRoutes" component={CustomDrawer} />
 

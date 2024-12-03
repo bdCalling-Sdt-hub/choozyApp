@@ -24,23 +24,25 @@ import NoFoundCard from '../../../components/cards/NoFoundCard';
 import UserSelectionCard from '../../../components/cards/UserSelectionCard';
 import InputText from '../../../components/inputs/InputText';
 import NormalModal from '../../../components/modals/NormalModal';
+import {useToast} from '../../../components/modals/Toaster';
 import {NavigProps} from '../../../interfaces/NaviProps';
 import tw from '../../../lib/tailwind';
 import {useUserFriendQuery} from '../../../redux/apiSlices/contactSlices';
 import {getSocket} from '../../../redux/services/socket';
 
 const GroupsSection = ({navigation}: NavigProps<null>) => {
+  const {closeToast, showToast} = useToast();
   const [showGroupModal, setShowGroupModal] = React.useState(false);
-  const [createGroupData, setCreateGroupData] = React.useState<any>([]);
+  const [createGroupData, setCreateGroupData] = React.useState<any>(null);
 
   const [groupName, setGroupName] = React.useState('');
-  const [groupImage, setGroupImage] = React.useState<any>();
+  const [groupImage, setGroupImage] = React.useState<any>(null);
 
   const {
     data: groupData,
-    isLoading,
-    isFetching,
-    refetch,
+    isLoading: groupLoading,
+    isFetching: groupFetching,
+    refetch: groupRefetch,
   } = useGetGroupsQuery({});
   const {data: contacts} = useUserFriendQuery({});
 
@@ -68,7 +70,7 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
 
     const formData = new FormData();
 
-    console.log(groupMembers); // Check the IDs extracted from createGroupData
+    // console.log(groupMembers); // Check the IDs extracted from createGroupData
     // Append fields to FormData
     groupName && formData.append('name', groupName);
     groupImage && formData.append('image', groupImage);
@@ -81,7 +83,15 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
 
     try {
       const res = await createGroup(formData);
-
+      if (res.error) {
+        showToast({
+          title: 'Warning',
+          titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+          content: res.error?.data?.message,
+          contentStyle: tw`text-sm`,
+          btnDisplay: true,
+        });
+      }
       // console.log(res); // Check if there's an error in the response
       if (res?.data) {
         setShowGroupModal(false);
@@ -108,8 +118,8 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
       <FlatList
         refreshControl={
           <RefreshControl
-            refreshing={isLoading}
-            onRefresh={refetch}
+            refreshing={groupLoading}
+            onRefresh={() => groupRefetch()}
             colors={[PrimaryColor]}
           />
         }
@@ -140,7 +150,6 @@ const GroupsSection = ({navigation}: NavigProps<null>) => {
             item={{
               image: item.group_image,
               email: item.group_creator.email,
-              // full_name: item.group_name + item?.group_id,
               full_name: item.group_name,
               last_message_time: item.created_date,
               last_message: item?.last_message,

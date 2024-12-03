@@ -14,16 +14,17 @@ import tw from '../../lib/tailwind';
 import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
 import {useGetShopQuery} from '../../redux/apiSlices/shopSlices';
 import {getSocket} from '../../redux/services/socket';
-import Chats from './components/Chats';
-import GroupsSection from './components/GroupsSection';
+
+// import Chats from './components/Chats';
+// import GroupsSection from './components/GroupsSection';
 
 // import Chats from './components/Chats';
 
 // import GroupsSection from './components/GroupsSection';
 
 // lazy load
-// const Chats = React.lazy(() => import('./components/Chats'));
-// const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
+const Chats = React.lazy(() => import('./components/Chats'));
+const GroupsSection = React.lazy(() => import('./components/GroupsSection'));
 
 const ChatsScreen = ({navigation}: NavigProps<null>) => {
   //***** its needed to add this line don't remove it**********
@@ -34,7 +35,7 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
   // console.log(userInfo);
 
   // console.log(JSON.stringify(MessagesData, null, 2));
-  const [options, setOptions] = React.useState<'Chats' | 'groups'>('Chats');
+  const [options, setOptions] = React.useState<'Chats' | 'Groups'>('Chats');
 
   const {data: Shop} = useGetShopQuery(
     {},
@@ -94,15 +95,15 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => setOptions('groups')}
+          onPress={() => setOptions('Groups')}
           style={tw`h-11 px-3 ${
-            options == 'groups'
+            options == 'Groups'
               ? 'border-b-[3px] border-b-primary'
               : 'border-b-[3px] border-b-white'
           }  justify-center items-center`}>
           <Text
             style={tw` ${
-              options == 'groups' ? 'text-primary' : 'text-[#34303E]'
+              options == 'Groups' ? 'text-primary' : 'text-[#34303E]'
             } font-NunitoSansBold text-sm`}>
             Groups
           </Text>
@@ -122,14 +123,16 @@ const ChatsScreen = ({navigation}: NavigProps<null>) => {
           </Suspense>
         </>
       ) : (
-        <Suspense
-          fallback={
-            <View style={tw`flex-1`}>
-              <ActivityIndicator color="#4964C6" />
-            </View>
-          }>
-          <GroupsSection navigation={navigation} />
-        </Suspense>
+        options == 'Groups' && (
+          <Suspense
+            fallback={
+              <View style={tw`flex-1`}>
+                <ActivityIndicator color="#4964C6" />
+              </View>
+            }>
+            <GroupsSection navigation={navigation} />
+          </Suspense>
+        )
       )}
 
       <ActionModal

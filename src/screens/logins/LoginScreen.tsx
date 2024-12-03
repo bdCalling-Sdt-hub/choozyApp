@@ -1,30 +1,30 @@
 import {
-  IconCloseEye,
-  IconFillEmail,
-  IconFillPassword,
-  IconOpenEye,
-} from '../../icons/icons';
-import {
   ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {
+  IconCloseEye,
+  IconFillEmail,
+  IconFillPassword,
+  IconOpenEye,
+} from '../../icons/icons';
 import {lStorage, setStorageToken} from '../../utils/utils';
 
-import {Checkbox} from 'react-native-ui-lib';
-import FastImage from 'react-native-fast-image';
 import {Formik} from 'formik';
-import InputText from '../../components/inputs/InputText';
-import {NavigProps} from '../../interfaces/NaviProps';
-import Or from '../../components/buttons/Or';
 import React from 'react';
-import TButton from '../../components/buttons/TButton';
-import tw from '../../lib/tailwind';
+import FastImage from 'react-native-fast-image';
+import {Checkbox} from 'react-native-ui-lib';
 import {useDispatch} from 'react-redux';
-import {useLoginUserMutation} from '../../redux/apiSlices/authSlice';
+import Or from '../../components/buttons/Or';
+import TButton from '../../components/buttons/TButton';
+import InputText from '../../components/inputs/InputText';
 import {useToast} from '../../components/modals/Toaster';
+import {NavigProps} from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
+import {useLoginUserMutation} from '../../redux/apiSlices/authSlice';
 
 interface ISingInForm {
   email: string;
@@ -58,7 +58,7 @@ const LoginScreen = ({navigation}: NavigProps<any>) => {
     }
     if (res.data?.token) {
       setStorageToken(res.data?.token);
-      navigation?.replace('HomeRoutes');
+      (navigation as any)?.replace('DrawerRoutes');
     }
   };
   return (
