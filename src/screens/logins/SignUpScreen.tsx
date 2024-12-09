@@ -1,4 +1,11 @@
 import {
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
   IconAtTheRatOf,
   IconCloseEye,
   IconEmail,
@@ -8,26 +15,19 @@ import {
   IconUser,
 } from '../../icons/icons';
 import {
-  ScrollView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
   useCreateUserMutation,
   useLazyGetUserNameQuery,
 } from '../../redux/apiSlices/authSlice';
 
-import FastImage from 'react-native-fast-image';
 import {Formik} from 'formik';
-import InputText from '../../components/inputs/InputText';
-import {NavigProps} from '../../interfaces/NaviProps';
-import Or from '../../components/buttons/Or';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
+import Or from '../../components/buttons/Or';
 import TButton from '../../components/buttons/TButton';
-import tw from '../../lib/tailwind';
+import InputText from '../../components/inputs/InputText';
 import {useToast} from '../../components/modals/Toaster';
+import {NavigProps} from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
 
 interface ISingUpForm {
   full_name: string;
@@ -96,7 +96,7 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
         <View style={tw`px-[4%] gap-3`}>
           <Text
             style={tw`text-[24px] text-color-Black800 font-NunitoSansExtraBold `}>
-            Sing Up.
+            Sign Up.
           </Text>
         </View>
         {/*================= inputs fields email or password  ================= */}
