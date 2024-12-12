@@ -2,6 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<key>NSContactsUsageDescription</key>
+		<string>This app requires access to your contacts to function properly.</string>
+
 		<key>NSPhotoLibraryAddUsageDescription</key>
 		<string>We need your permission to save images to your photo library.</string>
 

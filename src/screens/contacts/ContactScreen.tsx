@@ -1,5 +1,7 @@
+import React, {useEffect} from 'react';
 import {
   FlatList,
+  PermissionsAndroid,
   RefreshControl,
   Text,
   TouchableOpacity,
@@ -10,9 +12,11 @@ import {
   useUserFriendRequestsQuery,
 } from '../../redux/apiSlices/contactSlices';
 
-import React from 'react';
+import Contacts from 'react-native-contacts';
+import SendSMS from 'react-native-sms';
 import {SvgXml} from 'react-native-svg';
 import LogoWithHeader from '../../components/backHeader/LogoWithHeader';
+import TButton from '../../components/buttons/TButton';
 import MessageCard from '../../components/cards/MessageCard';
 import NoFoundCard from '../../components/cards/NoFoundCard';
 import {IconMessageWhite} from '../../icons/icons';
@@ -20,7 +24,30 @@ import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {PrimaryColor} from '../../utils/utils';
 
-const ContactScreen = ({navigation}: NavigProps<any>) => {
+interface IPhoneContact {
+  company: string;
+  department: string;
+  displayName: string;
+  emailAddresses: [[Object]];
+  familyName: string;
+  givenName: string;
+  hasThumbnail: false;
+  imAddresses: [];
+  isStarred: false;
+  jobTitle: string;
+  middleName: string;
+  note: null;
+  phoneNumbers: [];
+  postalAddresses: [];
+  prefix: null;
+  rawContactId: string;
+  recordID: string;
+  suffix: null;
+  thumbnailPath: string;
+  urlAddresses: [];
+}
+
+const ContactScreen = ({navigation}: NavigProps<null>) => {
   const {
     data: contacts,
     isLoading: contactsLoading,
@@ -32,7 +59,70 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
     refetch: allContactRequestRefetch,
   } = useUserFriendRequestsQuery({});
 
-  // console.log(allContactRequest?.friend_requests?.data);
+  async function requestContactPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+        {
+          title: 'Contact Permission',
+          message: 'This app needs access to your contacts',
+          buttonPositive: 'OK',
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    requestContactPermission();
+    getContacts();
+  }, []);
+
+  const [phoneContacts, setPhoneContacts] =
+    React.useState<Array<IPhoneContact>>();
+
+  async function getContacts() {
+    const permission = await requestContactPermission();
+    if (permission) {
+      Contacts.getAll()
+        .then(contacts => {
+          // console.log('Contacts:', contacts);
+          setPhoneContacts(contacts);
+          // Process the contacts array
+        })
+        .catch(error => {
+          console.error('Error fetching contacts:', error);
+        });
+    } else {
+      console.log('Contact permission denied');
+    }
+  }
+
+  function sendInvite() {
+    const message = `Hey! Check out this amazing app: https://yourapp.com/download`;
+    const recipients = ['1234567890', '9876543210']; // Replace with default numbers if needed
+
+    SendSMS.send(
+      {
+        body: message,
+        recipients: recipients,
+        successTypes: ['sent', 'queued'],
+        allowAndroidSendWithoutReadPermission: true,
+      },
+      (completed, cancelled, error) => {
+        if (completed) {
+          console.log('SMS Sent Successfully');
+        } else if (cancelled) {
+          console.log('SMS Cancelled');
+        } else if (error) {
+          console.error('Error while sending SMS:', error);
+        }
+      },
+    );
+  }
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -91,15 +181,67 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
             colors={[PrimaryColor]}
           />
         }
-        refreshing={contactsLoading || allContactRequestLoading}
-        onRefresh={() => {
-          contactsRefetch();
-          allContactRequestRefetch();
+        ListHeaderComponent={() => {
+          return (
+            <>
+              <View style={tw`px-[4%] py-2`}>
+                <View style={tw` gap-3  flex-row  items-center`}>
+                  <Text
+                    style={tw`text-color-Black600 font-NunitoSansMedium  text-lg py-2 `}>
+                    Contacts
+                  </Text>
+                </View>
+              </View>
+            </>
+          );
         }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw`pb-6  gap-2 px-[2%]`}
         data={contacts?.friends?.data}
         ListEmptyComponent={() => <NoFoundCard title="No Contacts" />}
+        ListFooterComponent={() => (
+          <>
+            <View>
+              {phoneContacts?.map((item, index) => (
+                <MessageCard
+                  key={index}
+                  // disabled
+                  onPress={() =>
+                    navigation?.navigate('OtherWall', {
+                      id: item.recordID,
+                    })
+                  }
+                  offPartThree
+                  titleContainerStyle={tw`gap-1`}
+                  joinBtn
+                  // subTitleStyle={tw`text-color-Black500`}
+                  titleStyle={tw`text-color-Black600 text-sm`}
+                  item={{
+                    image: item.thumbnailPath,
+                    full_name: item.displayName,
+                    last_message: item?.phoneNumbers![0]?.number || 'Empty',
+                  }}
+                  Component={
+                    <>
+                      {/* <TButton
+                        onPress={() => sendInvite()}
+                        title="Add Contact"
+                        titleStyle={tw`text-white font-NunitoSansBold text-sm`}
+                        containerStyle={tw`p-0 bg-primary rounded-lg w-30 h-8 justify-center items-center`}
+                      /> */}
+                      <TButton
+                        onPress={() => sendInvite()}
+                        title="Invite"
+                        titleStyle={tw`text-primary font-NunitoSansBold text-sm`}
+                        containerStyle={tw`p-0 bg-gray-50 rounded-lg w-30 h-8 justify-center items-center`}
+                      />
+                    </>
+                  }
+                />
+              ))}
+            </View>
+          </>
+        )}
         renderItem={({item, index}) => (
           <>
             <MessageCard
@@ -121,34 +263,6 @@ const ContactScreen = ({navigation}: NavigProps<any>) => {
               }}
               Component={
                 <View style={tw`px-4 flex-row gap-4 items-center`}>
-                  {/* <TouchableOpacity>
-                    <SvgXml
-                      height={20}
-                      width={20}
-                      // fill={"#4964C6"}
-                      xml={IconCallBlue}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <SvgXml
-                      height={25}
-                      width={25}
-                      // fill={"#4964C6"}
-                      xml={IconVideo}
-                    />
-                  </TouchableOpacity> */}
-                  {/* <TouchableOpacity
-                    onPress={() => {
-                      navigation?.navigate('SingleMessage');
-                    }}>
-                    <SvgXml
-                      height={20}
-                      width={20}
-                      // fill={'#4964C6'}
-                      xml={IconMessageBlueUL}
-                    />
-                  </TouchableOpacity> */}
-
                   <TouchableOpacity
                     onPress={() => {
                       navigation?.navigate('SingleMessage', {
