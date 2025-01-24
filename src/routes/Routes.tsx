@@ -9,7 +9,9 @@ import GroupMembers from '../screens/chats/GroupMembers';
 import GroupMessageScreen from '../screens/chats/GroupMessageScreen';
 import SingleMessageScreen from '../screens/chats/SingleMessageScreen';
 import Checkout from '../screens/Checkout/Checkout';
+import AudioCallScreen from '../screens/contacts/AudioCallingScreen';
 import RequestContacts from '../screens/contacts/RequestContacts';
+import VideoCallScreen from '../screens/contacts/VideoCallScreen';
 import PassChanSuccess from '../screens/logins/PassChanSuccess';
 import NotificationScreen from '../screens/notificaiton/NotificationScreen';
 import OrdersHistory from '../screens/Orders History/OrdersHistory';
@@ -80,6 +82,8 @@ function Routes() {
       <Stack.Screen name="OtherWallPost" component={OtherWallPost} />
       <Stack.Screen name="RequestContacts" component={RequestContacts} />
       <Stack.Screen name="TransferRequest" component={TransferRequest} />
+      <Stack.Screen name="VideoCall" component={VideoCallScreen} />
+      <Stack.Screen name="AudioCall" component={AudioCallScreen} />
     </Stack.Navigator>
   );
 }

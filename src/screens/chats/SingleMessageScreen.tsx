@@ -1,27 +1,27 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {IMessage, IUserChat} from '../../redux/interface/message';
 import {IconAttachment, IconCamera, IconSend} from '../../icons/icons';
 import {
   useGetMassagesQuery,
   useLazyGetMassagesQuery,
   useSendMessageMutation,
 } from '../../redux/apiSlices/message';
+import {IMessage, IUserChat} from '../../redux/interface/message';
 
-import ActionModal from '../../components/modals/ActionModal';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import moment from 'moment-timezone';
+import React from 'react';
 import FastImage from 'react-native-fast-image';
+import {SvgXml} from 'react-native-svg';
+import {Switch} from 'react-native-ui-lib';
+import {useSelector} from 'react-redux';
+import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
 import ImageView from '../../components/imageViewer/ImageViwer';
 import InputText from '../../components/inputs/InputText';
+import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
-import React from 'react';
-import {SvgXml} from 'react-native-svg';
-import {Switch} from 'react-native-ui-lib';
-import {getSocket} from '../../redux/services/socket';
-import moment from 'moment-timezone';
 import tw from '../../lib/tailwind';
+import {getSocket} from '../../redux/services/socket';
 import {useImagePicker} from '../../utils/utils';
-import {useSelector} from 'react-redux';
 
 // import messageData from '../../assets/database/message.json';
 
@@ -223,7 +223,7 @@ const SingleMessageScreen = ({
         data={allMessage}
         renderItem={({item, index}) => (
           <>
-            <View key={index} style={tw``}>
+            <View key={index}>
               <View style={tw`px-4 py-2`}>
                 {item.sender?.id === user?.id &&
                 (item?.message || item.images) ? (

@@ -36,6 +36,10 @@ interface ISingUpForm {
   password: string;
   address: string;
   role: 'MEMBER';
+  country?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
 }
 
 const SignUpScreen = ({navigation}: NavigProps<any>) => {
@@ -109,6 +113,10 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
             user_name: '',
             password: '',
             address: '',
+            country: '',
+            city: '',
+            state: '',
+            zip_code: '',
           }}
           onSubmit={onSubmitHandler}
           validate={values => {
@@ -118,6 +126,10 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
               password?: string;
               full_name?: string;
               address?: string;
+              country?: string;
+              city?: string;
+              state?: string;
+              zip_code?: string;
             } = {};
             if (!values.full_name) {
               errors.full_name = 'Required';
@@ -153,6 +165,18 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
             }
             if (!values.password) {
               errors.password = 'Required';
+            }
+            if (!values.country) {
+              errors.country = 'Required';
+            }
+            if (!values.city) {
+              errors.city = 'Required';
+            }
+            if (!values.state) {
+              errors.state = 'Required';
+            }
+            if (!values.zip_code) {
+              errors.zip_code = 'Required';
             }
             return errors;
           }}>
@@ -230,6 +254,54 @@ const SignUpScreen = ({navigation}: NavigProps<any>) => {
 
                 {errors.address && touched.address && (
                   <Text style={tw`text-red-500`}>{errors.address}</Text>
+                )}
+                <InputText
+                  value={values.country}
+                  onChangeText={handleChange('country')}
+                  onBlur={handleBlur('country')}
+                  floatingPlaceholder
+                  placeholder="Country"
+                  svgFirstIcon={IconLocation}
+                />
+
+                {errors.country && touched.country && (
+                  <Text style={tw`text-red-500`}>{errors.country}</Text>
+                )}
+                <InputText
+                  value={values.city}
+                  onChangeText={handleChange('city')}
+                  onBlur={handleBlur('city')}
+                  floatingPlaceholder
+                  placeholder="City"
+                  svgFirstIcon={IconLocation}
+                />
+
+                {errors.city && touched.city && (
+                  <Text style={tw`text-red-500`}>{errors.city}</Text>
+                )}
+                <InputText
+                  value={values.state}
+                  onChangeText={handleChange('state')}
+                  onBlur={handleBlur('state')}
+                  floatingPlaceholder
+                  placeholder="State"
+                  svgFirstIcon={IconLocation}
+                />
+
+                {errors.state && touched.state && (
+                  <Text style={tw`text-red-500`}>{errors.state}</Text>
+                )}
+                <InputText
+                  value={values.zip_code}
+                  onChangeText={handleChange('zip_code')}
+                  onBlur={handleBlur('zip_code')}
+                  floatingPlaceholder
+                  placeholder="Zip Code"
+                  svgFirstIcon={IconLocation}
+                />
+
+                {errors.zip_code && touched.zip_code && (
+                  <Text style={tw`text-red-500`}>{errors.zip_code}</Text>
                 )}
 
                 {/*================== password =================== */}

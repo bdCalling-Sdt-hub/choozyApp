@@ -126,7 +126,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <View style={tw``}>
+      <View>
         <LogoWithHeader
           offMenu
           searchOffItem={{
@@ -200,7 +200,7 @@ const WalletScreen = ({navigation}: NavigProps<null>) => {
                   </View>
                 </View>
                 {/*========================== balance part ====================== */}
-                <View style={tw``}>
+                <View>
                   <View style={tw`flex-row  gap-1  items-center`}>
                     <Text style={tw`text-white text-sm font-NunitoSansBold `}>
                       Available Balance

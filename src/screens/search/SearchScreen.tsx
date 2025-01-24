@@ -242,7 +242,7 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                 )}
               {(option === 'All' || option === 'People') &&
                 searchResults?.data?.people?.length > 0 && (
-                  <View style={tw``}>
+                  <View>
                     {searchResults?.data?.people.map((item, index) => (
                       <React.Fragment key={index}>
                         <MessageCard

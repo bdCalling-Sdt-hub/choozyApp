@@ -1,5 +1,4 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {IGroup, IGroupMessage} from '../../redux/interface/group';
 import {
   IconAttachment,
   IconCamera,
@@ -11,21 +10,22 @@ import {
   useLiveGroupMutation,
   useSendGroupMessageMutation,
 } from '../../redux/apiSlices/gourpSlices';
+import {IGroup, IGroupMessage} from '../../redux/interface/group';
 
-import ActionModal from '../../components/modals/ActionModal';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import moment from 'moment-timezone';
+import React from 'react';
 import FastImage from 'react-native-fast-image';
+import {SvgXml} from 'react-native-svg';
+import {useSelector} from 'react-redux';
+import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IButton from '../../components/buttons/IButton';
 import ImageView from '../../components/imageViewer/ImageViwer';
 import InputText from '../../components/inputs/InputText';
+import ActionModal from '../../components/modals/ActionModal';
 import {NavigProps} from '../../interfaces/NaviProps';
-import React from 'react';
-import {SvgXml} from 'react-native-svg';
-import {getSocket} from '../../redux/services/socket';
-import moment from 'moment-timezone';
 import tw from '../../lib/tailwind';
+import {getSocket} from '../../redux/services/socket';
 import {useImagePicker} from '../../utils/utils';
-import {useSelector} from 'react-redux';
 
 const GroupMessageScreen = ({
   navigation,
@@ -178,7 +178,7 @@ const GroupMessageScreen = ({
         data={allMessage}
         renderItem={({item, index}) => (
           <>
-            <View key={index} style={tw``}>
+            <View key={index}>
               <View style={tw`px-4 py-2`}>
                 {item.sender_id === user?.id &&
                 (item?.message || item.images) ? (
@@ -302,7 +302,6 @@ const GroupMessageScreen = ({
       </View>
 
       <ActionModal
-        containerStyle={tw``}
         visible={actionModalOpen}
         setVisible={setActionModalOpen}
         actionData={[

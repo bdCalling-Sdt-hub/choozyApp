@@ -60,7 +60,7 @@ const MyWall = ({navigation, route}: NavigProps<{state: string}>) => {
   return (
     <View style={tw`flex-1 bg-white`}>
       {/*================= header here =================== */}
-      <View style={tw``}>
+      <View>
         <LogoWithHeader
           offMenu
           searchOffItem={{

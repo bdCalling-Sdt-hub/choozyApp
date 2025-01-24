@@ -1,16 +1,20 @@
-import {CardField, useConfirmPayment} from '@stripe/stripe-react-native';
+import {
+  CardField,
+  useConfirmPayment,
+  useStripe,
+} from '@stripe/stripe-react-native';
 import {
   useConfirmPaymentMutation,
   usePaymentIntentMutation,
 } from '../../redux/apiSlices/paymentSlices';
 
-import {AIconSuccess} from '../../icons/AnimateICons';
 import React from 'react';
+import {View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import TButton from '../../components/buttons/TButton';
-import {View} from 'react-native';
-import tw from '../../lib/tailwind';
 import {useToast} from '../../components/modals/Toaster';
+import {AIconSuccess} from '../../icons/AnimateICons';
+import tw from '../../lib/tailwind';
 
 interface Props {
   navigation: any;
@@ -31,18 +35,28 @@ function CheckoutScreen({
 }: Props) {
   const {closeToast, showToast} = useToast();
 
-  console.log(love, totalAmount);
+  // console.log(love, totalAmount);
 
   const [extraLoding, setExtraLoding] = React.useState(false);
+  const [cardDetails, setCardDetails] = React.useState(false);
 
   const [paymentInent] = usePaymentIntentMutation();
   const [confirmPaymentBackend] = useConfirmPaymentMutation();
 
   const {confirmPayment, loading} = useConfirmPayment();
 
+  const {createToken} = useStripe();
+
   const handlePayPress = async () => {
     try {
       setExtraLoding(true);
+
+      const {token, error} = await createToken({
+        type: 'Card', // Specify the type of token
+        card: cardDetails, // Pass the card details from CardField
+      });
+
+      console.log(token);
 
       // Gather the customer's billing information
       const billingDetails = {
@@ -139,6 +153,7 @@ function CheckoutScreen({
         style={tw`w-full h-16 rounded-2xl border border-[#D1D1D1]  pt-3 pb-3 pl-3 pr-3 mt-5`}
         onCardChange={cardDetails => {
           // console.log('cardDetails', cardDetails);
+          setCardDetails(cardDetails);
         }}
         onFocus={focusedField => {
           // console.log('focusField', focusedField);

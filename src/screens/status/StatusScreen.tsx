@@ -61,7 +61,7 @@ const StatusScreen = ({navigation}: NavigProps<null>) => {
 
   return (
     <View style={tw`flex-1 bg-white`}>
-      <View style={tw``}>
+      <View>
         <LogoWithHeader
           offMenu
           searchOffItem={{

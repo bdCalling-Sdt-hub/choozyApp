@@ -1,9 +1,8 @@
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 
+// import groupMessageData from '../../assets/database/groups.json';
 import React from 'react';
-import groupMessageData from '../../assets/database/groups.json';
 import BackWithTitle from '../../components/backHeader/BackWithTitle';
-import MessageCard from '../../components/cards/MessageCard';
 import InputText from '../../components/inputs/InputText';
 import {IconSearch} from '../../icons/icons';
 import {NavigProps} from '../../interfaces/NaviProps';
@@ -17,7 +16,7 @@ const AllGroupsScreen = ({navigation, route}: NavigProps<{id: string}>) => {
       <View style={tw`px-[4%] mb-3 h-14`}>
         <InputText placeholder="Search for group" svgSecondIcon={IconSearch} />
       </View>
-      <FlatList
+      {/* <FlatList
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw`pb-6`}
         data={groupMessageData.slice(9, 30)}
@@ -41,7 +40,7 @@ const AllGroupsScreen = ({navigation, route}: NavigProps<{id: string}>) => {
             />
           </>
         )}
-      />
+      /> */}
       <View></View>
     </View>
   );

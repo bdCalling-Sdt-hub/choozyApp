@@ -12,6 +12,7 @@ import axios from 'axios';
 import React from 'react';
 import {SvgXml} from 'react-native-svg';
 import {useSelector} from 'react-redux';
+import Countries from '../../assets/database/permanent/countries.json';
 import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import IwtButton from '../../components/buttons/IwtButton';
 import TButton from '../../components/buttons/TButton';
@@ -24,7 +25,6 @@ import tw from '../../lib/tailwind';
 import {formatCurrency} from '../../utils/currencyFomator';
 import {Android} from '../../utils/utils';
 import LoveCheckout from './LoveCheckout';
-import Countries from './countries.json';
 
 const handleExchangeRate = async () => {
   const res = await axios.get(
@@ -250,7 +250,7 @@ const LoveStoreScreen = ({navigation}: NavigProps<null>) => {
                 />
               </View>
             </View>
-            <StripeProvider publishableKey="pk_test_51M6AQECe4QqAuKX4hQuRPLKDeB192L6xZiop8yWhLLrmbBTZjSsPKPyGvhhHVlKQNikct3mhaeZgyGjYTA17VwbT00l34SeOAr">
+            <StripeProvider publishableKey="pk_test_51Q51euIE7z8j8FQDRAixwTBcDJS0zyz8wjvgZVn64nZKzjxyVSdzEPIccMiD3hND02GAHRU8y2eB92YO1tcL1PQk00M6ydxlfZ">
               <LoveCheckout
                 setPaymentModal={setPaymentModal}
                 love={coin}

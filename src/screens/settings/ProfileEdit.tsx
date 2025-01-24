@@ -1,4 +1,3 @@
-import {Android, useImagePicker} from '../../utils/utils';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {
   useGetProfileQuery,
@@ -9,18 +8,19 @@ import {
   usePrivacyPrivateMutation,
   usePrivacyPublicMutation,
 } from '../../redux/apiSlices/profilePrivacy';
+import {Android, useImagePicker} from '../../utils/utils';
 
-import {Asset} from 'react-native-image-picker';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import FastImage from 'react-native-fast-image';
-import {IconFillCamera} from '../../icons/icons';
-import InputText from '../../components/inputs/InputText';
-import {NavigProps} from '../../interfaces/NaviProps';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
+import {Asset} from 'react-native-image-picker';
 import {SvgXml} from 'react-native-svg';
+import BackWithComponent from '../../components/backHeader/BackWithCoponent';
 import TButton from '../../components/buttons/TButton';
-import tw from '../../lib/tailwind';
+import InputText from '../../components/inputs/InputText';
 import {useToast} from '../../components/modals/Toaster';
+import {IconFillCamera} from '../../icons/icons';
+import {NavigProps} from '../../interfaces/NaviProps';
+import tw from '../../lib/tailwind';
 
 const ProfileEdit = ({navigation}: NavigProps<any>) => {
   const {showToast, closeToast} = useToast();
@@ -52,7 +52,6 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
       setImage(image![0]);
       setUserInfo({...userInfo, image: image![0]});
     } catch (error) {
-    
       console.log(error);
     }
   };
@@ -128,7 +127,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
 
     const res = await updatedProfile(formData);
     console.log(res);
-    if(res.error){
+    if (res.error) {
       showToast({
         title: 'Warning',
         titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
@@ -215,8 +214,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
                   onPress={() => {
                     createPublic({});
                   }}
-                  activeOpacity={0.5}
-                  style={tw``}>
+                  activeOpacity={0.5}>
                   <Text
                     style={
                       userProfile?.data?.privacy === 'public'
@@ -230,8 +228,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
                   onPress={() => {
                     createPrivate({});
                   }}
-                  activeOpacity={0.5}
-                  style={tw``}>
+                  activeOpacity={0.5}>
                   <Text
                     style={
                       userProfile?.data?.privacy === 'private'
@@ -245,8 +242,7 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
                   onPress={() => {
                     createFriend({});
                   }}
-                  activeOpacity={0.5}
-                  style={tw``}>
+                  activeOpacity={0.5}>
                   <Text
                     style={
                       userProfile?.data?.privacy === 'friends'

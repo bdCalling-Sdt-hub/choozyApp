@@ -12,7 +12,7 @@ import {DrawerActions} from '@react-navigation/native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
-import searchResults from '../../assets/database/search.json';
+import searchResults from '../../assets/database/temp/search.json';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetNotificationsQuery} from '../../redux/apiSlices/notificaiton';

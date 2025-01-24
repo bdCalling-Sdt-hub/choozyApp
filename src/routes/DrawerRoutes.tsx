@@ -6,6 +6,7 @@ import {
   DrawerItemList,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {
   IconClockBlue,
   IconCopyBoardBlue,
@@ -15,13 +16,12 @@ import {
   IconStoreBlue,
   IconSupportedBlue,
 } from '../icons/icons';
-import {Text, TouchableOpacity, View} from 'react-native';
 
-import IButton from '../components/buttons/IButton';
-import Routes from './Routes';
-import {removeStorageToken} from '../utils/utils';
-import tw from '../lib/tailwind';
 import {useSelector} from 'react-redux';
+import IButton from '../components/buttons/IButton';
+import tw from '../lib/tailwind';
+import {removeStorageToken} from '../utils/utils';
+import Routes from './Routes';
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const user = useSelector(state => state.user.user);

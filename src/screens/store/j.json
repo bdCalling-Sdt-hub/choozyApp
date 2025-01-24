@@ -1,0 +1,65 @@
+{
+  "amount": 6000,
+  "canceledAt": "0",
+  "captureMethod": "Unknown",
+  "clientSecret": "pi_3Qh45NCe4QqAuKX413pa6aCW_secret_MqXXZUp5Dbe8athmBqqe5geRN",
+  "confirmationMethod": "Automatic",
+  "created": "1736837929000",
+  "currency": "usd",
+  "description": null,
+  "id": "pi_3Qh45NCe4QqAuKX413pa6aCW",
+  "lastPaymentError": null,
+  "livemode": false,
+  "nextAction": null,
+  "paymentMethod": {
+    "AuBecsDebit": {"bsbNumber": null, "fingerprint": null, "last4": null},
+    "BacsDebit": {"fingerprint": null, "last4": null, "sortCode": null},
+    "Card": {
+      "availableNetworks": null,
+      "brand": "Visa",
+      "country": "US",
+      "expMonth": 4,
+      "expYear": 2025,
+      "fingerprint": null,
+      "funding": "credit",
+      "last4": "4242",
+      "preferredNetwork": null,
+      "threeDSecureUsage": {}
+    },
+    "Fpx": {"accountHolderType": null, "bank": null},
+    "Ideal": {"bankIdentifierCode": null, "bankName": null},
+    "SepaDebit": {
+      "bankCode": null,
+      "country": null,
+      "fingerprint": null,
+      "last4": null
+    },
+    "Sofort": {"country": null},
+    "USBankAccount": {
+      "accountHolderType": "Unknown",
+      "accountType": "Unknown",
+      "bankName": null,
+      "fingerprint": null,
+      "last4": null,
+      "linkedAccount": null,
+      "preferredNetworks": null,
+      "routingNumber": null,
+      "supportedNetworks": null
+    },
+    "Upi": {"vpa": null},
+    "billingDetails": {
+      "address": {},
+      "email": "Arifbiswas1020@gmail.com",
+      "name": "Arif Biswas",
+      "phone": null
+    },
+    "customerId": null,
+    "id": "pm_1Qh45OCe4QqAuKX4XFo36wzP",
+    "livemode": false,
+    "paymentMethodType": "Card"
+  },
+  "paymentMethodId": "pm_1Qh45OCe4QqAuKX4XFo36wzP",
+  "receiptEmail": null,
+  "shipping": null,
+  "status": "Succeeded"
+}
