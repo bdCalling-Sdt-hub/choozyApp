@@ -33,6 +33,10 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
     image?: Asset;
     location?: string;
     contact?: string;
+    country: string;
+    city: string;
+    state: string;
+    zip_code: string;
     _method?: 'PUT';
   }>({
     full_name: userProfile?.data?.full_name || '',
@@ -41,6 +45,10 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
     image: undefined,
     location: userProfile?.data?.location || '',
     contact: userProfile?.data?.contact || '',
+    country: userProfile?.data?.country || '',
+    city: userProfile?.data?.city || '',
+    state: userProfile?.data?.state || '',
+    zip_code: userProfile?.data?.zip_code || '',
     _method: 'PUT',
   });
 
@@ -98,16 +106,16 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
       return;
     }
 
-    if (!userInfo?.bio) {
-      showToast({
-        title: 'Warning',
-        titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
-        content: 'Please enter your bio',
-        contentStyle: tw`text-sm`,
-        btnDisplay: true,
-      });
-      return;
-    }
+    // if (!userInfo?.bio) {
+    //   showToast({
+    //     title: 'Warning',
+    //     titleStyle: tw`text-yellow-500 text-base font-NunitoSansBold`,
+    //     content: 'Please enter your bio',
+    //     contentStyle: tw`text-sm`,
+    //     btnDisplay: true,
+    //   });
+    //   return;
+    // }
 
     const formData = new FormData();
     if (image) {
@@ -290,6 +298,30 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
               floatingPlaceholder
               value={userInfo?.location}
               onChangeText={e => setUserInfo({...userInfo, location: e})}
+            />
+          </View>
+          <View style={tw` h-14`}>
+            <InputText
+              placeholder="Country"
+              floatingPlaceholder
+              value={userInfo?.country}
+              onChangeText={e => setUserInfo({...userInfo, country: e})}
+            />
+          </View>
+          <View style={tw` h-14`}>
+            <InputText
+              placeholder="City"
+              floatingPlaceholder
+              value={userInfo?.city}
+              onChangeText={e => setUserInfo({...userInfo, city: e})}
+            />
+          </View>
+          <View style={tw` h-14`}>
+            <InputText
+              placeholder="State"
+              floatingPlaceholder
+              value={userInfo?.state}
+              onChangeText={e => setUserInfo({...userInfo, state: e})}
             />
           </View>
         </View>

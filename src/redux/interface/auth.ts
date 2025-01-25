@@ -56,6 +56,10 @@ export interface IProfile {
     privacy: 'public' | 'private' | 'friends';
     location: string;
     contact: string;
+    country: string;
+    city: string;
+    state: string;
+    zip_code: string;
     balance: string;
     image: string;
     shop: {

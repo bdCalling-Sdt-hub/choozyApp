@@ -4,8 +4,8 @@ import {ISearchResponse} from '../interface/search';
 const authSlice = api.injectEndpoints({
   endpoints: builder => ({
     search: builder.query<ISearchResponse, any>({
-      query: search => ({
-        url: `/search?query=${search}`,
+      query: ({search, city = '', state = '', country = ''}) => ({
+        url: `/search?query=${search}?city=${city}?state=${state}?country=${country}`,
         method: 'GET',
       }),
     }),

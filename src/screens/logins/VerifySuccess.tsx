@@ -8,7 +8,7 @@ import tw from '../../lib/tailwind';
 
 const VerifySuccess = ({navigation}: NavigProps<any>) => {
   setTimeout(() => {
-    (navigation as any)?.replace('HomeRoutes');
+    (navigation as any)?.replace('DrawerRoutes');
   }, 500);
   return (
     <View style={tw`flex-1 bg-base justify-center items-center`}>

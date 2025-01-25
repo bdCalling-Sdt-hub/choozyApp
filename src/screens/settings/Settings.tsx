@@ -1,15 +1,15 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 
-import {Android} from '../../utils/utils';
-import BackWithComponent from '../../components/backHeader/BackWithCoponent';
-import FastImage from 'react-native-fast-image';
-import {IconWrite} from '../../icons/icons';
-import InputText from '../../components/inputs/InputText';
-import {NavigProps} from '../../interfaces/NaviProps';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
+import BackWithComponent from '../../components/backHeader/BackWithCoponent';
+import InputText from '../../components/inputs/InputText';
+import {IconWrite} from '../../icons/icons';
+import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
 import {useGetProfileQuery} from '../../redux/apiSlices/authSlice';
+import {Android} from '../../utils/utils';
 
 const Settings = ({navigation}: NavigProps<any>) => {
   const {data: userProfile} = useGetProfileQuery({});
@@ -89,20 +89,51 @@ const Settings = ({navigation}: NavigProps<any>) => {
             floatingPlaceholder
           />
         </View>
-        <View style={tw`h-14`}>
-          <InputText
-            editable={false}
-            placeholder={userProfile?.data?.contact}
-            floatingPlaceholder
-          />
-        </View>
-        <View style={tw` h-14`}>
-          <InputText
-            editable={false}
-            placeholder={userProfile?.data?.location}
-            floatingPlaceholder
-          />
-        </View>
+        {userProfile?.data?.contact && (
+          <View style={tw`h-14`}>
+            <InputText
+              editable={false}
+              placeholder={userProfile?.data?.contact}
+              floatingPlaceholder
+            />
+          </View>
+        )}
+        {userProfile?.data?.location && (
+          <View style={tw` h-14`}>
+            <InputText
+              editable={false}
+              placeholder={userProfile?.data?.location}
+              floatingPlaceholder
+            />
+          </View>
+        )}
+        {userProfile?.data?.country && (
+          <View style={tw` h-14`}>
+            <InputText
+              editable={false}
+              placeholder={userProfile?.data?.country}
+              floatingPlaceholder
+            />
+          </View>
+        )}
+        {userProfile?.data?.city && (
+          <View style={tw` h-14`}>
+            <InputText
+              editable={false}
+              placeholder={userProfile?.data?.city}
+              floatingPlaceholder
+            />
+          </View>
+        )}
+        {userProfile?.data?.state && (
+          <View style={tw` h-14`}>
+            <InputText
+              editable={false}
+              placeholder={userProfile?.data?.state}
+              floatingPlaceholder
+            />
+          </View>
+        )}
       </View>
     </View>
   );

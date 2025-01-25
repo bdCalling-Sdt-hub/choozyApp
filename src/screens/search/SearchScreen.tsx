@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {FlatList, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {IconClose, IconSearch, IconSend} from '../../icons/icons';
+import {IconClose, IconFilter, IconSearch, IconSend} from '../../icons/icons';
 
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
@@ -13,6 +13,7 @@ import MessageCard from '../../components/cards/MessageCard';
 import PostCard from '../../components/cards/PostCard';
 import ProductCard from '../../components/cards/ProductCard';
 import InputText from '../../components/inputs/InputText';
+import NormalModal from '../../components/modals/NormalModal';
 import SideModal from '../../components/modals/SideModal';
 import {NavigProps} from '../../interfaces/NaviProps';
 import tw from '../../lib/tailwind';
@@ -23,6 +24,10 @@ import {ISearchResponse} from '../../redux/interface/search';
 
 const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [option, setOption] = React.useState('All');
+  const [country, setCountry] = React.useState(null);
+  const [city, setCity] = React.useState(null);
+  const [state, setState] = React.useState(null);
+  const [filterModal, setFilterModal] = React.useState(false);
   const [isComment, setIsComment] = React.useState<{
     item?: INewpaper;
     open?: boolean;
@@ -39,8 +44,16 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [globalSearch, globalResults] = useLazySearchQuery({});
 
   const handleSearch = async () => {
-    const res = await globalSearch(searchText);
+    const res = await globalSearch({
+      search: searchText,
+      city,
+      state,
+      country,
+    });
     setSearchResults(res.data);
+    setCity(null);
+    setState(null);
+    setCountry(null);
   };
 
   const handleComment = useCallback(() => {
@@ -96,9 +109,18 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
           svg={IconSearch}
           containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
         />
+        <IButton
+          isLoading={globalResults?.isFetching}
+          onPress={() => {
+            setFilterModal(true);
+          }}
+          svg={IconFilter}
+          containerStyle={tw`w-12  h-12 bg-[#F6F6F6] shadow-none`}
+        />
       </View>
       {/* ====================== filters icons ==================== */}
-      <View style={tw`flex-row items-center gap-3 px-[4%] pb-2`}>
+      <View
+        style={tw`flex-row items-center gap-3 px-[4%] pb-2 border border-gray-100 p-2 mx-2 rounded-lg`}>
         <SimpleButton
           onPress={() => {
             setOption('All');
@@ -352,6 +374,48 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
           />
         </View>
       </SideModal>
+
+      <NormalModal
+        layerContainerStyle={tw`mx-4`}
+        visible={filterModal}
+        setVisible={setFilterModal}>
+        <View>
+          <Text
+            style={tw`text-color-Black400 font-NunitoSansBold text-base mb-3`}>
+            Search with filter
+          </Text>
+          <View style={tw`gap-3 border border-gray-100 p-4  rounded-lg `}>
+            <View style={tw`h-14`}>
+              <InputText
+                containerStyle={tw`w-full border-0 bg-color-Black50`}
+                onChangeText={(text: string) => setCountry(text)}
+                placeholder="Country"
+              />
+            </View>
+            <View style={tw`h-14`}>
+              <InputText
+                containerStyle={tw`w-full border-0 bg-color-Black50`}
+                onChangeText={(text: string) => setCity(text)}
+                placeholder="City"
+              />
+            </View>
+            <View style={tw`h-14`}>
+              <InputText
+                containerStyle={tw`w-full border-0 bg-color-Black50`}
+                onChangeText={(text: string) => setState(text)}
+                placeholder="State"
+              />
+            </View>
+            <TButton
+              title="Filter"
+              onPress={() => {
+                setFilterModal(false);
+              }}
+              containerStyle={tw`w-full bg-primary mt-3`}
+            />
+          </View>
+        </View>
+      </NormalModal>
     </View>
   );
 };
