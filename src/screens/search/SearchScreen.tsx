@@ -27,6 +27,7 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [country, setCountry] = React.useState(null);
   const [city, setCity] = React.useState(null);
   const [state, setState] = React.useState(null);
+  const [zip_code, setZipCode] = React.useState(null);
   const [filterModal, setFilterModal] = React.useState(false);
   const [isComment, setIsComment] = React.useState<{
     item?: INewpaper;
@@ -49,6 +50,7 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
       city,
       state,
       country,
+      zip_code,
     });
     setSearchResults(res.data);
     setCity(null);
@@ -404,6 +406,13 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                 containerStyle={tw`w-full border-0 bg-color-Black50`}
                 onChangeText={(text: string) => setState(text)}
                 placeholder="State"
+              />
+            </View>
+            <View style={tw`h-14`}>
+              <InputText
+                containerStyle={tw`w-full border-0 bg-color-Black50`}
+                onChangeText={(text: string) => setZipCode(text)}
+                placeholder="Zip Code"
               />
             </View>
             <TButton

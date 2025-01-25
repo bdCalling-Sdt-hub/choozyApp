@@ -134,6 +134,15 @@ const Settings = ({navigation}: NavigProps<any>) => {
             />
           </View>
         )}
+        {userProfile?.data?.zip_code && (
+          <View style={tw` h-14`}>
+            <InputText
+              editable={false}
+              placeholder={userProfile?.data?.zip_code}
+              floatingPlaceholder
+            />
+          </View>
+        )}
       </View>
     </View>
   );

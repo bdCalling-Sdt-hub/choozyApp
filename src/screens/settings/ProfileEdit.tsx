@@ -324,6 +324,14 @@ const ProfileEdit = ({navigation}: NavigProps<any>) => {
               onChangeText={e => setUserInfo({...userInfo, state: e})}
             />
           </View>
+          <View style={tw` h-14`}>
+            <InputText
+              placeholder="Zip Code"
+              floatingPlaceholder
+              value={userInfo?.zip_code}
+              onChangeText={e => setUserInfo({...userInfo, zip_code: e})}
+            />
+          </View>
         </View>
 
         <TouchableOpacity
