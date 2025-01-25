@@ -24,10 +24,10 @@ import {ISearchResponse} from '../../redux/interface/search';
 
 const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
   const [option, setOption] = React.useState('All');
-  const [country, setCountry] = React.useState(null);
-  const [city, setCity] = React.useState(null);
-  const [state, setState] = React.useState(null);
-  const [zip_code, setZipCode] = React.useState(null);
+  const [country, setCountry] = React.useState('');
+  const [city, setCity] = React.useState('');
+  const [state, setState] = React.useState('');
+  const [zip_code, setZipCode] = React.useState('');
   const [filterModal, setFilterModal] = React.useState(false);
   const [isComment, setIsComment] = React.useState<{
     item?: INewpaper;
@@ -46,16 +46,17 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
 
   const handleSearch = async () => {
     const res = await globalSearch({
-      search: searchText,
+      query: searchText,
       city,
       state,
       country,
       zip_code,
     });
     setSearchResults(res.data);
-    setCity(null);
-    setState(null);
-    setCountry(null);
+    setCity('');
+    setState('');
+    setCountry('');
+    setZipCode('');
   };
 
   const handleComment = useCallback(() => {
@@ -181,31 +182,50 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
         renderItem={() => {
           return (
             <>
-              {(option === 'All' || option === 'Posts') &&
-                searchResults?.data?.posts?.length > 0 && (
-                  <View style={tw`flex-1 pb-7`}>
-                    {searchResults?.data?.posts
-                      .slice(0, 2)
-                      .map((item, index) => (
-                        <React.Fragment key={index}>
-                          <PostCard
-                            setComment={setIsComment}
-                            onPress={() => {
-                              // console.log(userProfile?.data.id);
-                              if (user.id === item?.user?.user_id) {
-                                navigation?.navigate('Wall');
-                              } else {
-                                navigation?.navigate('OtherWall', {
-                                  id: item?.user?.user_id,
-                                });
-                              }
-                            }}
-                            item={item}
-                          />
-                        </React.Fragment>
-                      ))}
-                  </View>
-                )}
+              {option === 'All' && searchResults?.data?.posts?.length > 0 && (
+                <View style={tw`flex-1 pb-7`}>
+                  {searchResults?.data?.posts.slice(0, 5).map((item, index) => (
+                    <React.Fragment key={index}>
+                      <PostCard
+                        setComment={setIsComment}
+                        onPress={() => {
+                          // console.log(userProfile?.data.id);
+                          if (user.id === item?.user?.user_id) {
+                            navigation?.navigate('Wall');
+                          } else {
+                            navigation?.navigate('OtherWall', {
+                              id: item?.user?.user_id,
+                            });
+                          }
+                        }}
+                        item={item}
+                      />
+                    </React.Fragment>
+                  ))}
+                </View>
+              )}
+              {option === 'Posts' && searchResults?.data?.posts?.length > 0 && (
+                <View style={tw`flex-1 pb-7`}>
+                  {searchResults?.data?.posts.map((item, index) => (
+                    <React.Fragment key={index}>
+                      <PostCard
+                        setComment={setIsComment}
+                        onPress={() => {
+                          // console.log(userProfile?.data.id);
+                          if (user.id === item?.user?.user_id) {
+                            navigation?.navigate('Wall');
+                          } else {
+                            navigation?.navigate('OtherWall', {
+                              id: item?.user?.user_id,
+                            });
+                          }
+                        }}
+                        item={item}
+                      />
+                    </React.Fragment>
+                  ))}
+                </View>
+              )}
               <>
                 {option === 'All' &&
                   searchResults?.data?.products?.length > 0 && (
@@ -264,7 +284,57 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
                     </View>
                   </View>
                 )}
-              {(option === 'All' || option === 'People') &&
+              {option === 'All' && searchResults?.data?.people?.length > 0 && (
+                <View>
+                  {searchResults?.data?.people
+                    ?.slice(0, 5)
+                    .map((item, index) => (
+                      <React.Fragment key={index}>
+                        <MessageCard
+                          onPress={() => {
+                            console.log(user?.id, item?.id);
+                            if (user?.id === item?.id) {
+                              navigation?.navigate('Wall');
+                            } else {
+                              navigation?.navigate('OtherWall', {
+                                id: item?.id,
+                              });
+                            }
+                          }}
+                          offPartThree
+                          containerStyle={tw`w-full items-center justify-center`}
+                          titleContainerStyle={tw`gap-1 `}
+                          joinBtn
+                          subTitleStyle={tw`text-color-Black500`}
+                          titleStyle={tw`text-[#1D1929] text-sm`}
+                          item={{
+                            image: item.image,
+                            full_name: item.full_name,
+                            last_message: '@' + item.user_name,
+                          }}
+                          Component={
+                            <TButton
+                              containerStyle={tw`self-center p-2 w-24 items-center bg-primary`}
+                              title="View Profile"
+                              onPress={() => {
+                                if (user?.id === item?.id) {
+                                  navigation?.navigate('Wall');
+                                } else {
+                                  navigation?.navigate('OtherWall', {
+                                    id: item?.id,
+                                  });
+                                }
+                              }}
+                              titleStyle={tw`text-white text-xs`}
+                              // svg={IconPlus}
+                            />
+                          }
+                        />
+                      </React.Fragment>
+                    ))}
+                </View>
+              )}
+              {option === 'People' &&
                 searchResults?.data?.people?.length > 0 && (
                   <View>
                     {searchResults?.data?.people.map((item, index) => (
