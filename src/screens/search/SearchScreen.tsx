@@ -418,6 +418,7 @@ const SearchScreen = ({navigation, route}: NavigProps<{text: string}>) => {
             <TButton
               title="Filter"
               onPress={() => {
+                handleSearch();
                 setFilterModal(false);
               }}
               containerStyle={tw`w-full bg-primary mt-3`}
